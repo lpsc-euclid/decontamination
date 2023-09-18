@@ -3,7 +3,7 @@
 import os
 import sys
 
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 ########################################################################################################################
 
@@ -31,9 +31,9 @@ class JITTests(unittest.TestCase):
 
         print('Running foo_xpu...')
 
-        a = np.array([1, 2, 3, 4])
-        b = np.array([5, 6, 7, 8])
-        c = np.array([6, 8, 10, 12])
+        a = np.array([1, 2, 3, 4], dtype = np.float32)
+        b = np.array([5, 6, 7, 8], dtype = np.float32)
+        c = np.array([6, 8, 10, 12], dtype = np.float32)
 
         self.assertTrue(np.array_equal(foo_xpu(a, b), c))
 
@@ -45,9 +45,9 @@ class JITTests(unittest.TestCase):
 
             print('Running foo_cpu...')
 
-            a = np.array([1, 2, 3, 4])
-            b = np.array([5, 6, 7, 8])
-            c = np.array([6, 8, 10, 12])
+            a = np.array([1, 2, 3, 4], dtype = np.float32)
+            b = np.array([5, 6, 7, 8], dtype = np.float32)
+            c = np.array([6, 8, 10, 12], dtype = np.float32)
 
             self.assertTrue(np.array_equal(foo_cpu(a, b), c))
 
@@ -63,9 +63,9 @@ class JITTests(unittest.TestCase):
 
             print('Running foo_gpu...')
 
-            a = np.array([1, 2, 3, 4])
-            b = np.array([5, 6, 7, 8])
-            c = np.array([6, 8, 10, 12])
+            a = np.array([1, 2, 3, 4], dtype = np.float32)
+            b = np.array([5, 6, 7, 8], dtype = np.float32)
+            c = np.array([6, 8, 10, 12], dtype = np.float32)
 
             self.assertTrue(np.array_equal(foo_gpu[(c.size + (32 - 1)) // 32, 32](a, b), c))
 

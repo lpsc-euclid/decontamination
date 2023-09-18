@@ -34,7 +34,7 @@ class jit(object):
     cnt = 0
 
     @classmethod
-    def get_unique_function_name(cls):
+    def _get_unique_function_name(cls):
 
         name = f'__jit_f{cls.cnt}'
 
@@ -92,7 +92,7 @@ class jit(object):
 
             ############################################################################################################
 
-            name_cpu = jit.get_unique_function_name()
+            name_cpu = jit._get_unique_function_name()
 
             code_cpu = jit._patch_cpu_code(f'def {name_cpu} {code_raw[code_raw.find("("):]}')
 
@@ -114,7 +114,7 @@ class jit(object):
 
             ############################################################################################################
 
-            name_gpu = jit.get_unique_function_name()
+            name_gpu = jit._get_unique_function_name()
 
             code_gpu = jit._patch_gpu_code(f'def {name_gpu} {code_raw[code_raw.find("("):]}')
 

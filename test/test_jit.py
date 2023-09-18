@@ -76,11 +76,11 @@ class JITTests(unittest.TestCase):
 
             print('Running foo_gpu...')
 
-            r = np.zeros(C.size, dtype = np.float32)
+            r = cuda.device_array_like(C)
 
             foo_kernel_gpu[(C.size + (32 - 1)) // 32, 32](r, A, B)
 
-            self.assertTrue(np.array_equal(r, C))
+            self.assertTrue(np.array_equal(r.copy_to_host(), C))
 
         else:
 

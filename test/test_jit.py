@@ -32,10 +32,7 @@ def foo_xpu(a, b):
 @decontamination.jit(kernel = True)
 def foo_kernel_gpu(result, a, b):
 
-    tx = cu.threadIdx.x
-    ty = cu.blockIdx.x
-    bw = cu.blockDim.x
-    pos = tx + ty * bw
+    pos = cu.threadIdx.x + cu.blockIdx.x * cu.blockDim.x
 
     if pos < result.shape[0]:
 
@@ -43,7 +40,6 @@ def foo_kernel_gpu(result, a, b):
 
 ########################################################################################################################
 
-# noinspection PyUnresolvedReferences
 class JITTests(unittest.TestCase):
 
     ####################################################################################################################

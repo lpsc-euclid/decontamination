@@ -17,6 +17,12 @@ from decontamination import jit
 
 ########################################################################################################################
 
+A = np.array([1, 2,  3,  4], dtype = np.float32)
+B = np.array([5, 6,  7,  8], dtype = np.float32)
+C = np.array([6, 8, 10, 12], dtype = np.float32)
+
+########################################################################################################################
+
 @jit.jit(device = True)
 def foo_xpu(a, b):
 
@@ -47,11 +53,7 @@ class JITTests(unittest.TestCase):
 
         print('Running foo_xpu...')
 
-        a = np.array([1, 2, 3, 4], dtype = np.float32)
-        b = np.array([5, 6, 7, 8], dtype = np.float32)
-        c = np.array([6, 8, 10, 12], dtype = np.float32)
-
-        self.assertTrue(np.array_equal(foo_xpu(a, b), c))
+        self.assertTrue(np.array_equal(foo_xpu(A, B), C))
 
     ####################################################################################################################
 
@@ -61,11 +63,7 @@ class JITTests(unittest.TestCase):
 
             print('Running foo_cpu...')
 
-            a = np.array([1, 2, 3, 4], dtype = np.float32)
-            b = np.array([5, 6, 7, 8], dtype = np.float32)
-            c = np.array([6, 8, 10, 12], dtype = np.float32)
-
-            self.assertTrue(np.array_equal(foo_cpu(a, b), c))
+            self.assertTrue(np.array_equal(foo_cpu(A, B), C))
 
         else:
 
@@ -79,14 +77,11 @@ class JITTests(unittest.TestCase):
 
             print('Running foo_gpu...')
 
-            a = np.array([1, 2, 3, 4], dtype = np.float32)
-            b = np.array([5, 6, 7, 8], dtype = np.float32)
-            c = np.array([6, 8, 10, 12], dtype = np.float32)
+            r = np.zeros(C.size, dtype = np.float32)
 
-            r = np.array([0, 0, 0, 0], dtype = np.float32)
-            foo_gpu_kernel[(c.size + (32 - 1)) // 32, 32](r, a, b)
+            foo_gpu_kernel[(C.size + (32 - 1)) // 32, 32](r, A, B)
 
-            self.assertTrue(np.array_equal(r, c))
+            self.assertTrue(np.array_equal(r, C))
 
         else:
 

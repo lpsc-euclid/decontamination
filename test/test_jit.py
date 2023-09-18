@@ -77,8 +77,8 @@ class JITTests(unittest.TestCase):
             print('Running foo_gpu...')
 
             r = cu.device_array_like(C)
-            a = cu.to_device(A)
-            b = cu.to_device(B)
+            a = cu.const.array_like(A)
+            b = cu.const.array_like(B)
 
             foo_kernel_gpu[(C.size + (32 - 1)) // 32, 32](r, a, b)
 

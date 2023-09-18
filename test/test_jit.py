@@ -1,5 +1,12 @@
 ########################################################################################################################
 
+import os
+import sys
+
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+
+########################################################################################################################
+
 import unittest
 
 import numpy as np
@@ -44,6 +51,10 @@ class JITTests(unittest.TestCase):
 
             self.assertTrue(np.array_equal(foo_cpu(a, b), c))
 
+        else:
+
+            print('Skip foo_cpu...')
+
     ####################################################################################################################
 
     def test3(self):
@@ -57,6 +68,10 @@ class JITTests(unittest.TestCase):
             c = np.array([6, 8, 10, 12])
 
             self.assertTrue(np.array_equal(foo_gpu[(c.size + (32 - 1)) // 32, 32](a, b), c))
+
+        else:
+
+            print('Skip foo_gpu...')
 
 ########################################################################################################################
 

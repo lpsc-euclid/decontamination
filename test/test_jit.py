@@ -8,12 +8,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 ########################################################################################################################
 
 import unittest
+import decontamination
 
 import numpy as np
 
 import numba.cuda as cu
-
-from decontamination import jit
 
 ########################################################################################################################
 
@@ -23,14 +22,14 @@ C = np.array([6, 8, 10, 12], dtype = np.float32)
 
 ########################################################################################################################
 
-@jit.jit(device = True)
+@decontamination.jit(device = True)
 def foo_xpu(a, b):
 
     return a + b
 
 ########################################################################################################################
 
-@jit.jit(kernel = True)
+@decontamination.jit(kernel = True)
 def foo_kernel_gpu(result, a, b):
 
     tx = cu.threadIdx.x
@@ -59,7 +58,7 @@ class JITTests(unittest.TestCase):
 
     def test2(self):
 
-        if jit.CPU_OPTIMIZATION_AVAILABLE:
+        if decontamination.CPU_OPTIMIZATION_AVAILABLE:
 
             print('Running foo_cpu...')
 
@@ -73,7 +72,7 @@ class JITTests(unittest.TestCase):
 
     def test3(self):
 
-        if jit.GPU_OPTIMIZATION_AVAILABLE:
+        if decontamination.GPU_OPTIMIZATION_AVAILABLE:
 
             print('Running foo_gpu...')
 

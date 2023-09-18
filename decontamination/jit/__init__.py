@@ -21,9 +21,19 @@ GPU_OPTIMIZATION_AVAILABLE = CPU_OPTIMIZATION_AVAILABLE and cu.is_available()
 # noinspection PyPep8Naming
 class jit(object):
 
+    """
+    This decorator is used to compile a Python function into native CPU or GPU code.
+    """
+
     ####################################################################################################################
 
     def __init__(self, parallel = False, kernel = False, device = True):
+
+        """
+        :param parallel:
+        :param kernel:
+        :param device:
+        """
 
         self.parallel = parallel
         self.kernel = kernel
@@ -31,14 +41,14 @@ class jit(object):
 
     ####################################################################################################################
 
-    cnt = 0
+    _cnt = 0
 
     @classmethod
     def _get_unique_function_name(cls):
 
         name = f'__jit_f{cls.cnt}'
 
-        cls.cnt = cls.cnt + 1
+        cls.cnt = cls._cnt + 1
 
         return name
 

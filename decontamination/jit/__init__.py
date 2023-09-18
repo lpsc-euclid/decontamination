@@ -31,9 +31,14 @@ class jit(object):
     def __init__(self, parallel = False, kernel = False, device = True):
 
         """
-        :param parallel:
-        :param kernel:
-        :param device:
+        Parameters
+        ----------
+            parallel : bool
+                Enables automatic parallelization.
+            kernel : bool
+                Indicates whether this is a kernel function.
+            device : bool
+                Indicates whether this is a device function.
         """
 
         self.parallel = parallel

@@ -11,14 +11,27 @@ import unittest
 
 import numpy as np
 
+import numba.cuda as cu
+
 from decontamination import jit
 
 ########################################################################################################################
 
-@jit.jit(device = False)
+@jit.jit(device = True)
 def foo_xpu(a, b):
 
     return a + b
+
+########################################################################################################################
+
+def foo_gpu_kernel(result, a, b):
+
+    tx = cu.threadIdx.x
+    ty = cu.blockIdx.x
+    bw = cu.blockDim.x
+    pos = tx + ty * bw
+
+    result[pos] = foo_xpu(a[pos], b[pos])
 
 ########################################################################################################################
 
@@ -65,9 +78,12 @@ class JITTests(unittest.TestCase):
 
             a = np.array([1, 2, 3, 4], dtype = np.float32)
             b = np.array([5, 6, 7, 8], dtype = np.float32)
+            cr = np.array([5, 6, 7, 8], dtype = np.float32)
             c = np.array([6, 8, 10, 12], dtype = np.float32)
 
-            self.assertTrue(np.array_equal(foo_gpu[(c.size + (32 - 1)) // 32, 32](a, b), c))
+            foo_gpu[(c.size + (32 - 1)) // 32, 32](cr, a, b)
+
+            self.assertTrue(np.array_equal(cr, c))
 
         else:
 

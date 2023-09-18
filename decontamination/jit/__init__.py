@@ -48,14 +48,24 @@ class jit(object):
     @staticmethod
     def _patch_cpu_code(code):
 
-        return code.replace('_xpu', '_cpu')
+        return (
+            code.replace('_xpu', '_cpu')
+                .replace('xpu.local_empty', 'np.empty')
+                .replace('xpu.shared_empty', 'np.empty')
+                .replace('xpu.syncthreads', '#######')
+        )
 
     ####################################################################################################################
 
     @staticmethod
     def _patch_gpu_code(code):
 
-        return code.replace('xpu.empty', 'cu.local.array').replace('_xpu', '_gpu')
+        return (
+            code.replace('_xpu', '_gpu')
+                .replace('xpu.local_empty', 'cu.local.array')
+                .replace('xpu.shared_empty', 'cu.shared.array')
+                .replace('xpu.syncthreads', 'cu.syncthreads')
+        )
 
     ####################################################################################################################
 
@@ -118,12 +128,6 @@ class jit(object):
         else:
 
             funct.__globals__[funct.__name__.replace('_xpu', '_gpu')] = funct
-
-        ################################################################################################################
-        # CPYTHON                                                                                                      #
-        ################################################################################################################
-
-        funct.__globals__['xpu'] = np
 
         ################################################################################################################
 

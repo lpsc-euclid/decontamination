@@ -32,7 +32,9 @@ def foo_gpu_kernel(result, a, b):
     bw = cu.blockDim.x
     pos = tx + ty * bw
 
-    result[pos] = foo_xpu(a[pos], b[pos])
+    if pos < result.shape[0]:
+
+        result[pos] = foo_gpu(a[pos], b[pos])
 
 ########################################################################################################################
 
@@ -79,12 +81,12 @@ class JITTests(unittest.TestCase):
 
             a = np.array([1, 2, 3, 4], dtype = np.float32)
             b = np.array([5, 6, 7, 8], dtype = np.float32)
-            cr = np.array([5, 6, 7, 8], dtype = np.float32)
             c = np.array([6, 8, 10, 12], dtype = np.float32)
 
-            foo_gpu[(c.size + (32 - 1)) // 32, 32](cr, a, b)
+            r = np.array([0, 0, 0, 0], dtype = np.float32)
+            foo_gpu_kernel[(c.size + (32 - 1)) // 32, 32](r, a, b)
 
-            self.assertTrue(np.array_equal(cr, c))
+            self.assertTrue(np.array_equal(r, c))
 
         else:
 

@@ -32,11 +32,11 @@ def foo_xpu(a, b):
 @decontamination.jit(kernel = True)
 def foo_kernel_gpu(result, a, b):
 
-    pos = cu.threadIdx.x + cu.blockIdx.x * cu.blockDim.x
+    i = cu.threadIdx.x + cu.blockIdx.x * cu.blockDim.x
 
-    if pos < result.shape[0]:
+    if i < result.shape[0]:
 
-        result[pos] = foo_gpu(a[pos], b[pos])
+        result[i] = foo_gpu(a[i], b[i])
 
 ########################################################################################################################
 
@@ -72,11 +72,11 @@ class JITTests(unittest.TestCase):
 
             print('Running foo_gpu...')
 
-            r = cu.device_array_like(C)
+            result = cu.device_array_like(C)
 
-            foo_kernel_gpu[(C.size + (32 - 1)) // 32, 32](r, cu.to_device(A), cu.to_device(B))
+            foo_kernel_gpu[(C.size + (32 - 1)) // 32, 32](result, cu.to_device(A), cu.to_device(B))
 
-            self.assertTrue(np.array_equal(r.copy_to_host(), C))
+            self.assertTrue(np.array_equal(result.copy_to_host(), C))
 
         else:
 

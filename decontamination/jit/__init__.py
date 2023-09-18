@@ -47,7 +47,7 @@ class jit(object):
     @classmethod
     def _get_unique_function_name(cls):
 
-        name = f'__jit_f{cls.cnt}'
+        name = f'__jit_f{cls._cnt}'
 
         cls.cnt = cls._cnt + 1
 

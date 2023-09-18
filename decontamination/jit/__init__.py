@@ -24,10 +24,11 @@ class jit(object):
 
     ####################################################################################################################
 
-    def __init__(self, device = True, parallel = False):
+    def __init__(self, parallel = False, kernel = False, device = True):
 
-        self.device = device
         self.parallel = parallel
+        self.kernel = kernel
+        self.device = device
 
     ####################################################################################################################
 
@@ -60,6 +61,14 @@ class jit(object):
 
     def __call__(self, funct):
 
+        if self.kernel:
+
+            return cu.jit(funct, device = False)
+
+        elif not funct.__name__.endswith('_xpu'):
+
+            raise Exception(f'Function `{funct.__name__}` name must ends with `_xpu`')
+
         ################################################################################################################
         # SOURCE CODE                                                                                                  #
         ################################################################################################################
@@ -82,7 +91,7 @@ class jit(object):
 
             ############################################################################################################
 
-            funct.__globals__[funct.__name__.replace('_xpu', '_cpu')] = nb.jit(eval(name_cpu, funct.__globals__), nopython = True, parallel = self.parallel)
+            funct.__globals__[funct.__name__.replace('_xpu', '_cpu')] = nb.njit(eval(name_cpu, funct.__globals__), parallel = self.parallel)
 
         else:
 

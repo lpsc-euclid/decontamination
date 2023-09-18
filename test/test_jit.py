@@ -30,8 +30,8 @@ def foo_xpu(a, b):
 
 ########################################################################################################################
 
-@cu.jit(device = False)
-def foo_gpu_kernel(result, a, b):
+@jit.jit(kernel = True)
+def foo_kernel_gpu(result, a, b):
 
     tx = cu.threadIdx.x
     ty = cu.blockIdx.x
@@ -79,7 +79,7 @@ class JITTests(unittest.TestCase):
 
             r = np.zeros(C.size, dtype = np.float32)
 
-            foo_gpu_kernel[(C.size + (32 - 1)) // 32, 32](r, A, B)
+            foo_kernel_gpu[(C.size + (32 - 1)) // 32, 32](r, A, B)
 
             self.assertTrue(np.array_equal(r, C))
 

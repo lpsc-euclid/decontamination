@@ -85,9 +85,9 @@ class PCA(abstract_som.AbstractSOM):
                 c2 = linspace_y[j]
 
                 weights[i, j] = (
-                    c1 * eigenvectors[:, order0]
+                    eigenvectors[:, order0] * c1
                     +
-                    c2 * eigenvectors[:, order1]
+                    eigenvectors[:, order1] * c2
                 ).astype(weights.dtype)
 
     ####################################################################################################################

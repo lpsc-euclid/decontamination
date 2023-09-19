@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
+import tqdm
 import typing
 
 import numpy as np
@@ -40,43 +41,54 @@ class PCA(abstract_som.AbstractSOM):
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit
-    def _cov_matrix_kernel(batch_arr):
+    @nb.njit(parallel = False)
+    def _cov_matrix_kernel(result_sum, result_prods, data, data_dim, syst_dim):
 
-        Ndata = batch_arr.shape[0]
-        Nsyst = batch_arr.shape[1]
-        summ = np.zeros((Nsyst, ))
-        prod = np.zeros((Nsyst, Nsyst))
+        for i in range(data_dim):
 
-        for data_index in nb.prange(Ndata):
+            value = data[i].astype(np.float64)
 
-            data = batch_arr[data_index]
+            for j in range(syst_dim):
 
-            for i_syst in range(Nsyst):
+                value_j = value[j]
+                result_sum[j] += value_j
 
-                summ[i_syst] += data[i_syst]
+                for k in range(syst_dim):
 
-                for j_syst in range(Nsyst):
-
-                    prod[i_syst][j_syst] += data[i_syst] * data[j_syst]
-
-        return Ndata, summ, prod
-
+                    value_jk = value_j * value[k]
+                    result_prods[j][k] += value_jk
 
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit
-    def _diag_kernel(weights, cov, m, n):
+    @nb.njit(parallel = False)
+    def _diag_kernel(weights, cov_matrix, m, n):
 
-        pc_length, pc = np.linalg.eig(cov)
+        ################################################################################################################
 
-        pc_order = np.argsort(-pc_length)
+        eigenvalues, eigenvectors = np.linalg.eig(cov_matrix)
 
-        C1 = np.repeat(np.linspace(-1, 1, n), m).astype(np.float64)
-        C2 = np.repeat(np.linspace(-1, 1, m), n).reshape(-1, n).T.ravel().astype(np.float64)
+        orders = np.argsort(-eigenvalues)
 
-        weights[:] = np.expand_dims(C1, axis = -1) * pc[:, pc_order[0]] + np.expand_dims(C2, axis = -1) * pc[:, pc_order[1]]
+        order0 = orders[0]
+        order1 = orders[1]
+
+        ################################################################################################################
+
+        linspace_x = np.linspace(-1, 1, m)
+        linspace_y = np.linspace(-1, 1, n)
+
+        for i in range(m):
+            c1 = linspace_x[i]
+
+            for j in range(n):
+                c2 = linspace_y[j]
+
+                weights[i, j] = (
+                    c1 * eigenvectors[:, order0]
+                    +
+                    c2 * eigenvectors[:, order1]
+                ).astype(weights.dtype)
 
     ####################################################################################################################
 
@@ -93,26 +105,44 @@ class PCA(abstract_som.AbstractSOM):
             Specifying whether a progress bar have to be shown (default: **True**).
         """
 
+        ################################################################################################################
+
         generator_of_generator = dataset_to_generator_of_generator(dataset)
 
         generator = generator_of_generator()
 
-        num_samples = 0
-        sum_values = np.zeros((self._dim, ), dtype = self._dtype)
-        sum_products = np.zeros((self._dim, self._dim), dtype = self._dtype)
+        ################################################################################################################
 
-        for batch in generator():
+        total_nb = 0
 
-            num_sample, sum_value, sum_product = PCA._cov_matrix_kernel(batch)
+        total_sum = np.zeros((self._dim, ), dtype = np.float64)
+        total_prods = np.zeros((self._dim, self._dim, ), dtype = np.float64)
 
-            num_samples += num_sample
-            sum_values += sum_value
-            sum_products += sum_product
+        ################################################################################################################
 
-        mean_values = sum_values / num_samples
+        for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
 
-        cov = (sum_products / num_samples) - np.outer(mean_values, mean_values)
+            total_nb += data.shape[0]
 
-        PCA._diag_kernel(self._weights, cov, self._m, self._n)
+            sub_sum = np.zeros_like(total_sum)
+            sub_prods = np.zeros_like(total_prods)
+
+            PCA._cov_matrix_kernel(sub_sum, sub_prods, data, data.shape[0], data.shape[1])
+
+            total_sum += sub_sum
+            total_prods += sub_prods
+
+        ################################################################################################################
+
+        total_sum /= total_nb
+        total_prods /= total_nb
+
+        ################################################################################################################
+
+        cov_matrix = total_prods - np.outer(total_sum, total_sum)
+
+        ################################################################################################################
+
+        PCA._diag_kernel(self.get_centroids(), cov_matrix, self._m, self._n)
 
 ########################################################################################################################

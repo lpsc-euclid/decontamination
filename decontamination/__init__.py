@@ -9,6 +9,10 @@ A toolbox for performing systematics decontamination in cosmology analyses.
 
 from . import jit as _jit
 
+from .algo import pca as _pca
+from .algo import som_batch as _som_batch
+from .algo import som_online as _som_online
+
 ########################################################################################################################
 # JIT                                                                                                                  #
 ########################################################################################################################
@@ -16,11 +20,14 @@ from . import jit as _jit
 jit = _jit.jit
 
 CPU_OPTIMIZATION_AVAILABLE = _jit.CPU_OPTIMIZATION_AVAILABLE
-
 GPU_OPTIMIZATION_AVAILABLE = _jit.GPU_OPTIMIZATION_AVAILABLE
 
 ########################################################################################################################
-# ALGO                                                                                                                  #
+# ALGO                                                                                                                 #
 ########################################################################################################################
+
+PCA = _pca.PCA
+SOMBatch = _som_batch.SOMBatch
+SOMOnline = _som_online.SOMOnline
 
 ########################################################################################################################

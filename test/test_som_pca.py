@@ -28,11 +28,11 @@ class JITTests(unittest.TestCase):
 
         ##
 
-        self.pca = decontamination.PCA(4, 4, 4, np.float32)
+        self.som = decontamination.SOM_PCA(4, 4, 4, np.float32)
 
         self.data = np.random.randn(100_000).reshape(25_000, 4)
 
-        self.pca.train(self.data)
+        self.som.train(self.data)
 
     ####################################################################################################################
 
@@ -60,7 +60,7 @@ class JITTests(unittest.TestCase):
             [1.0848728, 0.32087362, -0.75769144, -0.3820926]]
         ])
 
-        self.assertTrue(np.allclose(self.pca.get_centroids(), expected))
+        self.assertTrue(np.allclose(self.som.get_centroids(), expected))
 
     ####################################################################################################################
 
@@ -73,7 +73,7 @@ class JITTests(unittest.TestCase):
             [0.35355360, 0.60355335, 0.60355340, 0.35355318],
         ])
 
-        self.assertTrue(np.allclose(self.pca.distance_map(), expected))
+        self.assertTrue(np.allclose(self.som.distance_map(), expected))
 
 ########################################################################################################################
 

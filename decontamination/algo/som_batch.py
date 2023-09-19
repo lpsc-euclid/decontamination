@@ -8,7 +8,7 @@ from . import abstract_som
 
 ########################################################################################################################
 
-class SOMBatch(abstract_som.AbstractSOM):
+class SOM_Batch(abstract_som.AbstractSOM):
 
     def __init__(self):
 

@@ -11,14 +11,18 @@ from . import abstract_som, dataset_to_generator_of_generator
 
 ########################################################################################################################
 
-class PCA(abstract_som.AbstractSOM):
+class SOM_PCA(abstract_som.AbstractSOM):
+
+    """
+    Self Organizing Maps that span the first two principal components.
+    """
 
     ####################################################################################################################
 
     def __init__(self, m: int, n: int, dim: int, dtype: type = np.float32):
 
         """
-        Initializes a Self Organizing Maps to span the first two principal components.
+        Initializes a Self Organizing Maps.
 
         A rule of thumb to set the size of the grid for a dimensionality reduction
         task is that it should contain \\( 5\\sqrt{N} \\) neurons where N is the
@@ -127,7 +131,7 @@ class PCA(abstract_som.AbstractSOM):
             sub_sum = np.zeros_like(total_sum)
             sub_prods = np.zeros_like(total_prods)
 
-            PCA._cov_matrix_kernel(sub_sum, sub_prods, data, data.shape[0], data.shape[1])
+            SOM_PCA._cov_matrix_kernel(sub_sum, sub_prods, data, data.shape[0], data.shape[1])
 
             total_sum += sub_sum
             total_prods += sub_prods
@@ -143,6 +147,6 @@ class PCA(abstract_som.AbstractSOM):
 
         ################################################################################################################
 
-        PCA._diag_kernel(self.get_centroids(), cov_matrix, self._m, self._n)
+        SOM_PCA._diag_kernel(self.get_centroids(), cov_matrix, self._m, self._n)
 
 ########################################################################################################################

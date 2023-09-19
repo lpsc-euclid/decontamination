@@ -17,7 +17,11 @@ from .algo import som_online as _som_online
 
 ########################################################################################################################
 
-np.set_printoptions(formatter = {'all': lambda x: f'{x}, '})
+def numpy_array_to_string_with_commas(arr):
+
+    s = np.array2string(arr, separator = ', ', suppress_small = True)
+
+    return s.replace('[ ', '[').replace(' ]', ']')
 
 ########################################################################################################################
 # JIT                                                                                                                  #

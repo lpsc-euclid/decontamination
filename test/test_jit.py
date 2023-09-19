@@ -56,15 +56,9 @@ class JITTests(unittest.TestCase):
 
     def test2(self):
 
-        if decontamination.CPU_OPTIMIZATION_AVAILABLE:
+        print('Running foo_cpu...')
 
-            print('Running foo_cpu...')
-
-            self.assertTrue(np.array_equal(foo_cpu(A, B), C))
-
-        else:
-
-            print('Skip foo_cpu...')
+        self.assertTrue(np.array_equal(foo_cpu(A, B), C))
 
     ####################################################################################################################
 
@@ -82,7 +76,7 @@ class JITTests(unittest.TestCase):
 
         else:
 
-            print('Skip foo_gpu...')
+            print('Skipping foo_gpu...')
 
 ########################################################################################################################
 

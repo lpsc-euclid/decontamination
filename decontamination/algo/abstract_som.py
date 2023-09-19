@@ -2,6 +2,7 @@
 ########################################################################################################################
 
 import abc
+import typing
 
 import numpy as np
 import numba as nb
@@ -12,7 +13,7 @@ class AbstractSOM(abc.ABC):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: type = np.float32):
+    def __init__(self, m: int, n: int, dim: int, dtype: type = np.float32, topology: typing.Optional[str] = None):
 
         """
         Constructor for the Abstract Self Organizing Map (SOM).
@@ -27,6 +28,8 @@ class AbstractSOM(abc.ABC):
                 Dimensionality of the input data.
             dtype : type
                 Neural network data type (default: **np.float32**).
+            topology : str
+                Topology of the map, **square** or **hexagonal** (default: **hexagonal**).
         """
 
         ################################################################################################################
@@ -35,6 +38,7 @@ class AbstractSOM(abc.ABC):
         self._n = n
         self._dim = dim
         self._dtype = dtype
+        self._topology = topology or 'hexagonal'
 
         ################################################################################################################
 
@@ -45,7 +49,7 @@ class AbstractSOM(abc.ABC):
     def init_from(self, other: 'AbstractSOM') -> None:
 
         """
-        Initializes the neural network from an other one.
+        Initializes the neural network from another one.
 
         Arguments
         ---------
@@ -87,26 +91,38 @@ class AbstractSOM(abc.ABC):
 
     ####################################################################################################################
 
-    _X_STENCIL = np.array([
-        0, -1, -1, -1, 0, 1, 1, 1,
-        0, -1, -1, -1, 0, 1, 1, 1,
+    _X_HEX_STENCIL = np.array([
+        +1, +1, +1,  0, -1,  0,  # Even line
+         0, +1,  0, -1, -1, -1,  # Odd line
     ], dtype = np.int64)
 
-    _Y_STENCIL = np.array([
-        -1, -1, 0, 1, 1, 1, 0, -1,
-        -1, -1, 0, 1, 1, 1, 0, -1,
+    _Y_HEX_STENCIL = np.array([
+        +1, 0, -1, -1, 0, +1,  # Even line
+        +1, 0, -1, -1, 0, +1,  # Odd line
+    ], dtype = np.int64)
+
+    ####################################################################################################################
+
+    _X_SQU_STENCIL = np.array([
+        0, -1, -1, -1, 0, +1, +1, +1,  # Even line
+        0, -1, -1, -1, 0, +1, +1, +1,  # Odd line
+    ], dtype = np.int64)
+
+    _Y_SQU_STENCIL = np.array([
+        -1, -1, 0, +1, +1, +1, 0, -1,  # Even line
+        -1, -1, 0, +1, +1, +1, 0, -1,  # Odd line
     ], dtype = np.int64)
 
     ####################################################################################################################
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _distance_map_kernel(result, centroids: np.ndarray, x_stencil: np.ndarray, y_stencil: np.ndarray, m: int, n: int) -> None:
+    def _distance_map_kernel(result, centroids: np.ndarray, x_stencil: np.ndarray, y_stencil: np.ndarray, m: int, n: int, l: int) -> None:
 
         for x in range(m):
             for y in range(n):
 
-                offset = 8 * (y & 1 == 0)
+                offset = 0 if (y & 1 == 0) else l
 
                 w = centroids[x, y]
 
@@ -129,9 +145,21 @@ class AbstractSOM(abc.ABC):
         Returns the distance map of the neural network weights.
         """
 
-        result = np.full(shape = (self._m, self._n, 8), fill_value = np.nan, dtype = self._dtype)
+        ################################################################################################################
 
-        AbstractSOM._distance_map_kernel(result, self.get_centroids(), AbstractSOM._X_STENCIL, AbstractSOM._Y_STENCIL, self._m, self._n)
+        if self._topology == 'hexagonal':
+
+            result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
+
+            AbstractSOM._distance_map_kernel(result, self.get_centroids(), AbstractSOM._X_HEX_STENCIL, AbstractSOM._Y_HEX_STENCIL, self._m, self._n, 6)
+
+        else:
+
+            result = np.full(shape = (self._m, self._n, 8), fill_value = np.nan, dtype = self._dtype)
+
+            AbstractSOM._distance_map_kernel(result, self.get_centroids(), AbstractSOM._X_SQU_STENCIL, AbstractSOM._Y_SQU_STENCIL, self._m, self._n, 8)
+
+        ################################################################################################################
 
         result = np.nansum(result, axis = 2)
 

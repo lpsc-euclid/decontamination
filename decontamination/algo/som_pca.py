@@ -19,7 +19,7 @@ class SOM_PCA(abstract_som.AbstractSOM):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: type = np.float32):
+    def __init__(self, m: int, n: int, dim: int, dtype: type = np.float32, topology = 'hexagonal'):
 
         """
         Initializes a Self Organizing Maps.
@@ -38,15 +38,17 @@ class SOM_PCA(abstract_som.AbstractSOM):
                 Dimensionality of the input data.
             dtype : type
                 Neural network data type (default: **np.float32**).
+            topology : str
+                Topology of the map, **square** or **hexagonal** (default: **hexagonal**).
         """
 
-        super().__init__(m, n, dim, dtype)
+        super().__init__(m, n, dim, dtype, topology)
 
     ####################################################################################################################
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _cov_matrix_kernel(result_sum, result_prods, data, data_dim, syst_dim):
+    def _cov_matrix_kernel(result_sum: np.ndarray, result_prods: np.ndarray, data: np.ndarray, data_dim: int, syst_dim: int) -> None:
 
         for i in range(data_dim):
 
@@ -66,7 +68,7 @@ class SOM_PCA(abstract_som.AbstractSOM):
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _diag_kernel(weights, cov_matrix, m, n):
+    def _diag_kernel(weights: np.ndarray, cov_matrix: np.ndarray, m: int, n: int) -> None:
 
         ################################################################################################################
 

@@ -28,7 +28,7 @@ class AbstractSOM(abc.ABC):
                 Dimensionality of the input data.
             dtype : type
                 Neural network data type (default: **np.float32**).
-            topology : str
+            topology : Optional[str]
                 Topology of the map, **square** or **hexagonal** (default: **hexagonal**).
         """
 
@@ -139,10 +139,15 @@ class AbstractSOM(abc.ABC):
 
     ####################################################################################################################
 
-    def distance_map(self) -> np.ndarray:
+    def distance_map(self, scaling: typing.Optional[str] = None) -> np.ndarray:
 
         """
         Returns the distance map of the neural network weights.
+
+        Arguments
+        ---------
+            scaling : Optional[str]
+                Normalization method, **sum**, **mean** or **None** (default: **sum**)
         """
 
         ################################################################################################################
@@ -161,7 +166,13 @@ class AbstractSOM(abc.ABC):
 
         ################################################################################################################
 
-        result = np.nansum(result, axis = 2)
+        if scaling == 'sum':
+            result = np.nansum(result, axis = 2)
+
+        elif scaling == 'mean':
+            result = np.nanmean(result, axis = 2)
+
+        ################################################################################################################
 
         return result / result.max()
 

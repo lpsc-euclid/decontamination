@@ -122,7 +122,7 @@ class AbstractSOM(abc.ABC):
         for x in range(m):
             for y in range(n):
 
-                offset = 0 if (y & 1 == 0) else l
+                offset = (y & 1) * l
 
                 w = centroids[x, y]
 
@@ -175,7 +175,7 @@ class AbstractSOM(abc.ABC):
             result = np.nanmean(result, axis = 2)
 
         else:
-            raise Exception('Invalid scaling method')
+            raise Exception(f'Invalid scaling method `{scaling}`')
 
         ################################################################################################################
 

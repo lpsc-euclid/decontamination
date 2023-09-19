@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
+import typing
+
 import numpy as np
 import numba as nb
 
@@ -12,7 +14,7 @@ class SOM_Online(abstract_som.AbstractSOM):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: np.dtype = np.float32, topology = 'hexagonal'):
+    def __init__(self, m: int, n: int, dim: int, dtype: np.dtype = np.float32, topology: typing.Optional[str] = None):
 
         """
         Constructor for the Abstract Self Organizing Map (SOM).

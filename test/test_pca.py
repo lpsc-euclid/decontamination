@@ -12,6 +12,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import unittest
 import decontamination
 
+import numpy as np
+
 ########################################################################################################################
 
 class JITTests(unittest.TestCase):
@@ -19,6 +21,20 @@ class JITTests(unittest.TestCase):
     ####################################################################################################################
 
     def test1(self):
+
+        decontamination.PCA(100, 100, 4, np.float32)
+
+        pass
+
+    ####################################################################################################################
+
+    def test2(self):
+
+        pca = decontamination.PCA(100, 100, 4, np.float32)
+
+        distance_map = pca.distance_map()
+
+        print(distance_map)
 
         pass
 

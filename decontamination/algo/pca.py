@@ -6,11 +6,11 @@ import typing
 import numpy as np
 import numba as nb
 
-from . import dataset_to_generator_of_generator
+from . import abstract_som, dataset_to_generator_of_generator
 
 ########################################################################################################################
 
-class PCA(object):
+class PCA(abstract_som.AbstractSOM):
 
     ####################################################################################################################
 
@@ -25,20 +25,17 @@ class PCA(object):
 
         Arguments
         ---------
-        m : int
-            Number of neuron rows.
-        n : int
-            Number of neuron columns.
-        dim : int
-            Dimensionality of the input data.
-        dtype : type
-            Neural network data type (default: **np.float32**).
+            m : int
+                Number of neuron rows.
+            n : int
+                Number of neuron columns.
+            dim : int
+                Dimensionality of the input data.
+            dtype : type
+                Neural network data type (default: **np.float32**).
         """
 
-        self._m = m
-        self._n = n
-        self._dim = dim
-        self._dtype = dtype
+        super().__init__(m, n, dim, dtype)
 
     ####################################################################################################################
 

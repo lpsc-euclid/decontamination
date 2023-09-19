@@ -31,8 +31,8 @@ class jit(object):
     def __init__(self, parallel = False, kernel = False, device = True):
 
         """
-        Parameters
-        ----------
+        Arguments
+        ---------
             parallel : bool
                 Enables automatic parallelization.
             kernel : bool

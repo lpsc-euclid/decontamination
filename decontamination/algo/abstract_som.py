@@ -147,8 +147,10 @@ class AbstractSOM(abc.ABC):
         Arguments
         ---------
             scaling : Optional[str]
-                Normalization method, **sum**, **mean** or **None** (default: **sum**)
+                Normalization method, **sum** or **mean** (default: **sum**)
         """
+
+        scaling = scaling or 'sum'
 
         ################################################################################################################
 
@@ -171,6 +173,9 @@ class AbstractSOM(abc.ABC):
 
         elif scaling == 'mean':
             result = np.nanmean(result, axis = 2)
+
+        else:
+            raise Exception('Invalid scaling method')
 
         ################################################################################################################
 

@@ -100,7 +100,7 @@ class PCA(abstract_som.AbstractSOM):
         Parameters
         ----------
         dataset : typing.Union[numpy.ndarray, typing.Callable]
-            Training dataset array or generator.
+            Training dataset array or generator of generator.
         show_progress_bar : bool
             Specifying whether a progress bar have to be shown (default: **True**).
         """

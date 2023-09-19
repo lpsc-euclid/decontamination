@@ -13,21 +13,19 @@ import numpy as np
 # JIT                                                                                                                  #
 ########################################################################################################################
 
-from .jit import jit
-
-from .jit import CPU_OPTIMIZATION_AVAILABLE
-
-from .jit import GPU_OPTIMIZATION_AVAILABLE
+from ._jit import CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE, jit
 
 ########################################################################################################################
 # ALGO                                                                                                                 #
 ########################################################################################################################
 
-from .algo.som_pca import SOM_PCA
+from ._algo.abstract_som import AbstractSOM
 
-from .algo.som_batch import SOM_Batch
+from ._algo.som_pca import SOM_PCA
 
-from .algo.som_online import SOM_Online
+from ._algo.som_batch import SOM_Batch
+
+from ._algo.som_online import SOM_Online
 
 ########################################################################################################################
 # UTILITIES                                                                                                            #
@@ -38,5 +36,14 @@ def array_to_string(arr):
     s = np.array2string(arr, separator = ', ', suppress_small = True)
 
     return s.replace('[ ', '[').replace(' ]', ']')
+
+########################################################################################################################
+# EXPORTS                                                                                                              #
+########################################################################################################################
+
+__all__ = [
+    'CPU_OPTIMIZATION_AVAILABLE', 'GPU_OPTIMIZATION_AVAILABLE', 'jit',
+    'AbstractSOM', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
+]
 
 ########################################################################################################################

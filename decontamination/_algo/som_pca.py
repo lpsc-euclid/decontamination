@@ -28,18 +28,18 @@ class SOM_PCA(abstract_som.AbstractSOM):
         task is that it should contain \\( 5\\sqrt{N} \\) neurons where N is the
         number of samples in the dataset to analyze.
 
-        Arguments
-        ---------
-            m : int
-                Number of neuron rows.
-            n : int
-                Number of neuron columns.
-            dim : int
-                Dimensionality of the input data.
-            dtype : np.dtype
-                Neural network data type (default: **np.float32**).
-            topology : Optional[str]
-                Topology of the map, **square** or **hexagonal** (default: **hexagonal**).
+        Parameters
+        ----------
+        m : int
+            Number of neuron rows.
+        n : int
+            Number of neuron columns.
+        dim : int
+            Dimensionality of the input data.
+        dtype : np.dtype
+            Neural network data type (default: **np.float32**).
+        topology : Optional[str]
+            Topology of the map, '**square**' or '**hexagonal**' (default: '**hexagonal**').
         """
 
         super().__init__(m, n, dim, dtype, topology)

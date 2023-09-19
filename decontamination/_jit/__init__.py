@@ -11,11 +11,17 @@ import numba.cuda as cu
 
 ########################################################################################################################
 
+__pdoc__ = {}
+
+########################################################################################################################
+
 CPU_OPTIMIZATION_AVAILABLE = os.environ.get('FOO_USE_NUMBA', '1') != '0'
+__pdoc__['CPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba CPU optimization is available.'
 
 ########################################################################################################################
 
 GPU_OPTIMIZATION_AVAILABLE = CPU_OPTIMIZATION_AVAILABLE and cu.is_available()
+__pdoc__['GPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba GPU optimization is available.'
 
 ########################################################################################################################
 
@@ -31,14 +37,14 @@ class jit(object):
     def __init__(self, parallel = False, kernel = False, device = True):
 
         """
-        Arguments
+        Parameters
         ---------
-            parallel : bool
-                Enables automatic parallelization.
-            kernel : bool
-                Indicates whether this is a kernel function.
-            device : bool
-                Indicates whether this is a device function.
+        parallel : bool
+            Enables automatic parallelization.
+        kernel : bool
+            Indicates whether this is a kernel function.
+        device : bool
+            Indicates whether this is a device function.
         """
 
         self.parallel = parallel

@@ -18,18 +18,18 @@ class AbstractSOM(abc.ABC):
         """
         Constructor for the Abstract Self Organizing Map (SOM).
 
-        Arguments
-        ---------
-            m : int
-                Number of neuron rows.
-            n : int
-                Number of neuron columns.
-            dim : int
-                Dimensionality of the input data.
-            dtype : np.dtype
-                Neural network data type (default: **np.float32**).
-            topology : Optional[str]
-                Topology of the map, **square** or **hexagonal** (default: **hexagonal**).
+        Parameters
+        ----------
+        m : int
+            Number of neuron rows.
+        n : int
+            Number of neuron columns.
+        dim : int
+            Dimensionality of the input data.
+        dtype : np.dtype
+            Neural network data type (default: **np.float32**).
+        topology : Optional[str]
+            Topology of the map, '**square**' or '**hexagonal**' (default: '**hexagonal**').
         """
 
         ################################################################################################################
@@ -51,10 +51,10 @@ class AbstractSOM(abc.ABC):
         """
         Initializes the neural network from another one.
 
-        Arguments
-        ---------
-            other : AbstractSOM
-                Another SOM object from which the weights will be copied.
+        Parameters
+        ----------
+        other : AbstractSOM
+            Another SOM object from which the weights will be copied.
         """
 
         if self._m != other._m        \
@@ -74,7 +74,7 @@ class AbstractSOM(abc.ABC):
     def get_weights(self) -> np.ndarray:
 
         """
-        Returns the neural network weights (shape = [m * n, dim]).
+        Returns the neural network weights with the shape: [m * n, dim].
         """
 
         return self._weights.reshape((self._m * self._n, self._dim))
@@ -84,7 +84,7 @@ class AbstractSOM(abc.ABC):
     def get_centroids(self) -> np.ndarray:
 
         """
-        Returns of the neural network weights (shape = [m, n, dim]).
+        Returns of the neural network weights with the shape: [m, n, dim].
         """
 
         return self._weights.reshape((self._m, self._n, self._dim))
@@ -144,10 +144,10 @@ class AbstractSOM(abc.ABC):
         """
         Returns the distance map of the neural network weights.
 
-        Arguments
-        ---------
-            scaling : Optional[str]
-                Normalization method, **sum** or **mean** (default: **sum**)
+        Parameters
+        ----------
+        scaling : Optional[str]
+            Normalization method, '**sum**' or '**mean**' (default: '**sum**')
         """
 
         scaling = scaling or 'sum'

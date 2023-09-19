@@ -87,12 +87,12 @@ class AbstractSOM(abc.ABC):
 
     ####################################################################################################################
 
-    II = np.array([
+    _X_STENCIL = np.array([
         0, -1, -1, -1, 0, 1, 1, 1,
         0, -1, -1, -1, 0, 1, 1, 1,
     ], dtype = np.int64)
 
-    JJ = np.array([
+    _Y_STENCIL = np.array([
         -1, -1, 0, 1, 1, 1, 0, -1,
         -1, -1, 0, 1, 1, 1, 0, -1,
     ], dtype = np.int64)
@@ -101,33 +101,25 @@ class AbstractSOM(abc.ABC):
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _distance_map_kernel(result, centroids, ii, jj, m, n):
-
-        ################################################################################################################
+    def _distance_map_kernel(result, centroids: np.ndarray, x_stencil: np.ndarray, y_stencil: np.ndarray, m: int, n: int) -> None:
 
         for x in range(m):
             for y in range(n):
 
-                w = centroids[x, y]
+                offset = 8 * (y & 1 == 0)
 
-                offset = 8 if y % 2 == 0 else 0
+                w = centroids[x, y]
 
                 for k in range(8):
 
-                    i = x + ii[k + offset]
-                    j = y + jj[k + offset]
+                    i = x + x_stencil[k + offset]
+                    j = y + y_stencil[k + offset]
 
                     if 0 <= i < m and 0 <= j < n:
 
                         diff = w - centroids[i, j]
 
-                        result[x, y, k] = np.sqrt(np.sum(diff, diff))
-
-        ################################################################################################################
-
-        result = np.nansum(result, axis = 2)
-
-        result /= result.max()
+                        result[x, y, k] = np.sqrt(np.sum(diff * diff))
 
     ####################################################################################################################
 
@@ -139,8 +131,10 @@ class AbstractSOM(abc.ABC):
 
         result = np.full(shape = (self._m, self._n, 8), fill_value = np.nan, dtype = self._dtype)
 
-        AbstractSOM._distance_map_kernel(result, self.get_centroids(), AbstractSOM.II, AbstractSOM.JJ, self._m, self._n)
+        AbstractSOM._distance_map_kernel(result, self.get_centroids(), AbstractSOM._X_STENCIL, AbstractSOM._Y_STENCIL, self._m, self._n)
 
-        return result
+        result = np.nansum(result, axis = 2)
+
+        return result / result.max()
 
 ########################################################################################################################

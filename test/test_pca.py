@@ -24,8 +24,6 @@ class JITTests(unittest.TestCase):
 
         decontamination.PCA(100, 100, 4, np.float32)
 
-        pass
-
     ####################################################################################################################
 
     def test2(self):
@@ -35,8 +33,6 @@ class JITTests(unittest.TestCase):
         distance_map = pca.distance_map()
 
         print(distance_map)
-
-        pass
 
 ########################################################################################################################
 

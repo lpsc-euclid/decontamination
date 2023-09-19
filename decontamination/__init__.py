@@ -7,11 +7,17 @@ A toolbox for performing systematics decontamination in cosmology analyses.
 
 ########################################################################################################################
 
+import numpy as np
+
 from . import jit as _jit
 
 from .algo import pca as _pca
 from .algo import som_batch as _som_batch
 from .algo import som_online as _som_online
+
+########################################################################################################################
+
+np.set_printoptions(formatter = {'all': lambda x: f'{x}, '})
 
 ########################################################################################################################
 # JIT                                                                                                                  #

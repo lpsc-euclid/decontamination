@@ -26,7 +26,7 @@ class AbstractSOM(abc.ABC):
                 Number of neuron columns.
             dim : int
                 Dimensionality of the input data.
-            dtype : type
+            dtype : np.dtype
                 Neural network data type (default: **np.float32**).
             topology : Optional[str]
                 Topology of the map, **square** or **hexagonal** (default: **hexagonal**).

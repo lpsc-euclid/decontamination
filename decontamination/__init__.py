@@ -17,7 +17,7 @@ from .algo import som_online as _som_online
 
 ########################################################################################################################
 
-def numpy_array_to_string_with_commas(arr):
+def numpy_array_to_string(arr):
 
     s = np.array2string(arr, separator = ', ', suppress_small = True)
 

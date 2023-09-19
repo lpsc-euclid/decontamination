@@ -13,7 +13,7 @@ class AbstractSOM(abc.ABC):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: type = np.float32, topology: typing.Optional[str] = None):
+    def __init__(self, m: int, n: int, dim: int, dtype: np.dtype = np.float32, topology: typing.Optional[str] = None):
 
         """
         Constructor for the Abstract Self Organizing Map (SOM).

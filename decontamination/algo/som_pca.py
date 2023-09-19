@@ -19,7 +19,7 @@ class SOM_PCA(abstract_som.AbstractSOM):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: type = np.float32, topology = 'hexagonal'):
+    def __init__(self, m: int, n: int, dim: int, dtype: np.dtype = np.float32, topology = 'hexagonal'):
 
         """
         Initializes a Self Organizing Maps.

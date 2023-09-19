@@ -10,8 +10,10 @@ from . import abstract_som
 
 class SOM_Online(abstract_som.AbstractSOM):
 
-    def __init__(self):
+    ####################################################################################################################
 
-        super().__init__()
+    def __init__(self, m: int, n: int, dim: int, dtype: np.dtype = np.float32, topology = 'hexagonal'):
+
+        super().__init__(m, n, dim, dtype, topology)
 
 ########################################################################################################################

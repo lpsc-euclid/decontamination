@@ -40,16 +40,43 @@ class PCA(abstract_som.AbstractSOM):
     ####################################################################################################################
 
     @staticmethod
-    def _cov_matrix_kernel():
+    @nb.njit
+    def _cov_matrix_kernel(batch_arr):
 
-        pass
+        Ndata = batch_arr.shape[0]
+        Nsyst = batch_arr.shape[1]
+        summ = np.zeros((Nsyst, ))
+        prod = np.zeros((Nsyst, Nsyst))
+
+        for data_index in nb.prange(Ndata):
+
+            data = batch_arr[data_index]
+
+            for i_syst in range(Nsyst):
+
+                summ[i_syst] += data[i_syst]
+
+                for j_syst in range(Nsyst):
+
+                    prod[i_syst][j_syst] += data[i_syst] * data[j_syst]
+
+        return Ndata, summ, prod
+
 
     ####################################################################################################################
 
     @staticmethod
-    def _diag_kernel():
+    @nb.njit
+    def _diag_kernel(weights, cov, m, n):
 
-        pass
+        pc_length, pc = np.linalg.eig(cov)
+
+        pc_order = np.argsort(-pc_length)
+
+        C1 = np.repeat(np.linspace(-1, 1, n), m).astype(np.float64)
+        C2 = np.repeat(np.linspace(-1, 1, m), n).reshape(-1, n).T.ravel().astype(np.float64)
+
+        weights[:] = np.expand_dims(C1, axis = -1) * pc[:, pc_order[0]] + np.expand_dims(C2, axis = -1) * pc[:, pc_order[1]]
 
     ####################################################################################################################
 
@@ -69,5 +96,23 @@ class PCA(abstract_som.AbstractSOM):
         generator_of_generator = dataset_to_generator_of_generator(dataset)
 
         generator = generator_of_generator()
+
+        num_samples = 0
+        sum_values = np.zeros((self._dim, ), dtype = self._dtype)
+        sum_products = np.zeros((self._dim, self._dim), dtype = self._dtype)
+
+        for batch in generator():
+
+            num_sample, sum_value, sum_product = PCA._cov_matrix_kernel(batch)
+
+            num_samples += num_sample
+            sum_values += sum_value
+            sum_products += sum_product
+
+        mean_values = sum_values / num_samples
+
+        cov = (sum_products / num_samples) - np.outer(mean_values, mean_values)
+
+        PCA._diag_kernel(self._weights, cov, self._m, self._n)
 
 ########################################################################################################################

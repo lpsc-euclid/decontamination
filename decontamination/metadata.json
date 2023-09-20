@@ -1,0 +1,16 @@
+{
+    "credits": "CNRS/LPSC, CNRS/IJCLab",
+    "version": "0.0.1",
+    "author_names": [
+        "Gaël ALGUERO",
+        "Juan MACIAS-PEREZ",
+        "Jérôme ODIER",
+        "Martìn RODRIGUEZ MONROY"
+    ],
+    "author_emails": [
+        "gael.alguero@lpsc.in2p3.fr",
+        "juan.macias-perez@lpsc.in2p3.fr",
+        "jerome.odier@lpsc.in2p3.fr",
+        "martin.rodriguez-monroy@ijclab.in2p3.fr"
+    ]
+}

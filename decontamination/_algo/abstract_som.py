@@ -241,7 +241,7 @@ class AbstractSOM(abc.ABC):
 
                 w = centroids[x, y]
 
-                for k in range(8):
+                for k in range(l):
 
                     i = x + x_stencil[k + offset]
                     j = y + y_stencil[k + offset]

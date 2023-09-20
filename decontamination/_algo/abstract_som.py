@@ -266,16 +266,16 @@ class AbstractSOM(abc.ABC):
 
                 w = centroids[x, y]
 
-                for k in range(l):
+                for z in range(l):
 
-                    i = x + x_stencil[k + offset]
-                    j = y + y_stencil[k + offset]
+                    i = x + x_stencil[z + offset]
+                    j = y + y_stencil[z + offset]
 
                     if 0 <= i < m and 0 <= j < n:
 
                         diff = w - centroids[i, j]
 
-                        result[x, y, k] = np.sqrt(np.sum(diff * diff))
+                        result[x, y, z] = np.sqrt(np.sum(diff * diff))
 
     ####################################################################################################################
 

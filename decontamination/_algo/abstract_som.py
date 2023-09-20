@@ -417,7 +417,7 @@ def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 
     for index in range(mn):
 
-        distance = 0#np.linalg.norm(weights[index] - vector)
+        distance = np.linalg.norm(vector)#weights[index] -
 
         if min_distance > distance:
 

@@ -389,7 +389,7 @@ class AbstractSOM(abc.ABC):
 
             if GPU_OPTIMIZATION_AVAILABLE:
 
-                print('running on GPU')
+                print('running on GPU', data.dtype, self._weights.dtype)
 
                 bmus = cu.device_array(data.shape[0], dtype = np.int64)
 

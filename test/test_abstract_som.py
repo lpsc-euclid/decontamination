@@ -32,7 +32,7 @@ class JITTests(unittest.TestCase):
 
         self.som = decontamination.SOM_PCA(4, 4, 4, np.float32, topology = 'square')
 
-        self.data = np.random.randn(100_000).reshape(25_000, 4)
+        self.data = np.random.randn(100_000).reshape(25_000, 4).astype(np.float32)
 
         self.som.train(self.data)
 

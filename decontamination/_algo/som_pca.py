@@ -7,7 +7,7 @@ import typing
 import numpy as np
 import numba as nb
 
-from . import abstract_som, dataset_to_generator_of_generator
+from . import abstract_som, dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -115,9 +115,9 @@ class SOM_PCA(abstract_som.AbstractSOM):
 
         ################################################################################################################
 
-        generator_of_generator = dataset_to_generator_of_generator(dataset)
+        generator_builder = dataset_to_generator_builder(dataset)
 
-        generator = generator_of_generator()
+        generator = generator_builder()
 
         ################################################################################################################
 

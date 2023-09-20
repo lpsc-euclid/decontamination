@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
-def dataset_to_generator_of_generator(dataset):
+def dataset_to_generator_builder(dataset):
 
     return dataset if callable(dataset) else lambda: lambda: (dataset, )
 

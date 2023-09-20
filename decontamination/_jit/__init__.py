@@ -45,8 +45,6 @@ def _gpu_kernel(kernel_funct):
 
         modified_args = [cu.to_device(arg) if isinstance(arg, np.ndarray) else arg for arg in args]
 
-        print(num_blocks, threads_per_blocks)
-
         cu.jit(kernel_funct, device = False)[num_blocks, threads_per_blocks](*modified_args, **kwargs)
 
     return wrapper

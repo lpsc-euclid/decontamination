@@ -2,8 +2,8 @@
 ########################################################################################################################
 
 import os
-
 import inspect
+import functools
 
 import numba as nb
 
@@ -22,6 +22,31 @@ __pdoc__['CPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba CPU optimi
 
 GPU_OPTIMIZATION_AVAILABLE = CPU_OPTIMIZATION_AVAILABLE and cu.is_available()
 __pdoc__['GPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba GPU optimization is available.'
+
+########################################################################################################################
+
+def _gpu_kernel(kernel_funct):
+
+    @functools.wraps(kernel_funct)
+    def wrapper(threads_per_blocks, data_sizes, *args, **kwargs):
+
+        if not isinstance(data_sizes, tuple):
+            data_sizes = (
+                data_sizes,
+            )
+
+        if not isinstance(threads_per_blocks, tuple):
+            threads_per_blocks = (
+                threads_per_blocks,
+            )
+
+        num_blocks = tuple((s + t - 1) // t for s, t in zip(data_sizes, threads_per_blocks))
+
+        modified_args = [cu.to_device(arg) if isinstance(arg, np.ndarray) else arg for arg in args]
+
+        cu.jit(kernel_funct, device = False)[num_blocks, threads_per_blocks](*modified_args, **kwargs)
+
+    return wrapper
 
 ########################################################################################################################
 
@@ -95,11 +120,11 @@ class jit(object):
 
         if self.cpu_kernel:
 
-            return nb.jit(funct, nopython = True)
+            return nb.njit(funct)
 
         elif self.gpu_kernel:
 
-            return cu.jit(funct, device = False)
+            return _gpu_kernel(funct)
 
         elif not funct.__name__.endswith('_xpu'):
 

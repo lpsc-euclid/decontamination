@@ -377,27 +377,35 @@ class AbstractSOM(abc.ABC):
 
     def activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False) -> np.ndarray:
 
+        ################################################################################################################
+
         generator_builder = dataset_to_generator_builder(dataset)
 
         generator = generator_builder()
 
-        for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
+        ################################################################################################################
 
-            bmus = np.zeros(data.shape[0], dtype = np.int64)
+        for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
 
             if GPU_OPTIMIZATION_AVAILABLE:
 
                 print('running on GPU')
 
-                AbstractSOM._find_bmus_kernel_gpu(bmus, self._weights, data, self._m * self._n)
+                bmus = cu.device_array(data.shape[0], dtype = np.int64)
+
+                AbstractSOM._find_bmus_kernel_gpu[(data.shape[0] + 256 - 1) // 256, 256](bmus, cu.to_device(self._weights), cu.to_device(data), self._m * self._n)
+
+                print(bmus.copy_to_host())
 
             else:
 
                 print('running on CPU')
 
+                bmus = np.empty(data.shape[0], dtype = np.int64)
+
                 AbstractSOM._find_bmus_kernel_cpu(bmus, self._weights, data, self._m * self._n)
 
-            print(bmus)
+                print(bmus)
 
 ########################################################################################################################
 
@@ -405,17 +413,15 @@ class AbstractSOM(abc.ABC):
 def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 
     min_distance = 999.0
-
-    min_index = 0
+    min_index = 0x0
 
     for index in range(mn):
 
         distance = np.linalg.norm(np.subtract(weights[index], vector))
 
-        if distance < min_distance:
+        if min_distance > distance:
 
             min_distance = distance
-
             min_index = index
 
     return min_index

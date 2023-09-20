@@ -70,7 +70,7 @@ class JITTests(unittest.TestCase):
 
             result = cu.device_array_like(C)
 
-            foo_kernel_gpu[(C.size + (32 - 1)) // 32, 32](result, cu.to_device(A), cu.to_device(B))
+            foo_kernel_gpu(32, C.size, result, A, B)
 
             self.assertTrue(np.array_equal(result.copy_to_host(), C))
 

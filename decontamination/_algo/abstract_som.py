@@ -49,7 +49,7 @@ class AbstractSOM(abc.ABC):
 
     ####################################################################################################################
 
-    def init_rando(self):
+    def init_rand(self):
 
         """
         Initializes the neural network randomly.

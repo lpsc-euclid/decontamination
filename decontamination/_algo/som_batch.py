@@ -12,7 +12,7 @@ from . import abstract_som, asymptotic_decay, dataset_to_generator_builder
 
 class SOM_Batch(abstract_som.AbstractSOM):
 
-    MODE = 'batch'
+    __MODE__ = 'batch'
 
     ####################################################################################################################
 
@@ -62,7 +62,7 @@ class SOM_Batch(abstract_som.AbstractSOM):
     def save(self, filename: str) -> None:
 
         super().save(filename, {
-            'mode': 'MODE',
+            'mode': '__MODE__',
             'alpha': '_alpha',
             'sigma': '_sigma',
             'epochs': '_epochs',
@@ -75,7 +75,7 @@ class SOM_Batch(abstract_som.AbstractSOM):
     def load(self, filename: str) -> None:
 
         super().load(filename, {
-            'mode': 'MODE',
+            'mode': '__MODE__',
             'alpha': '_alpha',
             'sigma': '_sigma',
             'epochs': '_epochs',

@@ -49,6 +49,28 @@ class AbstractSOM(abc.ABC):
 
     ####################################################################################################################
 
+    def init_rando(self):
+
+        """
+        Initializes the neural network randomly.
+        """
+
+        ################################################################################################################
+
+        if self._seed is None:
+
+            rng = np.random.default_rng()
+
+        else:
+
+            rng = np.random.default_rng(seed = self._seed)
+
+        ################################################################################################################
+
+        self._weights[...] = rng.random((self._m * self._n, self._dim)).astype(self._dtype)
+
+    ####################################################################################################################
+
     def init_from(self, other: 'AbstractSOM') -> None:
 
         """
@@ -72,7 +94,7 @@ class AbstractSOM(abc.ABC):
 
             raise Exception('Incompatible shapes, dtypes or topologies')
 
-        self._weights[:] = other._weights[:]
+        self._weights[...] = other._weights
 
     ####################################################################################################################
 

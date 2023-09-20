@@ -88,9 +88,9 @@ class AbstractSOM(abc.ABC):
         filename : str
             Output filename.
         header_extra : typing.Optional[typing.Dict[str, str]]
-            Dictionary of extra headers (name, field name).
+            Dictionary of extra headers (name, field name in class).
         dataset_extra : typing.Optional[typing.Dict[str, str]]
-            Dictionary of extra datasets (name, field name).
+            Dictionary of extra datasets (name, field name in class).
         """
 
         ################################################################################################################
@@ -147,9 +147,9 @@ class AbstractSOM(abc.ABC):
         filename : str
             Input filename.
         header_extra : typing.Optional[typing.Dict[str, str]]
-            Dictionary of extra headers (name, field name).
+            Dictionary of extra headers (name, field name in class).
         dataset_extra : typing.Optional[typing.Dict[str, str]]
-            Dictionary of extra datasets (name, field name).
+            Dictionary of extra datasets (name, field name in class).
         """
 
         ################################################################################################################
@@ -205,25 +205,25 @@ class AbstractSOM(abc.ABC):
     ####################################################################################################################
 
     _X_HEX_STENCIL = np.array([
-        +1, +1, +1,  0, -1,  0,  # Even line
-         0, +1,  0, -1, -1, -1,  # Odd line
+        +1, +1, +1, +0, -1, +0,  # Even line
+        +0, +1, +0, -1, -1, -1,  # Odd line
     ], dtype = np.int64)
 
     _Y_HEX_STENCIL = np.array([
-        +1, 0, -1, -1, 0, +1,  # Even line
-        +1, 0, -1, -1, 0, +1,  # Odd line
+        +1, +0, -1, -1, +0, +1,  # Even line
+        +1, +0, -1, -1, +0, +1,  # Odd line
     ], dtype = np.int64)
 
     ####################################################################################################################
 
     _X_SQU_STENCIL = np.array([
-        0, -1, -1, -1, 0, +1, +1, +1,  # Even line
-        0, -1, -1, -1, 0, +1, +1, +1,  # Odd line
+        +0, -1, -1, -1, +0, +1, +1, +1,  # Even line
+        +0, -1, -1, -1, +0, +1, +1, +1,  # Odd line
     ], dtype = np.int64)
 
     _Y_SQU_STENCIL = np.array([
-        -1, -1, 0, +1, +1, +1, 0, -1,  # Even line
-        -1, -1, 0, +1, +1, +1, 0, -1,  # Odd line
+        -1, -1, +0, +1, +1, +1, +0, -1,  # Even line
+        -1, -1, +0, +1, +1, +1, +0, -1,  # Odd line
     ], dtype = np.int64)
 
     ####################################################################################################################

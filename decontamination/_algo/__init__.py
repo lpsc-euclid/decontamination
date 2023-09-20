@@ -6,3 +6,9 @@ def dataset_to_generator_of_generator(dataset):
     return dataset if callable(dataset) else lambda: lambda: (dataset, )
 
 ########################################################################################################################
+
+def asymptotic_decay(epoch: int, epochs: int) -> float:
+
+    return 1.0 / (1.0 + 2.0 * epoch / epochs)
+
+########################################################################################################################

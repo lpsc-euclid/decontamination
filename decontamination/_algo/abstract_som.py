@@ -73,6 +73,117 @@ class AbstractSOM(abc.ABC):
 
     ####################################################################################################################
 
+    def save(
+        self,
+        filename: str,
+        header_extra: typing.Optional[typing.Dict[str, str]] = None,
+        dataset_extra: typing.Optional[typing.Dict[str, str]] = None
+    ) -> None:
+
+        """
+        Saves the trained neural network to a file.
+
+        Parameters
+        ----------
+        filename : str
+            Output filename.
+        header_extra : typing.Optional[typing.Dict[str, str]]
+            Dictionary of extra headers (name, field name).
+        dataset_extra : typing.Optional[typing.Dict[str, str]]
+            Dictionary of extra datasets (name, field name).
+        """
+
+        ################################################################################################################
+
+        import h5py
+
+        if header_extra is None:
+            header_extra = {}
+
+        if dataset_extra is None:
+            dataset_extra = {}
+
+        ################################################################################################################
+
+        header_extra['m'] = '_m'
+        header_extra['n'] = '_n'
+        header_extra['dim'] = '_dim'
+
+        dataset_extra['weights'] = '_weight'
+
+        ################################################################################################################
+
+        with h5py.File(filename, 'w') as file:
+
+            for name, field in header_extra.items():
+
+                file.attrs[name] = getattr(self, field)
+
+            for name, field in dataset_extra.items():
+
+                data = getattr(self, field)
+
+                file.create_dataset(
+                    name,
+                    data = data,
+                    shape = data.shape,
+                    dtype = data.dtype
+                )
+
+    ####################################################################################################################
+
+    def load(
+        self,
+        filename: str,
+        header_extra: typing.Optional[typing.Dict[str, str]] = None,
+        dataset_extra: typing.Optional[typing.Dict[str, str]] = None
+    ) -> None:
+
+        """
+        Loads the trained neural network from a file.
+
+        Parameters
+        ----------
+        filename : str
+            Input filename.
+        header_extra : typing.Optional[typing.Dict[str, str]]
+            Dictionary of extra headers (name, field name).
+        dataset_extra : typing.Optional[typing.Dict[str, str]]
+            Dictionary of extra datasets (name, field name).
+        """
+
+        ################################################################################################################
+
+        import h5py
+
+        if header_extra is None:
+            header_extra = {}
+
+        if dataset_extra is None:
+            dataset_extra = {}
+
+        ################################################################################################################
+
+        header_extra['m'] = '_m'
+        header_extra['n'] = '_n'
+        header_extra['dim'] = '_dim'
+
+        dataset_extra['weights'] = '_weight'
+
+        ################################################################################################################
+
+        with h5py.File(filename, 'r') as file:
+
+            for name, field in header_extra.items():
+
+                setattr(self, field, file.attrs[name])
+
+            for name, field in dataset_extra.items():
+
+                setattr(self, field, file[name])
+
+    ####################################################################################################################
+
     def get_weights(self) -> np.ndarray:
 
         """

@@ -14,7 +14,7 @@ class SOM_Online(abstract_som.AbstractSOM):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: np.dtype = np.float32, topology: typing.Optional[str] = None):
+    def __init__(self, m: int, n: int, dim: int, dtype: np.dtype = np.float32, topology: typing.Optional[str] = None, seed: int = None):
 
         """
         Constructor for the Abstract Self Organizing Map (SOM).
@@ -31,8 +31,10 @@ class SOM_Online(abstract_som.AbstractSOM):
             Neural network data type (default: **np.float32**).
         topology : typing.Optional[str]
             Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
+        seed : int
+            Seed for random generator (default: **None**).
         """
 
-        super().__init__(m, n, dim, dtype, topology)
+        super().__init__(m, n, dim, dtype, topology, seed)
 
 ########################################################################################################################

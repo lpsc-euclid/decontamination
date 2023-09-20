@@ -412,6 +412,18 @@ class AbstractSOM(abc.ABC):
 @jit(device = True)
 def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 
-    return 0
+    min_distance = 999.0
+    min_index = 0x0
+
+    for index in range(mn):
+
+        distance = 0#np.linalg.norm(weights[index] - vector)
+
+        if min_distance > distance:
+
+            min_distance = distance
+            min_index = index
+
+    return min_index
 
 ########################################################################################################################

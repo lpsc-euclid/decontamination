@@ -30,7 +30,7 @@ class SOM_Batch(abstract_som.AbstractSOM):
         dtype : np.dtype
             Neural network data type (default: **np.float32**).
         topology : Optional[str]
-            Topology of the map, '**square**' or '**hexagonal**' (default: '**hexagonal**').
+            Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
         """
 
         super().__init__(m, n, dim, dtype, topology)

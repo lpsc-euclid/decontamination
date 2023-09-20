@@ -16,7 +16,7 @@ class AbstractSOM(abc.ABC):
     def __init__(self, m: int, n: int, dim: int, dtype: np.dtype = np.float32, topology: typing.Optional[str] = None):
 
         """
-        Constructor for the Abstract Self Organizing Map (SOM).
+        Constructor for an Abstract Self Organizing Map (SOM).
 
         Parameters
         ----------
@@ -29,7 +29,7 @@ class AbstractSOM(abc.ABC):
         dtype : np.dtype
             Neural network data type (default: **np.float32**).
         topology : Optional[str]
-            Topology of the map, '**square**' or '**hexagonal**' (default: '**hexagonal**').
+            Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
         """
 
         ################################################################################################################
@@ -57,15 +57,17 @@ class AbstractSOM(abc.ABC):
             Another SOM object from which the weights will be copied.
         """
 
-        if self._m != other._m        \
-           or                         \
-           self._n != other._n        \
-           or                         \
-           self._dim != other._dim    \
-           or                         \
-           self._dtype != other._dtype:
+        if self._m != other._m              \
+           or                               \
+           self._n != other._n              \
+           or                               \
+           self._dim != other._dim          \
+           or                               \
+           self._dtype != other._dtype      \
+           or                               \
+           self._topology != other._topology:
 
-            raise Exception('Incompatible shapes or dtypes')
+            raise Exception('Incompatible shapes, dtypes or topologies')
 
         self._weights[:] = other._weights[:]
 
@@ -84,7 +86,7 @@ class AbstractSOM(abc.ABC):
     def get_centroids(self) -> np.ndarray:
 
         """
-        Returns of the neural network weights with the shape: [m, n, dim].
+        Returns the neural network weights with the shape: [m, n, dim].
         """
 
         return self._weights.reshape((self._m, self._n, self._dim))
@@ -147,7 +149,7 @@ class AbstractSOM(abc.ABC):
         Parameters
         ----------
         scaling : Optional[str]
-            Normalization method, '**sum**' or '**mean**' (default: '**sum**')
+            Normalization method, either '**sum**' or '**mean**' (default: '**sum**')
         """
 
         scaling = scaling or 'sum'

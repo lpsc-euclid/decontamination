@@ -17,6 +17,8 @@ class SOM_PCA(abstract_som.AbstractSOM):
     Self Organizing Maps that span the first two principal components.
     """
 
+    __MODE__ = 'pca'
+
     ####################################################################################################################
 
     def __init__(self, m: int, n: int, dim: int, dtype: np.dtype = np.float32, topology: typing.Optional[str] = None, seed: int = None):
@@ -45,6 +47,40 @@ class SOM_PCA(abstract_som.AbstractSOM):
         """
 
         super().__init__(m, n, dim, dtype, topology, seed)
+
+    ####################################################################################################################
+
+    def save(self, filename: str) -> None:
+
+        """
+        Saves the trained neural network to a file.
+
+        Parameters
+        ----------
+        filename : str
+            Output HDF5 filename.
+        """
+
+        super().save(filename, {
+            'mode': '__MODE__',
+        })
+
+    ####################################################################################################################
+
+    def load(self, filename: str) -> None:
+
+        """
+        Loads the trained neural network from a file.
+
+        Parameters
+        ----------
+        filename : str
+            Input HDF5 filename.
+        """
+
+        super().load(filename, {
+            'mode': '__MODE__',
+        })
 
     ####################################################################################################################
 

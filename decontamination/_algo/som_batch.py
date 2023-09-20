@@ -12,6 +12,10 @@ from . import abstract_som, asymptotic_decay, dataset_to_generator_builder
 
 class SOM_Batch(abstract_som.AbstractSOM):
 
+    """
+    Self Organizing Maps (standard batch implementation).
+    """
+
     __MODE__ = 'batch'
 
     ####################################################################################################################
@@ -40,7 +44,7 @@ class SOM_Batch(abstract_som.AbstractSOM):
         sigma : float
             Starting value of the neighborhood radius (default: \\( \\mathrm{max}(m,n)/2 \\)).
         decay_function : function
-            Function that reduces learning_rate and sigma at each iteration (default: \\( 1/\\left(1+2\\frac{epoch}{epochs}\\right) \\)).
+            Function that reduces alpha and sigma at each iteration (default: \\( 1/\\left(1+2\\frac{epoch}{epochs}\\right) \\)).
         """
 
         ################################################################################################################
@@ -61,6 +65,15 @@ class SOM_Batch(abstract_som.AbstractSOM):
 
     def save(self, filename: str) -> None:
 
+        """
+        Saves the trained neural network to a file.
+
+        Parameters
+        ----------
+        filename : str
+            Output HDF5 filename.
+        """
+
         super().save(filename, {
             'mode': '__MODE__',
             'alpha': '_alpha',
@@ -73,6 +86,15 @@ class SOM_Batch(abstract_som.AbstractSOM):
     ####################################################################################################################
 
     def load(self, filename: str) -> None:
+
+        """
+        Loads the trained neural network from a file.
+
+        Parameters
+        ----------
+        filename : str
+            Input HDF5 filename.
+        """
 
         super().load(filename, {
             'mode': '__MODE__',

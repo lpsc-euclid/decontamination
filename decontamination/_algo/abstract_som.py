@@ -419,7 +419,7 @@ def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 
         diff = weights[index] - vector
 
-        distance = np.sqrt(diff * diff)
+        distance = 0
 
         if min_distance > distance:
 

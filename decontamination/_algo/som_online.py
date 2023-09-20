@@ -29,7 +29,7 @@ class SOM_Online(abstract_som.AbstractSOM):
             Dimensionality of the input data.
         dtype : np.dtype
             Neural network data type (default: **np.float32**).
-        topology : Optional[str]
+        topology : typing.Optional[str]
             Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
         """
 

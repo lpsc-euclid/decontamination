@@ -38,7 +38,7 @@ class SOM_PCA(abstract_som.AbstractSOM):
             Dimensionality of the input data.
         dtype : np.dtype
             Neural network data type (default: **np.float32**).
-        topology : Optional[str]
+        topology : typing.Optional[str]
             Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
         """
 
@@ -105,7 +105,7 @@ class SOM_PCA(abstract_som.AbstractSOM):
 
         Parameters
         ----------
-        dataset : typing.Union[numpy.ndarray, typing.Callable]
+        dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator of generator.
         show_progress_bar : bool
             Specifying whether a progress bar have to be shown (default: **True**).

@@ -28,7 +28,7 @@ class AbstractSOM(abc.ABC):
             Dimensionality of the input data.
         dtype : np.dtype
             Neural network data type (default: **np.float32**).
-        topology : Optional[str]
+        topology : typing.Optional[str]
             Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
         """
 
@@ -261,7 +261,7 @@ class AbstractSOM(abc.ABC):
 
         Parameters
         ----------
-        scaling : Optional[str]
+        scaling : typing.Optional[str]
             Normalization method, either '**sum**' or '**mean**' (default: '**sum**')
         """
 

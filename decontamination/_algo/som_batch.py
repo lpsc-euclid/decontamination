@@ -12,6 +12,8 @@ from . import abstract_som, asymptotic_decay, dataset_to_generator_builder
 
 class SOM_Batch(abstract_som.AbstractSOM):
 
+    MODE = 'batch'
+
     ####################################################################################################################
 
     def __init__(self, m: int, n: int, dim: int, dtype: np.dtype = np.float32, topology: typing.Optional[str] = None, seed: int = None, alpha: float = None, sigma: float = None, decay_function = asymptotic_decay):
@@ -41,12 +43,44 @@ class SOM_Batch(abstract_som.AbstractSOM):
             Function that reduces learning_rate and sigma at each iteration (default: \\( 1/\\left(1+2\\frac{epoch}{epochs}\\right) \\)).
         """
 
+        ################################################################################################################
+
         super().__init__(m, n, dim, dtype, topology, seed)
+
+        ################################################################################################################
 
         self._epochs = 0
 
-        self._alpha = alpha
-        self._sigma = sigma
         self._decay_function = decay_function
+
+        self._alpha = 0.3 if alpha is None else dtype(alpha)
+
+        self._sigma = max(m, n) / 2.0 if sigma is None else dtype(sigma)
+
+    ####################################################################################################################
+
+    def save(self, filename: str) -> None:
+
+        super().save(filename, {
+            'mode': 'MODE',
+            'alpha': '_alpha',
+            'sigma': '_sigma',
+            'epochs': '_epochs',
+        }, {
+
+        })
+
+    ####################################################################################################################
+
+    def load(self, filename: str) -> None:
+
+        super().load(filename, {
+            'mode': 'MODE',
+            'alpha': '_alpha',
+            'sigma': '_sigma',
+            'epochs': '_epochs',
+        }, {
+
+        })
 
 ########################################################################################################################

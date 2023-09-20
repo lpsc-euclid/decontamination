@@ -34,7 +34,7 @@ class jit(object):
 
     ####################################################################################################################
 
-    def __init__(self, parallel = False, kernel = False, device = True):
+    def __init__(self, parallel: bool = False, cpu_kernel: bool = False, gpu_kernel: bool = False, device: bool = True):
 
         """
         Parameters
@@ -48,7 +48,8 @@ class jit(object):
         """
 
         self.parallel = parallel
-        self.kernel = kernel
+        self.cpu_kernel = cpu_kernel
+        self.gpu_kernel = gpu_kernel
         self.device = device
 
     ####################################################################################################################
@@ -92,7 +93,11 @@ class jit(object):
 
     def __call__(self, funct):
 
-        if self.kernel:
+        if self.cpu_kernel:
+
+            return nb.jit(funct, nopython = True)
+
+        elif self.gpu_kernel:
 
             return cu.jit(funct, device = False)
 
@@ -104,7 +109,10 @@ class jit(object):
         # SOURCE CODE                                                                                                  #
         ################################################################################################################
 
-        code_raw = '\n'.join(inspect.getsource(funct).splitlines()[1:])
+        code_raw = '\n'.join(inspect.getsource(funct).splitlines())
+
+        code_raw = code_raw[code_raw.find("def"):]
+        code_raw = code_raw[code_raw.find("("):]
 
         ################################################################################################################
         # NUMBA ON CPU                                                                                                 #
@@ -116,7 +124,7 @@ class jit(object):
 
             name_cpu = jit._get_unique_function_name()
 
-            code_cpu = jit._patch_cpu_code(f'def {name_cpu} {code_raw[code_raw.find("("):]}')
+            code_cpu = jit._patch_cpu_code(f'def {name_cpu} {code_raw}')
 
             exec(code_cpu, funct.__globals__)
 
@@ -138,7 +146,7 @@ class jit(object):
 
             name_gpu = jit._get_unique_function_name()
 
-            code_gpu = jit._patch_gpu_code(f'def {name_gpu} {code_raw[code_raw.find("("):]}')
+            code_gpu = jit._patch_gpu_code(f'def {name_gpu} {code_raw}')
 
             exec(code_gpu, funct.__globals__)
 

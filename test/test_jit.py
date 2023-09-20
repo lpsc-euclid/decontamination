@@ -31,7 +31,7 @@ def foo_xpu(a, b):
 
 ########################################################################################################################
 
-@decontamination.jit(kernel = True)
+@decontamination.jit(gpu_kernel = True)
 def foo_kernel_gpu(result, a, b):
 
     i = cu.threadIdx.x + cu.blockIdx.x * cu.blockDim.x

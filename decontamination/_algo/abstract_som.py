@@ -2,10 +2,15 @@
 ########################################################################################################################
 
 import abc
+import tqdm
 import typing
 
 import numpy as np
 import numba as nb
+import numba.cuda as cu
+
+from .. import jit, GPU_OPTIMIZATION_AVAILABLE
+from . import dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -45,7 +50,28 @@ class AbstractSOM(abc.ABC):
 
         ################################################################################################################
 
+        self._rebuild_topography()
+
+        ################################################################################################################
+
         self._weights = np.empty(shape = (self._m * self._n, self._dim), dtype = self._dtype)
+
+    ####################################################################################################################
+
+    @staticmethod
+    def _neuron_locations(m: int, n: int) -> typing.Iterator[typing.List[int]]:
+
+        for i in range(m):
+
+            for j in range(n):
+
+                yield [i, j]
+
+    ####################################################################################################################
+
+    def _rebuild_topography(self):
+
+        self._topography = np.array(list(AbstractSOM._neuron_locations(self._m, self._m)), dtype = np.int64)
 
     ####################################################################################################################
 
@@ -209,6 +235,10 @@ class AbstractSOM(abc.ABC):
 
                 setattr(self, field, file[name])
 
+        ################################################################################################################
+
+        self._rebuild_topography()
+
     ####################################################################################################################
 
     def get_weights(self) -> np.ndarray:
@@ -319,6 +349,75 @@ class AbstractSOM(abc.ABC):
 
         ################################################################################################################
 
-        return result / result.max()
+        return result / np.max(result)
+
+    ####################################################################################################################
+
+    @staticmethod
+    @jit(gpu_kernel = True)
+    def _find_bmus_kernel_gpu(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, mn: int) -> None:
+
+        i = cu.grid(1)
+
+        if i < vectors.shape[0]:
+
+            result[i] = _find_bmu_gpu(weights, vectors[i], mn)
+
+    ####################################################################################################################
+
+    @staticmethod
+    @jit(cpu_kernel = True, parallel = True)
+    def _find_bmus_kernel_cpu(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, mn: int) -> None:
+
+        for i in nb.prange(vectors.shape[0]):
+
+            result[i] = _find_bmu_cpu(weights, vectors[i], mn)
+
+    ####################################################################################################################
+
+    def activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False) -> np.ndarray:
+
+        generator_builder = dataset_to_generator_builder(dataset)
+
+        generator = generator_builder()
+
+        for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
+
+            bmus = np.zeros(data.shape[0], dtype = np.int64)
+
+            if GPU_OPTIMIZATION_AVAILABLE:
+
+                print('running on GPU')
+
+                AbstractSOM._find_bmus_kernel_gpu(bmus, self._weights, data, self._m * self._n)
+
+            else:
+
+                print('running on CPU')
+
+                AbstractSOM._find_bmus_kernel_cpu(bmus, self._weights, data, self._m * self._n)
+
+            print(bmus)
+
+########################################################################################################################
+
+@jit(device = True)
+def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
+
+    min_distance = 999.0
+
+    min_index = 0
+
+    for index in range(mn):
+
+        distance = np.linalg.norm(np.subtract(weights[index], vector))
+
+        if distance < min_distance:
+
+            min_distance = distance
+
+            min_index = index
+
+    return min_index
 
 ########################################################################################################################

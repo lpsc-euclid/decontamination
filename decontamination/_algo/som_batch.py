@@ -6,7 +6,7 @@ import typing
 import numpy as np
 import numba as nb
 
-from . import abstract_som
+from . import abstract_som, asymptotic_decay, dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -14,7 +14,7 @@ class SOM_Batch(abstract_som.AbstractSOM):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: np.dtype = np.float32, topology: typing.Optional[str] = None, seed: int = None):
+    def __init__(self, m: int, n: int, dim: int, dtype: np.dtype = np.float32, topology: typing.Optional[str] = None, seed: int = None, alpha: float = None, sigma: float = None, decay_function = asymptotic_decay):
 
         """
         Constructor for the Abstract Self Organizing Map (SOM).
@@ -33,8 +33,20 @@ class SOM_Batch(abstract_som.AbstractSOM):
             Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
         seed : int
             Seed for random generator (default: **None**).
+        alpha : float
+            Starting value of the learning rate (default: 0.3).
+        sigma : float
+            Starting value of the neighborhood radius (default: \\( \\mathrm{max}(m,n)/2 \\)).
+        decay_function : function
+            Function that reduces learning_rate and sigma at each iteration (default: \\( 1/\\left(1+2\\frac{epoch}{epochs}\\right) \\)).
         """
 
         super().__init__(m, n, dim, dtype, topology, seed)
+
+        self._epochs = 0
+
+        self._alpha = alpha
+        self._sigma = sigma
+        self._decay_function = decay_function
 
 ########################################################################################################################

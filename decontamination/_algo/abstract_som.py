@@ -413,11 +413,17 @@ class AbstractSOM(abc.ABC):
 def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 
     min_distance = 999.0
-    min_index = 0x0
+    min_index = 0
 
     for index in range(mn):
 
-        distance = 0#np.linalg.norm(weights[index] + vector)
+        distance = 0.0
+
+        for i in range(vector.shape[0]):
+
+            diff = weights[index][i] - vector[i]
+
+            distance += diff * diff
 
         if min_distance > distance:
 

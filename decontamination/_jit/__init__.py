@@ -29,7 +29,7 @@ __pdoc__['GPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba GPU optimi
 class jit(object):
 
     """
-    This decorator is used to compile a Python function into native CPU or GPU code.
+    Decorator to compile Python functions into native CPU or GPU ones.
     """
 
     ####################################################################################################################

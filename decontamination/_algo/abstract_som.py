@@ -86,7 +86,7 @@ class AbstractSOM(abc.ABC):
         Parameters
         ----------
         filename : str
-            Output filename.
+            Output HDF5 filename.
         header_extra : typing.Optional[typing.Dict[str, str]]
             Dictionary of extra headers (name, field name in class).
         dataset_extra : typing.Optional[typing.Dict[str, str]]
@@ -108,6 +108,7 @@ class AbstractSOM(abc.ABC):
         header_extra['m'] = '_m'
         header_extra['n'] = '_n'
         header_extra['dim'] = '_dim'
+        header_extra['topology'] = '_topology'
 
         dataset_extra['weights'] = '_weight'
 
@@ -145,7 +146,7 @@ class AbstractSOM(abc.ABC):
         Parameters
         ----------
         filename : str
-            Input filename.
+            Input HDF5 filename.
         header_extra : typing.Optional[typing.Dict[str, str]]
             Dictionary of extra headers (name, field name in class).
         dataset_extra : typing.Optional[typing.Dict[str, str]]
@@ -167,6 +168,7 @@ class AbstractSOM(abc.ABC):
         header_extra['m'] = '_m'
         header_extra['n'] = '_n'
         header_extra['dim'] = '_dim'
+        header_extra['topology'] = '_topology'
 
         dataset_extra['weights'] = '_weight'
 

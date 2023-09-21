@@ -124,6 +124,30 @@ class AbstractSOM(abc.ABC):
 
     ####################################################################################################################
 
+    @staticmethod
+    def _init_hdf5_extra(header_extra, dataset_extra):
+
+        if header_extra is None:
+            header_extra = {}
+
+        if dataset_extra is None:
+            dataset_extra = {}
+
+        ################################################################################################################
+
+        header_extra['m'] = '_m'
+        header_extra['n'] = '_n'
+        header_extra['dim'] = '_dim'
+        header_extra['topology'] = '_topology'
+
+        dataset_extra['weights'] = '_weight'
+
+        ################################################################################################################
+
+        return header_extra, dataset_extra
+
+    ####################################################################################################################
+
     def save(
         self,
         filename: str,
@@ -148,20 +172,9 @@ class AbstractSOM(abc.ABC):
 
         import h5py
 
-        if header_extra is None:
-            header_extra = {}
-
-        if dataset_extra is None:
-            dataset_extra = {}
-
         ################################################################################################################
 
-        header_extra['m'] = '_m'
-        header_extra['n'] = '_n'
-        header_extra['dim'] = '_dim'
-        header_extra['topology'] = '_topology'
-
-        dataset_extra['weights'] = '_weight'
+        header_extra, dataset_extra = AbstractSOM._init_hdf5_extra(header_extra, dataset_extra)
 
         ################################################################################################################
 
@@ -208,20 +221,9 @@ class AbstractSOM(abc.ABC):
 
         import h5py
 
-        if header_extra is None:
-            header_extra = {}
-
-        if dataset_extra is None:
-            dataset_extra = {}
-
         ################################################################################################################
 
-        header_extra['m'] = '_m'
-        header_extra['n'] = '_n'
-        header_extra['dim'] = '_dim'
-        header_extra['topology'] = '_topology'
-
-        dataset_extra['weights'] = '_weight'
+        header_extra, dataset_extra = AbstractSOM._init_hdf5_extra(header_extra, dataset_extra)
 
         ################################################################################################################
 
@@ -357,10 +359,9 @@ class AbstractSOM(abc.ABC):
     @jit(gpu_kernel = True)
     def _find_bmus_kernel_gpu(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, mn: int) -> None:
 
-        i = cu.grid(1)
+        i = cu.grid(1); if i < vectors.shape[0]:
 
-        if i < vectors.shape[0]:
-
+            # noinspection PyUnresolvedReferences
             result[i] = _find_bmu_gpu(weights, vectors[i], mn)
 
     ####################################################################################################################
@@ -371,6 +372,7 @@ class AbstractSOM(abc.ABC):
 
         for i in nb.prange(vectors.shape[0]):
 
+            # noinspection PyUnresolvedReferences
             result[i] = _find_bmu_cpu(weights, vectors[i], mn)
 
     ####################################################################################################################

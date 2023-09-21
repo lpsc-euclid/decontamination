@@ -425,7 +425,7 @@ def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
         ################################################################################################################
         # !BEGIN-CPU
 
-        distance2 = np.linalg.norm(weights[index] - vector) ** 2
+        distance2 = np.sum((weights[index] - vector) ** 2)
 
         # !END-CPU
         ################################################################################################################

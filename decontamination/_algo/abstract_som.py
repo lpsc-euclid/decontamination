@@ -423,6 +423,13 @@ def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
     for index in range(mn):
 
         ################################################################################################################
+        # !BEGIN-CPU
+
+        distance2 = np.sum((weights[index] - vector) ** 2)
+
+        # !END-CPU
+        ################################################################################################################
+        # !BEGIN-GPU
 
         distance2 = 0.0
 
@@ -432,6 +439,7 @@ def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 
             distance2 += (weight[i] - vector[i]) ** 2
 
+        # !END-GPU
         ################################################################################################################
 
         if min_distance2 > distance2:

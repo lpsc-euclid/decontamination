@@ -2,6 +2,7 @@
 ########################################################################################################################
 
 import os
+import re
 import inspect
 
 import numpy as np
@@ -107,26 +108,35 @@ class jit(object):
     ####################################################################################################################
 
     @staticmethod
+    def process_directives(code: str, tag_s: str, tag_e: str) -> str:
+
+        pattern = re.compile(re.escape(tag_s) + '.*?' + re.escape(tag_e), re.DOTALL)
+
+        return re.sub(pattern, '', code)
+
+    ####################################################################################################################
+
+    @staticmethod
     def _patch_cpu_code(code):
 
-        return (
+        return jit.process_directives(
             code.replace('_xpu', '_cpu')
                 .replace('xpu.local_empty', 'np.empty')
                 .replace('xpu.shared_empty', 'np.empty')
                 .replace('xpu.syncthreads', '#######')
-        )
+        , '!BEGIN-GPU', '!END-GPU')
 
     ####################################################################################################################
 
     @staticmethod
     def _patch_gpu_code(code):
 
-        return (
+        return jit.process_directives(
             code.replace('_xpu', '_gpu')
                 .replace('xpu.local_empty', 'cu.local.array')
                 .replace('xpu.shared_empty', 'cu.shared.array')
                 .replace('xpu.syncthreads', 'cu.syncthreads')
-        )
+        , '!BEGIN-CPU', '!END-CPU')
 
     ####################################################################################################################
 

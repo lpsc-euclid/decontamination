@@ -419,16 +419,22 @@ def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 
     for index in range(mn):
 
+        ################################################################################################################
+
         distance2 = 0.0
 
         for i in range(vector.shape[0]):
 
             distance2 += (weights[index][i] - vector[i]) ** 2
 
+        ################################################################################################################
+
         if min_distance2 > distance2:
 
             min_distance2 = distance2
             min_index = index
+
+        ################################################################################################################
 
     return min_index
 

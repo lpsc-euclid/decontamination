@@ -56,6 +56,8 @@ class DecoratedFunction:
 
         def wrapper(*args, **kwargs):
 
+            print(num_blocks)
+            print(threads_per_blocks)
             return cu.jit(self.func, device = False)[num_blocks, threads_per_blocks](*args, **kwargs)
 
         ####################################################################################################################

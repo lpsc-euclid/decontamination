@@ -35,6 +35,7 @@ def test_distance_map():
 
 ########################################################################################################################
 
+@pytest.mark.capture(no = True)
 @pytest.mark.parametrize('enable_gpu', [False, True])
 def test_activation_map(enable_gpu):
 

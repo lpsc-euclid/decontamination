@@ -51,7 +51,7 @@ def test_activation_map(enable_gpu):
 
     ##
 
-    assert np.allclose(som.activation_map(data, enable_gpu = enable_gpu), expected)
+    assert np.allclose(som.activation_map(data, enable_gpu = enable_gpu, show_progress_bar = True), expected)
 
 ########################################################################################################################
 

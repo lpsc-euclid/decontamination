@@ -24,7 +24,7 @@ C = np.add(A, B)
 
 ########################################################################################################################
 
-@decontamination.jit(device = True)
+@decontamination.jit()
 def foo_xpu(a, b):
 
     return a + b

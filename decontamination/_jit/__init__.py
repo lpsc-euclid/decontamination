@@ -3,7 +3,6 @@
 
 import os
 import inspect
-import functools
 
 import numpy as np
 import numba as nb
@@ -75,23 +74,22 @@ class jit(object):
 
     ####################################################################################################################
 
-    def __init__(self, parallel: bool = False, cpu_kernel: bool = False, gpu_kernel: bool = False, device: bool = True):
+    def __init__(self, gpu_kernel: bool = False, cpu_kernel: bool = False, parallel: bool = False):
 
         """
         Parameters
         ---------
+        gpu_kernel : bool
+            Indicates whether this is a GPU kernel function.
+        cpu_kernel : bool
+            Indicates whether this is a CPU kernel function.
         parallel : bool
             Enables automatic parallelization.
-        kernel : bool
-            Indicates whether this is a kernel function.
-        device : bool
-            Indicates whether this is a device function.
         """
 
-        self.parallel = parallel
-        self.cpu_kernel = cpu_kernel
         self.gpu_kernel = gpu_kernel
-        self.device = device
+        self.cpu_kernel = cpu_kernel
+        self.parallel = parallel
 
     ####################################################################################################################
 
@@ -134,13 +132,13 @@ class jit(object):
 
     def __call__(self, funct):
 
-        if self.cpu_kernel:
-
-            return nb.njit(funct)
-
-        elif self.gpu_kernel:
+        if self.gpu_kernel:
 
             return cu_kernel(funct)
+
+        elif self.cpu_kernel:
+
+            return nb.njit(funct, parallel = self.parallel)
 
         elif not funct.__name__.endswith('_xpu'):
 
@@ -153,6 +151,7 @@ class jit(object):
         code_raw = '\n'.join(inspect.getsource(funct).splitlines())
 
         code_raw = code_raw[code_raw.find("def"):]
+
         code_raw = code_raw[code_raw.find("("):]
 
         ################################################################################################################
@@ -193,7 +192,7 @@ class jit(object):
 
             ############################################################################################################
 
-            funct.__globals__[funct.__name__.replace('_xpu', '_gpu')] = cu.jit(eval(name_gpu, funct.__globals__), device = self.device)
+            funct.__globals__[funct.__name__.replace('_xpu', '_gpu')] = cu.jit(eval(name_gpu, funct.__globals__), device = True)
 
         else:
 

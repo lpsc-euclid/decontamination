@@ -411,7 +411,7 @@ class AbstractSOM(abc.ABC):
 
 ########################################################################################################################
 
-@jit(device = True)
+@jit()
 def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 
     min_distance2 = 1.0e99

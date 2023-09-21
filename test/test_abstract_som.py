@@ -36,7 +36,6 @@ def test_distance_map():
 ########################################################################################################################
 
 @pytest.mark.parametrize('enable_gpu', [False, True])
-@pytest.mark.capture(no = True)
 def test_activation_map(enable_gpu):
 
     expected = np.array([
@@ -52,7 +51,7 @@ def test_activation_map(enable_gpu):
 
     ##
 
-    assert np.allclose(som.activation_map(data, enable_gpu = enable_gpu, show_progress_bar = True), expected)
+    assert np.allclose(som.activation_map(data, enable_gpu = enable_gpu), expected)
 
 ########################################################################################################################
 

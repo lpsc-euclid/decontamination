@@ -48,7 +48,7 @@ class SOM_PCA(abstract_som.AbstractSOM):
 
     ####################################################################################################################
 
-    def save(self, filename: str) -> None:
+    def save(self, filename: str, **kwargs) -> None:
 
         """
         Saves the trained neural network to a file.
@@ -65,7 +65,7 @@ class SOM_PCA(abstract_som.AbstractSOM):
 
     ####################################################################################################################
 
-    def load(self, filename: str) -> None:
+    def load(self, filename: str, **kwargs) -> None:
 
         """
         Loads the trained neural network from a file.

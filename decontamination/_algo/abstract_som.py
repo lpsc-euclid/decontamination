@@ -398,11 +398,13 @@ class AbstractSOM(abc.ABC):
 
         Parameters
         ----------
-        dataset: typing.Union[np.ndarray, typing.Callable]
+        dataset : typing.Union[np.ndarray, typing.Callable]
             ???
-        enable_gpu: bool
+        enable_gpu : bool
             ???
-        threads_per_blocks: typing.Union[typing.Tuple[int], int]
+        threads_per_blocks : typing.Union[typing.Tuple[int], int]
+            ???
+        show_progress_bar : bool
             ???
         """
 
@@ -445,13 +447,13 @@ class AbstractSOM(abc.ABC):
 
         Parameters
         ----------
-        dataset: np.ndarray
+        dataset : np.ndarray
             ???
-        locations: bool
+        locations : bool
             ???
-        enable_gpu: bool
+        enable_gpu : bool
             ???
-        threads_per_blocks: typing.Union[typing.Tuple[int], int]
+        threads_per_blocks : typing.Union[typing.Tuple[int], int]
             ???
         """
 

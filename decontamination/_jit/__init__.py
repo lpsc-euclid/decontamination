@@ -42,7 +42,7 @@ class DecoratedFunction:
 
         if not isinstance(extra_params, tuple) or len(extra_params) != 2:
 
-            raise ValueError('Two parameters expected: data_sizes and threads_per_blocks')
+            raise ValueError('Two parameters expected: threads_per_blocks and data_sizes')
 
         ####################################################################################################################
 
@@ -52,13 +52,11 @@ class DecoratedFunction:
 
         num_blocks = tuple((s + t - 1) // t for s, t in zip(data_sizes, threads_per_blocks))
 
-        print(data_sizes)
-        print(threads_per_blocks)
-        print(num_blocks)
-
         ####################################################################################################################
 
         def wrapper(*args, **kwargs):
+
+            args = [cu.to_device(arg) if isinstance(arg, np.ndarray) else arg for arg in args]
 
             return cu.jit(self.func, device = False)[num_blocks, threads_per_blocks](*args, **kwargs)
 

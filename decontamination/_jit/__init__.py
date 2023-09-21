@@ -48,10 +48,12 @@ class DecoratedFunction:
 
         data_sizes = extra_params[0] if isinstance(extra_params[0], tuple) else (extra_params[0], )
 
-        threads_per_blocks = extra_params[1] if isinstance(extra_params[0], tuple) else (extra_params[1], )
+        threads_per_blocks = extra_params[1] if isinstance(extra_params[1], tuple) else (extra_params[1], )
 
         num_blocks = tuple((s + t - 1) // t for s, t in zip(data_sizes, threads_per_blocks))
 
+        print(extra_params)
+        print('-----')
         print(data_sizes)
         print(threads_per_blocks)
         print(num_blocks)

@@ -359,7 +359,8 @@ class AbstractSOM(abc.ABC):
     @jit(gpu_kernel = True)
     def _find_bmus_kernel_gpu(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, mn: int) -> None:
 
-        i = cu.grid(1); if i < vectors.shape[0]:
+        i = cu.grid(1)
+        if i < vectors.shape[0]:
 
             # noinspection PyUnresolvedReferences
             result[i] = _find_bmu_gpu(weights, vectors[i], mn)

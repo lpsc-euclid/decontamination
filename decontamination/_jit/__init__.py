@@ -52,7 +52,7 @@ class DecoratedFunction:
 
         num_blocks = tuple((s + t - 1) // t for s, t in zip(data_sizes, threads_per_blocks))
 
-        print(extra_params)
+        print(list(zip(data_sizes, threads_per_blocks)))
         print('-----')
         print(data_sizes)
         print(threads_per_blocks)

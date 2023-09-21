@@ -2,6 +2,7 @@
 ########################################################################################################################
 
 import abc
+import math
 import tqdm
 import typing
 
@@ -412,24 +413,20 @@ class AbstractSOM(abc.ABC):
 @jit(device = True)
 def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 
-    min_distance = 999.0
-    min_index = 0
+    min_distance2 = 1.0e99
+    min_index = 0x00
 
     for index in range(mn):
 
-        math = 0.0
+        distance2 = 0.0
 
         for i in range(vector.shape[0]):
 
-            diff = weights[index][i] - vector[i]
+            distance2 += (weights[index][i] - vector[i]) ** 2
 
-            math += diff * diff
+        if min_distance2 > distance2:
 
-        distance = np.sqrt(sum)
-
-        if min_distance > distance:
-
-            min_distance = distance
+            min_distance2 = distance2
             min_index = index
 
     return min_index

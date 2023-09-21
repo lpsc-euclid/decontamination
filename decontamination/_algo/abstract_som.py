@@ -393,7 +393,7 @@ class AbstractSOM(abc.ABC):
 
                 bmus = cu.device_array(data.shape[0], dtype = np.int64)
 
-                AbstractSOM._find_bmus_kernel_gpu[256, data.shape[0]](bmus, self._weights, data, self._m * self._n)
+                AbstractSOM._find_bmus_kernel_gpu[1024, bmus.size](bmus, self._weights, data, self._m * self._n)
 
                 print(bmus.copy_to_host())
 

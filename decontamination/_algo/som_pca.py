@@ -21,7 +21,7 @@ class SOM_PCA(abstract_som.AbstractSOM):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: np.dtype = np.float32, topology: typing.Optional[str] = None, seed: int = None):
+    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None, seed: int = None):
 
         """
         Initializes a Self Organizing Maps.
@@ -38,7 +38,7 @@ class SOM_PCA(abstract_som.AbstractSOM):
             Number of neuron columns.
         dim : int
             Dimensionality of the input data.
-        dtype : np.dtype
+        dtype : typing.Type[np.single]
             Neural network data type (default: **np.float32**).
         topology : typing.Optional[str]
             Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').

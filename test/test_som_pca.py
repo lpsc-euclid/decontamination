@@ -9,32 +9,22 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 ########################################################################################################################
 
-import unittest
+import pytest
 import decontamination
 
 import numpy as np
 
 ########################################################################################################################
 
-class JITTests(unittest.TestCase):
+np.random.seed(0)
 
-    ####################################################################################################################
+##
 
-    def __init__(self, *args, **kwargs):
-        
-        super().__init__(*args, **kwargs)
+self.som = decontamination.SOM_PCA(4, 4, 4, np.float32, topology = 'square')
 
-        ##
+self.data = np.random.randn(100_000).reshape(25_000, 4)
 
-        np.random.seed(0)
-
-        ##
-
-        self.som = decontamination.SOM_PCA(4, 4, 4, np.float32, topology = 'square')
-
-        self.data = np.random.randn(100_000).reshape(25_000, 4)
-
-        self.som.train(self.data)
+self.som.train(self.data)
 
     ####################################################################################################################
 

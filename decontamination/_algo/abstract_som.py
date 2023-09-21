@@ -18,7 +18,7 @@ class AbstractSOM(abc.ABC):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: np.dtype = np.float32, topology: typing.Optional[str] = None, seed: int = None):
+    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None, seed: int = None):
 
         """
         Constructor for an Abstract Self Organizing Map (SOM).
@@ -31,7 +31,7 @@ class AbstractSOM(abc.ABC):
             Number of neuron columns.
         dim : int
             Dimensionality of the input data.
-        dtype : np.dtype
+        dtype : typing.Type[np.single]
             Neural network data type (default: **np.float32**).
         topology : typing.Optional[str]
             Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
@@ -378,7 +378,17 @@ class AbstractSOM(abc.ABC):
 
     ####################################################################################################################
 
-    def activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False) -> np.ndarray:
+    @staticmethod
+    @nb.njit
+    def _count_bmus(result: np.ndarray, bmus: np.ndarray):
+
+        for i in range(bmus.shape[0]):
+
+            result[bmus[i]] += 1
+
+    ####################################################################################################################
+
+    def activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024, show_progress_bar: bool = False) -> np.ndarray:
 
         ################################################################################################################
 
@@ -388,29 +398,51 @@ class AbstractSOM(abc.ABC):
 
         ################################################################################################################
 
+        result = np.zeros(self._m * self._n, dtype = np.int64)
+
         for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
 
-            if GPU_OPTIMIZATION_AVAILABLE:
+            if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
 
-                print('running on GPU', data.dtype, self._weights.dtype)
+                bmus = cu.device_array(data.shape[0], dtype = np.int32)
 
-                bmus = cu.device_array(data.shape[0], dtype = np.int64)
+                AbstractSOM._find_bmus_kernel_gpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
 
-                AbstractSOM._find_bmus_kernel_gpu[1024, bmus.size](bmus, self._weights, data, self._m * self._n)
-
-                print(bmus.copy_to_host())
+                AbstractSOM._count_bmus(result, bmus.copy_to_host())
 
             else:
 
-                print('running on CPU')
-
-                bmus = np.empty(data.shape[0], dtype = np.int64)
+                bmus = np.empty(data.shape[0], dtype = np.int32)
 
                 AbstractSOM._find_bmus_kernel_cpu(bmus, self._weights, data, self._m * self._n)
 
-                print(bmus)
+                AbstractSOM._count_bmus(result, bmus)
 
-        return None
+        ################################################################################################################
+
+        return result.reshape((self._m, self._n))
+
+    ####################################################################################################################
+
+    def winners(self, dataset: np.ndarray, locations: bool = False, enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024) -> np.ndarray:
+
+        if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
+
+            bmus = cu.device_array(dataset.shape[0], dtype = np.int32)
+
+            AbstractSOM._find_bmus_kernel_gpu[threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
+
+            result = bmus.copy_to_host()
+
+        else:
+
+            bmus = np.empty(dataset.shape[0], dtype = np.int32)
+
+            AbstractSOM._find_bmus_kernel_cpu(bmus, self._weights, dataset, self._m * self._n)
+
+            result =  bmus
+
+        return self._topography[result] if locations else result
 
 ########################################################################################################################
 

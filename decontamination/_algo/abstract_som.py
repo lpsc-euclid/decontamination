@@ -10,6 +10,7 @@ import numba as nb
 import numba.cuda as cu
 
 from .. import jit, GPU_OPTIMIZATION_AVAILABLE
+
 from . import dataset_to_generator_builder
 
 ########################################################################################################################
@@ -18,7 +19,7 @@ class AbstractSOM(abc.ABC):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None, seed: int = None):
+    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None):
 
         """
         Constructor for an Abstract Self Organizing Map (SOM).
@@ -35,8 +36,6 @@ class AbstractSOM(abc.ABC):
             Neural network data type (default: **np.float32**).
         topology : typing.Optional[str]
             Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
-        seed : int
-            Seed for random generator (default: **None**).
         """
 
         ################################################################################################################
@@ -46,7 +45,6 @@ class AbstractSOM(abc.ABC):
         self._dim = dim
         self._dtype = dtype
         self._topology = topology or 'hexagonal'
-        self._seed = seed
 
         ################################################################################################################
 
@@ -75,25 +73,30 @@ class AbstractSOM(abc.ABC):
 
     ####################################################################################################################
 
-    def init_rand(self) -> None:
+    def init_rand(self, seed: typing.Optional[int] = None) -> None:
 
         """
         Initializes the neural network randomly.
+
+        Parameters
+        ----------
+        seed : typing.Optional[int]
+            Seed for random generator (default: **None**).
         """
 
         ################################################################################################################
 
-        if self._seed is None:
+        if seed is None:
 
             rng = np.random.default_rng()
 
         else:
 
-            rng = np.random.default_rng(seed = self._seed)
+            rng = np.random.default_rng(seed = seed)
 
         ################################################################################################################
 
-        self._weights[...] = rng.random((self._m * self._n, self._dim)).astype(self._dtype)
+        self._weights[...] = rng.random((self._m * self._n, self._dim), dtype = self._dtype)
 
     ####################################################################################################################
 
@@ -379,7 +382,7 @@ class AbstractSOM(abc.ABC):
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit
+    @nb.njit(parallel = False)
     def _count_bmus(result: np.ndarray, bmus: np.ndarray):
 
         for i in range(bmus.shape[0]):
@@ -389,6 +392,19 @@ class AbstractSOM(abc.ABC):
     ####################################################################################################################
 
     def activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024, show_progress_bar: bool = False) -> np.ndarray:
+
+        """
+        ???
+
+        Parameters
+        ----------
+        dataset: typing.Union[np.ndarray, typing.Callable]
+            ???
+        enable_gpu: bool
+            ???
+        threads_per_blocks: typing.Union[typing.Tuple[int], int]
+            ???
+        """
 
         ################################################################################################################
 
@@ -400,83 +416,96 @@ class AbstractSOM(abc.ABC):
 
         result = np.zeros(self._m * self._n, dtype = np.int64)
 
+        ################################################################################################################
+
         for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
 
             if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
 
                 bmus = cu.device_array(data.shape[0], dtype = np.int32)
-
                 AbstractSOM._find_bmus_kernel_gpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
-
                 AbstractSOM._count_bmus(result, bmus.copy_to_host())
 
             else:
 
                 bmus = np.empty(data.shape[0], dtype = np.int32)
-
                 AbstractSOM._find_bmus_kernel_cpu(bmus, self._weights, data, self._m * self._n)
-
                 AbstractSOM._count_bmus(result, bmus)
 
         ################################################################################################################
 
-        return result.reshape((self._m, self._n))
+        return result.reshape((self._m, self._n, ))
 
     ####################################################################################################################
 
     def winners(self, dataset: np.ndarray, locations: bool = False, enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024) -> np.ndarray:
 
+        """
+        ???
+
+        Parameters
+        ----------
+        dataset: np.ndarray
+            ???
+        locations: bool
+            ???
+        enable_gpu: bool
+            ???
+        threads_per_blocks: typing.Union[typing.Tuple[int], int]
+            ???
+        """
+
+        ################################################################################################################
+
         if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
 
             bmus = cu.device_array(dataset.shape[0], dtype = np.int32)
-
             AbstractSOM._find_bmus_kernel_gpu[threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
-
             result = bmus.copy_to_host()
 
         else:
 
             bmus = np.empty(dataset.shape[0], dtype = np.int32)
-
             AbstractSOM._find_bmus_kernel_cpu(bmus, self._weights, dataset, self._m * self._n)
+            result = bmus
 
-            result =  bmus
+        ################################################################################################################
 
         return self._topography[result] if locations else result
 
 ########################################################################################################################
 
-@jit()
+@jit(parallel = False)
 def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 
-    min_distance2 = 1.0e99
+    min_dist_2 = 1.0e99
     min_index = 0x00
 
     for index in range(mn):
 
         ################################################################################################################
-        # !BEGIN-CPU
+        # !--BEGIN-CPU--
 
-        distance2 = np.sum((weights[index] - vector) ** 2)
+        dist_2 = np.sum((weights[index] - vector) ** 2)
 
-        # !END-CPU
+        # !--END-CPU--
         ################################################################################################################
-        # !BEGIN-GPU
+        # !--BEGIN-GPU--
 
-        distance2 = 0.0
+        dist_2 = 0.0
 
         weight = weights[index]
 
         for i in range(vector.shape[0]):
 
-            distance2 += (weight[i] - vector[i]) ** 2
+            dist_2 += (weight[i] - vector[i]) ** 2
 
-        # !END-GPU
+        # !--END-GPU--
         ################################################################################################################
 
-        if min_distance2 > distance2:
+        if min_dist_2 > dist_2:
 
-            min_distance2 = distance2
+            min_dist_2 = dist_2
             min_index = index
 
         ################################################################################################################

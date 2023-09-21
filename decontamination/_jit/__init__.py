@@ -124,7 +124,7 @@ class jit(object):
                 .replace('xpu.local_empty', 'np.empty')
                 .replace('xpu.shared_empty', 'np.empty')
                 .replace('xpu.syncthreads', '#######')
-        , '!BEGIN-GPU', '!END-GPU')
+        , '!--BEGIN-GPU--', '!--END-GPU--')
 
     ####################################################################################################################
 
@@ -136,7 +136,7 @@ class jit(object):
                 .replace('xpu.local_empty', 'cu.local.array')
                 .replace('xpu.shared_empty', 'cu.shared.array')
                 .replace('xpu.syncthreads', 'cu.syncthreads')
-        , '!BEGIN-CPU', '!END-CPU')
+        , '!--BEGIN-CPU--', '!--END-CPU--')
 
     ####################################################################################################################
 
@@ -165,48 +165,38 @@ class jit(object):
         code_raw = code_raw[code_raw.find("("):]
 
         ################################################################################################################
-        # NUMBA ON CPU                                                                                                 #
-        ################################################################################################################
-
-        if CPU_OPTIMIZATION_AVAILABLE:
-
-            ############################################################################################################
-
-            name_cpu = jit._get_unique_function_name()
-
-            code_cpu = jit._patch_cpu_code(f'def {name_cpu} {code_raw}')
-
-            exec(code_cpu, funct.__globals__)
-
-            ############################################################################################################
-
-            funct.__globals__[funct.__name__.replace('_xpu', '_cpu')] = nb.njit(eval(name_cpu, funct.__globals__), parallel = self.parallel)
-
-        else:
-
-            funct.__globals__[funct.__name__.replace('_xpu', '_cpu')] = funct
-
-        ################################################################################################################
         # NUMBA ON GPU                                                                                                 #
         ################################################################################################################
 
-        if GPU_OPTIMIZATION_AVAILABLE:
+        name_gpu = jit._get_unique_function_name()
 
-            ############################################################################################################
+        code_gpu = jit._patch_gpu_code(f'def {name_gpu} {code_raw}')
 
-            name_gpu = jit._get_unique_function_name()
+        exec(code_gpu, funct.__globals__)
 
-            code_gpu = jit._patch_gpu_code(f'def {name_gpu} {code_raw}')
+        funct_gpu = eval(name_gpu, funct.__globals__)
 
-            exec(code_gpu, funct.__globals__)
+        funct.__globals__[funct.__name__.replace('_xpu', '_gpu')] = cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else funct_gpu
 
-            ############################################################################################################
+        ################################################################################################################
+        # NUMBA ON CPU                                                                                                 #
+        ################################################################################################################
 
-            funct.__globals__[funct.__name__.replace('_xpu', '_gpu')] = cu.jit(eval(name_gpu, funct.__globals__), device = True)
+        name_cpu = jit._get_unique_function_name()
 
-        else:
+        code_cpu = jit._patch_cpu_code(f'def {name_cpu} {code_raw}')
 
-            funct.__globals__[funct.__name__.replace('_xpu', '_gpu')] = funct
+        exec(code_cpu, funct.__globals__)
+
+        funct_cpu = eval(name_cpu, funct.__globals__)
+
+        funct.__globals__[funct.__name__.replace('_xpu', '_cpu')] = nb.njit(funct_cpu, parallel = self.parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu
+
+        ################################################################################################################
+        # CPYTHON                                                                                                      #
+        ################################################################################################################
+
+        funct.__globals__[funct.__name__] = funct_cpu
 
         ################################################################################################################
 

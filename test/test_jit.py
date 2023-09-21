@@ -9,7 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 ########################################################################################################################
 
-import unittest
+import pytest
 import decontamination
 
 import numpy as np
@@ -34,54 +34,43 @@ def foo_xpu(a, b):
 @decontamination.jit(gpu_kernel = True)
 def foo_kernel_gpu(result, a, b):
 
-    i = cu.threadIdx.x + cu.blockIdx.x * cu.blockDim.x
+    i = cu.grid(1)
 
     if i < result.shape[0]:
 
+        # noinspection PyUnresolvedReferences
         result[i] = foo_gpu(a[i], b[i])
 
 ########################################################################################################################
 
-class JITTests(unittest.TestCase):
+def test_xpu():
 
-    ####################################################################################################################
+    # noinspection PyUnresolvedReferences
+    assert np.array_equal(foo_xpu(A, B), C)
 
-    def test1(self):
+########################################################################################################################
 
-        print('Running foo_xpu...')
+def test_cpu():
 
-        self.assertTrue(np.array_equal(foo_xpu(A, B), C))
+    # noinspection PyUnresolvedReferences
+    assert np.array_equal(foo_cpu(A, B), C)
 
-    ####################################################################################################################
+########################################################################################################################
 
-    def test2(self):
+def test_gpu():
 
-        print('Running foo_cpu...')
+    if decontamination.GPU_OPTIMIZATION_AVAILABLE:
 
-        self.assertTrue(np.array_equal(foo_cpu(A, B), C))
+        result = cu.device_array_like(C)
 
-    ####################################################################################################################
+        foo_kernel_gpu[32, result.size](result, A, B)
 
-    def test3(self):
-
-        if decontamination.GPU_OPTIMIZATION_AVAILABLE:
-
-            print('Running foo_gpu...')
-
-            result = cu.device_array_like(C)
-
-            foo_kernel_gpu[32, result.size](result, A, B)
-
-            self.assertTrue(np.array_equal(result.copy_to_host(), C))
-
-        else:
-
-            print('Skipping foo_gpu...')
+        assert np.array_equal(result.copy_to_host(), C)
 
 ########################################################################################################################
 
 if __name__ == '__main__':
 
-    unittest.main()
+    pytest.main([__file__])
 
 ########################################################################################################################

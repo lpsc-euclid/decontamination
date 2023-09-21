@@ -21,7 +21,7 @@ class SOM_PCA(abstract_som.AbstractSOM):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None, seed: int = None):
+    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None):
 
         """
         Initializes a Self Organizing Maps.
@@ -42,11 +42,9 @@ class SOM_PCA(abstract_som.AbstractSOM):
             Neural network data type (default: **np.float32**).
         topology : typing.Optional[str]
             Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
-        seed : int
-            Seed for random generator (default: **None**).
         """
 
-        super().__init__(m, n, dim, dtype, topology, seed)
+        super().__init__(m, n, dim, dtype, topology)
 
     ####################################################################################################################
 

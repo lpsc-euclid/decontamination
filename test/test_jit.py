@@ -43,13 +43,6 @@ def foo_kernel_gpu(result, a, b):
 
 ########################################################################################################################
 
-def test_xpu():
-
-    # noinspection PyUnresolvedReferences
-    assert np.array_equal(foo_xpu(A, B), C)
-
-########################################################################################################################
-
 def test_cpu():
 
     # noinspection PyUnresolvedReferences

@@ -26,13 +26,20 @@ __pdoc__['GPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba GPU optimi
 
 ########################################################################################################################
 
+def _dont_call():
+
+    raise Exception('Don\'t call a `*_xpu` function')
+
+########################################################################################################################
+
 class cu_kernel:
 
     ####################################################################################################################
 
-    def __init__(self, func):
+    def __init__(self, func, parallel = False):
 
         self.func = func
+        self.parallel = parallel
 
     ####################################################################################################################
 
@@ -117,26 +124,45 @@ class jit(object):
     ####################################################################################################################
 
     @staticmethod
-    def _patch_cpu_code(code):
+    def _patch_cpu_code(code: str):
 
         return jit.process_directives(
             code.replace('_xpu', '_cpu')
                 .replace('xpu.local_empty', 'np.empty')
                 .replace('xpu.shared_empty', 'np.empty')
-                .replace('xpu.syncthreads', '#######')
-        , '!--BEGIN-GPU--', '!--END-GPU--')
+                .replace('xpu.syncthreads', '#######'),
+            '!--BEGIN-GPU--',
+            '!--END-GPU--'
+        )
 
     ####################################################################################################################
 
     @staticmethod
-    def _patch_gpu_code(code):
+    def _patch_gpu_code(code: str):
 
-        return jit.process_directives(
-            code.replace('_xpu', '_gpu')
-                .replace('xpu.local_empty', 'cu.local.array')
-                .replace('xpu.shared_empty', 'cu.shared.array')
-                .replace('xpu.syncthreads', 'cu.syncthreads')
-        , '!--BEGIN-CPU--', '!--END-CPU--')
+        if GPU_OPTIMIZATION_AVAILABLE:
+
+            return jit.process_directives(
+                code.replace('_xpu', '_gpu')
+                    .replace('np.prange', 'range')
+                    .replace('xpu.local_empty', 'cu.local.array')
+                    .replace('xpu.shared_empty', 'cu.shared.array')
+                    .replace('xpu.syncthreads', 'cu.syncthreads'),
+                '!--BEGIN-CPU--',
+                '!--END-CPU--'
+            )
+
+        else:
+
+            return jit.process_directives(
+                code.replace('_xpu', '_gpu')
+                    .replace('np.prange', 'range')
+                    .replace('xpu.local_empty', 'np.empty')
+                    .replace('xpu.shared_empty', 'np.empty')
+                    .replace('xpu.syncthreads', '#######'),
+                '!--BEGIN-CPU--',
+                '!--END-CPU--'
+            )
 
     ####################################################################################################################
 
@@ -168,23 +194,11 @@ class jit(object):
         # NUMBA ON GPU                                                                                                 #
         ################################################################################################################
 
-        name_gpu = jit._get_unique_function_name()
-
-        code_gpu = jit._patch_gpu_code(f'def {name_gpu} {code_raw}')
-
-        exec(code_gpu, funct.__globals__)
-
-        funct_gpu = eval(name_gpu, funct.__globals__)
-
-        funct.__globals__[funct.__name__.replace('_xpu', '_gpu')] = cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else funct_gpu
-
-        ################################################################################################################
-        # NUMBA ON CPU                                                                                                 #
-        ################################################################################################################
-
         name_cpu = jit._get_unique_function_name()
 
         code_cpu = jit._patch_cpu_code(f'def {name_cpu} {code_raw}')
+
+        ################################################################################################################
 
         exec(code_cpu, funct.__globals__)
 
@@ -193,10 +207,20 @@ class jit(object):
         funct.__globals__[funct.__name__.replace('_xpu', '_cpu')] = nb.njit(funct_cpu, parallel = self.parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu
 
         ################################################################################################################
-        # CPYTHON                                                                                                      #
+        # NUMBA ON CPU                                                                                                 #
         ################################################################################################################
 
-        funct.__globals__[funct.__name__] = funct_cpu
+        name_gpu = jit._get_unique_function_name()
+
+        code_gpu = jit._patch_gpu_code(f'def {name_gpu} {code_raw}')
+
+        ################################################################################################################
+
+        exec(code_gpu, funct.__globals__)
+
+        funct_gpu = eval(name_gpu, funct.__globals__)
+
+        funct.__globals__[funct.__name__.replace('_xpu', '_gpu')] = cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else (nb.njit(funct_gpu, parallel = self.parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_gpu)
 
         ################################################################################################################
 

@@ -26,28 +26,41 @@ __pdoc__['GPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba GPU optimi
 
 ########################################################################################################################
 
-def _gpu_kernel(kernel_funct):
+class DecoratedFunction:
 
-    @functools.wraps(kernel_funct)
-    def wrapper(threads_per_blocks, data_sizes, *args, **kwargs):
+    ####################################################################################################################
 
-        if not isinstance(data_sizes, tuple):
-            data_sizes = (
-                data_sizes,
-            )
+    def __init__(self, func):
 
-        if not isinstance(threads_per_blocks, tuple):
-            threads_per_blocks = (
-                threads_per_blocks,
-            )
+        self.func = func
+
+    ####################################################################################################################
+
+    def __getitem__(self, extra_params):
+
+        ####################################################################################################################
+
+        if not isinstance(extra_params, tuple) or len(extra_params) != 2:
+
+            raise ValueError('Two parameters expected: data_sizes and threads_per_blocks')
+
+        ####################################################################################################################
+
+        data_sizes = extra_params[0] if isinstance(extra_params[0], tuple) else (extra_params[0], )
+
+        threads_per_blocks = extra_params[1] if isinstance(extra_params[0], tuple) else (extra_params[1], )
 
         num_blocks = tuple((s + t - 1) // t for s, t in zip(data_sizes, threads_per_blocks))
 
-        modified_args = [cu.to_device(arg) if isinstance(arg, np.ndarray) else arg for arg in args]
+        ####################################################################################################################
 
-        cu.jit(kernel_funct, device = False)[num_blocks, threads_per_blocks](*modified_args, **kwargs)
+        def wrapper(*args, **kwargs):
 
-    return wrapper
+            return cu.jit(self.func, device = False)[num_blocks, threads_per_blocks](*args, **kwargs)
+
+        ####################################################################################################################
+
+        return wrapper
 
 ########################################################################################################################
 
@@ -125,7 +138,7 @@ class jit(object):
 
         elif self.gpu_kernel:
 
-            return _gpu_kernel(funct)
+            return DecoratedFunction(funct)
 
         elif not funct.__name__.endswith('_xpu'):
 

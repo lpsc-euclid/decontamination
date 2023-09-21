@@ -26,7 +26,7 @@ __pdoc__['GPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba GPU optimi
 
 ########################################################################################################################
 
-class DecoratedFunction:
+class cu_kernel:
 
     ####################################################################################################################
 
@@ -140,7 +140,7 @@ class jit(object):
 
         elif self.gpu_kernel:
 
-            return DecoratedFunction(funct)
+            return cu_kernel(funct)
 
         elif not funct.__name__.endswith('_xpu'):
 

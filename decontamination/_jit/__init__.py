@@ -52,13 +52,14 @@ class DecoratedFunction:
 
         num_blocks = tuple((s + t - 1) // t for s, t in zip(data_sizes, threads_per_blocks))
 
+        print(data_sizes)
+        print(threads_per_blocks)
+        print(num_blocks)
+
         ####################################################################################################################
 
         def wrapper(*args, **kwargs):
 
-            print(data_sizes)
-            print(threads_per_blocks)
-            print(num_blocks)
             return cu.jit(self.func, device = False)[num_blocks, threads_per_blocks](*args, **kwargs)
 
         ####################################################################################################################

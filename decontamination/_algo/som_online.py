@@ -57,9 +57,9 @@ class SOM_Online(abstract_som.AbstractSOM):
 
         ################################################################################################################
 
-        self._epochs = None
+        self._n_epochs = None
 
-        self._n_max_vectors = None
+        self._n_vectors = None
 
         ################################################################################################################
 
@@ -84,8 +84,8 @@ class SOM_Online(abstract_som.AbstractSOM):
             'mode': '__MODE__',
             'alpha': '_alpha',
             'sigma': '_sigma',
-            'epochs': '_epochs',
-            'n_max_vectors': '_n_max_vectors',
+            'n_epochs': '_n_epochs',
+            'n_vectors': '_n_vectors',
         }, {
             'quantization_errors': '_quantization_errors',
             'topographic_errors': '_topographic_errors',
@@ -108,8 +108,8 @@ class SOM_Online(abstract_som.AbstractSOM):
             'mode': '__MODE__',
             'alpha': '_alpha',
             'sigma': '_sigma',
-            'epochs': '_epochs',
-            'n_max_vectors': '_n_max_vectors',
+            'n_epochs': '_n_epochs',
+            'n_vectors': '_n_vectors',
         }, {
             'quantization_errors': '_quantization_errors',
             'topographic_errors': '_topographic_errors',
@@ -119,11 +119,11 @@ class SOM_Online(abstract_som.AbstractSOM):
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, epoch: int, epochs: int, alpha0: float, sigma0: float, m: int, n: int):
+    def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, mn: int):
 
         ################################################################################################################
 
-        decay_function = asymptotic_decay(epoch, epochs)
+        decay_function = asymptotic_decay(cur_epoch, n_epochs)
 
         alpha = alpha0 * decay_function
 
@@ -133,22 +133,22 @@ class SOM_Online(abstract_som.AbstractSOM):
 
         for i in range(data.shape[0]):
 
-            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, m, n)
+            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, mn)
 
-            quantization_errors[epoch] += quantization_error
-            topographic_errors[epoch] += topographic_error
+            quantization_errors[cur_epoch] += quantization_error
+            topographic_errors[cur_epoch] += topographic_error
 
     ####################################################################################################################
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, n_vectors: int, n_max_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, m: int, n: int):
+    def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, mn: int):
 
         for i in range(data.shape[0]):
 
             ############################################################################################################
 
-            decay_function = asymptotic_decay(n_vectors + i, n_max_vectors)
+            decay_function = asymptotic_decay(cur_vector + i, n_vectors)
 
             alpha = alpha0 * decay_function
 
@@ -156,16 +156,16 @@ class SOM_Online(abstract_som.AbstractSOM):
 
             ############################################################################################################
 
-            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, m, n)
+            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, mn)
 
-            err_bin = math.floor(n_err_bins * (n_vectors + i) / n_max_vectors)
+            err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
 
             quantization_errors[err_bin] += quantization_error
             topographic_errors[err_bin] += topographic_error
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], epochs: typing.Optional[int] = None, n_max_vectors: typing.Optional[int] = None, n_error_bins: typing.Optional[int] = 10, show_progress_bar: bool = True) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, n_error_bins: typing.Optional[int] = 10, show_progress_bar: bool = True) -> None:
 
         """
         Trains the neural network.
@@ -174,10 +174,10 @@ class SOM_Online(abstract_som.AbstractSOM):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
-        epochs : typing.Optional[int]
-            ???
-        n_max_vectors : typing.Optional[int]
-            ???
+        n_epochs : typing.Optional[int]
+            Number of epochs to train for (default: None).
+        n_vectors : typing.Optional[int]
+            Number of vectors to train for (default: None).
         n_error_bins : int
             ???
         show_progress_bar : bool
@@ -190,31 +190,31 @@ class SOM_Online(abstract_som.AbstractSOM):
 
         ################################################################################################################
 
-        n_vectors = 0
+        cur_vector = 0
 
-        self._epochs = epochs
+        self._n_epochs = n_epochs
 
-        self._n_max_vectors = n_max_vectors
+        self._n_vectors = n_vectors
 
-        if not (epochs is None) and (n_max_vectors is None):
+        if not (n_epochs is None) and (n_vectors is None):
 
             ############################################################################################################
             # TRAINING BY NUMBER OF EPOCHS                                                                             #
             ############################################################################################################
 
-            self._quantization_errors = np.zeros(epochs, dtype = np.float32)
+            self._quantization_errors = np.zeros(n_epochs, dtype = np.float32)
 
-            self._topographic_errors = np.zeros(epochs, dtype = np.float32)
+            self._topographic_errors = np.zeros(n_epochs, dtype = np.float32)
 
             ############################################################################################################
 
-            for epoch in tqdm.trange(epochs, disable = not show_progress_bar):
+            for cur_epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
 
                 generator = generator_builder()
 
                 for data in generator():
 
-                    n_vectors += data.shape[0]
+                    cur_vector += data.shape[0]
 
                     SOM_Online._train_step1_epoch(
                         self._weights,
@@ -222,25 +222,24 @@ class SOM_Online(abstract_som.AbstractSOM):
                         self._topographic_errors,
                         self._topography,
                         data,
-                        epoch,
-                        epochs,
+                        cur_epoch,
+                        n_epochs,
                         self._alpha,
                         self._sigma,
-                        self._m,
-                        self._n
+                        self._m * self._n
                     )
 
             ############################################################################################################
 
-            if n_vectors > 0:
+            if cur_vector > 0:
 
-                self._quantization_errors = self._quantization_errors * epochs / n_vectors
+                self._quantization_errors = self._quantization_errors * n_epochs / cur_vector
 
-                self._topographic_errors = self._topographic_errors * epochs / n_vectors
+                self._topographic_errors = self._topographic_errors * n_epochs / cur_vector
 
             ############################################################################################################
 
-        elif (epochs is None) and not (n_max_vectors is None):
+        elif (n_epochs is None) and not (n_vectors is None):
 
             ############################################################################################################
             # TRAINING BY NUMBER OF VECTORS                                                                            #
@@ -252,11 +251,13 @@ class SOM_Online(abstract_som.AbstractSOM):
 
             ############################################################################################################
 
+            progress_bar = tqdm.tqdm(total = n_vectors, disable = not show_progress_bar)
+
             generator = generator_builder()
 
             for data in generator():
 
-                count = min(data.shape[0], n_max_vectors - n_vectors)
+                count = min(data.shape[0], n_vectors - cur_vector)
 
                 SOM_Online._train_step1_iter(
                     self._weights,
@@ -264,39 +265,40 @@ class SOM_Online(abstract_som.AbstractSOM):
                     self._topographic_errors,
                     self._topography,
                     data[0: count],
+                    cur_vector,
                     n_vectors,
-                    n_max_vectors,
                     n_error_bins,
                     self._alpha,
                     self._sigma,
-                    self._m,
-                    self._n
+                    self._m * self._n
                 )
 
-                n_vectors += count
+                cur_vector += count
 
-                if n_vectors >= n_max_vectors:
+                progress_bar.update(count)
+
+                if cur_vector >= n_vectors:
 
                     break
 
             ############################################################################################################
 
-            if n_vectors > 0:
+            if cur_vector > 0:
 
-                self._quantization_errors = self._quantization_errors * n_error_bins / n_vectors
+                self._quantization_errors = self._quantization_errors * n_error_bins / cur_vector
 
-                self._topographic_errors = self._topographic_errors * n_error_bins / n_vectors
+                self._topographic_errors = self._topographic_errors * n_error_bins / cur_vector
 
             ############################################################################################################
 
         else:
 
-            raise Exception('Invalid training method, use either `epochs` or `n_max_vectors`.')
+            raise Exception('Invalid training method, use either `n_epochs` or `n_vectors`.')
 
 ########################################################################################################################
 
 @nb.njit(parallel = False)
-def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, alpha: float, sigma: float, m: int, n: int):
+def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, alpha: float, sigma: float, mn: int):
 
     ####################################################################################################################
     # BMUS CALCULATION                                                                                                 #
@@ -307,7 +309,7 @@ def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray
     min_index2 = 0
     min_index1 = 0
 
-    for min_index0 in range(m * n):
+    for min_index0 in range(mn):
 
         cur_distance = np.sum((weights[min_index0] - vector) ** 2)
 
@@ -322,9 +324,9 @@ def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray
     # NEIGHBORHOOD CALCULATION                                                                                         #
     ####################################################################################################################
 
-    bmu_distance_squares = np.sum((topography - topography[min_index1]) ** 2, axis = -1)
+    bmu_distances = np.sum((topography - topography[min_index1]) ** 2, axis = -1)
 
-    neighbourhood_op = alpha * np.exp(-bmu_distance_squares / (2.0 * sigma ** 2))
+    neighbourhood_op = alpha * np.exp(-bmu_distances / (2.0 * sigma ** 2))
 
     ####################################################################################################################
     # UPDATE WEIGHTS                                                                                                   #
@@ -332,6 +334,8 @@ def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray
 
     weights += np.expand_dims(neighbourhood_op, axis = -1) * (vector - weights)
 
+    ####################################################################################################################
+    # UPDATE ERRORS                                                                                                    #
     ####################################################################################################################
 
     if np.sum((topography[min_index1] - topography[min_index2]) ** 2) > 2:

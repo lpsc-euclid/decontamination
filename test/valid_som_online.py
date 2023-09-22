@@ -70,11 +70,11 @@ som_ref.train(data, data.shape[0])
 
 ########################################################################################################################
 
-som_next = decontamination.SOM_Online(M, N, 4)#, alpha = 0.3, sigma = max(M, N) / 2.0)
+som_next = decontamination.SOM_Online(M, N, 4, alpha = 0.3, sigma = max(M, N) / 2.0)
 
 som_next.init_from(som_new)
 
-#som_next.train(data)
+som_next.train(data)
 
 ########################################################################################################################
 

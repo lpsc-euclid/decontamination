@@ -68,7 +68,8 @@ for i in range(2):
 ########################################################################################################################
 
 start = timeit.default_timer()
-som_ref.train(data, 3, use_epochs = True)
+#som_ref.train(data, 3, use_epochs = True)
+som_ref.train(data, data.shape[0], use_epochs = False)
 print('minisom training time: ', (timeit.default_timer() - start))
 
 ########################################################################################################################
@@ -78,7 +79,8 @@ som_next = decontamination.SOM_Online(M, N, 4, alpha = 0.3, sigma = max(M, N) / 
 som_next.init_from(som_new)
 
 start = timeit.default_timer()
-som_next.train(data, epochs = 3)
+#som_next.train(data, epochs = 3)
+som_next.train(data, n_max_vectors = data.shape[0])
 print('som online training time: ', (timeit.default_timer() - start))
 
 ########################################################################################################################

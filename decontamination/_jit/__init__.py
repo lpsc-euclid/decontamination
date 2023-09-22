@@ -4,6 +4,7 @@
 import os
 import re
 import inspect
+import typing
 
 import numpy as np
 import numba as nb
@@ -26,9 +27,27 @@ __pdoc__['GPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba GPU optimi
 
 ########################################################################################################################
 
-def _dont_call():
+class nb_kernel:
 
-    raise Exception('Don\'t call a `*_xpu` function')
+    ####################################################################################################################
+
+    def __init__(self, func: typing.Callable, parallel: bool):
+
+        self.func = nb.njit(func, parallel = parallel)
+
+    ####################################################################################################################
+
+    def __getitem__(self, extra_params):
+
+        ################################################################################################################
+
+        def wrapper(*args, **kwargs):
+
+            return self.func(*args, **kwargs)
+
+        ################################################################################################################
+
+        return wrapper
 
 ########################################################################################################################
 
@@ -36,10 +55,9 @@ class cu_kernel:
 
     ####################################################################################################################
 
-    def __init__(self, func, parallel = False):
+    def __init__(self, func: typing.Callable):
 
-        self.func = func
-        self.parallel = parallel
+        self.func = cu.jit(func, device = False) if GPU_OPTIMIZATION_AVAILABLE else func
 
     ####################################################################################################################
 
@@ -63,9 +81,15 @@ class cu_kernel:
 
         def wrapper(*args, **kwargs):
 
-            args = [cu.to_device(arg) if isinstance(arg, np.ndarray) else arg for arg in args]
+            if GPU_OPTIMIZATION_AVAILABLE:
 
-            return cu.jit(self.func, device = False)[num_blocks, threads_per_blocks](*args, **kwargs)
+                args = [cu.to_device(arg) if isinstance(arg, np.ndarray) else arg for arg in args]
+
+                return self.func[num_blocks, threads_per_blocks](*args, **kwargs)
+
+            else:
+
+                return self.func(*args, **kwargs)
 
         ################################################################################################################
 
@@ -168,15 +192,7 @@ class jit(object):
 
     def __call__(self, funct):
 
-        if self.gpu_kernel:
-
-            return cu_kernel(funct)
-
-        elif self.cpu_kernel:
-
-            return nb.njit(funct, parallel = self.parallel)
-
-        elif not funct.__name__.endswith('_xpu'):
+        if not self.gpu_kernel and not self.cpu_kernel and not funct.__name__.endswith('_xpu'):
 
             raise Exception(f'Function `{funct.__name__}` name must ends with `_xpu`')
 
@@ -194,33 +210,53 @@ class jit(object):
         # NUMBA ON GPU                                                                                                 #
         ################################################################################################################
 
-        name_cpu = jit._get_unique_function_name()
+        if not self.gpu_kernel:
 
-        code_cpu = jit._patch_cpu_code(f'def {name_cpu} {code_raw}')
+            ############################################################################################################
 
-        ################################################################################################################
+            name_cpu = jit._get_unique_function_name()
 
-        exec(code_cpu, funct.__globals__)
+            code_cpu = jit._patch_cpu_code(f'def {name_cpu} {code_raw}')
 
-        funct_cpu = eval(name_cpu, funct.__globals__)
+            ############################################################################################################
 
-        funct.__globals__[funct.__name__.replace('_xpu', '_cpu')] = nb.njit(funct_cpu, parallel = self.parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu
+            exec(code_cpu, funct.__globals__)
+
+            funct_cpu = eval(name_cpu, funct.__globals__)
+
+            if self.cpu_kernel:
+
+                funct = nb_kernel(funct_cpu, parallel = self.parallel)
+
+            else:
+
+                funct.__globals__[funct.__name__.replace('_xpu', '_cpu')] = nb.njit(funct_cpu, parallel = self.parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu
 
         ################################################################################################################
         # NUMBA ON CPU                                                                                                 #
         ################################################################################################################
 
-        name_gpu = jit._get_unique_function_name()
+        if not self.cpu_kernel:
 
-        code_gpu = jit._patch_gpu_code(f'def {name_gpu} {code_raw}')
+            ############################################################################################################
 
-        ################################################################################################################
+            name_gpu = jit._get_unique_function_name()
 
-        exec(code_gpu, funct.__globals__)
+            code_gpu = jit._patch_gpu_code(f'def {name_gpu} {code_raw}')
 
-        funct_gpu = eval(name_gpu, funct.__globals__)
+            ############################################################################################################
 
-        funct.__globals__[funct.__name__.replace('_xpu', '_gpu')] = cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else (nb.njit(funct_gpu, parallel = self.parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_gpu)
+            exec(code_gpu, funct.__globals__)
+
+            funct_gpu = eval(name_gpu, funct.__globals__)
+
+            if self.gpu_kernel:
+
+                funct = cu_kernel(funct_gpu)
+
+            else:
+
+                funct.__globals__[funct.__name__.replace('_xpu', '_gpu')] = cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else funct_gpu
 
         ################################################################################################################
 

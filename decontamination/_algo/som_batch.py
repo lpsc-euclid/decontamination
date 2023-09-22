@@ -41,8 +41,6 @@ class SOM_Batch(abstract_som.AbstractSOM):
             Starting value of the learning rate (default: 0.3).
         sigma : float
             Starting value of the neighborhood radius (default: \\( \\mathrm{max}(m,n)/2 \\)).
-        decay_function : function
-            Function that reduces alpha and sigma at each iteration (default: \\( 1/\\left(1+2\\frac{epoch}{epochs}\\right) \\)).
         """
 
         ################################################################################################################
@@ -50,10 +48,6 @@ class SOM_Batch(abstract_som.AbstractSOM):
         super().__init__(m, n, dim, dtype, topology)
 
         ################################################################################################################
-
-        self._epochs = 0
-
-        self._decay_function = decay_function
 
         self._alpha = 0.3 if alpha is None else dtype(alpha)
 

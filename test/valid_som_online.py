@@ -6,6 +6,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 ########################################################################################################################
+import timeit
 
 import minisom
 import decontamination
@@ -66,7 +67,9 @@ for i in range(2):
 
 ########################################################################################################################
 
-som_ref.train(data, data.shape[0])
+start = timeit.default_timer()
+som_ref.train(data, data.shape[0] + 10_000, use_epochs = False)
+print('minisom training time: ', (timeit.default_timer() - start))
 
 ########################################################################################################################
 
@@ -74,7 +77,9 @@ som_next = decontamination.SOM_Online(M, N, 4, alpha = 0.3, sigma = max(M, N) / 
 
 som_next.init_from(som_new)
 
-som_next.train(data)
+start = timeit.default_timer()
+som_next.train(data, iterations = data.shape[0] + 10_000, use_epochs = False)
+print('som online training time: ', (timeit.default_timer() - start))
 
 ########################################################################################################################
 

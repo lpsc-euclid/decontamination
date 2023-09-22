@@ -21,7 +21,7 @@ class SOM_Online(abstract_som.AbstractSOM):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None, alpha: float = None, sigma: float = None, decay_function = asymptotic_decay):
+    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None, alpha: float = None, sigma: float = None):
 
         """
         Constructor for the Abstract Self Organizing Map (SOM).
@@ -42,8 +42,6 @@ class SOM_Online(abstract_som.AbstractSOM):
             Starting value of the learning rate (default: 0.3).
         sigma : float
             Starting value of the neighborhood radius (default: \\( \\mathrm{max}(m,n)/2 \\)).
-        decay_function : function
-            Function that reduces alpha and sigma at each iteration (default: \\( 1/\\left(1+2\\frac{epoch}{epochs}\\right) \\)).
         """
 
         ################################################################################################################
@@ -53,8 +51,6 @@ class SOM_Online(abstract_som.AbstractSOM):
         ################################################################################################################
 
         self._epochs = 0
-
-        self._decay_function = decay_function
 
         self._alpha = 0.3 if alpha is None else dtype(alpha)
 
@@ -113,49 +109,38 @@ class SOM_Online(abstract_som.AbstractSOM):
     ####################################################################################################################
 
     @staticmethod
-    # @nb.njit
-    def _train(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, alpha: float, sigma: float, m: int, n: int):
+    @nb.njit
+    def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, epoch, epochs: float, alpha0: float, sigma0: float, m: int, n: int):
+
+        decay_function = asymptotic_decay(epoch, epochs)
+
+        alpha = alpha0 * decay_function
+
+        sigma = sigma0 * decay_function
 
         for i in range(data.shape[0]):
 
-            vector = data[i]
-
-            ############################################################################################################
-            # BMUS CALCULATION                                                                                         #
-            ############################################################################################################
-
-            min_dist = 1.0e99
-            min_index1 = 0
-            min_index2 = 0
-
-            for cur_index in range(m * n):
-
-                dist = np.sum((weights[cur_index] - vector) ** 2)
-
-                if min_dist > dist:
-
-                    min_index2 = min_index1
-                    min_index1 = cur_index
-                    min_dist = dist
-
-            ############################################################################################################
-            # NEIGHBORHOOD CALCULATION                                                                                 #
-            ############################################################################################################
-
-            bmu_distance_squares = np.sum((topography - topography[min_index1]) ** 2, axis = -1)
-
-            neighbourhood_op = np.exp(- bmu_distance_squares / (2.0 * np.square(sigma)))
-
-            ############################################################################################################
-            # UPDATE WEIGHTS                                                                                           #
-            ############################################################################################################
-
-            weights += alpha * np.expand_dims(neighbourhood_op, axis =-1) * (vector - weights)
+            _train_step2(weights, quantization_errors, topographic_errors, topography, data[i], alpha, sigma, m, n)
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], epochs: int = 1, show_progress_bar: bool = True) -> None:
+    @staticmethod
+    @nb.njit
+    def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, iter, iters: float, alpha0: float, sigma0: float, m: int, n: int):
 
+        for i in range(data.shape[0]):
+
+            decay_function = asymptotic_decay(iter + i, iters)
+
+            alpha = alpha0 * decay_function
+
+            sigma = sigma0 * decay_function
+
+            _train_step2(weights, quantization_errors, topographic_errors, topography, data[i], alpha, sigma, m, n)
+
+    ####################################################################################################################
+
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], iterations: int = 1, use_epochs: bool = False, show_progress_bar: bool = True) -> None:
 
         """
         Trains the neural network.
@@ -164,7 +149,7 @@ class SOM_Online(abstract_som.AbstractSOM):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator of generator.
-        epochs : int
+        iterations : int
             Number of training epochs (default: 1).
         show_progress_bar : bool
             Specifying whether a progress bar have to be shown (default: **True**).
@@ -174,20 +159,103 @@ class SOM_Online(abstract_som.AbstractSOM):
 
         generator_builder = dataset_to_generator_builder(dataset)
 
-        generator = generator_builder()
+        ################################################################################################################
+
+        if use_epochs:
+
+            for iteration in tqdm.trange(iterations, disable = not show_progress_bar):
+
+                generator = generator_builder()
+
+                for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
+
+                    SOM_Online._train_step1_epoch(
+                        self._weights,
+                        self._quantization_errors,
+                        self._topographic_errors,
+                        self._topography,
+                        data,
+                        iteration,
+                        iterations,
+                        self._alpha,
+                        self._sigma,
+                        self._m,
+                        self._n
+                    )
 
         ################################################################################################################
 
-        for epoch in tqdm.trange(epochs, disable = not show_progress_bar):
+        else:
 
-            decay_function = self._decay_function(epoch, epochs)
+            iteration = 0
 
-            alpha = self._alpha * decay_function
+            while True:
 
-            sigma = self._sigma * decay_function
+                generator = generator_builder()
 
-            for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
+                for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
 
-                SOM_Online._train(self._weights, self._quantization_errors, self._topographic_errors, self._topography, data, alpha, sigma, self._m, self._n)
+                    count = min(data.shape[0], iterations - iteration)
+
+                    SOM_Online._train_step1_iter(
+                        self._weights,
+                        self._quantization_errors,
+                        self._topographic_errors,
+                        self._topography,
+                        data[0: count],
+                        iteration,
+                        iterations,
+                        self._alpha,
+                        self._sigma,
+                        self._m,
+                        self._n
+                    )
+
+                    iteration += count
+
+                    if iteration == iterations:
+
+                        break
+
+                if iteration == iterations:
+
+                    break
+
+########################################################################################################################
+
+@nb.njit(parallel = False)
+def _train_step2(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, vector: np.ndarray, alpha: float, sigma: float, m: int, n: int):
+
+    ####################################################################################################################
+    # BMUS CALCULATION                                                                                                 #
+    ####################################################################################################################
+
+    min_dist = 1.0e99
+    min_index1 = 0
+    min_index2 = 0
+
+    for cur_index in range(m * n):
+
+        dist = np.sum((weights[cur_index] - vector) ** 2)
+
+        if min_dist > dist:
+
+            min_index2 = min_index1
+            min_index1 = cur_index
+            min_dist = dist
+
+    ####################################################################################################################
+    # NEIGHBORHOOD CALCULATION                                                                                         #
+    ####################################################################################################################
+
+    bmu_distance_squares = np.sum((topography - topography[min_index1]) ** 2, axis = -1)
+
+    neighbourhood_op = np.exp(- bmu_distance_squares / (2.0 * np.square(sigma)))
+
+    ####################################################################################################################
+    # UPDATE WEIGHTS                                                                                                   #
+    ####################################################################################################################
+
+    weights += alpha * np.expand_dims(neighbourhood_op, axis =-1) * (vector - weights)
 
 ########################################################################################################################

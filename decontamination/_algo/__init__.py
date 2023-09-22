@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
+import numba as nb
+
+########################################################################################################################
+
 def dataset_to_generator_builder(dataset):
 
     return dataset if callable(dataset) else lambda: lambda: (dataset, )
 
 ########################################################################################################################
 
+@nb.njit(parallel = False)
 def asymptotic_decay(epoch: int, epochs: int) -> float:
 
     return 1.0 / (1.0 + 2.0 * epoch / epochs)

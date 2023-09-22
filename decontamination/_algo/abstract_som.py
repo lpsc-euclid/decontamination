@@ -54,6 +54,11 @@ class AbstractSOM(abc.ABC):
 
         self._weights = np.empty(shape = (self._m * self._n, self._dim), dtype = self._dtype)
 
+        ################################################################################################################
+
+        self._quantization_errors = np.empty(0, dtype = np.float32)
+        self._topographic_errors = np.empty(0, dtype = np.float32)
+
     ####################################################################################################################
 
     @staticmethod
@@ -263,6 +268,26 @@ class AbstractSOM(abc.ABC):
         """
 
         return self._weights.reshape((self._m, self._n, self._dim))
+
+    ####################################################################################################################
+
+    def get_quantization_errors(self) -> np.ndarray:
+
+        """
+        Returns the quantization error.
+        """
+
+        return self._quantization_errors
+
+    ####################################################################################################################
+
+    def get_topographic_errors(self) -> np.ndarray:
+
+        """
+        Returns the topographic errors.
+        """
+
+        return self._topographic_errors
 
     ####################################################################################################################
 

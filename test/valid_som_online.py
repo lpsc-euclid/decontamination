@@ -68,7 +68,7 @@ for i in range(2):
 ########################################################################################################################
 
 start = timeit.default_timer()
-som_ref.train(data, data.shape[0] + 10_000, use_epochs = False)
+som_ref.train(data, 3, use_epochs= True)
 print('minisom training time: ', (timeit.default_timer() - start))
 
 ########################################################################################################################
@@ -78,7 +78,7 @@ som_next = decontamination.SOM_Online(M, N, 4, alpha = 0.3, sigma = max(M, N) / 
 som_next.init_from(som_new)
 
 start = timeit.default_timer()
-som_next.train(data, iterations = data.shape[0] + 10_000, use_epochs = False)
+som_next.train(data, epochs = 3)
 print('som online training time: ', (timeit.default_timer() - start))
 
 ########################################################################################################################
@@ -106,8 +106,17 @@ for i in range(2):
 
 ########################################################################################################################
 
+print(som_ref.quantization_error(data))
+print(som_ref.topographic_error(data))
+
+print(som_next.get_quantization_errors())
+print(som_next.get_topographic_errors())
+
+########################################################################################################################
+
 plt.tight_layout()
 
 plt.show()
 
 ########################################################################################################################
+

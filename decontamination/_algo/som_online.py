@@ -158,10 +158,10 @@ class SOM_Online(abstract_som.AbstractSOM):
 
             quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, mn)
 
-            err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
+            cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
 
-            quantization_errors[err_bin] += quantization_error
-            topographic_errors[err_bin] += topographic_error
+            quantization_errors[cur_err_bin] += quantization_error
+            topographic_errors[cur_err_bin] += topographic_error
 
     ####################################################################################################################
 

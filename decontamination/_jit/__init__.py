@@ -30,7 +30,7 @@ __pdoc__['GPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba GPU optimi
 
 def nb_to_device(ndarray):
 
-    # future evolution
+    # for future needs
 
     return ndarray
 
@@ -155,9 +155,9 @@ class Kernel:
 
         ################################################################################################################
 
-        threads_per_blocks = kernel_params[1] if isinstance(kernel_params[1], tuple) else (kernel_params[1],)
+        threads_per_blocks = kernel_params[1] if isinstance(kernel_params[1], tuple) else (kernel_params[1], )
 
-        data_sizes = kernel_params[2] if isinstance(kernel_params[2], tuple) else (kernel_params[2],)
+        data_sizes = kernel_params[2] if isinstance(kernel_params[2], tuple) else (kernel_params[2], )
 
         num_blocks = tuple((s + t - 1) // t for s, t in zip(data_sizes, threads_per_blocks))
 
@@ -169,6 +169,8 @@ class Kernel:
 
             if kernel_params[0] and GPU_OPTIMIZATION_AVAILABLE:
 
+                ########################################################################################################
+                # RUN GPU KERNEL                                                                                       #
                 ########################################################################################################
 
                 for arg in args:
@@ -191,10 +193,10 @@ class Kernel:
 
                 if kernel_params[0]:
 
-                    print('Will emulate GPU kernel...', file = sys.stderr)
+                    print('Will emulate GPU kernel...', file = sys.stderr, flush = True)
 
-                    sys.stderr.flush()
-
+                ########################################################################################################
+                # RUN CPU KERNEL                                                                                       #
                 ########################################################################################################
 
                 for arg in args:

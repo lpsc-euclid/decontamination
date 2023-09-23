@@ -223,7 +223,7 @@ class Kernel:
 class jit(object):
 
     """
-    Decorator to compile Python functions into native CPU/GPU ones.
+    Decorator to recompile Python functions into native CPU/GPU ones.
     """
 
     ####################################################################################################################

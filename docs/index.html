@@ -284,7 +284,47 @@ def dtype(self):
 <dd>Indicates whether this function is a CPU/GPU kernel (default: <strong>False</strong>).</dd>
 <dt><strong><code>parallel</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Enables automatic parallelization when running on CPU (default: <strong>False</strong>).</dd>
-</dl></div>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code>@jit(parallel = False)
+def foo_xpu(a, b):
+
+    return a + b
+
+@jit(kernel = True)
+def foo_kernel(result, a, b):
+
+    ########################################################################
+    # !--BEGIN-CPU--
+
+    for i in range(result.shape[0]):
+
+        result[i] = foo_xpu(a[i], b[i])
+
+    # !--END-CPU--
+    ########################################################################
+    # !--BEGIN-GPU--
+
+    i = cu.grid(1)
+    if i &lt; result.shape[0]:
+
+        result[i] = foo_xpu(a[i], b[i])
+
+    # !--END-GPU--
+    ########################################################################
+
+use_gpu = True
+threads_per_block = 32
+
+A = np.random.randn(100_000).astype(np.float32)
+B = np.random.randn(100_000).astype(np.float32)
+
+result = result_array(100_000, dtype = np.float32)
+
+foo_kernel[use_gpu, threads_per_block, result.shape[0]](result, A, B)
+
+print(result.copy_to_host())
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -301,11 +341,52 @@ def dtype(self):
 
         &#34;&#34;&#34;
         Parameters
-        ---------
+        ----------
         kernel : bool
             Indicates whether this function is a CPU/GPU kernel (default: **False**).
         parallel : bool
             Enables automatic parallelization when running on CPU (default: **False**).
+
+        Example
+        -------
+            @jit(parallel = False)
+            def foo_xpu(a, b):
+
+                return a + b
+
+            @jit(kernel = True)
+            def foo_kernel(result, a, b):
+
+                ########################################################################
+                # !--BEGIN-CPU--
+
+                for i in range(result.shape[0]):
+
+                    result[i] = foo_xpu(a[i], b[i])
+
+                # !--END-CPU--
+                ########################################################################
+                # !--BEGIN-GPU--
+
+                i = cu.grid(1)
+                if i &lt; result.shape[0]:
+
+                    result[i] = foo_xpu(a[i], b[i])
+
+                # !--END-GPU--
+                ########################################################################
+
+            use_gpu = True
+            threads_per_block = 32
+
+            A = np.random.randn(100_000).astype(np.float32)
+            B = np.random.randn(100_000).astype(np.float32)
+
+            result = result_array(100_000, dtype = np.float32)
+
+            foo_kernel[use_gpu, threads_per_block, result.shape[0]](result, A, B)
+
+            print(result.copy_to_host())
         &#34;&#34;&#34;
 
         self.kernel = kernel
@@ -637,12 +718,12 @@ def dtype(self):
     def save(self, filename: str) -&gt; None:
 
         &#34;&#34;&#34;
-        Saves the trained neural network to a file.
+        Saves the trained neural network to a HDF5 file.
 
         Parameters
         ----------
         filename : str
-            Output HDF5 filename.
+            Output filename.
         &#34;&#34;&#34;
 
         ################################################################################################################
@@ -693,12 +774,12 @@ def dtype(self):
     def load(self, filename: str) -&gt; None:
 
         &#34;&#34;&#34;
-        Loads the trained neural network from a file.
+        Loads the trained neural network from a HDF5 file.
 
         Parameters
         ----------
         filename : str
-            Input HDF5 filename.
+            Input filename.
         &#34;&#34;&#34;
 
         ################################################################################################################
@@ -742,7 +823,7 @@ def dtype(self):
     def get_weights(self) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
-        Returns the neural network weights with the shape: [m * n, dim].
+        Returns the neural network weights with the shape [m * n, dim].
         &#34;&#34;&#34;
 
         return self._weights.reshape((self._m * self._n, self._dim))
@@ -752,7 +833,7 @@ def dtype(self):
     def get_centroids(self) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
-        Returns the neural network weights with the shape: [m, n, dim].
+        Returns the neural network weights with the shape [m, n, dim].
         &#34;&#34;&#34;
 
         return self._weights.reshape((self._m, self._n, self._dim))
@@ -835,7 +916,7 @@ def dtype(self):
         Parameters
         ----------
         scaling : Optional[str]
-            Normalization method, either &#39;**sum**&#39; or &#39;**mean**&#39; (default: &#39;**sum**&#39;)
+            Normalization method, either &#39;**sum**&#39; or &#39;**mean**&#39; (default: &#39;**sum**&#39;).
         &#34;&#34;&#34;
 
         scaling = scaling or &#39;sum&#39;
@@ -1047,11 +1128,11 @@ def dtype(self):
 <span>def <span class="ident">save</span></span>(<span>self, filename: str) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Saves the trained neural network to a file.</p>
+<div class="desc"><p>Saves the trained neural network to a HDF5 file.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
-<dd>Output HDF5 filename.</dd>
+<dd>Output filename.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1060,12 +1141,12 @@ def dtype(self):
 <pre><code class="python">def save(self, filename: str) -&gt; None:
 
     &#34;&#34;&#34;
-    Saves the trained neural network to a file.
+    Saves the trained neural network to a HDF5 file.
 
     Parameters
     ----------
     filename : str
-        Output HDF5 filename.
+        Output filename.
     &#34;&#34;&#34;
 
     ################################################################################################################
@@ -1116,11 +1197,11 @@ def dtype(self):
 <span>def <span class="ident">load</span></span>(<span>self, filename: str) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Loads the trained neural network from a file.</p>
+<div class="desc"><p>Loads the trained neural network from a HDF5 file.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
-<dd>Input HDF5 filename.</dd>
+<dd>Input filename.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1129,12 +1210,12 @@ def dtype(self):
 <pre><code class="python">def load(self, filename: str) -&gt; None:
 
     &#34;&#34;&#34;
-    Loads the trained neural network from a file.
+    Loads the trained neural network from a HDF5 file.
 
     Parameters
     ----------
     filename : str
-        Input HDF5 filename.
+        Input filename.
     &#34;&#34;&#34;
 
     ################################################################################################################
@@ -1178,7 +1259,7 @@ def dtype(self):
 <span>def <span class="ident">get_weights</span></span>(<span>self) ‑> np.ndarray</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns the neural network weights with the shape: [m * n, dim].</p></div>
+<div class="desc"><p>Returns the neural network weights with the shape [m * n, dim].</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1186,7 +1267,7 @@ def dtype(self):
 <pre><code class="python">def get_weights(self) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
-    Returns the neural network weights with the shape: [m * n, dim].
+    Returns the neural network weights with the shape [m * n, dim].
     &#34;&#34;&#34;
 
     return self._weights.reshape((self._m * self._n, self._dim))</code></pre>
@@ -1196,7 +1277,7 @@ def dtype(self):
 <span>def <span class="ident">get_centroids</span></span>(<span>self) ‑> np.ndarray</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns the neural network weights with the shape: [m, n, dim].</p></div>
+<div class="desc"><p>Returns the neural network weights with the shape [m, n, dim].</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1204,7 +1285,7 @@ def dtype(self):
 <pre><code class="python">def get_centroids(self) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
-    Returns the neural network weights with the shape: [m, n, dim].
+    Returns the neural network weights with the shape [m, n, dim].
     &#34;&#34;&#34;
 
     return self._weights.reshape((self._m, self._n, self._dim))</code></pre>
@@ -1254,7 +1335,7 @@ def dtype(self):
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>scaling</code></strong> :&ensp;<code>Optional[str]</code></dt>
-<dd>Normalization method, either '<strong>sum</strong>' or '<strong>mean</strong>' (default: '<strong>sum</strong>')</dd>
+<dd>Normalization method, either '<strong>sum</strong>' or '<strong>mean</strong>' (default: '<strong>sum</strong>').</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1268,7 +1349,7 @@ def dtype(self):
     Parameters
     ----------
     scaling : Optional[str]
-        Normalization method, either &#39;**sum**&#39; or &#39;**mean**&#39; (default: &#39;**sum**&#39;)
+        Normalization method, either &#39;**sum**&#39; or &#39;**mean**&#39; (default: &#39;**sum**&#39;).
     &#34;&#34;&#34;
 
     scaling = scaling or &#39;sum&#39;

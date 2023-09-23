@@ -171,12 +171,12 @@ class SOM_Abstract(object):
     def save(self, filename: str) -> None:
 
         """
-        Saves the trained neural network to a file.
+        Saves the trained neural network to a HDF5 file.
 
         Parameters
         ----------
         filename : str
-            Output HDF5 filename.
+            Output filename.
         """
 
         ################################################################################################################
@@ -227,12 +227,12 @@ class SOM_Abstract(object):
     def load(self, filename: str) -> None:
 
         """
-        Loads the trained neural network from a file.
+        Loads the trained neural network from a HDF5 file.
 
         Parameters
         ----------
         filename : str
-            Input HDF5 filename.
+            Input filename.
         """
 
         ################################################################################################################
@@ -276,7 +276,7 @@ class SOM_Abstract(object):
     def get_weights(self) -> np.ndarray:
 
         """
-        Returns the neural network weights with the shape: [m * n, dim].
+        Returns the neural network weights with the shape [m * n, dim].
         """
 
         return self._weights.reshape((self._m * self._n, self._dim))
@@ -286,7 +286,7 @@ class SOM_Abstract(object):
     def get_centroids(self) -> np.ndarray:
 
         """
-        Returns the neural network weights with the shape: [m, n, dim].
+        Returns the neural network weights with the shape [m, n, dim].
         """
 
         return self._weights.reshape((self._m, self._n, self._dim))
@@ -369,7 +369,7 @@ class SOM_Abstract(object):
         Parameters
         ----------
         scaling : typing.Optional[str]
-            Normalization method, either '**sum**' or '**mean**' (default: '**sum**')
+            Normalization method, either '**sum**' or '**mean**' (default: '**sum**').
         """
 
         scaling = scaling or 'sum'

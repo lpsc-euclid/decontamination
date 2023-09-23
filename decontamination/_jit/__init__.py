@@ -137,19 +137,19 @@ class Kernel:
 
     ####################################################################################################################
 
-    def __getitem__(self, extra_params):
+    def __getitem__(self, kernel_params):
 
         ################################################################################################################
 
-        if not isinstance(extra_params, tuple) or len(extra_params) != 3 or not isinstance(extra_params[0], bool):
+        if not isinstance(kernel_params, tuple) or len(kernel_params) != 3 or not isinstance(kernel_params[0], bool):
 
-            raise ValueError('Three parameters expected: run_on_gpu, threads_per_blocks and data_sizes')
+            raise ValueError('Three kernel parameters expected: run_on_gpu, threads_per_blocks and data_sizes')
 
         ################################################################################################################
 
-        threads_per_blocks = extra_params[1] if isinstance(extra_params[1], tuple) else (extra_params[1], )
+        threads_per_blocks = kernel_params[1] if isinstance(kernel_params[1], tuple) else (kernel_params[1],)
 
-        data_sizes = extra_params[2] if isinstance(extra_params[2], tuple) else (extra_params[2], )
+        data_sizes = kernel_params[2] if isinstance(kernel_params[2], tuple) else (kernel_params[2],)
 
         num_blocks = tuple((s + t - 1) // t for s, t in zip(data_sizes, threads_per_blocks))
 
@@ -159,7 +159,7 @@ class Kernel:
 
             new_args = []
 
-            if extra_params[0] and GPU_OPTIMIZATION_AVAILABLE:
+            if kernel_params[0] and GPU_OPTIMIZATION_AVAILABLE:
 
                 ########################################################################################################
 
@@ -181,7 +181,7 @@ class Kernel:
 
             else:
 
-                if extra_params[0]:
+                if kernel_params[0]:
 
                     print('Will emulate GPU kernel...', file = sys.stderr)
 

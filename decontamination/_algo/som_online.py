@@ -53,9 +53,9 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        self._alpha = 0.3 if alpha is None else dtype(alpha)
+        self._alpha = 0.3 if alpha is None else float(alpha)
 
-        self._sigma = max(m, n) / 2.0 if sigma is None else dtype(sigma)
+        self._sigma = max(m, n) / 2.0 if sigma is None else float(sigma)
 
         ################################################################################################################
 
@@ -65,7 +65,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        self.header_extra = {
+        self._header_extra = {
             'mode': '__MODE__',
             'alpha': '_alpha',
             'sigma': '_sigma',

@@ -63,13 +63,11 @@ class SOM_Abstract():
 
         ################################################################################################################
 
-        self.header_extra = {
+        self._header_extra = {
             'mode': '__MODE__',
         }
 
-        self.dataset_extra = {
-            'quantization_errors': '_quantization_errors',
-            'topographic_errors': '_topographic_errors',
+        self._dataset_extra = {
         }
 
     ####################################################################################################################
@@ -145,23 +143,13 @@ class SOM_Abstract():
 
     ####################################################################################################################
 
-    @staticmethod
-    def _init_hdf5_extra():
+    def _init_hdf5_extra(self):
 
         ################################################################################################################
 
-        header_extra = {}
-        dataset_extra = {}
+        header_extra = {name: field for name, field in self._header_extra.items()}
 
-        ################################################################################################################
-
-        for name, field in header_extra.items():
-
-            header_extra[name] = field
-
-        for name, field in dataset_extra.items():
-
-            dataset_extra[name] = field
+        dataset_extra = {name: field for name, field in self._dataset_extra.items()}
 
         ################################################################################################################
 
@@ -170,7 +158,9 @@ class SOM_Abstract():
         header_extra['dim'] = '_dim'
         header_extra['topology'] = '_topology'
 
-        dataset_extra['weights'] = '_weight'
+        dataset_extra['weights'] = '_weights'
+        dataset_extra['quantization_errors'] = '_quantization_errors'
+        dataset_extra['topographic_errors'] = '_topographic_errors'
 
         ################################################################################################################
 
@@ -195,26 +185,38 @@ class SOM_Abstract():
 
         ################################################################################################################
 
-        header_extra, dataset_extra = SOM_Abstract._init_hdf5_extra()
+        header_extra, dataset_extra = self._init_hdf5_extra()
 
         ################################################################################################################
 
-        with h5py.File(filename, 'w') as file:
+        with h5py.File(filename, mode = 'w') as file:
+
+            model_group = file.create_group('model', track_order = True)
 
             for name, field in header_extra.items():
 
-                file.attrs[name] = getattr(self, field)
+                data = getattr(self, field)
+
+                if data is not None:
+
+                    model_group.attrs[name] = data
 
             for name, field in dataset_extra.items():
 
                 data = getattr(self, field)
 
-                file.create_dataset(
-                    name,
-                    data = data,
-                    shape = data.shape,
-                    dtype = data.dtype
-                )
+                if data is not None:
+
+                    model_group.create_dataset(
+                        name,
+                        data = data,
+                        shape = data.shape,
+                        dtype = data.dtype
+                    )
+
+        ################################################################################################################
+
+        self._rebuild_topography()
 
     ####################################################################################################################
 
@@ -235,19 +237,27 @@ class SOM_Abstract():
 
         ################################################################################################################
 
-        header_extra, dataset_extra = SOM_Abstract._init_hdf5_extra()
+        header_extra, dataset_extra = self._init_hdf5_extra()
 
         ################################################################################################################
 
-        with h5py.File(filename, 'r') as file:
+        with h5py.File(filename, mode = 'r') as file:
+
+            model_group = file['model']
 
             for name, field in header_extra.items():
 
-                setattr(self, field, file.attrs[name])
+                try:
+                    setattr(self, field, np.array(model_group.attrs[name]))
+                except KeyError:
+                    pass
 
             for name, field in dataset_extra.items():
 
-                setattr(self, field, file[name])
+                try:
+                    setattr(self, field, np.array(model_group[name]))
+                except KeyError:
+                    pass
 
         ################################################################################################################
 

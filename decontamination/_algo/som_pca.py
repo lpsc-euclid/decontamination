@@ -44,7 +44,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ####################################################################################################################
 
-        self.header_extra = {
+        self._header_extra = {
             'mode': '__MODE__',
         }
 

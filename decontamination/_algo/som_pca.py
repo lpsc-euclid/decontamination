@@ -118,7 +118,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         Parameters
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
-            Training dataset array or generator of generator.
+            Training dataset array or generator builder.
         """
 
         ################################################################################################################

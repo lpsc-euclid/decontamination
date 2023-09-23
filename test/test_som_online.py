@@ -24,7 +24,6 @@ som = decontamination.SOM_Online(4, 4, 4, dtype = np.float32, topology = 'square
 
 ####################################################################################################################
 
-@pytest.mark.capture(no = True)
 def test_centroids():
 
     expected = np.array([

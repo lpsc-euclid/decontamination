@@ -29,10 +29,10 @@ if __name__ == '__main__':
                 keywords = [],
                 url = '???',
                 license = 'CeCILL-C',
-                packages = ['decontamination'],
+                packages = ['decontamination', 'decontamination._jit', 'decontamination._algo'],
                 data_files = [('decontamination', ['decontamination/metadata.json'])],
                 include_package_data = True,
-                install_requires = ['h5py', 'tqdm', 'numpy', 'numba'],
+                install_requires = ['h5py', 'tqdm', 'numpy', 'numba', 'healpy'],
                 extras_require = {
                     'astropy': ['astropy'],
                     'matplotlib': ['matplotlib'],

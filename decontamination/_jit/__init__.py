@@ -112,7 +112,7 @@ class jit(object):
         Parameters
         ---------
         kernel : bool
-            Indicates whether this is a kernel function.
+            Indicates whether this function is a kernel.
         parallel : bool
             Enables automatic parallelization.
         """
@@ -129,7 +129,7 @@ class jit(object):
 
         name = f'__jit_f{cls._cnt}'
 
-        cls.cnt = cls._cnt + 1
+        cls._cnt = cls._cnt + 1
 
         return name
 

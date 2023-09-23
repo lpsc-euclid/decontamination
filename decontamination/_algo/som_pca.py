@@ -24,12 +24,6 @@ class SOM_PCA(abstract_som.AbstractSOM):
     def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None):
 
         """
-        Initializes a Self Organizing Maps.
-
-        A rule of thumb to set the size of the grid for a dimensionality reduction
-        task is that it should contain \\( 5\\sqrt{N} \\) neurons where N is the
-        number of samples in the dataset to analyze.
-
         Parameters
         ----------
         m : int
@@ -44,47 +38,15 @@ class SOM_PCA(abstract_som.AbstractSOM):
             Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
         """
 
+        ####################################################################################################################
+
         super().__init__(m, n, dim, dtype, topology)
 
-    ####################################################################################################################
+        ####################################################################################################################
 
-    def save(self, filename: str, **kwargs) -> None:
-
-        """
-        Saves the trained neural network to a file.
-
-        Parameters
-        ----------
-        filename : str
-            Output HDF5 filename.
-        """
-
-        super().save(filename, {
+        self.header_extra = {
             'mode': '__MODE__',
-        }, {
-            'quantization_errors': '_quantization_errors',
-            'topographic_errors': '_topographic_errors',
-        })
-
-    ####################################################################################################################
-
-    def load(self, filename: str, **kwargs) -> None:
-
-        """
-        Loads the trained neural network from a file.
-
-        Parameters
-        ----------
-        filename : str
-            Input HDF5 filename.
-        """
-
-        super().load(filename, {
-            'mode': '__MODE__',
-        }, {
-            'quantization_errors': '_quantization_errors',
-            'topographic_errors': '_topographic_errors',
-        })
+        }
 
     ####################################################################################################################
 

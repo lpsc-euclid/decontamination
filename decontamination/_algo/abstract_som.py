@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
-import abc
 import tqdm
 import typing
 
@@ -15,15 +14,19 @@ from . import dataset_to_generator_builder
 
 ########################################################################################################################
 
-class AbstractSOM(abc.ABC):
+class AbstractSOM():
+
+    """
+    Self Organizing Maps (abstract class).
+    """
+
+    __MODE__ = 'abstract'
 
     ####################################################################################################################
 
     def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None):
 
         """
-        Constructor for an Abstract Self Organizing Map (SOM).
-
         Parameters
         ----------
         m : int
@@ -54,10 +57,20 @@ class AbstractSOM(abc.ABC):
 
         self._weights = np.empty(shape = (self._m * self._n, self._dim), dtype = self._dtype)
 
+        self._quantization_errors = np.empty(0, dtype = np.float32)
+
+        self._topographic_errors = np.empty(0, dtype = np.float32)
+
         ################################################################################################################
 
-        self._quantization_errors = np.empty(0, dtype = np.float32)
-        self._topographic_errors = np.empty(0, dtype = np.float32)
+        self.header_extra = {
+            'mode': '__MODE__',
+        }
+
+        self.dataset_extra = {
+            'quantization_errors': '_quantization_errors',
+            'topographic_errors': '_topographic_errors',
+        }
 
     ####################################################################################################################
 
@@ -133,13 +146,22 @@ class AbstractSOM(abc.ABC):
     ####################################################################################################################
 
     @staticmethod
-    def _init_hdf5_extra(header_extra, dataset_extra):
+    def _init_hdf5_extra():
 
-        if header_extra is None:
-            header_extra = {}
+        ################################################################################################################
 
-        if dataset_extra is None:
-            dataset_extra = {}
+        header_extra = {}
+        dataset_extra = {}
+
+        ################################################################################################################
+
+        for name, field in header_extra.items():
+
+            header_extra[name] = field
+
+        for name, field in dataset_extra.items():
+
+            dataset_extra[name] = field
 
         ################################################################################################################
 
@@ -156,12 +178,7 @@ class AbstractSOM(abc.ABC):
 
     ####################################################################################################################
 
-    def save(
-        self,
-        filename: str,
-        header_extra: typing.Optional[typing.Dict[str, str]] = None,
-        dataset_extra: typing.Optional[typing.Dict[str, str]] = None
-    ) -> None:
+    def save(self, filename: str) -> None:
 
         """
         Saves the trained neural network to a file.
@@ -170,10 +187,6 @@ class AbstractSOM(abc.ABC):
         ----------
         filename : str
             Output HDF5 filename.
-        header_extra : typing.Optional[typing.Dict[str, str]]
-            Dictionary of extra headers (name, field name in class).
-        dataset_extra : typing.Optional[typing.Dict[str, str]]
-            Dictionary of extra datasets (name, field name in class).
         """
 
         ################################################################################################################
@@ -182,7 +195,7 @@ class AbstractSOM(abc.ABC):
 
         ################################################################################################################
 
-        header_extra, dataset_extra = AbstractSOM._init_hdf5_extra(header_extra, dataset_extra)
+        header_extra, dataset_extra = AbstractSOM._init_hdf5_extra()
 
         ################################################################################################################
 
@@ -205,12 +218,7 @@ class AbstractSOM(abc.ABC):
 
     ####################################################################################################################
 
-    def load(
-        self,
-        filename: str,
-        header_extra: typing.Optional[typing.Dict[str, str]] = None,
-        dataset_extra: typing.Optional[typing.Dict[str, str]] = None
-    ) -> None:
+    def load(self, filename: str) -> None:
 
         """
         Loads the trained neural network from a file.
@@ -219,10 +227,6 @@ class AbstractSOM(abc.ABC):
         ----------
         filename : str
             Input HDF5 filename.
-        header_extra : typing.Optional[typing.Dict[str, str]]
-            Dictionary of extra headers (name, field name in class).
-        dataset_extra : typing.Optional[typing.Dict[str, str]]
-            Dictionary of extra datasets (name, field name in class).
         """
 
         ################################################################################################################
@@ -231,7 +235,7 @@ class AbstractSOM(abc.ABC):
 
         ################################################################################################################
 
-        header_extra, dataset_extra = AbstractSOM._init_hdf5_extra(header_extra, dataset_extra)
+        header_extra, dataset_extra = AbstractSOM._init_hdf5_extra()
 
         ################################################################################################################
 

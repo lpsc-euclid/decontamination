@@ -83,7 +83,7 @@ class result_array(object):
 
         if self._instance is not None:
 
-            raise Exception('Array already instanced')
+            raise Exception('Device array already instanced')
 
         ################################################################################################################
 
@@ -111,7 +111,7 @@ class result_array(object):
 
         if self._instance is None:
 
-            raise Exception('Array not instanced')
+            raise Exception('Device array not instanced')
 
         ################################################################################################################
 
@@ -300,14 +300,14 @@ class jit(object):
     ####################################################################################################################
 
     @staticmethod
-    def _inject_cpu(orig_funct: typing.Callable, new_funct: typing.Callable) -> None:
+    def _inject_cpu_funct(orig_funct: typing.Callable, new_funct: typing.Callable) -> None:
 
         orig_funct.__globals__[orig_funct.__name__.replace('_xpu', '_cpu')] = new_funct
 
     ####################################################################################################################
 
     @staticmethod
-    def _inject_gpu(orig_funct: typing.Callable, new_funct: typing.Callable) -> None:
+    def _inject_gpu_funct(orig_funct: typing.Callable, new_funct: typing.Callable) -> None:
 
         orig_funct.__globals__[orig_funct.__name__.replace('_xpu', '_gpu')] = new_funct
 
@@ -345,7 +345,7 @@ class jit(object):
 
         if not self.kernel:
 
-            jit._inject_cpu(funct, nb.njit(funct_cpu, parallel = self.parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu)
+            jit._inject_cpu_funct(funct, nb.njit(funct_cpu, parallel = self.parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu)
 
         ################################################################################################################
         # NUMBA ON CPU                                                                                                 #
@@ -363,7 +363,7 @@ class jit(object):
 
         if not self.kernel:
 
-            jit._inject_gpu(funct, cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else funct_gpu)
+            jit._inject_gpu_funct(funct, cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else funct_gpu)
 
         ################################################################################################################
         # KERNEL                                                                                                       #

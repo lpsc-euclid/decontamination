@@ -8,7 +8,7 @@ import numpy as np
 import numba as nb
 import numba.cuda as cu
 
-from .. import jit, GPU_OPTIMIZATION_AVAILABLE
+from .. import jit, result_array
 
 from . import dataset_to_generator_builder
 
@@ -446,17 +446,11 @@ class SOM_Abstract(object):
 
         for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
 
-            if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
+            bmus = result_array(data.shape[0], dtype = np.int32)
 
-                bmus = cu.device_array(data.shape[0], dtype = np.int32)
-                _find_bmus_kernel[True, threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
-                SOM_Abstract._count_bmus(result, bmus.copy_to_host())
+            _find_bmus_kernel[enable_gpu, threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
 
-            else:
-
-                bmus = np.empty(data.shape[0], dtype = np.int32)
-                _find_bmus_kernel[False, threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
-                SOM_Abstract._count_bmus(result, bmus)
+            SOM_Abstract._count_bmus(result, bmus.copy_to_host())
 
         ################################################################################################################
 
@@ -483,17 +477,11 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
+        bmus = result_array(dataset.shape[0], dtype = np.int32)
 
-            bmus = cu.device_array(dataset.shape[0], dtype = np.int32)
-            _find_bmus_kernel[True, threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
-            result = bmus.copy_to_host()
+        _find_bmus_kernel[enable_gpu, threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
 
-        else:
-
-            bmus = np.empty(dataset.shape[0], dtype = np.int32)
-            _find_bmus_kernel[False, threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
-            result = bmus
+        result = bmus.copy_to_host()
 
         ################################################################################################################
 

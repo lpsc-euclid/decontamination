@@ -64,23 +64,21 @@ def test_xpu():
 
 def test_cpu():
 
-    result = np.zeros_like(C)
+    result = decontamination.result_array(C.shape, dtype = C.dtype)
 
-    foo_kernel[False, 32, result.size](result, A, B)
+    foo_kernel[False, 32, result.shape[0]](result, A, B)
 
-    assert np.array_equal(result, C)
+    assert np.array_equal(result.copy_to_host(), C)
 
 ########################################################################################################################
 
 def test_gpu():
 
-    if decontamination.GPU_OPTIMIZATION_AVAILABLE:
+    result = decontamination.result_array(C.shape, dtype = C.dtype)
 
-        result = cu.device_array_like(C)
+    foo_kernel[True, 32, result.shape[0]](result, A, B)
 
-        foo_kernel[True, 32, result.size](result, A, B)
-
-        assert np.array_equal(result.copy_to_host(), C)
+    assert np.array_equal(result.copy_to_host(), C)
 
 ########################################################################################################################
 

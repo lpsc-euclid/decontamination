@@ -13,7 +13,7 @@ import numpy as np
 # JIT                                                                                                                  #
 ########################################################################################################################
 
-from ._jit import CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE, jit
+from ._jit import CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE, result_array, jit
 
 ########################################################################################################################
 # ALGO                                                                                                                 #
@@ -42,7 +42,7 @@ def array_to_string(arr):
 ########################################################################################################################
 
 __all__ = [
-    'CPU_OPTIMIZATION_AVAILABLE', 'GPU_OPTIMIZATION_AVAILABLE', 'jit',
+    'CPU_OPTIMIZATION_AVAILABLE', 'GPU_OPTIMIZATION_AVAILABLE', 'result_array', 'jit',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
 ]
 

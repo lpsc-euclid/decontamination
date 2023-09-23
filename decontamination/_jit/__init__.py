@@ -3,8 +3,8 @@
 
 import os
 import re
-import inspect
 import typing
+import inspect
 
 import numpy as np
 import numba as nb
@@ -24,6 +24,96 @@ __pdoc__['CPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba CPU optimi
 
 GPU_OPTIMIZATION_AVAILABLE = CPU_OPTIMIZATION_AVAILABLE and cu.is_available()
 __pdoc__['GPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba GPU optimization is available.'
+
+
+########################################################################################################################
+
+# noinspection PyPep8Naming
+class result_array(object):
+
+    """
+    Empty device ndarray. Similar to `numpy.empty`.
+    """
+
+    ####################################################################################################################
+
+    def __init__(self, shape: typing.Union[typing.Tuple[int], int], dtype: typing.Type[np.single] = np.float32):
+
+        """
+        Parameters
+        ----------
+        shape : typing.Union[typing.Tuple[int], int]
+            ???
+        dtype : typing.Type[np.single]
+            ???
+        """
+
+        self._shape = shape
+        self._dtype = dtype
+
+        self._instance = None
+
+    ####################################################################################################################
+
+    @property
+    def shape(self):
+
+        return self._shape
+
+    ####################################################################################################################
+
+    @property
+    def dtype(self):
+
+        return self._dtype
+
+    ####################################################################################################################
+
+    def _instantiate(self, is_gpu: bool):
+
+        ################################################################################################################
+
+        if self._instance is not None:
+
+            raise Exception('Array already instanced')
+
+        ################################################################################################################
+
+        if is_gpu:
+
+            self._instance = cu.device_array(shape = self._shape, dtype = self._dtype)
+
+        else:
+
+            self._instance = np.empty(shape = self._shape, dtype = self._dtype)
+
+        ################################################################################################################
+
+        return self._instance
+
+    ####################################################################################################################
+
+    def copy_to_host(self) -> np.ndarray:
+
+        """
+        Create a new Numpy ndarray from the underlying device ndarray.
+        """
+
+        ################################################################################################################
+
+        if self._instance is None:
+
+            raise Exception('Array not instanced')
+
+        ################################################################################################################
+
+        if self._instance.__class__.__name__ == 'DeviceNDArray':
+
+            return self._instance.copy_to_host()
+
+        else:
+
+            return self._instance
 
 ########################################################################################################################
 
@@ -59,15 +149,41 @@ class Kernel:
 
         def wrapper(*args, **kwargs):
 
+            new_args = []
+
             if extra_params[0] and GPU_OPTIMIZATION_AVAILABLE:
 
-                args = [cu.to_device(arg) if isinstance(arg, np.ndarray) else arg for arg in args]
+                ########################################################################################################
 
-                return self.gpu_func[num_blocks, threads_per_blocks](*args, **kwargs)
+                for arg in args:
+
+                    if isinstance(arg, np.ndarray):
+                        new_args.append(cu.to_device(arg))
+                    elif isinstance(arg, result_array):
+                        # noinspection PyProtectedMember
+                        new_args.append(arg._instantiate(True))
+                    else:
+                        new_args.append(arg)
+
+                return self.gpu_func[num_blocks, threads_per_blocks](*new_args, **kwargs)
+
+                ########################################################################################################
 
             else:
 
-                return self.cpu_func(*args, **kwargs)
+                ########################################################################################################
+
+                for arg in args:
+
+                    if isinstance(arg, np.ndarray):
+                        new_args.append((((((((arg))))))))
+                    elif isinstance(arg, result_array):
+                        # noinspection PyProtectedMember
+                        new_args.append(arg._instantiate(False))
+                    else:
+                        new_args.append(arg)
+
+                return self.cpu_func(*new_args, **kwargs)
 
         ################################################################################################################
 
@@ -92,7 +208,7 @@ class jit(object):
         kernel : bool
             Indicates whether this function is a kernel (default: **False**).
         parallel : bool
-            Enables automatic parallelization (default: **False**).
+            Enables automatic parallelization when running on CPU (default: **False**).
         """
 
         self.kernel = kernel

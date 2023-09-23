@@ -357,7 +357,7 @@ class SOM_Abstract(object):
 
                         diff = w - centroids[i, j]
 
-                        result[x, y, z] = np.sqrt(np.sum(diff * diff))
+                        result[x, y, z] = np.sqrt(np.sum(diff ** 2))
 
     ####################################################################################################################
 

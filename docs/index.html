@@ -1,0 +1,2113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>decontamination API documentation</title>
+<meta name="description" content="A toolbox for performing systematics decontamination in cosmology analyses." />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Package <code>decontamination</code></h1>
+</header>
+<section id="section-intro">
+<p>A toolbox for performing systematics decontamination in cosmology analyses.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># -*- coding: utf-8 -*-
+########################################################################################################################
+
+&#34;&#34;&#34;
+A toolbox for performing systematics decontamination in cosmology analyses.
+&#34;&#34;&#34;
+
+########################################################################################################################
+
+import numpy as np
+
+########################################################################################################################
+# JIT                                                                                                                  #
+########################################################################################################################
+
+from ._jit import CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE, jit
+
+########################################################################################################################
+# ALGO                                                                                                                 #
+########################################################################################################################
+
+from ._algo.som_abstract import SOM_Abstract
+
+from ._algo.som_pca import SOM_PCA
+
+from ._algo.som_batch import SOM_Batch
+
+from ._algo.som_online import SOM_Online
+
+########################################################################################################################
+# UTILITIES                                                                                                            #
+########################################################################################################################
+
+def array_to_string(arr):
+
+    s = np.array2string(arr, separator = &#39;, &#39;, suppress_small = True)
+
+    return s.replace(&#39;[ &#39;, &#39;[&#39;).replace(&#39; ]&#39;, &#39;]&#39;)
+
+########################################################################################################################
+# EXPORTS                                                                                                              #
+########################################################################################################################
+
+__all__ = [
+    &#39;CPU_OPTIMIZATION_AVAILABLE&#39;, &#39;GPU_OPTIMIZATION_AVAILABLE&#39;, &#39;jit&#39;,
+    &#39;SOM_Abstract&#39;, &#39;SOM_PCA&#39;, &#39;SOM_Batch&#39;, &#39;SOM_Online&#39;,
+]
+
+########################################################################################################################</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="decontamination.jit"><code class="flex name class">
+<span>class <span class="ident">jit</span></span>
+<span>(</span><span>kernel: bool = False, parallel: bool = False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Decorator to compile Python functions into native CPU or GPU ones.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>kernel</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Indicates whether this function is a kernel.</dd>
+<dt><strong><code>parallel</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Enables automatic parallelization.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class jit(object):
+
+    &#34;&#34;&#34;
+    Decorator to compile Python functions into native CPU or GPU ones.
+    &#34;&#34;&#34;
+
+    ####################################################################################################################
+
+    def __init__(self, kernel: bool = False, parallel: bool = False):
+
+        &#34;&#34;&#34;
+        Parameters
+        ---------
+        kernel : bool
+            Indicates whether this function is a kernel.
+        parallel : bool
+            Enables automatic parallelization.
+        &#34;&#34;&#34;
+
+        self.kernel = kernel
+        self.parallel = parallel
+
+    ####################################################################################################################
+
+    _cnt = 0
+
+    @classmethod
+    def _get_unique_function_name(cls) -&gt; str:
+
+        name = f&#39;__jit_f{cls._cnt}&#39;
+
+        cls._cnt = cls._cnt + 1
+
+        return name
+
+    ####################################################################################################################
+
+    @staticmethod
+    def _process_directives(code: str, tag_s: str, tag_e: str) -&gt; str:
+
+        pattern = re.compile(re.escape(tag_s) + &#39;.*?&#39; + re.escape(tag_e), re.DOTALL)
+
+        return re.sub(pattern, &#39;&#39;, code)
+
+    ####################################################################################################################
+
+    @staticmethod
+    def _patch_cpu_code(code: str) -&gt; str:
+
+        return jit._process_directives(
+            code.replace(&#39;_xpu&#39;, &#39;_cpu&#39;)
+                .replace(&#39;xpu.local_empty&#39;, &#39;np.empty&#39;)
+                .replace(&#39;xpu.shared_empty&#39;, &#39;np.empty&#39;)
+                .replace(&#39;xpu.syncthreads&#39;, &#39;#######&#39;),
+            &#39;!--BEGIN-GPU--&#39;,
+            &#39;!--END-GPU--&#39;
+        )
+
+    ####################################################################################################################
+
+    @staticmethod
+    def _patch_gpu_code(code: str) -&gt; str:
+
+        if GPU_OPTIMIZATION_AVAILABLE:
+
+            return jit._process_directives(
+                code.replace(&#39;_xpu&#39;, &#39;_gpu&#39;)
+                    .replace(&#39;np.prange&#39;, &#39;range&#39;)
+                    .replace(&#39;xpu.local_empty&#39;, &#39;cu.local.array&#39;)
+                    .replace(&#39;xpu.shared_empty&#39;, &#39;cu.shared.array&#39;)
+                    .replace(&#39;xpu.syncthreads&#39;, &#39;cu.syncthreads&#39;),
+                &#39;!--BEGIN-CPU--&#39;,
+                &#39;!--END-CPU--&#39;
+            )
+
+        else:
+
+            return jit._process_directives(
+                code.replace(&#39;_xpu&#39;, &#39;_gpu&#39;)
+                    .replace(&#39;np.prange&#39;, &#39;range&#39;)
+                    .replace(&#39;xpu.local_empty&#39;, &#39;np.empty&#39;)
+                    .replace(&#39;xpu.shared_empty&#39;, &#39;np.empty&#39;)
+                    .replace(&#39;xpu.syncthreads&#39;, &#39;#######&#39;),
+                &#39;!--BEGIN-CPU--&#39;,
+                &#39;!--END-CPU--&#39;
+            )
+
+    ####################################################################################################################
+
+    @staticmethod
+    def _inject_cpu(orig_funct: Callable, new_funct: Union[Callable, NBKernel]) -&gt; None:
+
+        orig_funct.__globals__[orig_funct.__name__.replace(&#39;_xpu&#39;, &#39;_cpu&#39;)] = new_funct
+
+    ####################################################################################################################
+
+    @staticmethod
+    def _inject_gpu(orig_funct: Callable, new_funct: Union[Callable, CUKernel]) -&gt; None:
+
+        orig_funct.__globals__[orig_funct.__name__.replace(&#39;_xpu&#39;, &#39;_gpu&#39;)] = new_funct
+
+    ####################################################################################################################
+
+    def __call__(self, funct: Callable):
+
+        if not funct.__name__.endswith(&#39;_xpu&#39;):
+
+            raise Exception(f&#39;Function `{funct.__name__}` name must ends with `_xpu`&#39;)
+
+        ################################################################################################################
+        # SOURCE CODE                                                                                                  #
+        ################################################################################################################
+
+        code_raw = &#39;\n&#39;.join(inspect.getsource(funct).splitlines())
+
+        code_raw = code_raw[code_raw.find(&#34;def&#34;):]
+
+        code_raw = code_raw[code_raw.find(&#34;(&#34;):]
+
+        ################################################################################################################
+        # NUMBA ON GPU                                                                                                 #
+        ################################################################################################################
+
+        name_cpu = jit._get_unique_function_name()
+
+        code_cpu = jit._patch_cpu_code(f&#39;def {name_cpu} {code_raw}&#39;)
+
+        ################################################################################################################
+
+        exec(code_cpu, funct.__globals__)
+
+        funct_cpu = eval(name_cpu, funct.__globals__)
+
+        if self.kernel:
+            jit._inject_cpu(funct, NBKernel(funct_cpu, parallel = self.parallel))
+        else:
+            jit._inject_cpu(funct, nb.njit(funct_cpu, parallel = self.parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu)
+
+        ################################################################################################################
+        # NUMBA ON CPU                                                                                                 #
+        ################################################################################################################
+
+        name_gpu = jit._get_unique_function_name()
+
+        code_gpu = jit._patch_gpu_code(f&#39;def {name_gpu} {code_raw}&#39;)
+
+        ################################################################################################################
+
+        exec(code_gpu, funct.__globals__)
+
+        funct_gpu = eval(name_gpu, funct.__globals__)
+
+        if self.kernel:
+            jit._inject_gpu(funct, CUKernel(funct_gpu, device = False))
+        else:
+            jit._inject_gpu(funct, cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else funct_gpu)
+
+        ################################################################################################################
+
+        return funct</code></pre>
+</details>
+</dd>
+<dt id="decontamination.SOM_Abstract"><code class="flex name class">
+<span>class <span class="ident">SOM_Abstract</span></span>
+<span>(</span><span>m: int, n: int, dim: int, dtype: Type[np.float32] = np.float32, topology: Optional[str] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Self Organizing Maps (abstract class).</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>m</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of neuron rows.</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of neuron columns.</dd>
+<dt><strong><code>dim</code></strong> :&ensp;<code>int</code></dt>
+<dd>Dimensionality of the input data.</dd>
+<dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
+<dd>Neural network data type (default: <strong>np.float32</strong>).</dd>
+<dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
+<dd>Topology of the map, either '<strong>square</strong>' or '<strong>hexagonal</strong>' (default: '<strong>hexagonal</strong>').</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SOM_Abstract():
+
+    &#34;&#34;&#34;
+    Self Organizing Maps (abstract class).
+    &#34;&#34;&#34;
+
+    __MODE__ = &#39;abstract&#39;
+
+    ####################################################################################################################
+
+    def __init__(self, m: int, n: int, dim: int, dtype: Type[np.single] = np.float32, topology: Optional[str] = None):
+
+        &#34;&#34;&#34;
+        Parameters
+        ----------
+        m : int
+            Number of neuron rows.
+        n : int
+            Number of neuron columns.
+        dim : int
+            Dimensionality of the input data.
+        dtype : Type[np.single]
+            Neural network data type (default: **np.float32**).
+        topology : Optional[str]
+            Topology of the map, either &#39;**square**&#39; or &#39;**hexagonal**&#39; (default: &#39;**hexagonal**&#39;).
+        &#34;&#34;&#34;
+
+        ################################################################################################################
+
+        self._m = m
+        self._n = n
+        self._dim = dim
+        self._dtype = dtype
+        self._topology = topology or &#39;hexagonal&#39;
+
+        ################################################################################################################
+
+        self._rebuild_topography()
+
+        ################################################################################################################
+
+        self._weights = np.empty(shape = (self._m * self._n, self._dim), dtype = self._dtype)
+
+        self._quantization_errors = np.empty(0, dtype = np.float32)
+
+        self._topographic_errors = np.empty(0, dtype = np.float32)
+
+        ################################################################################################################
+
+        self.header_extra = {
+            &#39;mode&#39;: &#39;__MODE__&#39;,
+        }
+
+        self.dataset_extra = {
+            &#39;quantization_errors&#39;: &#39;_quantization_errors&#39;,
+            &#39;topographic_errors&#39;: &#39;_topographic_errors&#39;,
+        }
+
+    ####################################################################################################################
+
+    @staticmethod
+    def _neuron_locations(m: int, n: int) -&gt; Iterator[List[int]]:
+
+        for i in range(m):
+
+            for j in range(n):
+
+                yield [i, j]
+
+    ####################################################################################################################
+
+    def _rebuild_topography(self):
+
+        self._topography = np.array(list(SOM_Abstract._neuron_locations(self._m, self._m)), dtype = np.int64)
+
+    ####################################################################################################################
+
+    def init_rand(self, seed: Optional[int] = None) -&gt; None:
+
+        &#34;&#34;&#34;
+        Initializes the neural network randomly.
+
+        Parameters
+        ----------
+        seed : Optional[int]
+            Seed for random generator (default: **None**).
+        &#34;&#34;&#34;
+
+        ################################################################################################################
+
+        if seed is None:
+
+            rng = np.random.default_rng()
+
+        else:
+
+            rng = np.random.default_rng(seed = seed)
+
+        ################################################################################################################
+
+        self._weights[...] = rng.random((self._m * self._n, self._dim), dtype = self._dtype)
+
+    ####################################################################################################################
+
+    def init_from(self, other: &#39;SOM_Abstract&#39;) -&gt; None:
+
+        &#34;&#34;&#34;
+        Initializes the neural network from another one.
+
+        Parameters
+        ----------
+        other : SOM_Abstract
+            Another SOM object from which the weights will be copied.
+        &#34;&#34;&#34;
+
+        if self._m != other._m              \
+           or                               \
+           self._n != other._n              \
+           or                               \
+           self._dim != other._dim          \
+           or                               \
+           self._dtype != other._dtype      \
+           or                               \
+           self._topology != other._topology:
+
+            raise Exception(&#39;Incompatible shapes, dtypes or topologies&#39;)
+
+        self._weights[...] = other._weights
+
+    ####################################################################################################################
+
+    @staticmethod
+    def _init_hdf5_extra():
+
+        ################################################################################################################
+
+        header_extra = {}
+        dataset_extra = {}
+
+        ################################################################################################################
+
+        for name, field in header_extra.items():
+
+            header_extra[name] = field
+
+        for name, field in dataset_extra.items():
+
+            dataset_extra[name] = field
+
+        ################################################################################################################
+
+        header_extra[&#39;m&#39;] = &#39;_m&#39;
+        header_extra[&#39;n&#39;] = &#39;_n&#39;
+        header_extra[&#39;dim&#39;] = &#39;_dim&#39;
+        header_extra[&#39;topology&#39;] = &#39;_topology&#39;
+
+        dataset_extra[&#39;weights&#39;] = &#39;_weight&#39;
+
+        ################################################################################################################
+
+        return header_extra, dataset_extra
+
+    ####################################################################################################################
+
+    def save(self, filename: str) -&gt; None:
+
+        &#34;&#34;&#34;
+        Saves the trained neural network to a file.
+
+        Parameters
+        ----------
+        filename : str
+            Output HDF5 filename.
+        &#34;&#34;&#34;
+
+        ################################################################################################################
+
+        import h5py
+
+        ################################################################################################################
+
+        header_extra, dataset_extra = SOM_Abstract._init_hdf5_extra()
+
+        ################################################################################################################
+
+        with h5py.File(filename, &#39;w&#39;) as file:
+
+            for name, field in header_extra.items():
+
+                file.attrs[name] = getattr(self, field)
+
+            for name, field in dataset_extra.items():
+
+                data = getattr(self, field)
+
+                file.create_dataset(
+                    name,
+                    data = data,
+                    shape = data.shape,
+                    dtype = data.dtype
+                )
+
+    ####################################################################################################################
+
+    def load(self, filename: str) -&gt; None:
+
+        &#34;&#34;&#34;
+        Loads the trained neural network from a file.
+
+        Parameters
+        ----------
+        filename : str
+            Input HDF5 filename.
+        &#34;&#34;&#34;
+
+        ################################################################################################################
+
+        import h5py
+
+        ################################################################################################################
+
+        header_extra, dataset_extra = SOM_Abstract._init_hdf5_extra()
+
+        ################################################################################################################
+
+        with h5py.File(filename, &#39;r&#39;) as file:
+
+            for name, field in header_extra.items():
+
+                setattr(self, field, file.attrs[name])
+
+            for name, field in dataset_extra.items():
+
+                setattr(self, field, file[name])
+
+        ################################################################################################################
+
+        self._rebuild_topography()
+
+    ####################################################################################################################
+
+    def get_weights(self) -&gt; np.ndarray:
+
+        &#34;&#34;&#34;
+        Returns the neural network weights with the shape: [m * n, dim].
+        &#34;&#34;&#34;
+
+        return self._weights.reshape((self._m * self._n, self._dim))
+
+    ####################################################################################################################
+
+    def get_centroids(self) -&gt; np.ndarray:
+
+        &#34;&#34;&#34;
+        Returns the neural network weights with the shape: [m, n, dim].
+        &#34;&#34;&#34;
+
+        return self._weights.reshape((self._m, self._n, self._dim))
+
+    ####################################################################################################################
+
+    def get_quantization_errors(self) -&gt; np.ndarray:
+
+        &#34;&#34;&#34;
+        Returns the quantization error. $$ c_i^1=\\mathrm{1^\\mathrm{st}\\,bmu}=\\underset{j}{\\mathrm{arg\\,min}_1}\\lVert x_i-w_j\\rVert $$ $$ \\boxed{e_Q=\\frac{1}{N}\\sum_{i=1}^N\\lVert x_i-w_{c_i^1}\\rVert} $$
+        &#34;&#34;&#34;
+
+        return self._quantization_errors
+
+    ####################################################################################################################
+
+    def get_topographic_errors(self) -&gt; np.ndarray:
+
+        &#34;&#34;&#34;
+        Returns the topographic errors. $$ c_i^n=\\mathrm{n^\\mathrm{th}\\,bmu}=\\underset{j}{\\mathrm{arg\\,min}_n}\\lVert x_i-w_j\\rVert $$ $$ t(x_i)=\\left\\{\\begin{array}{ll}1&amp;\\lVert c_i^1-c_i^2\\rVert&gt;\\sqrt{2}\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{e_t=\\frac{1}{N}\\sum_{i=0}^Nt(x_i)} $$
+        &#34;&#34;&#34;
+
+        return self._topographic_errors
+
+    ####################################################################################################################
+
+    _X_HEX_STENCIL = np.array([
+        +1, +1, +1, +0, -1, +0,  # Even line
+        +0, +1, +0, -1, -1, -1,  # Odd line
+    ], dtype = np.int64)
+
+    _Y_HEX_STENCIL = np.array([
+        +1, +0, -1, -1, +0, +1,  # Even line
+        +1, +0, -1, -1, +0, +1,  # Odd line
+    ], dtype = np.int64)
+
+    ####################################################################################################################
+
+    _X_SQU_STENCIL = np.array([
+        +0, -1, -1, -1, +0, +1, +1, +1,  # Even line
+        +0, -1, -1, -1, +0, +1, +1, +1,  # Odd line
+    ], dtype = np.int64)
+
+    _Y_SQU_STENCIL = np.array([
+        -1, -1, +0, +1, +1, +1, +0, -1,  # Even line
+        -1, -1, +0, +1, +1, +1, +0, -1,  # Odd line
+    ], dtype = np.int64)
+
+    ####################################################################################################################
+
+    @staticmethod
+    @nb.njit(parallel = False)
+    def _distance_map_kernel(result, centroids: np.ndarray, x_stencil: np.ndarray, y_stencil: np.ndarray, m: int, n: int, l: int) -&gt; None:
+
+        for x in range(m):
+            for y in range(n):
+
+                offset = (y &amp; 1) * l
+
+                w = centroids[x, y]
+
+                for z in range(l):
+
+                    i = x + x_stencil[z + offset]
+                    j = y + y_stencil[z + offset]
+
+                    if 0 &lt;= i &lt; m and 0 &lt;= j &lt; n:
+
+                        diff = w - centroids[i, j]
+
+                        result[x, y, z] = np.sqrt(np.sum(diff * diff))
+
+    ####################################################################################################################
+
+    def get_distance_map(self, scaling: Optional[str] = None) -&gt; np.ndarray:
+
+        &#34;&#34;&#34;
+        Returns the distance map of the neural network weights.
+
+        Parameters
+        ----------
+        scaling : Optional[str]
+            Normalization method, either &#39;**sum**&#39; or &#39;**mean**&#39; (default: &#39;**sum**&#39;)
+        &#34;&#34;&#34;
+
+        scaling = scaling or &#39;sum&#39;
+
+        ################################################################################################################
+
+        if self._topology == &#39;hexagonal&#39;:
+
+            result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
+
+            SOM_Abstract._distance_map_kernel(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
+
+        else:
+
+            result = np.full(shape = (self._m, self._n, 8), fill_value = np.nan, dtype = self._dtype)
+
+            SOM_Abstract._distance_map_kernel(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
+
+        ################################################################################################################
+
+        if scaling == &#39;sum&#39;:
+            result = np.nansum(result, axis = 2)
+
+        elif scaling == &#39;mean&#39;:
+            result = np.nanmean(result, axis = 2)
+
+        else:
+            raise Exception(f&#39;Invalid scaling method `{scaling}`&#39;)
+
+        ################################################################################################################
+
+        return result / np.max(result)
+
+    ####################################################################################################################
+
+    @staticmethod
+    @nb.njit(parallel = False)
+    def _count_bmus(result: np.ndarray, bmus: np.ndarray):
+
+        for i in range(bmus.shape[0]):
+
+            result[bmus[i]] += 1
+
+    ####################################################################################################################
+
+    def get_activation_map(self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024, show_progress_bar: bool = False) -&gt; np.ndarray:
+
+        &#34;&#34;&#34;
+        ???
+
+        Parameters
+        ----------
+        dataset : Union[np.ndarray, Callable]
+            ???
+        enable_gpu : bool
+            ???
+        threads_per_blocks : Union[Tuple[int], int]
+            ???
+        show_progress_bar : bool
+            Specifies whether to display a progress bar (default: **False**).
+        &#34;&#34;&#34;
+
+        ################################################################################################################
+
+        generator_builder = dataset_to_generator_builder(dataset)
+
+        generator = generator_builder()
+
+        ################################################################################################################
+
+        result = np.zeros(self._m * self._n, dtype = np.int64)
+
+        ################################################################################################################
+
+        for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
+
+            if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
+
+                bmus = cu.device_array(data.shape[0], dtype = np.int32)
+                # noinspection PyUnresolvedReferences
+                _find_bmus_kernel_gpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
+                SOM_Abstract._count_bmus(result, bmus.copy_to_host())
+
+            else:
+
+                bmus = np.empty(data.shape[0], dtype = np.int32)
+                # noinspection PyUnresolvedReferences
+                _find_bmus_kernel_cpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
+                SOM_Abstract._count_bmus(result, bmus)
+
+        ################################################################################################################
+
+        return result.reshape((self._m, self._n, ))
+
+    ####################################################################################################################
+
+    def get_winners(self, dataset: np.ndarray, locations: bool = False, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
+
+        &#34;&#34;&#34;
+        ???
+
+        Parameters
+        ----------
+        dataset : np.ndarray
+            ???
+        locations : bool
+            ???
+        enable_gpu : bool
+            ???
+        threads_per_blocks : Union[Tuple[int], int]
+            ???
+        &#34;&#34;&#34;
+
+        ################################################################################################################
+
+        if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
+
+            bmus = cu.device_array(dataset.shape[0], dtype = np.int32)
+            # noinspection PyUnresolvedReferences
+            _find_bmus_kernel_gpu[threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
+            result = bmus.copy_to_host()
+
+        else:
+
+            bmus = np.empty(dataset.shape[0], dtype = np.int32)
+            # noinspection PyUnresolvedReferences
+            _find_bmus_kernel_cpu[threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
+            result = bmus
+
+        ################################################################################################################
+
+        return self._topography[result] if locations else result</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li>decontamination._algo.som_batch.SOM_Batch</li>
+<li>decontamination._algo.som_online.SOM_Online</li>
+<li>decontamination._algo.som_pca.SOM_PCA</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="decontamination.SOM_Abstract.init_rand"><code class="name flex">
+<span>def <span class="ident">init_rand</span></span>(<span>self, seed: Optional[int] = None) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initializes the neural network randomly.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>seed</code></strong> :&ensp;<code>Optional[int]</code></dt>
+<dd>Seed for random generator (default: <strong>None</strong>).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def init_rand(self, seed: Optional[int] = None) -&gt; None:
+
+    &#34;&#34;&#34;
+    Initializes the neural network randomly.
+
+    Parameters
+    ----------
+    seed : Optional[int]
+        Seed for random generator (default: **None**).
+    &#34;&#34;&#34;
+
+    ################################################################################################################
+
+    if seed is None:
+
+        rng = np.random.default_rng()
+
+    else:
+
+        rng = np.random.default_rng(seed = seed)
+
+    ################################################################################################################
+
+    self._weights[...] = rng.random((self._m * self._n, self._dim), dtype = self._dtype)</code></pre>
+</details>
+</dd>
+<dt id="decontamination.SOM_Abstract.init_from"><code class="name flex">
+<span>def <span class="ident">init_from</span></span>(<span>self, other: <a title="decontamination.SOM_Abstract" href="#decontamination.SOM_Abstract">SOM_Abstract</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initializes the neural network from another one.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>other</code></strong> :&ensp;<code><a title="decontamination.SOM_Abstract" href="#decontamination.SOM_Abstract">SOM_Abstract</a></code></dt>
+<dd>Another SOM object from which the weights will be copied.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def init_from(self, other: &#39;SOM_Abstract&#39;) -&gt; None:
+
+    &#34;&#34;&#34;
+    Initializes the neural network from another one.
+
+    Parameters
+    ----------
+    other : SOM_Abstract
+        Another SOM object from which the weights will be copied.
+    &#34;&#34;&#34;
+
+    if self._m != other._m              \
+       or                               \
+       self._n != other._n              \
+       or                               \
+       self._dim != other._dim          \
+       or                               \
+       self._dtype != other._dtype      \
+       or                               \
+       self._topology != other._topology:
+
+        raise Exception(&#39;Incompatible shapes, dtypes or topologies&#39;)
+
+    self._weights[...] = other._weights</code></pre>
+</details>
+</dd>
+<dt id="decontamination.SOM_Abstract.save"><code class="name flex">
+<span>def <span class="ident">save</span></span>(<span>self, filename: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Saves the trained neural network to a file.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>Output HDF5 filename.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save(self, filename: str) -&gt; None:
+
+    &#34;&#34;&#34;
+    Saves the trained neural network to a file.
+
+    Parameters
+    ----------
+    filename : str
+        Output HDF5 filename.
+    &#34;&#34;&#34;
+
+    ################################################################################################################
+
+    import h5py
+
+    ################################################################################################################
+
+    header_extra, dataset_extra = SOM_Abstract._init_hdf5_extra()
+
+    ################################################################################################################
+
+    with h5py.File(filename, &#39;w&#39;) as file:
+
+        for name, field in header_extra.items():
+
+            file.attrs[name] = getattr(self, field)
+
+        for name, field in dataset_extra.items():
+
+            data = getattr(self, field)
+
+            file.create_dataset(
+                name,
+                data = data,
+                shape = data.shape,
+                dtype = data.dtype
+            )</code></pre>
+</details>
+</dd>
+<dt id="decontamination.SOM_Abstract.load"><code class="name flex">
+<span>def <span class="ident">load</span></span>(<span>self, filename: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Loads the trained neural network from a file.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>Input HDF5 filename.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load(self, filename: str) -&gt; None:
+
+    &#34;&#34;&#34;
+    Loads the trained neural network from a file.
+
+    Parameters
+    ----------
+    filename : str
+        Input HDF5 filename.
+    &#34;&#34;&#34;
+
+    ################################################################################################################
+
+    import h5py
+
+    ################################################################################################################
+
+    header_extra, dataset_extra = SOM_Abstract._init_hdf5_extra()
+
+    ################################################################################################################
+
+    with h5py.File(filename, &#39;r&#39;) as file:
+
+        for name, field in header_extra.items():
+
+            setattr(self, field, file.attrs[name])
+
+        for name, field in dataset_extra.items():
+
+            setattr(self, field, file[name])
+
+    ################################################################################################################
+
+    self._rebuild_topography()</code></pre>
+</details>
+</dd>
+<dt id="decontamination.SOM_Abstract.get_weights"><code class="name flex">
+<span>def <span class="ident">get_weights</span></span>(<span>self) ‑> np.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the neural network weights with the shape: [m * n, dim].</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_weights(self) -&gt; np.ndarray:
+
+    &#34;&#34;&#34;
+    Returns the neural network weights with the shape: [m * n, dim].
+    &#34;&#34;&#34;
+
+    return self._weights.reshape((self._m * self._n, self._dim))</code></pre>
+</details>
+</dd>
+<dt id="decontamination.SOM_Abstract.get_centroids"><code class="name flex">
+<span>def <span class="ident">get_centroids</span></span>(<span>self) ‑> np.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the neural network weights with the shape: [m, n, dim].</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_centroids(self) -&gt; np.ndarray:
+
+    &#34;&#34;&#34;
+    Returns the neural network weights with the shape: [m, n, dim].
+    &#34;&#34;&#34;
+
+    return self._weights.reshape((self._m, self._n, self._dim))</code></pre>
+</details>
+</dd>
+<dt id="decontamination.SOM_Abstract.get_quantization_errors"><code class="name flex">
+<span>def <span class="ident">get_quantization_errors</span></span>(<span>self) ‑> np.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the quantization error. <span><span class="MathJax_Preview"> c_i^1=\mathrm{1^\mathrm{st}\,bmu}=\underset{j}{\mathrm{arg\,min}_1}\lVert x_i-w_j\rVert </span><script type="math/tex; mode=display"> c_i^1=\mathrm{1^\mathrm{st}\,bmu}=\underset{j}{\mathrm{arg\,min}_1}\lVert x_i-w_j\rVert </script></span> <span><span class="MathJax_Preview"> \boxed{e_Q=\frac{1}{N}\sum_{i=1}^N\lVert x_i-w_{c_i^1}\rVert} </span><script type="math/tex; mode=display"> \boxed{e_Q=\frac{1}{N}\sum_{i=1}^N\lVert x_i-w_{c_i^1}\rVert} </script></span></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_quantization_errors(self) -&gt; np.ndarray:
+
+    &#34;&#34;&#34;
+    Returns the quantization error. $$ c_i^1=\\mathrm{1^\\mathrm{st}\\,bmu}=\\underset{j}{\\mathrm{arg\\,min}_1}\\lVert x_i-w_j\\rVert $$ $$ \\boxed{e_Q=\\frac{1}{N}\\sum_{i=1}^N\\lVert x_i-w_{c_i^1}\\rVert} $$
+    &#34;&#34;&#34;
+
+    return self._quantization_errors</code></pre>
+</details>
+</dd>
+<dt id="decontamination.SOM_Abstract.get_topographic_errors"><code class="name flex">
+<span>def <span class="ident">get_topographic_errors</span></span>(<span>self) ‑> np.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the topographic errors. <span><span class="MathJax_Preview"> c_i^n=\mathrm{n^\mathrm{th}\,bmu}=\underset{j}{\mathrm{arg\,min}_n}\lVert x_i-w_j\rVert </span><script type="math/tex; mode=display"> c_i^n=\mathrm{n^\mathrm{th}\,bmu}=\underset{j}{\mathrm{arg\,min}_n}\lVert x_i-w_j\rVert </script></span> <span><span class="MathJax_Preview"> t(x_i)=\left\{\begin{array}{ll}1&amp;\lVert c_i^1-c_i^2\rVert&gt;\sqrt{2}\\0&amp;\mathrm{otherwise}\end{array}\right. </span><script type="math/tex; mode=display"> t(x_i)=\left\{\begin{array}{ll}1&\lVert c_i^1-c_i^2\rVert>\sqrt{2}\\0&\mathrm{otherwise}\end{array}\right. </script></span> <span><span class="MathJax_Preview"> \boxed{e_t=\frac{1}{N}\sum_{i=0}^Nt(x_i)} </span><script type="math/tex; mode=display"> \boxed{e_t=\frac{1}{N}\sum_{i=0}^Nt(x_i)} </script></span></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_topographic_errors(self) -&gt; np.ndarray:
+
+    &#34;&#34;&#34;
+    Returns the topographic errors. $$ c_i^n=\\mathrm{n^\\mathrm{th}\\,bmu}=\\underset{j}{\\mathrm{arg\\,min}_n}\\lVert x_i-w_j\\rVert $$ $$ t(x_i)=\\left\\{\\begin{array}{ll}1&amp;\\lVert c_i^1-c_i^2\\rVert&gt;\\sqrt{2}\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{e_t=\\frac{1}{N}\\sum_{i=0}^Nt(x_i)} $$
+    &#34;&#34;&#34;
+
+    return self._topographic_errors</code></pre>
+</details>
+</dd>
+<dt id="decontamination.SOM_Abstract.get_distance_map"><code class="name flex">
+<span>def <span class="ident">get_distance_map</span></span>(<span>self, scaling: Optional[str] = None) ‑> np.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the distance map of the neural network weights.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>scaling</code></strong> :&ensp;<code>Optional[str]</code></dt>
+<dd>Normalization method, either '<strong>sum</strong>' or '<strong>mean</strong>' (default: '<strong>sum</strong>')</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_distance_map(self, scaling: Optional[str] = None) -&gt; np.ndarray:
+
+    &#34;&#34;&#34;
+    Returns the distance map of the neural network weights.
+
+    Parameters
+    ----------
+    scaling : Optional[str]
+        Normalization method, either &#39;**sum**&#39; or &#39;**mean**&#39; (default: &#39;**sum**&#39;)
+    &#34;&#34;&#34;
+
+    scaling = scaling or &#39;sum&#39;
+
+    ################################################################################################################
+
+    if self._topology == &#39;hexagonal&#39;:
+
+        result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
+
+        SOM_Abstract._distance_map_kernel(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
+
+    else:
+
+        result = np.full(shape = (self._m, self._n, 8), fill_value = np.nan, dtype = self._dtype)
+
+        SOM_Abstract._distance_map_kernel(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
+
+    ################################################################################################################
+
+    if scaling == &#39;sum&#39;:
+        result = np.nansum(result, axis = 2)
+
+    elif scaling == &#39;mean&#39;:
+        result = np.nanmean(result, axis = 2)
+
+    else:
+        raise Exception(f&#39;Invalid scaling method `{scaling}`&#39;)
+
+    ################################################################################################################
+
+    return result / np.max(result)</code></pre>
+</details>
+</dd>
+<dt id="decontamination.SOM_Abstract.get_activation_map"><code class="name flex">
+<span>def <span class="ident">get_activation_map</span></span>(<span>self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024, show_progress_bar: bool = False) ‑> np.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"><p>???</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
+<dd>???</dd>
+<dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
+<dd>???</dd>
+<dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
+<dd>???</dd>
+<dt><strong><code>show_progress_bar</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Specifies whether to display a progress bar (default: <strong>False</strong>).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_activation_map(self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024, show_progress_bar: bool = False) -&gt; np.ndarray:
+
+    &#34;&#34;&#34;
+    ???
+
+    Parameters
+    ----------
+    dataset : Union[np.ndarray, Callable]
+        ???
+    enable_gpu : bool
+        ???
+    threads_per_blocks : Union[Tuple[int], int]
+        ???
+    show_progress_bar : bool
+        Specifies whether to display a progress bar (default: **False**).
+    &#34;&#34;&#34;
+
+    ################################################################################################################
+
+    generator_builder = dataset_to_generator_builder(dataset)
+
+    generator = generator_builder()
+
+    ################################################################################################################
+
+    result = np.zeros(self._m * self._n, dtype = np.int64)
+
+    ################################################################################################################
+
+    for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
+
+        if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
+
+            bmus = cu.device_array(data.shape[0], dtype = np.int32)
+            # noinspection PyUnresolvedReferences
+            _find_bmus_kernel_gpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
+            SOM_Abstract._count_bmus(result, bmus.copy_to_host())
+
+        else:
+
+            bmus = np.empty(data.shape[0], dtype = np.int32)
+            # noinspection PyUnresolvedReferences
+            _find_bmus_kernel_cpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
+            SOM_Abstract._count_bmus(result, bmus)
+
+    ################################################################################################################
+
+    return result.reshape((self._m, self._n, ))</code></pre>
+</details>
+</dd>
+<dt id="decontamination.SOM_Abstract.get_winners"><code class="name flex">
+<span>def <span class="ident">get_winners</span></span>(<span>self, dataset: np.ndarray, locations: bool = False, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) ‑> np.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"><p>???</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dataset</code></strong> :&ensp;<code>np.ndarray</code></dt>
+<dd>???</dd>
+<dt><strong><code>locations</code></strong> :&ensp;<code>bool</code></dt>
+<dd>???</dd>
+<dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
+<dd>???</dd>
+<dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
+<dd>???</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_winners(self, dataset: np.ndarray, locations: bool = False, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
+
+    &#34;&#34;&#34;
+    ???
+
+    Parameters
+    ----------
+    dataset : np.ndarray
+        ???
+    locations : bool
+        ???
+    enable_gpu : bool
+        ???
+    threads_per_blocks : Union[Tuple[int], int]
+        ???
+    &#34;&#34;&#34;
+
+    ################################################################################################################
+
+    if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
+
+        bmus = cu.device_array(dataset.shape[0], dtype = np.int32)
+        # noinspection PyUnresolvedReferences
+        _find_bmus_kernel_gpu[threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
+        result = bmus.copy_to_host()
+
+    else:
+
+        bmus = np.empty(dataset.shape[0], dtype = np.int32)
+        # noinspection PyUnresolvedReferences
+        _find_bmus_kernel_cpu[threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
+        result = bmus
+
+    ################################################################################################################
+
+    return self._topography[result] if locations else result</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="decontamination.SOM_PCA"><code class="flex name class">
+<span>class <span class="ident">SOM_PCA</span></span>
+<span>(</span><span>m: int, n: int, dim: int, dtype: Type[np.float32] = np.float32, topology: Optional[str] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Self Organizing Maps that span the first two principal components.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>m</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of neuron rows.</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of neuron columns.</dd>
+<dt><strong><code>dim</code></strong> :&ensp;<code>int</code></dt>
+<dd>Dimensionality of the input data.</dd>
+<dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
+<dd>Neural network data type (default: <strong>np.float32</strong>).</dd>
+<dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
+<dd>Topology of the map, either '<strong>square</strong>' or '<strong>hexagonal</strong>' (default: '<strong>hexagonal</strong>').</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SOM_PCA(som_abstract.SOM_Abstract):
+
+    &#34;&#34;&#34;
+    Self Organizing Maps that span the first two principal components.
+    &#34;&#34;&#34;
+
+    __MODE__ = &#39;pca&#39;
+
+    ####################################################################################################################
+
+    def __init__(self, m: int, n: int, dim: int, dtype: Type[np.single] = np.float32, topology: Optional[str] = None):
+
+        &#34;&#34;&#34;
+        Parameters
+        ----------
+        m : int
+            Number of neuron rows.
+        n : int
+            Number of neuron columns.
+        dim : int
+            Dimensionality of the input data.
+        dtype : Type[np.single]
+            Neural network data type (default: **np.float32**).
+        topology : Optional[str]
+            Topology of the map, either &#39;**square**&#39; or &#39;**hexagonal**&#39; (default: &#39;**hexagonal**&#39;).
+        &#34;&#34;&#34;
+
+        ####################################################################################################################
+
+        super().__init__(m, n, dim, dtype, topology)
+
+        ####################################################################################################################
+
+        self.header_extra = {
+            &#39;mode&#39;: &#39;__MODE__&#39;,
+        }
+
+    ####################################################################################################################
+
+    @staticmethod
+    @nb.njit(parallel = False)
+    def _cov_matrix_kernel(result_sum: np.ndarray, result_prods: np.ndarray, data: np.ndarray) -&gt; None:
+
+        ################################################################################################################
+
+        data_dim = data.shape[0]
+        syst_dim = data.shape[1]
+
+        ################################################################################################################
+
+        for i in range(data_dim):
+
+            value = data[i].astype(np.float64)
+
+            for j in range(syst_dim):
+
+                value_j = value[j]
+                result_sum[j] += value_j
+
+                for k in range(syst_dim):
+
+                    value_jk = value_j * value[k]
+                    result_prods[j][k] += value_jk
+
+    ####################################################################################################################
+
+    @staticmethod
+    @nb.njit(parallel = False)
+    def _diag_kernel(weights: np.ndarray, cov_matrix: np.ndarray, m: int, n: int) -&gt; None:
+
+        ################################################################################################################
+
+        eigenvalues, eigenvectors = np.linalg.eig(cov_matrix)
+
+        orders = np.argsort(-eigenvalues)
+
+        order0 = orders[0]
+        order1 = orders[1]
+
+        ################################################################################################################
+
+        linspace_x = np.linspace(-1, 1, m)
+        linspace_y = np.linspace(-1, 1, n)
+
+        for i in range(m):
+            c1 = linspace_x[i]
+
+            for j in range(n):
+                c2 = linspace_y[j]
+
+                weights[i, j] = (
+                    eigenvectors[:, order0] * c1
+                    +
+                    eigenvectors[:, order1] * c2
+                ).astype(weights.dtype)
+
+    ####################################################################################################################
+
+    def train(self, dataset: Union[np.ndarray, Callable], show_progress_bar: bool = False) -&gt; None:
+
+        &#34;&#34;&#34;
+        Trains the neural network.
+
+        Parameters
+        ----------
+        dataset : Union[np.ndarray, Callable]
+            Training dataset array or generator of generator.
+        show_progress_bar : bool
+            Specifies whether to display a progress bar (default: **False**).
+        &#34;&#34;&#34;
+
+        ################################################################################################################
+
+        generator_builder = dataset_to_generator_builder(dataset)
+
+        generator = generator_builder()
+
+        ################################################################################################################
+
+        total_nb = 0
+
+        total_sum = np.zeros((self._dim, ), dtype = np.float64)
+        total_prods = np.zeros((self._dim, self._dim, ), dtype = np.float64)
+
+        ################################################################################################################
+
+        for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
+
+            SOM_PCA._cov_matrix_kernel(total_sum, total_prods, data)
+
+            total_nb += data.shape[0]
+
+        ################################################################################################################
+
+        total_sum /= total_nb
+        total_prods /= total_nb
+
+        ################################################################################################################
+
+        cov_matrix = total_prods - np.outer(total_sum, total_sum)
+
+        ################################################################################################################
+
+        SOM_PCA._diag_kernel(self.get_centroids(), cov_matrix, self._m, self._n)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>decontamination._algo.som_abstract.SOM_Abstract</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="decontamination.SOM_PCA.train"><code class="name flex">
+<span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable], show_progress_bar: bool = False) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Trains the neural network.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
+<dd>Training dataset array or generator of generator.</dd>
+<dt><strong><code>show_progress_bar</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Specifies whether to display a progress bar (default: <strong>False</strong>).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable], show_progress_bar: bool = False) -&gt; None:
+
+    &#34;&#34;&#34;
+    Trains the neural network.
+
+    Parameters
+    ----------
+    dataset : Union[np.ndarray, Callable]
+        Training dataset array or generator of generator.
+    show_progress_bar : bool
+        Specifies whether to display a progress bar (default: **False**).
+    &#34;&#34;&#34;
+
+    ################################################################################################################
+
+    generator_builder = dataset_to_generator_builder(dataset)
+
+    generator = generator_builder()
+
+    ################################################################################################################
+
+    total_nb = 0
+
+    total_sum = np.zeros((self._dim, ), dtype = np.float64)
+    total_prods = np.zeros((self._dim, self._dim, ), dtype = np.float64)
+
+    ################################################################################################################
+
+    for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
+
+        SOM_PCA._cov_matrix_kernel(total_sum, total_prods, data)
+
+        total_nb += data.shape[0]
+
+    ################################################################################################################
+
+    total_sum /= total_nb
+    total_prods /= total_nb
+
+    ################################################################################################################
+
+    cov_matrix = total_prods - np.outer(total_sum, total_sum)
+
+    ################################################################################################################
+
+    SOM_PCA._diag_kernel(self.get_centroids(), cov_matrix, self._m, self._n)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="decontamination.SOM_Batch"><code class="flex name class">
+<span>class <span class="ident">SOM_Batch</span></span>
+<span>(</span><span>m: int, n: int, dim: int, dtype: Type[np.float32] = np.float32, topology: Optional[str] = None, alpha: float = None, sigma: float = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Self Organizing Maps (standard batch implementation).</p>
+<p>A rule of thumb to set the size of the grid for a dimensionality reduction
+task is that it should contain <span><span class="MathJax_Preview"> 5\sqrt{N} </span><script type="math/tex"> 5\sqrt{N} </script></span> neurons where N is the
+number of samples in the dataset to analyze.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>m</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of neuron rows.</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of neuron columns.</dd>
+<dt><strong><code>dim</code></strong> :&ensp;<code>int</code></dt>
+<dd>Dimensionality of the input data.</dd>
+<dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
+<dd>Neural network data type (default: <strong>np.float32</strong>).</dd>
+<dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
+<dd>Topology of the map, either '<strong>square</strong>' or '<strong>hexagonal</strong>' (default: '<strong>hexagonal</strong>').</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code></dt>
+<dd>Starting value of the learning rate (default: 0.3).</dd>
+<dt><strong><code>sigma</code></strong> :&ensp;<code>float</code></dt>
+<dd>Starting value of the neighborhood radius (default: <span><span class="MathJax_Preview"> \mathrm{max}(m,n)/2 </span><script type="math/tex"> \mathrm{max}(m,n)/2 </script></span>).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SOM_Batch(som_abstract.SOM_Abstract):
+
+    &#34;&#34;&#34;
+    Self Organizing Maps (standard batch implementation).
+    &#34;&#34;&#34;
+
+    __MODE__ = &#39;batch&#39;
+
+    ####################################################################################################################
+
+    def __init__(self, m: int, n: int, dim: int, dtype: Type[np.single] = np.float32, topology: Optional[str] = None, alpha: float = None, sigma: float = None):
+
+        &#34;&#34;&#34;
+        A rule of thumb to set the size of the grid for a dimensionality reduction
+        task is that it should contain \\( 5\\sqrt{N} \\) neurons where N is the
+        number of samples in the dataset to analyze.
+
+        Parameters
+        ----------
+        m : int
+            Number of neuron rows.
+        n : int
+            Number of neuron columns.
+        dim : int
+            Dimensionality of the input data.
+        dtype : Type[np.single]
+            Neural network data type (default: **np.float32**).
+        topology : Optional[str]
+            Topology of the map, either &#39;**square**&#39; or &#39;**hexagonal**&#39; (default: &#39;**hexagonal**&#39;).
+        alpha : float
+            Starting value of the learning rate (default: 0.3).
+        sigma : float
+            Starting value of the neighborhood radius (default: \\( \\mathrm{max}(m,n)/2 \\)).
+        &#34;&#34;&#34;
+
+        ################################################################################################################
+
+        super().__init__(m, n, dim, dtype, topology)
+
+        ################################################################################################################
+
+        self._alpha = 0.3 if alpha is None else dtype(alpha)
+
+        self._sigma = max(m, n) / 2.0 if sigma is None else dtype(sigma)
+
+        ################################################################################################################
+
+        self._n_epochs = None
+
+        self._n_vectors = None
+
+        ################################################################################################################
+
+        self.header_extra = {
+            &#39;mode&#39;: &#39;__MODE__&#39;,
+            &#39;alpha&#39;: &#39;_alpha&#39;,
+            &#39;sigma&#39;: &#39;_sigma&#39;,
+            &#39;n_epochs&#39;: &#39;_n_epochs&#39;,
+            &#39;n_vectors&#39;: &#39;_n_vectors&#39;,
+        }
+
+    ####################################################################################################################
+
+    def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
+
+        &#34;&#34;&#34;
+        Trains the neural network. Use either the `n_epochs` or `n_vectors` methods.
+
+        Parameters
+        ----------
+        dataset : Union[np.ndarray, Callable]
+            Training dataset array or generator builder.
+        n_epochs : Optional[int]
+            Number of epochs to train for (default: None).
+        n_vectors : Optional[int]
+            Number of vectors to train for (default: None).
+        n_error_bins : int
+            Number of error bins (default: 10).
+        show_progress_bar : bool
+            Specifies whether to display a progress bar (default: **False**).
+        &#34;&#34;&#34;
+
+        ################################################################################################################
+
+        pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>decontamination._algo.som_abstract.SOM_Abstract</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="decontamination.SOM_Batch.train"><code class="name flex">
+<span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Trains the neural network. Use either the <code>n_epochs</code> or <code>n_vectors</code> methods.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
+<dd>Training dataset array or generator builder.</dd>
+<dt><strong><code>n_epochs</code></strong> :&ensp;<code>Optional[int]</code></dt>
+<dd>Number of epochs to train for (default: None).</dd>
+<dt><strong><code>n_vectors</code></strong> :&ensp;<code>Optional[int]</code></dt>
+<dd>Number of vectors to train for (default: None).</dd>
+<dt><strong><code>n_error_bins</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of error bins (default: 10).</dd>
+<dt><strong><code>show_progress_bar</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Specifies whether to display a progress bar (default: <strong>False</strong>).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
+
+    &#34;&#34;&#34;
+    Trains the neural network. Use either the `n_epochs` or `n_vectors` methods.
+
+    Parameters
+    ----------
+    dataset : Union[np.ndarray, Callable]
+        Training dataset array or generator builder.
+    n_epochs : Optional[int]
+        Number of epochs to train for (default: None).
+    n_vectors : Optional[int]
+        Number of vectors to train for (default: None).
+    n_error_bins : int
+        Number of error bins (default: 10).
+    show_progress_bar : bool
+        Specifies whether to display a progress bar (default: **False**).
+    &#34;&#34;&#34;
+
+    ################################################################################################################
+
+    pass</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="decontamination.SOM_Online"><code class="flex name class">
+<span>class <span class="ident">SOM_Online</span></span>
+<span>(</span><span>m: int, n: int, dim: int, dtype: Type[np.float32] = np.float32, topology: Optional[str] = None, alpha: float = None, sigma: float = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Self Organizing Maps (standard online implementation).</p>
+<p>A rule of thumb to set the size of the grid for a dimensionality reduction
+task is that it should contain <span><span class="MathJax_Preview"> 5\sqrt{N} </span><script type="math/tex"> 5\sqrt{N} </script></span> neurons where N is the
+number of samples in the dataset to analyze.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>m</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of neuron rows.</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of neuron columns.</dd>
+<dt><strong><code>dim</code></strong> :&ensp;<code>int</code></dt>
+<dd>Dimensionality of the input data.</dd>
+<dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
+<dd>Neural network data type (default: <strong>np.float32</strong>).</dd>
+<dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
+<dd>Topology of the map, either '<strong>square</strong>' or '<strong>hexagonal</strong>' (default: '<strong>hexagonal</strong>').</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code></dt>
+<dd>Starting value of the learning rate (default: 0.3).</dd>
+<dt><strong><code>sigma</code></strong> :&ensp;<code>float</code></dt>
+<dd>Starting value of the neighborhood radius (default: <span><span class="MathJax_Preview"> \mathrm{max}(m,n)/2 </span><script type="math/tex"> \mathrm{max}(m,n)/2 </script></span>).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SOM_Online(som_abstract.SOM_Abstract):
+
+    &#34;&#34;&#34;
+    Self Organizing Maps (standard online implementation).
+    &#34;&#34;&#34;
+
+    __MODE__ = &#39;online&#39;
+
+    ####################################################################################################################
+
+    def __init__(self, m: int, n: int, dim: int, dtype: Type[np.single] = np.float32, topology: Optional[str] = None, alpha: float = None, sigma: float = None):
+
+        &#34;&#34;&#34;
+        A rule of thumb to set the size of the grid for a dimensionality reduction
+        task is that it should contain \\( 5\\sqrt{N} \\) neurons where N is the
+        number of samples in the dataset to analyze.
+
+        Parameters
+        ----------
+        m : int
+            Number of neuron rows.
+        n : int
+            Number of neuron columns.
+        dim : int
+            Dimensionality of the input data.
+        dtype : Type[np.single]
+            Neural network data type (default: **np.float32**).
+        topology : Optional[str]
+            Topology of the map, either &#39;**square**&#39; or &#39;**hexagonal**&#39; (default: &#39;**hexagonal**&#39;).
+        alpha : float
+            Starting value of the learning rate (default: 0.3).
+        sigma : float
+            Starting value of the neighborhood radius (default: \\( \\mathrm{max}(m,n)/2 \\)).
+        &#34;&#34;&#34;
+
+        ################################################################################################################
+
+        super().__init__(m, n, dim, dtype, topology)
+
+        ################################################################################################################
+
+        self._alpha = 0.3 if alpha is None else dtype(alpha)
+
+        self._sigma = max(m, n) / 2.0 if sigma is None else dtype(sigma)
+
+        ################################################################################################################
+
+        self._n_epochs = None
+
+        self._n_vectors = None
+
+        ################################################################################################################
+
+        self.header_extra = {
+            &#39;mode&#39;: &#39;__MODE__&#39;,
+            &#39;alpha&#39;: &#39;_alpha&#39;,
+            &#39;sigma&#39;: &#39;_sigma&#39;,
+            &#39;n_epochs&#39;: &#39;_n_epochs&#39;,
+            &#39;n_vectors&#39;: &#39;_n_vectors&#39;,
+        }
+
+    ####################################################################################################################
+
+    @staticmethod
+    @nb.njit(parallel = False)
+    def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, mn: int):
+
+        ################################################################################################################
+
+        decay_function = asymptotic_decay(cur_epoch, n_epochs)
+
+        alpha = alpha0 * decay_function
+
+        sigma = sigma0 * decay_function
+
+        ################################################################################################################
+
+        for i in range(data.shape[0]):
+
+            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, mn)
+
+            quantization_errors[cur_epoch] += quantization_error
+            topographic_errors[cur_epoch] += topographic_error
+
+    ####################################################################################################################
+
+    @staticmethod
+    @nb.njit(parallel = False)
+    def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, mn: int):
+
+        for i in range(data.shape[0]):
+
+            ############################################################################################################
+
+            decay_function = asymptotic_decay(cur_vector + i, n_vectors)
+
+            alpha = alpha0 * decay_function
+
+            sigma = sigma0 * decay_function
+
+            ############################################################################################################
+
+            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, mn)
+
+            cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
+
+            quantization_errors[cur_err_bin] += quantization_error
+            topographic_errors[cur_err_bin] += topographic_error
+
+    ####################################################################################################################
+
+    def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
+
+        &#34;&#34;&#34;
+        Trains the neural network. Use either the `n_epochs` or `n_vectors` methods.
+
+        Parameters
+        ----------
+        dataset : Union[np.ndarray, Callable]
+            Training dataset array or generator builder.
+        n_epochs : Optional[int]
+            Number of epochs to train for (default: None).
+        n_vectors : Optional[int]
+            Number of vectors to train for (default: None).
+        n_error_bins : int
+            Number of error bins (default: 10).
+        show_progress_bar : bool
+            Specifies whether to display a progress bar (default: **False**).
+        &#34;&#34;&#34;
+
+        ################################################################################################################
+
+        generator_builder = dataset_to_generator_builder(dataset)
+
+        ################################################################################################################
+
+        cur_vector = 0
+
+        self._n_epochs = n_epochs
+
+        self._n_vectors = n_vectors
+
+        if not (n_epochs is None) and (n_vectors is None):
+
+            ############################################################################################################
+            # TRAINING BY NUMBER OF EPOCHS                                                                             #
+            ############################################################################################################
+
+            self._quantization_errors = np.zeros(n_epochs, dtype = np.float32)
+
+            self._topographic_errors = np.zeros(n_epochs, dtype = np.float32)
+
+            ############################################################################################################
+
+            for cur_epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
+
+                generator = generator_builder()
+
+                for data in generator():
+
+                    cur_vector += data.shape[0]
+
+                    SOM_Online._train_step1_epoch(
+                        self._weights,
+                        self._quantization_errors,
+                        self._topographic_errors,
+                        self._topography,
+                        data,
+                        cur_epoch,
+                        n_epochs,
+                        self._alpha,
+                        self._sigma,
+                        self._m * self._n
+                    )
+
+            ############################################################################################################
+
+            if cur_vector &gt; 0:
+
+                self._quantization_errors = self._quantization_errors * n_epochs / cur_vector
+
+                self._topographic_errors = self._topographic_errors * n_epochs / cur_vector
+
+            ############################################################################################################
+
+        elif (n_epochs is None) and not (n_vectors is None):
+
+            ############################################################################################################
+            # TRAINING BY NUMBER OF VECTORS                                                                            #
+            ############################################################################################################
+
+            self._quantization_errors = np.zeros(n_error_bins, dtype = np.float32)
+
+            self._topographic_errors = np.zeros(n_error_bins, dtype = np.float32)
+
+            ############################################################################################################
+
+            progress_bar = tqdm.tqdm(total = n_vectors, disable = not show_progress_bar)
+
+            generator = generator_builder()
+
+            for data in generator():
+
+                count = min(data.shape[0], n_vectors - cur_vector)
+
+                SOM_Online._train_step1_iter(
+                    self._weights,
+                    self._quantization_errors,
+                    self._topographic_errors,
+                    self._topography,
+                    data[0: count],
+                    cur_vector,
+                    n_vectors,
+                    n_error_bins,
+                    self._alpha,
+                    self._sigma,
+                    self._m * self._n
+                )
+
+                cur_vector += count
+
+                progress_bar.update(count)
+
+                if cur_vector &gt;= n_vectors:
+
+                    break
+
+            ############################################################################################################
+
+            if cur_vector &gt; 0:
+
+                self._quantization_errors = self._quantization_errors * n_error_bins / cur_vector
+
+                self._topographic_errors = self._topographic_errors * n_error_bins / cur_vector
+
+            ############################################################################################################
+
+        else:
+
+            raise Exception(&#39;Invalid training method, use either `n_epochs` or `n_vectors`.&#39;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>decontamination._algo.som_abstract.SOM_Abstract</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="decontamination.SOM_Online.train"><code class="name flex">
+<span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Trains the neural network. Use either the <code>n_epochs</code> or <code>n_vectors</code> methods.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
+<dd>Training dataset array or generator builder.</dd>
+<dt><strong><code>n_epochs</code></strong> :&ensp;<code>Optional[int]</code></dt>
+<dd>Number of epochs to train for (default: None).</dd>
+<dt><strong><code>n_vectors</code></strong> :&ensp;<code>Optional[int]</code></dt>
+<dd>Number of vectors to train for (default: None).</dd>
+<dt><strong><code>n_error_bins</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of error bins (default: 10).</dd>
+<dt><strong><code>show_progress_bar</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Specifies whether to display a progress bar (default: <strong>False</strong>).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
+
+    &#34;&#34;&#34;
+    Trains the neural network. Use either the `n_epochs` or `n_vectors` methods.
+
+    Parameters
+    ----------
+    dataset : Union[np.ndarray, Callable]
+        Training dataset array or generator builder.
+    n_epochs : Optional[int]
+        Number of epochs to train for (default: None).
+    n_vectors : Optional[int]
+        Number of vectors to train for (default: None).
+    n_error_bins : int
+        Number of error bins (default: 10).
+    show_progress_bar : bool
+        Specifies whether to display a progress bar (default: **False**).
+    &#34;&#34;&#34;
+
+    ################################################################################################################
+
+    generator_builder = dataset_to_generator_builder(dataset)
+
+    ################################################################################################################
+
+    cur_vector = 0
+
+    self._n_epochs = n_epochs
+
+    self._n_vectors = n_vectors
+
+    if not (n_epochs is None) and (n_vectors is None):
+
+        ############################################################################################################
+        # TRAINING BY NUMBER OF EPOCHS                                                                             #
+        ############################################################################################################
+
+        self._quantization_errors = np.zeros(n_epochs, dtype = np.float32)
+
+        self._topographic_errors = np.zeros(n_epochs, dtype = np.float32)
+
+        ############################################################################################################
+
+        for cur_epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
+
+            generator = generator_builder()
+
+            for data in generator():
+
+                cur_vector += data.shape[0]
+
+                SOM_Online._train_step1_epoch(
+                    self._weights,
+                    self._quantization_errors,
+                    self._topographic_errors,
+                    self._topography,
+                    data,
+                    cur_epoch,
+                    n_epochs,
+                    self._alpha,
+                    self._sigma,
+                    self._m * self._n
+                )
+
+        ############################################################################################################
+
+        if cur_vector &gt; 0:
+
+            self._quantization_errors = self._quantization_errors * n_epochs / cur_vector
+
+            self._topographic_errors = self._topographic_errors * n_epochs / cur_vector
+
+        ############################################################################################################
+
+    elif (n_epochs is None) and not (n_vectors is None):
+
+        ############################################################################################################
+        # TRAINING BY NUMBER OF VECTORS                                                                            #
+        ############################################################################################################
+
+        self._quantization_errors = np.zeros(n_error_bins, dtype = np.float32)
+
+        self._topographic_errors = np.zeros(n_error_bins, dtype = np.float32)
+
+        ############################################################################################################
+
+        progress_bar = tqdm.tqdm(total = n_vectors, disable = not show_progress_bar)
+
+        generator = generator_builder()
+
+        for data in generator():
+
+            count = min(data.shape[0], n_vectors - cur_vector)
+
+            SOM_Online._train_step1_iter(
+                self._weights,
+                self._quantization_errors,
+                self._topographic_errors,
+                self._topography,
+                data[0: count],
+                cur_vector,
+                n_vectors,
+                n_error_bins,
+                self._alpha,
+                self._sigma,
+                self._m * self._n
+            )
+
+            cur_vector += count
+
+            progress_bar.update(count)
+
+            if cur_vector &gt;= n_vectors:
+
+                break
+
+        ############################################################################################################
+
+        if cur_vector &gt; 0:
+
+            self._quantization_errors = self._quantization_errors * n_error_bins / cur_vector
+
+            self._topographic_errors = self._topographic_errors * n_error_bins / cur_vector
+
+        ############################################################################################################
+
+    else:
+
+        raise Exception(&#39;Invalid training method, use either `n_epochs` or `n_vectors`.&#39;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="decontamination.jit" href="#decontamination.jit">jit</a></code></h4>
+</li>
+<li>
+<h4><code><a title="decontamination.SOM_Abstract" href="#decontamination.SOM_Abstract">SOM_Abstract</a></code></h4>
+<ul class="">
+<li><code><a title="decontamination.SOM_Abstract.init_rand" href="#decontamination.SOM_Abstract.init_rand">init_rand</a></code></li>
+<li><code><a title="decontamination.SOM_Abstract.init_from" href="#decontamination.SOM_Abstract.init_from">init_from</a></code></li>
+<li><code><a title="decontamination.SOM_Abstract.save" href="#decontamination.SOM_Abstract.save">save</a></code></li>
+<li><code><a title="decontamination.SOM_Abstract.load" href="#decontamination.SOM_Abstract.load">load</a></code></li>
+<li><code><a title="decontamination.SOM_Abstract.get_weights" href="#decontamination.SOM_Abstract.get_weights">get_weights</a></code></li>
+<li><code><a title="decontamination.SOM_Abstract.get_centroids" href="#decontamination.SOM_Abstract.get_centroids">get_centroids</a></code></li>
+<li><code><a title="decontamination.SOM_Abstract.get_quantization_errors" href="#decontamination.SOM_Abstract.get_quantization_errors">get_quantization_errors</a></code></li>
+<li><code><a title="decontamination.SOM_Abstract.get_topographic_errors" href="#decontamination.SOM_Abstract.get_topographic_errors">get_topographic_errors</a></code></li>
+<li><code><a title="decontamination.SOM_Abstract.get_distance_map" href="#decontamination.SOM_Abstract.get_distance_map">get_distance_map</a></code></li>
+<li><code><a title="decontamination.SOM_Abstract.get_activation_map" href="#decontamination.SOM_Abstract.get_activation_map">get_activation_map</a></code></li>
+<li><code><a title="decontamination.SOM_Abstract.get_winners" href="#decontamination.SOM_Abstract.get_winners">get_winners</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="decontamination.SOM_PCA" href="#decontamination.SOM_PCA">SOM_PCA</a></code></h4>
+<ul class="">
+<li><code><a title="decontamination.SOM_PCA.train" href="#decontamination.SOM_PCA.train">train</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="decontamination.SOM_Batch" href="#decontamination.SOM_Batch">SOM_Batch</a></code></h4>
+<ul class="">
+<li><code><a title="decontamination.SOM_Batch.train" href="#decontamination.SOM_Batch.train">train</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="decontamination.SOM_Online" href="#decontamination.SOM_Online">SOM_Online</a></code></h4>
+<ul class="">
+<li><code><a title="decontamination.SOM_Online.train" href="#decontamination.SOM_Online.train">train</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

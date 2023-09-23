@@ -159,7 +159,7 @@ __all__ = [
 
         if self._instance is not None:
 
-            raise Exception(&#39;Array already instanced&#39;)
+            raise Exception(&#39;Device array already instanced&#39;)
 
         ################################################################################################################
 
@@ -187,7 +187,7 @@ __all__ = [
 
         if self._instance is None:
 
-            raise Exception(&#39;Array not instanced&#39;)
+            raise Exception(&#39;Device array not instanced&#39;)
 
         ################################################################################################################
 
@@ -257,7 +257,7 @@ def dtype(self):
 
     if self._instance is None:
 
-        raise Exception(&#39;Array not instanced&#39;)
+        raise Exception(&#39;Device array not instanced&#39;)
 
     ################################################################################################################
 
@@ -379,14 +379,14 @@ def dtype(self):
     ####################################################################################################################
 
     @staticmethod
-    def _inject_cpu(orig_funct: Callable, new_funct: Callable) -&gt; None:
+    def _inject_cpu_funct(orig_funct: Callable, new_funct: Callable) -&gt; None:
 
         orig_funct.__globals__[orig_funct.__name__.replace(&#39;_xpu&#39;, &#39;_cpu&#39;)] = new_funct
 
     ####################################################################################################################
 
     @staticmethod
-    def _inject_gpu(orig_funct: Callable, new_funct: Callable) -&gt; None:
+    def _inject_gpu_funct(orig_funct: Callable, new_funct: Callable) -&gt; None:
 
         orig_funct.__globals__[orig_funct.__name__.replace(&#39;_xpu&#39;, &#39;_gpu&#39;)] = new_funct
 
@@ -424,7 +424,7 @@ def dtype(self):
 
         if not self.kernel:
 
-            jit._inject_cpu(funct, nb.njit(funct_cpu, parallel = self.parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu)
+            jit._inject_cpu_funct(funct, nb.njit(funct_cpu, parallel = self.parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu)
 
         ################################################################################################################
         # NUMBA ON CPU                                                                                                 #
@@ -442,7 +442,7 @@ def dtype(self):
 
         if not self.kernel:
 
-            jit._inject_gpu(funct, cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else funct_gpu)
+            jit._inject_gpu_funct(funct, cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else funct_gpu)
 
         ################################################################################################################
         # KERNEL                                                                                                       #
@@ -881,7 +881,7 @@ def dtype(self):
 
     ####################################################################################################################
 
-    def get_activation_map(self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024, show_progress_bar: bool = False) -&gt; np.ndarray:
+    def get_activation_map(self, dataset: Union[np.ndarray, Callable], n_chunks: int = 1, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
         ???
@@ -890,12 +890,12 @@ def dtype(self):
         ----------
         dataset : Union[np.ndarray, Callable]
             ???
+        n_chunks : int
+            ???
         enable_gpu : bool
             ???
         threads_per_blocks : Union[Tuple[int], int]
             ???
-        show_progress_bar : bool
-            Specifies whether to display a progress bar (default: **False**).
         &#34;&#34;&#34;
 
         ################################################################################################################
@@ -910,13 +910,15 @@ def dtype(self):
 
         ################################################################################################################
 
-        for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
+        for data in generator():
 
-            bmus = result_array(data.shape[0], dtype = np.int32)
+            for chunk in batch_iterator(data, n_chunks):
 
-            _find_bmus_kernel[enable_gpu, threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
+                bmus = result_array(data.shape[0], dtype = np.int32)
 
-            SOM_Abstract._count_bmus(result, bmus.copy_to_host())
+                _find_bmus_kernel[enable_gpu, threads_per_blocks, data.shape[0]](bmus, self._weights, chunk, self._m * self._n)
+
+                SOM_Abstract._count_bmus(result, bmus.copy_to_host())
 
         ################################################################################################################
 
@@ -1302,7 +1304,7 @@ def dtype(self):
 </details>
 </dd>
 <dt id="decontamination.SOM_Abstract.get_activation_map"><code class="name flex">
-<span>def <span class="ident">get_activation_map</span></span>(<span>self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024, show_progress_bar: bool = False) ‑> np.ndarray</span>
+<span>def <span class="ident">get_activation_map</span></span>(<span>self, dataset: Union[np.ndarray, Callable], n_chunks: int = 1, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) ‑> np.ndarray</span>
 </code></dt>
 <dd>
 <div class="desc"><p>???</p>
@@ -1310,18 +1312,18 @@ def dtype(self):
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
 <dd>???</dd>
+<dt><strong><code>n_chunks</code></strong> :&ensp;<code>int</code></dt>
+<dd>???</dd>
 <dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
 <dd>???</dd>
 <dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
 <dd>???</dd>
-<dt><strong><code>show_progress_bar</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Specifies whether to display a progress bar (default: <strong>False</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_activation_map(self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024, show_progress_bar: bool = False) -&gt; np.ndarray:
+<pre><code class="python">def get_activation_map(self, dataset: Union[np.ndarray, Callable], n_chunks: int = 1, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
     ???
@@ -1330,12 +1332,12 @@ def dtype(self):
     ----------
     dataset : Union[np.ndarray, Callable]
         ???
+    n_chunks : int
+        ???
     enable_gpu : bool
         ???
     threads_per_blocks : Union[Tuple[int], int]
         ???
-    show_progress_bar : bool
-        Specifies whether to display a progress bar (default: **False**).
     &#34;&#34;&#34;
 
     ################################################################################################################
@@ -1350,13 +1352,15 @@ def dtype(self):
 
     ################################################################################################################
 
-    for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
+    for data in generator():
 
-        bmus = result_array(data.shape[0], dtype = np.int32)
+        for chunk in batch_iterator(data, n_chunks):
 
-        _find_bmus_kernel[enable_gpu, threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
+            bmus = result_array(data.shape[0], dtype = np.int32)
 
-        SOM_Abstract._count_bmus(result, bmus.copy_to_host())
+            _find_bmus_kernel[enable_gpu, threads_per_blocks, data.shape[0]](bmus, self._weights, chunk, self._m * self._n)
+
+            SOM_Abstract._count_bmus(result, bmus.copy_to_host())
 
     ################################################################################################################
 

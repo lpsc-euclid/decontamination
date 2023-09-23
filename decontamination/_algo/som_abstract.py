@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
-import tqdm
 import typing
 
 import numpy as np
@@ -10,7 +9,7 @@ import numba.cuda as cu
 
 from .. import jit, result_array
 
-from . import dataset_to_generator_builder
+from . import batch_iterator, dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -416,7 +415,7 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024, show_progress_bar: bool = False) -> np.ndarray:
+    def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], n_chunks: int = 1, enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024) -> np.ndarray:
 
         """
         ???
@@ -425,12 +424,12 @@ class SOM_Abstract(object):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             ???
+        n_chunks : int
+            ???
         enable_gpu : bool
             ???
         threads_per_blocks : typing.Union[typing.Tuple[int], int]
             ???
-        show_progress_bar : bool
-            Specifies whether to display a progress bar (default: **False**).
         """
 
         ################################################################################################################
@@ -445,13 +444,15 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
+        for data in generator():
 
-            bmus = result_array(data.shape[0], dtype = np.int32)
+            for chunk in batch_iterator(data, n_chunks):
 
-            _find_bmus_kernel[enable_gpu, threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
+                bmus = result_array(data.shape[0], dtype = np.int32)
 
-            SOM_Abstract._count_bmus(result, bmus.copy_to_host())
+                _find_bmus_kernel[enable_gpu, threads_per_blocks, data.shape[0]](bmus, self._weights, chunk, self._m * self._n)
+
+                SOM_Abstract._count_bmus(result, bmus.copy_to_host())
 
         ################################################################################################################
 

@@ -39,8 +39,7 @@ def foo_kernel(result, a, b):
 
     for i in range(result.shape[0]):
 
-        # noinspection PyUnresolvedReferences
-        result[i] = foo_cpu(a[i], b[i])
+        result[i] = foo_xpu(a[i], b[i])
 
     # !--END-CPU--
     ####################################################################################################################
@@ -49,8 +48,7 @@ def foo_kernel(result, a, b):
     i = cu.grid(1)
     if i < result.shape[0]:
 
-        # noinspection PyUnresolvedReferences
-        result[i] = foo_gpu(a[i], b[i])
+        result[i] = foo_xpu(a[i], b[i])
 
     # !--END-GPU--
 

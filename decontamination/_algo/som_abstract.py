@@ -193,6 +193,8 @@ class SOM_Abstract():
 
             model_group = file.create_group('model', track_order = True)
 
+            # HEADERS #
+
             for name, field in header_extra.items():
 
                 data = getattr(self, field)
@@ -200,6 +202,8 @@ class SOM_Abstract():
                 if data is not None:
 
                     model_group.attrs[name] = data
+
+            # DATASETS #
 
             for name, field in dataset_extra.items():
 
@@ -245,12 +249,16 @@ class SOM_Abstract():
 
             model_group = file['model']
 
+            # HEADERS #
+
             for name, field in header_extra.items():
 
                 try:
                     setattr(self, field, np.array(model_group.attrs[name]))
                 except KeyError:
                     pass
+
+            # DATASETS #
 
             for name, field in dataset_extra.items():
 

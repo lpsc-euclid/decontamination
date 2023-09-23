@@ -65,9 +65,9 @@ class CUKernel:
 
         ################################################################################################################
 
-        if not isinstance(extra_params, tuple) or len(extra_params) != 2:
+        if not isinstance(extra_params, tuple) or len(extra_params) < 2:
 
-            raise ValueError('Two parameters expected: threads_per_blocks and data_sizes')
+            raise ValueError('At least two parameters expected: threads_per_blocks and data_sizes')
 
         ################################################################################################################
 
@@ -97,7 +97,7 @@ class CUKernel:
 
 ########################################################################################################################
 
-# noinspection PyPep8Naming
+# noinspection PyPep8Naming,PyUnresolvedReferences
 class jit(object):
 
     """
@@ -188,14 +188,14 @@ class jit(object):
     ####################################################################################################################
 
     @staticmethod
-    def _inject_cpu(orig_funct: typing.Callable, new_funct: typing.Callable) -> None:
+    def _inject_cpu(orig_funct: typing.Callable, new_funct: typing.Union[typing.Callable, NBKernel]) -> None:
 
         orig_funct.__globals__[orig_funct.__name__.replace('_xpu', '_cpu')] = new_funct
 
     ####################################################################################################################
 
     @staticmethod
-    def _inject_gpu(orig_funct: typing.Callable, new_funct: typing.Callable) -> None:
+    def _inject_gpu(orig_funct: typing.Callable, new_funct: typing.Union[typing.Callable, CUKernel]) -> None:
 
         orig_funct.__globals__[orig_funct.__name__.replace('_xpu', '_gpu')] = new_funct
 

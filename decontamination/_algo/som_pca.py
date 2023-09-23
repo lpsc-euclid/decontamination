@@ -61,6 +61,9 @@ class SOM_PCA(abstract_som.AbstractSOM):
 
         super().save(filename, {
             'mode': '__MODE__',
+        }, {
+            'quantization_errors': '_quantization_errors',
+            'topographic_errors': '_topographic_errors',
         })
 
     ####################################################################################################################
@@ -78,6 +81,9 @@ class SOM_PCA(abstract_som.AbstractSOM):
 
         super().load(filename, {
             'mode': '__MODE__',
+        }, {
+            'quantization_errors': '_quantization_errors',
+            'topographic_errors': '_topographic_errors',
         })
 
     ####################################################################################################################

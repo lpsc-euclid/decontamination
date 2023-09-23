@@ -14,6 +14,7 @@ from . import dataset_to_generator_builder
 
 ########################################################################################################################
 
+# noinspection PyPep8Naming
 class SOM_Abstract(object):
 
     """

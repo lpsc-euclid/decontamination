@@ -10,6 +10,7 @@ from . import som_abstract, asymptotic_decay, dataset_to_generator_builder
 
 ########################################################################################################################
 
+# noinspection PyPep8Naming
 class SOM_Batch(som_abstract.SOM_Abstract):
 
     """

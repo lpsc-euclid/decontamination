@@ -11,6 +11,7 @@ from . import som_abstract, dataset_to_generator_builder
 
 ########################################################################################################################
 
+# noinspection PyPep8Naming
 class SOM_PCA(som_abstract.SOM_Abstract):
 
     """

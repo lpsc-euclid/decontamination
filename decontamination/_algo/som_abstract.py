@@ -14,7 +14,7 @@ from . import dataset_to_generator_builder
 
 ########################################################################################################################
 
-class SOM_Abstract():
+class SOM_Abstract(object):
 
     """
     Self Organizing Maps (abstract class).
@@ -513,8 +513,7 @@ def _find_bmus_kernel_xpu(result: np.ndarray, weights: np.ndarray, vectors: np.n
 
     for i in nb.prange(vectors.shape[0]):
 
-        # noinspection PyUnresolvedReferences
-        result[i] = _find_bmu_cpu(weights, vectors[i], mn)
+        result[i] = _find_bmu_xpu(weights, vectors[i], mn)
 
     # !--END-CPU--
     ####################################################################################################################
@@ -523,8 +522,7 @@ def _find_bmus_kernel_xpu(result: np.ndarray, weights: np.ndarray, vectors: np.n
     i = cu.grid(1)
     if i < vectors.shape[0]:
 
-        # noinspection PyUnresolvedReferences
-        result[i] = _find_bmu_gpu(weights, vectors[i], mn)
+        result[i] = _find_bmu_xpu(weights, vectors[i], mn)
 
     # !--END-GPU--
 
@@ -533,7 +531,7 @@ def _find_bmus_kernel_xpu(result: np.ndarray, weights: np.ndarray, vectors: np.n
 @jit(parallel = False)
 def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 
-    min_dist_2 = 1.0e99
+    min_distance = 1.0e99
     min_index = 0x00
 
     for index in range(mn):
@@ -541,26 +539,26 @@ def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
         ################################################################################################################
         # !--BEGIN-CPU--
 
-        dist = np.sum((weights[index] - vector) ** 2)
+        distance = np.sum((weights[index] - vector) ** 2)
 
         # !--END-CPU--
         ################################################################################################################
         # !--BEGIN-GPU--
 
-        dist = 0.0
+        distance = 0.0
 
         weight = weights[index]
 
         for i in range(vector.shape[0]):
 
-            dist += (weight[i] - vector[i]) ** 2
+            distance += (weight[i] - vector[i]) ** 2
 
         # !--END-GPU--
         ################################################################################################################
 
-        if min_dist_2 > dist:
+        if min_distance > distance:
 
-            min_dist_2 = dist
+            min_distance = distance
             min_index = index
 
         ################################################################################################################

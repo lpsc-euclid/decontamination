@@ -339,13 +339,11 @@ __all__ = [
 
         ################################################################################################################
 
-        self.header_extra = {
+        self._header_extra = {
             &#39;mode&#39;: &#39;__MODE__&#39;,
         }
 
-        self.dataset_extra = {
-            &#39;quantization_errors&#39;: &#39;_quantization_errors&#39;,
-            &#39;topographic_errors&#39;: &#39;_topographic_errors&#39;,
+        self._dataset_extra = {
         }
 
     ####################################################################################################################
@@ -421,23 +419,13 @@ __all__ = [
 
     ####################################################################################################################
 
-    @staticmethod
-    def _init_hdf5_extra():
+    def _init_hdf5_extra(self):
 
         ################################################################################################################
 
-        header_extra = {}
-        dataset_extra = {}
+        header_extra = {name: field for name, field in self._header_extra.items()}
 
-        ################################################################################################################
-
-        for name, field in header_extra.items():
-
-            header_extra[name] = field
-
-        for name, field in dataset_extra.items():
-
-            dataset_extra[name] = field
+        dataset_extra = {name: field for name, field in self._dataset_extra.items()}
 
         ################################################################################################################
 
@@ -446,7 +434,9 @@ __all__ = [
         header_extra[&#39;dim&#39;] = &#39;_dim&#39;
         header_extra[&#39;topology&#39;] = &#39;_topology&#39;
 
-        dataset_extra[&#39;weights&#39;] = &#39;_weight&#39;
+        dataset_extra[&#39;weights&#39;] = &#39;_weights&#39;
+        dataset_extra[&#39;quantization_errors&#39;] = &#39;_quantization_errors&#39;
+        dataset_extra[&#39;topographic_errors&#39;] = &#39;_topographic_errors&#39;
 
         ################################################################################################################
 
@@ -471,26 +461,42 @@ __all__ = [
 
         ################################################################################################################
 
-        header_extra, dataset_extra = SOM_Abstract._init_hdf5_extra()
+        header_extra, dataset_extra = self._init_hdf5_extra()
 
         ################################################################################################################
 
-        with h5py.File(filename, &#39;w&#39;) as file:
+        with h5py.File(filename, mode = &#39;w&#39;) as file:
+
+            model_group = file.create_group(&#39;model&#39;, track_order = True)
+
+            # HEADERS #
 
             for name, field in header_extra.items():
 
-                file.attrs[name] = getattr(self, field)
+                data = getattr(self, field)
+
+                if data is not None:
+
+                    model_group.attrs[name] = data
+
+            # DATASETS #
 
             for name, field in dataset_extra.items():
 
                 data = getattr(self, field)
 
-                file.create_dataset(
-                    name,
-                    data = data,
-                    shape = data.shape,
-                    dtype = data.dtype
-                )
+                if data is not None:
+
+                    model_group.create_dataset(
+                        name,
+                        data = data,
+                        shape = data.shape,
+                        dtype = data.dtype
+                    )
+
+        ################################################################################################################
+
+        self._rebuild_topography()
 
     ####################################################################################################################
 
@@ -511,19 +517,31 @@ __all__ = [
 
         ################################################################################################################
 
-        header_extra, dataset_extra = SOM_Abstract._init_hdf5_extra()
+        header_extra, dataset_extra = self._init_hdf5_extra()
 
         ################################################################################################################
 
-        with h5py.File(filename, &#39;r&#39;) as file:
+        with h5py.File(filename, mode = &#39;r&#39;) as file:
+
+            model_group = file[&#39;model&#39;]
+
+            # HEADERS #
 
             for name, field in header_extra.items():
 
-                setattr(self, field, file.attrs[name])
+                try:
+                    setattr(self, field, np.array(model_group.attrs[name]))
+                except KeyError:
+                    pass
+
+            # DATASETS #
 
             for name, field in dataset_extra.items():
 
-                setattr(self, field, file[name])
+                try:
+                    setattr(self, field, np.array(model_group[name]))
+                except KeyError:
+                    pass
 
         ################################################################################################################
 
@@ -880,26 +898,42 @@ __all__ = [
 
     ################################################################################################################
 
-    header_extra, dataset_extra = SOM_Abstract._init_hdf5_extra()
+    header_extra, dataset_extra = self._init_hdf5_extra()
 
     ################################################################################################################
 
-    with h5py.File(filename, &#39;w&#39;) as file:
+    with h5py.File(filename, mode = &#39;w&#39;) as file:
+
+        model_group = file.create_group(&#39;model&#39;, track_order = True)
+
+        # HEADERS #
 
         for name, field in header_extra.items():
 
-            file.attrs[name] = getattr(self, field)
+            data = getattr(self, field)
+
+            if data is not None:
+
+                model_group.attrs[name] = data
+
+        # DATASETS #
 
         for name, field in dataset_extra.items():
 
             data = getattr(self, field)
 
-            file.create_dataset(
-                name,
-                data = data,
-                shape = data.shape,
-                dtype = data.dtype
-            )</code></pre>
+            if data is not None:
+
+                model_group.create_dataset(
+                    name,
+                    data = data,
+                    shape = data.shape,
+                    dtype = data.dtype
+                )
+
+    ################################################################################################################
+
+    self._rebuild_topography()</code></pre>
 </details>
 </dd>
 <dt id="decontamination.SOM_Abstract.load"><code class="name flex">
@@ -933,19 +967,31 @@ __all__ = [
 
     ################################################################################################################
 
-    header_extra, dataset_extra = SOM_Abstract._init_hdf5_extra()
+    header_extra, dataset_extra = self._init_hdf5_extra()
 
     ################################################################################################################
 
-    with h5py.File(filename, &#39;r&#39;) as file:
+    with h5py.File(filename, mode = &#39;r&#39;) as file:
+
+        model_group = file[&#39;model&#39;]
+
+        # HEADERS #
 
         for name, field in header_extra.items():
 
-            setattr(self, field, file.attrs[name])
+            try:
+                setattr(self, field, np.array(model_group.attrs[name]))
+            except KeyError:
+                pass
+
+        # DATASETS #
 
         for name, field in dataset_extra.items():
 
-            setattr(self, field, file[name])
+            try:
+                setattr(self, field, np.array(model_group[name]))
+            except KeyError:
+                pass
 
     ################################################################################################################
 
@@ -1267,7 +1313,7 @@ __all__ = [
 
         ####################################################################################################################
 
-        self.header_extra = {
+        self._header_extra = {
             &#39;mode&#39;: &#39;__MODE__&#39;,
         }
 
@@ -1522,9 +1568,9 @@ number of samples in the dataset to analyze.</p>
 
         ################################################################################################################
 
-        self._alpha = 0.3 if alpha is None else dtype(alpha)
+        self._alpha = 0.3 if alpha is None else float(alpha)
 
-        self._sigma = max(m, n) / 2.0 if sigma is None else dtype(sigma)
+        self._sigma = max(m, n) / 2.0 if sigma is None else float(sigma)
 
         ################################################################################################################
 
@@ -1534,7 +1580,7 @@ number of samples in the dataset to analyze.</p>
 
         ################################################################################################################
 
-        self.header_extra = {
+        self._header_extra = {
             &#39;mode&#39;: &#39;__MODE__&#39;,
             &#39;alpha&#39;: &#39;_alpha&#39;,
             &#39;sigma&#39;: &#39;_sigma&#39;,
@@ -1692,9 +1738,9 @@ number of samples in the dataset to analyze.</p>
 
         ################################################################################################################
 
-        self._alpha = 0.3 if alpha is None else dtype(alpha)
+        self._alpha = 0.3 if alpha is None else float(alpha)
 
-        self._sigma = max(m, n) / 2.0 if sigma is None else dtype(sigma)
+        self._sigma = max(m, n) / 2.0 if sigma is None else float(sigma)
 
         ################################################################################################################
 
@@ -1704,7 +1750,7 @@ number of samples in the dataset to analyze.</p>
 
         ################################################################################################################
 
-        self.header_extra = {
+        self._header_extra = {
             &#39;mode&#39;: &#39;__MODE__&#39;,
             &#39;alpha&#39;: &#39;_alpha&#39;,
             &#39;sigma&#39;: &#39;_sigma&#39;,

@@ -252,7 +252,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
         else:
 
-            raise Exception('Invalid training method, use either `n_epochs` or `n_vectors`.')
+            raise Exception('Invalid training method, specify either `n_epochs` or `n_vectors`.')
 
 ########################################################################################################################
 

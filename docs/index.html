@@ -805,7 +805,7 @@ def dtype(self):
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _distance_map_kernel(result, centroids: np.ndarray, x_stencil: np.ndarray, y_stencil: np.ndarray, m: int, n: int, l: int) -&gt; None:
+    def _distance_map(result, centroids: np.ndarray, x_stencil: np.ndarray, y_stencil: np.ndarray, m: int, n: int, l: int) -&gt; None:
 
         for x in range(m):
             for y in range(n):
@@ -846,13 +846,13 @@ def dtype(self):
 
             result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
 
-            SOM_Abstract._distance_map_kernel(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
+            SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
 
         else:
 
             result = np.full(shape = (self._m, self._n, 8), fill_value = np.nan, dtype = self._dtype)
 
-            SOM_Abstract._distance_map_kernel(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
+            SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
 
         ################################################################################################################
 
@@ -1279,13 +1279,13 @@ def dtype(self):
 
         result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
 
-        SOM_Abstract._distance_map_kernel(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
+        SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
 
     else:
 
         result = np.full(shape = (self._m, self._n, 8), fill_value = np.nan, dtype = self._dtype)
 
-        SOM_Abstract._distance_map_kernel(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
+        SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
 
     ################################################################################################################
 
@@ -1483,7 +1483,7 @@ def dtype(self):
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _cov_matrix_kernel(result_sum: np.ndarray, result_prods: np.ndarray, data: np.ndarray) -&gt; None:
+    def _update_cov_matrix(result_sum: np.ndarray, result_prods: np.ndarray, data: np.ndarray) -&gt; None:
 
         ################################################################################################################
 
@@ -1510,7 +1510,7 @@ def dtype(self):
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _diag_kernel(weights: np.ndarray, cov_matrix: np.ndarray, m: int, n: int) -&gt; None:
+    def _diag_cov_matrix(weights: np.ndarray, cov_matrix: np.ndarray, m: int, n: int) -&gt; None:
 
         ################################################################################################################
 
@@ -1570,7 +1570,7 @@ def dtype(self):
 
         for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
 
-            SOM_PCA._cov_matrix_kernel(total_sum, total_prods, data)
+            SOM_PCA._update_cov_matrix(total_sum, total_prods, data)
 
             total_nb += data.shape[0]
 
@@ -1585,7 +1585,7 @@ def dtype(self):
 
         ################################################################################################################
 
-        SOM_PCA._diag_kernel(self.get_centroids(), cov_matrix, self._m, self._n)</code></pre>
+        SOM_PCA._diag_cov_matrix(self.get_centroids(), cov_matrix, self._m, self._n)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1639,7 +1639,7 @@ def dtype(self):
 
     for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
 
-        SOM_PCA._cov_matrix_kernel(total_sum, total_prods, data)
+        SOM_PCA._update_cov_matrix(total_sum, total_prods, data)
 
         total_nb += data.shape[0]
 
@@ -1654,7 +1654,7 @@ def dtype(self):
 
     ################################################################################################################
 
-    SOM_PCA._diag_kernel(self.get_centroids(), cov_matrix, self._m, self._n)</code></pre>
+    SOM_PCA._diag_cov_matrix(self.get_centroids(), cov_matrix, self._m, self._n)</code></pre>
 </details>
 </dd>
 </dl>
@@ -2098,7 +2098,7 @@ number of samples in the dataset to analyze.</p>
 
         else:
 
-            raise Exception(&#39;Invalid training method, use either `n_epochs` or `n_vectors`.&#39;)</code></pre>
+            raise Exception(&#39;Invalid training method, specify either `n_epochs` or `n_vectors`.&#39;)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -2256,7 +2256,7 @@ number of samples in the dataset to analyze.</p>
 
     else:
 
-        raise Exception(&#39;Invalid training method, use either `n_epochs` or `n_vectors`.&#39;)</code></pre>
+        raise Exception(&#39;Invalid training method, specify either `n_epochs` or `n_vectors`.&#39;)</code></pre>
 </details>
 </dd>
 </dl>

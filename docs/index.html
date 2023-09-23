@@ -195,14 +195,14 @@ __all__ = [
     ####################################################################################################################
 
     @staticmethod
-    def _inject_cpu(orig_funct: Callable, new_funct: Union[Callable, NBKernel]) -&gt; None:
+    def _inject_cpu(orig_funct: Callable, new_funct: Callable) -&gt; None:
 
         orig_funct.__globals__[orig_funct.__name__.replace(&#39;_xpu&#39;, &#39;_cpu&#39;)] = new_funct
 
     ####################################################################################################################
 
     @staticmethod
-    def _inject_gpu(orig_funct: Callable, new_funct: Union[Callable, CUKernel]) -&gt; None:
+    def _inject_gpu(orig_funct: Callable, new_funct: Callable) -&gt; None:
 
         orig_funct.__globals__[orig_funct.__name__.replace(&#39;_xpu&#39;, &#39;_gpu&#39;)] = new_funct
 
@@ -210,7 +210,7 @@ __all__ = [
 
     def __call__(self, funct: Callable):
 
-        if not funct.__name__.endswith(&#39;_xpu&#39;):
+        if not self.kernel and not funct.__name__.endswith(&#39;_xpu&#39;):
 
             raise Exception(f&#39;Function `{funct.__name__}` name must ends with `_xpu`&#39;)
 
@@ -238,9 +238,8 @@ __all__ = [
 
         funct_cpu = eval(name_cpu, funct.__globals__)
 
-        if self.kernel:
-            jit._inject_cpu(funct, NBKernel(funct_cpu, parallel = self.parallel))
-        else:
+        if not self.kernel:
+
             jit._inject_cpu(funct, nb.njit(funct_cpu, parallel = self.parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu)
 
         ################################################################################################################
@@ -257,10 +256,17 @@ __all__ = [
 
         funct_gpu = eval(name_gpu, funct.__globals__)
 
-        if self.kernel:
-            jit._inject_gpu(funct, CUKernel(funct_gpu, device = False))
-        else:
+        if not self.kernel:
+
             jit._inject_gpu(funct, cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else funct_gpu)
+
+        ################################################################################################################
+        # KERNEL                                                                                                       #
+        ################################################################################################################
+
+        if self.kernel:
+
+            funct = Kernel(funct_cpu, funct_gpu, parallel = self.parallel)
 
         ################################################################################################################
 
@@ -725,15 +731,13 @@ __all__ = [
             if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
 
                 bmus = cu.device_array(data.shape[0], dtype = np.int32)
-                # noinspection PyUnresolvedReferences
-                _find_bmus_kernel_gpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
+                _find_bmus_kernel[True, threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
                 SOM_Abstract._count_bmus(result, bmus.copy_to_host())
 
             else:
 
                 bmus = np.empty(data.shape[0], dtype = np.int32)
-                # noinspection PyUnresolvedReferences
-                _find_bmus_kernel_cpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
+                _find_bmus_kernel[False, threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
                 SOM_Abstract._count_bmus(result, bmus)
 
         ################################################################################################################
@@ -764,15 +768,13 @@ __all__ = [
         if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
 
             bmus = cu.device_array(dataset.shape[0], dtype = np.int32)
-            # noinspection PyUnresolvedReferences
-            _find_bmus_kernel_gpu[threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
+            _find_bmus_kernel[True, threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
             result = bmus.copy_to_host()
 
         else:
 
             bmus = np.empty(dataset.shape[0], dtype = np.int32)
-            # noinspection PyUnresolvedReferences
-            _find_bmus_kernel_cpu[threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
+            _find_bmus_kernel[False, threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
             result = bmus
 
         ################################################################################################################
@@ -1181,15 +1183,13 @@ __all__ = [
         if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
 
             bmus = cu.device_array(data.shape[0], dtype = np.int32)
-            # noinspection PyUnresolvedReferences
-            _find_bmus_kernel_gpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
+            _find_bmus_kernel[True, threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
             SOM_Abstract._count_bmus(result, bmus.copy_to_host())
 
         else:
 
             bmus = np.empty(data.shape[0], dtype = np.int32)
-            # noinspection PyUnresolvedReferences
-            _find_bmus_kernel_cpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
+            _find_bmus_kernel[False, threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
             SOM_Abstract._count_bmus(result, bmus)
 
     ################################################################################################################
@@ -1239,15 +1239,13 @@ __all__ = [
     if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
 
         bmus = cu.device_array(dataset.shape[0], dtype = np.int32)
-        # noinspection PyUnresolvedReferences
-        _find_bmus_kernel_gpu[threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
+        _find_bmus_kernel[True, threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
         result = bmus.copy_to_host()
 
     else:
 
         bmus = np.empty(dataset.shape[0], dtype = np.int32)
-        # noinspection PyUnresolvedReferences
-        _find_bmus_kernel_cpu[threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
+        _find_bmus_kernel[False, threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
         result = bmus
 
     ################################################################################################################

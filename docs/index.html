@@ -904,7 +904,7 @@ print(result.copy_to_host())
 
                         diff = w - centroids[i, j]
 
-                        result[x, y, z] = np.sqrt(np.sum(diff * diff))
+                        result[x, y, z] = np.sqrt(np.sum(diff ** 2))
 
     ####################################################################################################################
 
@@ -1621,7 +1621,7 @@ print(result.copy_to_host())
 
     ####################################################################################################################
 
-    def train(self, dataset: Union[np.ndarray, Callable], show_progress_bar: bool = False) -&gt; None:
+    def train(self, dataset: Union[np.ndarray, Callable]) -&gt; None:
 
         &#34;&#34;&#34;
         Trains the neural network.
@@ -1630,8 +1630,6 @@ print(result.copy_to_host())
         ----------
         dataset : Union[np.ndarray, Callable]
             Training dataset array or generator of generator.
-        show_progress_bar : bool
-            Specifies whether to display a progress bar (default: **False**).
         &#34;&#34;&#34;
 
         ################################################################################################################
@@ -1649,11 +1647,11 @@ print(result.copy_to_host())
 
         ################################################################################################################
 
-        for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
-
-            SOM_PCA._update_cov_matrix(total_sum, total_prods, data)
+        for data in generator():
 
             total_nb += data.shape[0]
+
+            SOM_PCA._update_cov_matrix(total_sum, total_prods, data)
 
         ################################################################################################################
 
@@ -1675,7 +1673,7 @@ print(result.copy_to_host())
 <h3>Methods</h3>
 <dl>
 <dt id="decontamination.SOM_PCA.train"><code class="name flex">
-<span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable], show_progress_bar: bool = False) ‑> None</span>
+<span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Trains the neural network.</p>
@@ -1683,14 +1681,12 @@ print(result.copy_to_host())
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
 <dd>Training dataset array or generator of generator.</dd>
-<dt><strong><code>show_progress_bar</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Specifies whether to display a progress bar (default: <strong>False</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable], show_progress_bar: bool = False) -&gt; None:
+<pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable]) -&gt; None:
 
     &#34;&#34;&#34;
     Trains the neural network.
@@ -1699,8 +1695,6 @@ print(result.copy_to_host())
     ----------
     dataset : Union[np.ndarray, Callable]
         Training dataset array or generator of generator.
-    show_progress_bar : bool
-        Specifies whether to display a progress bar (default: **False**).
     &#34;&#34;&#34;
 
     ################################################################################################################
@@ -1718,11 +1712,11 @@ print(result.copy_to_host())
 
     ################################################################################################################
 
-    for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
-
-        SOM_PCA._update_cov_matrix(total_sum, total_prods, data)
+    for data in generator():
 
         total_nb += data.shape[0]
+
+        SOM_PCA._update_cov_matrix(total_sum, total_prods, data)
 
     ################################################################################################################
 

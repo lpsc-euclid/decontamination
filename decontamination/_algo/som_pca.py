@@ -110,7 +110,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable]) -> None:
 
         """
         Trains the neural network.
@@ -119,8 +119,6 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator of generator.
-        show_progress_bar : bool
-            Specifies whether to display a progress bar (default: **False**).
         """
 
         ################################################################################################################
@@ -138,11 +136,11 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
-
-            SOM_PCA._update_cov_matrix(total_sum, total_prods, data)
+        for data in generator():
 
             total_nb += data.shape[0]
+
+            SOM_PCA._update_cov_matrix(total_sum, total_prods, data)
 
         ################################################################################################################
 

@@ -186,6 +186,8 @@ class Kernel:
 
                     print('Will emulate GPU kernel...', file = sys.stderr)
 
+                    sys.stderr.flush()
+
                 ########################################################################################################
 
                 for arg in args:

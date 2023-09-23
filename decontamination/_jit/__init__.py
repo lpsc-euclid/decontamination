@@ -28,6 +28,14 @@ __pdoc__['GPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba GPU optimi
 
 ########################################################################################################################
 
+def nb_to_device(ndarray):
+
+    # future evolution
+
+    return ndarray
+
+########################################################################################################################
+
 # noinspection PyPep8Naming
 class result_array(object):
 
@@ -192,7 +200,7 @@ class Kernel:
                 for arg in args:
 
                     if isinstance(arg, np.ndarray):
-                        new_args.append((((((((arg))))))))
+                        new_args.append(nb_to_device(arg))
                     elif isinstance(arg, result_array):
                         # noinspection PyProtectedMember
                         new_args.append(arg._instantiate(False))

@@ -53,7 +53,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _cov_matrix_kernel(result_sum: np.ndarray, result_prods: np.ndarray, data: np.ndarray) -> None:
+    def _update_cov_matrix(result_sum: np.ndarray, result_prods: np.ndarray, data: np.ndarray) -> None:
 
         ################################################################################################################
 
@@ -80,7 +80,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _diag_kernel(weights: np.ndarray, cov_matrix: np.ndarray, m: int, n: int) -> None:
+    def _diag_cov_matrix(weights: np.ndarray, cov_matrix: np.ndarray, m: int, n: int) -> None:
 
         ################################################################################################################
 
@@ -140,7 +140,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
 
-            SOM_PCA._cov_matrix_kernel(total_sum, total_prods, data)
+            SOM_PCA._update_cov_matrix(total_sum, total_prods, data)
 
             total_nb += data.shape[0]
 
@@ -155,6 +155,6 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        SOM_PCA._diag_kernel(self.get_centroids(), cov_matrix, self._m, self._n)
+        SOM_PCA._diag_cov_matrix(self.get_centroids(), cov_matrix, self._m, self._n)
 
 ########################################################################################################################

@@ -339,7 +339,7 @@ class SOM_Abstract(object):
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _distance_map_kernel(result, centroids: np.ndarray, x_stencil: np.ndarray, y_stencil: np.ndarray, m: int, n: int, l: int) -> None:
+    def _distance_map(result, centroids: np.ndarray, x_stencil: np.ndarray, y_stencil: np.ndarray, m: int, n: int, l: int) -> None:
 
         for x in range(m):
             for y in range(n):
@@ -380,13 +380,13 @@ class SOM_Abstract(object):
 
             result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
 
-            SOM_Abstract._distance_map_kernel(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
+            SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
 
         else:
 
             result = np.full(shape = (self._m, self._n, 8), fill_value = np.nan, dtype = self._dtype)
 
-            SOM_Abstract._distance_map_kernel(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
+            SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
 
         ################################################################################################################
 

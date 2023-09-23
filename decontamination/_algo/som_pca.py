@@ -7,11 +7,11 @@ import typing
 import numpy as np
 import numba as nb
 
-from . import abstract_som, dataset_to_generator_builder
+from . import som_abstract, dataset_to_generator_builder
 
 ########################################################################################################################
 
-class SOM_PCA(abstract_som.AbstractSOM):
+class SOM_PCA(som_abstract.SOM_Abstract):
 
     """
     Self Organizing Maps that span the first two principal components.

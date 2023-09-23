@@ -8,11 +8,11 @@ import typing
 import numpy as np
 import numba as nb
 
-from . import abstract_som, asymptotic_decay, dataset_to_generator_builder
+from . import som_abstract, asymptotic_decay, dataset_to_generator_builder
 
 ########################################################################################################################
 
-class SOM_Online(abstract_som.AbstractSOM):
+class SOM_Online(som_abstract.SOM_Abstract):
 
     """
     Self Organizing Maps (standard online implementation).

@@ -19,7 +19,7 @@ from ._jit import CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE, jit
 # ALGO                                                                                                                 #
 ########################################################################################################################
 
-from ._algo.abstract_som import AbstractSOM
+from ._algo.som_abstract import SOM_Abstract
 
 from ._algo.som_pca import SOM_PCA
 
@@ -43,7 +43,7 @@ def array_to_string(arr):
 
 __all__ = [
     'CPU_OPTIMIZATION_AVAILABLE', 'GPU_OPTIMIZATION_AVAILABLE', 'jit',
-    'AbstractSOM', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
+    'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
 ]
 
 ########################################################################################################################

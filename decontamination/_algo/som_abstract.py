@@ -14,7 +14,7 @@ from . import dataset_to_generator_builder
 
 ########################################################################################################################
 
-class AbstractSOM():
+class SOM_Abstract():
 
     """
     Self Organizing Maps (abstract class).
@@ -87,7 +87,7 @@ class AbstractSOM():
 
     def _rebuild_topography(self):
 
-        self._topography = np.array(list(AbstractSOM._neuron_locations(self._m, self._m)), dtype = np.int64)
+        self._topography = np.array(list(SOM_Abstract._neuron_locations(self._m, self._m)), dtype = np.int64)
 
     ####################################################################################################################
 
@@ -118,14 +118,14 @@ class AbstractSOM():
 
     ####################################################################################################################
 
-    def init_from(self, other: 'AbstractSOM') -> None:
+    def init_from(self, other: 'SOM_Abstract') -> None:
 
         """
         Initializes the neural network from another one.
 
         Parameters
         ----------
-        other : AbstractSOM
+        other : SOM_Abstract
             Another SOM object from which the weights will be copied.
         """
 
@@ -195,7 +195,7 @@ class AbstractSOM():
 
         ################################################################################################################
 
-        header_extra, dataset_extra = AbstractSOM._init_hdf5_extra()
+        header_extra, dataset_extra = SOM_Abstract._init_hdf5_extra()
 
         ################################################################################################################
 
@@ -235,7 +235,7 @@ class AbstractSOM():
 
         ################################################################################################################
 
-        header_extra, dataset_extra = AbstractSOM._init_hdf5_extra()
+        header_extra, dataset_extra = SOM_Abstract._init_hdf5_extra()
 
         ################################################################################################################
 
@@ -278,7 +278,7 @@ class AbstractSOM():
     def get_quantization_errors(self) -> np.ndarray:
 
         """
-        Returns the quantization error.
+        Returns the quantization error. $$ c_i^1=\\mathrm{1^\\mathrm{st}\\,bmu}=\\underset{j}{\\mathrm{arg\\,min}_1}\\lVert x_i-w_j\\rVert $$ $$ \\boxed{e_Q=\\frac{1}{N}\\sum_{i=1}^N\\lVert x_i-w_{c_i^1}\\rVert} $$
         """
 
         return self._quantization_errors
@@ -288,7 +288,7 @@ class AbstractSOM():
     def get_topographic_errors(self) -> np.ndarray:
 
         """
-        Returns the topographic errors.
+        Returns the topographic errors. $$ c_i^n=\\mathrm{n^\\mathrm{th}\\,bmu}=\\underset{j}{\\mathrm{arg\\,min}_n}\\lVert x_i-w_j\\rVert $$ $$ t(x_i)=\\left\\{\\begin{array}{ll}1&\\lVert c_i^1-c_i^2\\rVert>\\sqrt{2}\\\\0&\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{e_t=\\frac{1}{N}\\sum_{i=0}^Nt(x_i)} $$
         """
 
         return self._topographic_errors
@@ -343,7 +343,7 @@ class AbstractSOM():
 
     ####################################################################################################################
 
-    def distance_map(self, scaling: typing.Optional[str] = None) -> np.ndarray:
+    def get_distance_map(self, scaling: typing.Optional[str] = None) -> np.ndarray:
 
         """
         Returns the distance map of the neural network weights.
@@ -362,13 +362,13 @@ class AbstractSOM():
 
             result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
 
-            AbstractSOM._distance_map_kernel(result, self.get_centroids(), AbstractSOM._X_HEX_STENCIL, AbstractSOM._Y_HEX_STENCIL, self._m, self._n, 6)
+            SOM_Abstract._distance_map_kernel(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
 
         else:
 
             result = np.full(shape = (self._m, self._n, 8), fill_value = np.nan, dtype = self._dtype)
 
-            AbstractSOM._distance_map_kernel(result, self.get_centroids(), AbstractSOM._X_SQU_STENCIL, AbstractSOM._Y_SQU_STENCIL, self._m, self._n, 8)
+            SOM_Abstract._distance_map_kernel(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
 
         ################################################################################################################
 
@@ -397,7 +397,7 @@ class AbstractSOM():
 
     ####################################################################################################################
 
-    def activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024, show_progress_bar: bool = False) -> np.ndarray:
+    def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024, show_progress_bar: bool = False) -> np.ndarray:
 
         """
         ???
@@ -433,14 +433,14 @@ class AbstractSOM():
                 bmus = cu.device_array(data.shape[0], dtype = np.int32)
                 # noinspection PyUnresolvedReferences
                 _find_bmus_kernel_gpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
-                AbstractSOM._count_bmus(result, bmus.copy_to_host())
+                SOM_Abstract._count_bmus(result, bmus.copy_to_host())
 
             else:
 
                 bmus = np.empty(data.shape[0], dtype = np.int32)
                 # noinspection PyUnresolvedReferences
                 _find_bmus_kernel_cpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
-                AbstractSOM._count_bmus(result, bmus)
+                SOM_Abstract._count_bmus(result, bmus)
 
         ################################################################################################################
 
@@ -448,7 +448,7 @@ class AbstractSOM():
 
     ####################################################################################################################
 
-    def winners(self, dataset: np.ndarray, locations: bool = False, enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024) -> np.ndarray:
+    def get_winners(self, dataset: np.ndarray, locations: bool = False, enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024) -> np.ndarray:
 
         """
         ???

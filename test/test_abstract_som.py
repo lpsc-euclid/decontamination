@@ -31,7 +31,7 @@ def test_distance_map():
         [0.22816606, 0.53763765, 0.40897673, 0.29011133],
     ], dtype = np.float32)
 
-    assert np.allclose(som.distance_map(), expected)
+    assert np.allclose(som.get_distance_map(), expected)
 
 ########################################################################################################################
 
@@ -47,7 +47,7 @@ def test_activation_map(enable_gpu):
 
     data = np.random.default_rng(seed = 0).random((25_000, 4), np.float32)
 
-    assert np.allclose(som.activation_map(data, enable_gpu = enable_gpu), expected)
+    assert np.allclose(som.get_activation_map(data, enable_gpu = enable_gpu), expected)
 
 ########################################################################################################################
 
@@ -61,7 +61,7 @@ def test_winners(enable_gpu):
 
     data = np.random.default_rng(seed = 0).random((8, 4), np.float32)
 
-    assert np.allclose(som.winners(data, enable_gpu = enable_gpu), expected)
+    assert np.allclose(som.get_winners(data, enable_gpu = enable_gpu), expected)
 
 ########################################################################################################################
 

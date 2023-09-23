@@ -32,7 +32,7 @@ __pdoc__['GPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba GPU optimi
 class result_array(object):
 
     """
-    Empty device ndarray. Similar to `numpy.empty`.
+    Empty device ndarray to be used as result when calling a CPU/GPU kernel. Similar to `numpy.empty`.
     """
 
     ####################################################################################################################
@@ -43,9 +43,9 @@ class result_array(object):
         Parameters
         ----------
         shape : typing.Union[typing.Tuple[int], int]
-            ???
+            Desired shape for the new array.
         dtype : typing.Type[np.single]
-            ???
+            Desired data-type for the new array.
         """
 
         self._shape = shape
@@ -58,12 +58,20 @@ class result_array(object):
     @property
     def shape(self):
 
+        """
+        Shape for the array.
+        """
+
         return self._shape
 
     ####################################################################################################################
 
     @property
     def dtype(self):
+
+        """
+        Data-type for the array.
+        """
 
         return self._dtype
 
@@ -195,7 +203,7 @@ class Kernel:
 class jit(object):
 
     """
-    Decorator to compile Python functions into native CPU or GPU ones.
+    Decorator to compile Python functions into native CPU/GPU ones.
     """
 
     ####################################################################################################################
@@ -206,7 +214,7 @@ class jit(object):
         Parameters
         ---------
         kernel : bool
-            Indicates whether this function is a kernel (default: **False**).
+            Indicates whether this function is a CPU/GPU kernel (default: **False**).
         parallel : bool
             Enables automatic parallelization when running on CPU (default: **False**).
         """

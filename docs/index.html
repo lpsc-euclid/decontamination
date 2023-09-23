@@ -93,13 +93,13 @@ __all__ = [
 <span>(</span><span>shape: Union[Tuple[int], int], dtype: Type[np.float32] = np.float32)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Empty device ndarray. Similar to <code>np.empty</code>.</p>
+<div class="desc"><p>Empty device ndarray to be used as result when calling a CPU/GPU kernel. Similar to <code>np.empty</code>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>shape</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
-<dd>???</dd>
+<dd>Desired shape for the new array.</dd>
 <dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
-<dd>???</dd>
+<dd>Desired data-type for the new array.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -108,7 +108,7 @@ __all__ = [
 <pre><code class="python">class result_array(object):
 
     &#34;&#34;&#34;
-    Empty device ndarray. Similar to `np.empty`.
+    Empty device ndarray to be used as result when calling a CPU/GPU kernel. Similar to `np.empty`.
     &#34;&#34;&#34;
 
     ####################################################################################################################
@@ -119,9 +119,9 @@ __all__ = [
         Parameters
         ----------
         shape : Union[Tuple[int], int]
-            ???
+            Desired shape for the new array.
         dtype : Type[np.single]
-            ???
+            Desired data-type for the new array.
         &#34;&#34;&#34;
 
         self._shape = shape
@@ -134,12 +134,20 @@ __all__ = [
     @property
     def shape(self):
 
+        &#34;&#34;&#34;
+        Shape for the array.
+        &#34;&#34;&#34;
+
         return self._shape
 
     ####################################################################################################################
 
     @property
     def dtype(self):
+
+        &#34;&#34;&#34;
+        Data-type for the array.
+        &#34;&#34;&#34;
 
         return self._dtype
 
@@ -195,7 +203,7 @@ __all__ = [
 <dl>
 <dt id="decontamination.result_array.shape"><code class="name">var <span class="ident">shape</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Shape for the array.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -203,18 +211,26 @@ __all__ = [
 <pre><code class="python">@property
 def shape(self):
 
+    &#34;&#34;&#34;
+    Shape for the array.
+    &#34;&#34;&#34;
+
     return self._shape</code></pre>
 </details>
 </dd>
 <dt id="decontamination.result_array.dtype"><code class="name">var <span class="ident">dtype</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Data-type for the array.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def dtype(self):
+
+    &#34;&#34;&#34;
+    Data-type for the array.
+    &#34;&#34;&#34;
 
     return self._dtype</code></pre>
 </details>
@@ -261,11 +277,11 @@ def dtype(self):
 <span>(</span><span>kernel: bool = False, parallel: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Decorator to compile Python functions into native CPU or GPU ones.</p>
+<div class="desc"><p>Decorator to compile Python functions into native CPU/GPU ones.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>kernel</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Indicates whether this function is a kernel (default: <strong>False</strong>).</dd>
+<dd>Indicates whether this function is a CPU/GPU kernel (default: <strong>False</strong>).</dd>
 <dt><strong><code>parallel</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Enables automatic parallelization when running on CPU (default: <strong>False</strong>).</dd>
 </dl></div>
@@ -276,7 +292,7 @@ def dtype(self):
 <pre><code class="python">class jit(object):
 
     &#34;&#34;&#34;
-    Decorator to compile Python functions into native CPU or GPU ones.
+    Decorator to compile Python functions into native CPU/GPU ones.
     &#34;&#34;&#34;
 
     ####################################################################################################################
@@ -287,7 +303,7 @@ def dtype(self):
         Parameters
         ---------
         kernel : bool
-            Indicates whether this function is a kernel (default: **False**).
+            Indicates whether this function is a CPU/GPU kernel (default: **False**).
         parallel : bool
             Enables automatic parallelization when running on CPU (default: **False**).
         &#34;&#34;&#34;

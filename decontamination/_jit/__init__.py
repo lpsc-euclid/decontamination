@@ -3,6 +3,7 @@
 
 import os
 import re
+import sys
 import typing
 import inspect
 
@@ -183,7 +184,7 @@ class Kernel:
 
                 if extra_params[0]:
 
-                    print('Will emulate GPU kernel...')
+                    print('Will emulate GPU kernel...', file = sys.stderr)
 
                 ########################################################################################################
 

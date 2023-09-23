@@ -22,8 +22,6 @@ data = np.random.default_rng(seed = 0).random((25_000, 4), np.float32)
 
 som = decontamination.SOM_PCA(4, 4, 4, dtype = np.float32, topology = 'square')
 
-som.train(data)
-
 ####################################################################################################################
 
 def test_centroids():
@@ -49,6 +47,8 @@ def test_centroids():
         [0.57995194, -0.74812454, 0.3929571, 0.24629499],
         [0.47022098, -0.7303566, 1.0066836, 0.48172566]],
     ])
+
+    som.train(data)
 
     assert np.allclose(som.get_centroids(), expected)
 

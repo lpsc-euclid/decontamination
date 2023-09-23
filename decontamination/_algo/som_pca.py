@@ -84,7 +84,14 @@ class SOM_PCA(abstract_som.AbstractSOM):
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _cov_matrix_kernel(result_sum: np.ndarray, result_prods: np.ndarray, data: np.ndarray, data_dim: int, syst_dim: int) -> None:
+    def _cov_matrix_kernel(result_sum: np.ndarray, result_prods: np.ndarray, data: np.ndarray) -> None:
+
+        ################################################################################################################
+
+        data_dim = data.shape[0]
+        syst_dim = data.shape[1]
+
+        ################################################################################################################
 
         for i in range(data_dim):
 
@@ -134,7 +141,7 @@ class SOM_PCA(abstract_som.AbstractSOM):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = True) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False) -> None:
 
         """
         Trains the neural network.
@@ -144,7 +151,7 @@ class SOM_PCA(abstract_som.AbstractSOM):
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator of generator.
         show_progress_bar : bool
-            Specifying whether a progress bar have to be shown (default: **True**).
+            Specifies whether to display a progress bar (default: **False**).
         """
 
         ################################################################################################################
@@ -164,15 +171,9 @@ class SOM_PCA(abstract_som.AbstractSOM):
 
         for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
 
+            SOM_PCA._cov_matrix_kernel(total_sum, total_prods, data)
+
             total_nb += data.shape[0]
-
-            sub_sum = np.zeros_like(total_sum)
-            sub_prods = np.zeros_like(total_prods)
-
-            SOM_PCA._cov_matrix_kernel(sub_sum, sub_prods, data, data.shape[0], data.shape[1])
-
-            total_sum += sub_sum
-            total_prods += sub_prods
 
         ################################################################################################################
 

@@ -430,7 +430,7 @@ class AbstractSOM(abc.ABC):
         threads_per_blocks : typing.Union[typing.Tuple[int], int]
             ???
         show_progress_bar : bool
-            ???
+            Specifies whether to display a progress bar (default: **False**).
         """
 
         ################################################################################################################

@@ -20,7 +20,7 @@ class SOM_Batch(abstract_som.AbstractSOM):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None, alpha: float = None, sigma: float = None, decay_function = asymptotic_decay):
+    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None, alpha: float = None, sigma: float = None):
 
         """
         Constructor for the Abstract Self Organizing Map (SOM).
@@ -53,6 +53,18 @@ class SOM_Batch(abstract_som.AbstractSOM):
 
         self._sigma = max(m, n) / 2.0 if sigma is None else dtype(sigma)
 
+        ################################################################################################################
+
+        self._n_epochs = None
+
+        self._n_vectors = None
+
+        ################################################################################################################
+
+        self._quantization_errors = None
+
+        self._topographic_errors = None
+
     ####################################################################################################################
 
     def save(self, filename: str, **kwargs) -> None:
@@ -70,9 +82,11 @@ class SOM_Batch(abstract_som.AbstractSOM):
             'mode': '__MODE__',
             'alpha': '_alpha',
             'sigma': '_sigma',
-            'epochs': '_epochs',
+            'n_epochs': '_n_epochs',
+            'n_vectors': '_n_vectors',
         }, {
-
+            'quantization_errors': '_quantization_errors',
+            'topographic_errors': '_topographic_errors',
         })
 
     ####################################################################################################################
@@ -92,9 +106,36 @@ class SOM_Batch(abstract_som.AbstractSOM):
             'mode': '__MODE__',
             'alpha': '_alpha',
             'sigma': '_sigma',
-            'epochs': '_epochs',
+            'n_epochs': '_n_epochs',
+            'n_vectors': '_n_vectors',
         }, {
-
+            'quantization_errors': '_quantization_errors',
+            'topographic_errors': '_topographic_errors',
         })
+
+    ####################################################################################################################
+
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, n_error_bins: typing.Optional[int] = 10, show_progress_bar: bool = False) -> None:
+
+        """
+        Trains the neural network. Use either the `n_epochs` or `n_vectors` methods.
+
+        Parameters
+        ----------
+        dataset : typing.Union[np.ndarray, typing.Callable]
+            Training dataset array or generator builder.
+        n_epochs : typing.Optional[int]
+            Number of epochs to train for (default: None).
+        n_vectors : typing.Optional[int]
+            Number of vectors to train for (default: None).
+        n_error_bins : int
+            Number of error bins (default: 10).
+        show_progress_bar : bool
+            Specifies whether to display a progress bar (default: **False**).
+        """
+
+        ################################################################################################################
+
+        pass
 
 ########################################################################################################################

@@ -45,11 +45,7 @@ def test_activation_map(enable_gpu):
         [1917657, 400646, 614078, 1552576],
     ], dtype = np.int64)
 
-    ##
-
     data = np.random.default_rng(seed = 0).random((25_000_000, 4), np.float32)
-
-    ##
 
     assert np.allclose(som.activation_map(data, enable_gpu = enable_gpu), expected)
 
@@ -63,11 +59,7 @@ def test_winners(enable_gpu):
         4, 5, 6, 7,
     ], dtype = np.int64)
 
-    ##
-
     data = np.random.default_rng(seed = 0).random((8, 4), np.float32)
-
-    ##
 
     assert np.allclose(som.winners(data, enable_gpu = enable_gpu), expected)
 

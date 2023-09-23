@@ -165,10 +165,10 @@ class SOM_Online(abstract_som.AbstractSOM):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, n_error_bins: typing.Optional[int] = 10, show_progress_bar: bool = True) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, n_error_bins: typing.Optional[int] = 10, show_progress_bar: bool = False) -> None:
 
         """
-        Trains the neural network.
+        Trains the neural network. Use either the `n_epochs` or `n_vectors` methods.
 
         Parameters
         ----------
@@ -179,9 +179,9 @@ class SOM_Online(abstract_som.AbstractSOM):
         n_vectors : typing.Optional[int]
             Number of vectors to train for (default: None).
         n_error_bins : int
-            ???
+            Number of error bins (default: 10).
         show_progress_bar : bool
-            Specifying whether a progress bar have to be shown (default: **True**).
+            Specifies whether to display a progress bar (default: **False**).
         """
 
         ################################################################################################################
@@ -297,51 +297,58 @@ class SOM_Online(abstract_som.AbstractSOM):
 
 ########################################################################################################################
 
-@nb.njit(parallel = False)
+@nb.njit(parallel = False, fastmath = True)
 def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, alpha: float, sigma: float, mn: int):
 
     ####################################################################################################################
     # BMUS CALCULATION                                                                                                 #
     ####################################################################################################################
 
-    min_distance = 1.0e99
+    ###_distance2 = 1.0e99
+    min_distance1 = 1.0e99
 
     min_index2 = 0
     min_index1 = 0
 
     for min_index0 in range(mn):
 
-        cur_distance = np.sum((weights[min_index0] - vector) ** 2)
+        min_distance0 = np.sum((weights[min_index0] - vector) ** 2)
 
-        if min_distance > cur_distance:
+        if min_distance1 > min_distance0:
 
-            min_distance = cur_distance
+            ###_distance2 = min_distance1
+            min_distance1 = min_distance0
 
             min_index2 = min_index1
             min_index1 = min_index0
 
     ####################################################################################################################
-    # NEIGHBORHOOD CALCULATION                                                                                         #
+
+    bmu2 = topography[min_index2]
+    bmu1 = topography[min_index1]
+
+    ####################################################################################################################
+    # LEARNING OPERATOR CALCULATION                                                                                    #
     ####################################################################################################################
 
-    bmu_distances = np.sum((topography - topography[min_index1]) ** 2, axis = -1)
+    distance_matrix = np.sum((topography - bmu1) ** 2, axis = -1)
 
-    neighbourhood_op = alpha * np.exp(-bmu_distances / (2.0 * sigma ** 2))
+    learning_op = alpha * np.exp(-distance_matrix / (2.0 * sigma ** 2))
 
     ####################################################################################################################
     # UPDATE WEIGHTS                                                                                                   #
     ####################################################################################################################
 
-    weights += np.expand_dims(neighbourhood_op, axis = -1) * (vector - weights)
+    weights += np.expand_dims(learning_op, axis = -1) * (vector - weights)
 
     ####################################################################################################################
     # UPDATE ERRORS                                                                                                    #
     ####################################################################################################################
 
-    if np.sum((topography[min_index1] - topography[min_index2]) ** 2) > 2:
+    if np.sum((bmu1 - bmu2) ** 2) > 2:
 
-        return math.sqrt(min_distance), 1
+        return math.sqrt(min_distance1), 1
 
-    return math.sqrt(min_distance), 0
+    return math.sqrt(min_distance1), 0
 
 ########################################################################################################################

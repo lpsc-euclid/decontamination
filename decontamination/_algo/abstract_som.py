@@ -384,29 +384,6 @@ class AbstractSOM(abc.ABC):
     ####################################################################################################################
 
     @staticmethod
-    @jit(gpu_kernel = True)
-    def _find_bmus_kernel_gpu(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, mn: int) -> None:
-
-        i = cu.grid(1)
-        if i < vectors.shape[0]:
-
-            # noinspection PyUnresolvedReferences
-            result[i] = _find_bmu_gpu(weights, vectors[i], mn)
-
-    ####################################################################################################################
-
-    @staticmethod
-    @jit(cpu_kernel = True, parallel = True)
-    def _find_bmus_kernel_cpu(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, mn: int) -> None:
-
-        for i in nb.prange(vectors.shape[0]):
-
-            # noinspection PyUnresolvedReferences
-            result[i] = _find_bmu_cpu(weights, vectors[i], mn)
-
-    ####################################################################################################################
-
-    @staticmethod
     @nb.njit(parallel = False)
     def _count_bmus(result: np.ndarray, bmus: np.ndarray):
 
@@ -450,13 +427,15 @@ class AbstractSOM(abc.ABC):
             if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
 
                 bmus = cu.device_array(data.shape[0], dtype = np.int32)
-                AbstractSOM._find_bmus_kernel_gpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
+                # noinspection PyUnresolvedReferences
+                _find_bmus_kernel_gpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
                 AbstractSOM._count_bmus(result, bmus.copy_to_host())
 
             else:
 
                 bmus = np.empty(data.shape[0], dtype = np.int32)
-                AbstractSOM._find_bmus_kernel_cpu(bmus, self._weights, data, self._m * self._n)
+                # noinspection PyUnresolvedReferences
+                _find_bmus_kernel_cpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
                 AbstractSOM._count_bmus(result, bmus)
 
         ################################################################################################################
@@ -487,18 +466,45 @@ class AbstractSOM(abc.ABC):
         if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
 
             bmus = cu.device_array(dataset.shape[0], dtype = np.int32)
-            AbstractSOM._find_bmus_kernel_gpu[threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
+            # noinspection PyUnresolvedReferences
+            _find_bmus_kernel_gpu[threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
             result = bmus.copy_to_host()
 
         else:
 
             bmus = np.empty(dataset.shape[0], dtype = np.int32)
-            AbstractSOM._find_bmus_kernel_cpu(bmus, self._weights, dataset, self._m * self._n)
+            # noinspection PyUnresolvedReferences
+            _find_bmus_kernel_cpu[threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
             result = bmus
 
         ################################################################################################################
 
         return self._topography[result] if locations else result
+
+########################################################################################################################
+
+@jit(kernel = True)
+def _find_bmus_kernel_xpu(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, mn: int) -> None:
+
+    ####################################################################################################################
+    # !--BEGIN-CPU--
+
+    for i in nb.prange(vectors.shape[0]):
+
+        # noinspection PyUnresolvedReferences
+        result[i] = _find_bmu_cpu(weights, vectors[i], mn)
+
+    # !--END-CPU--
+    ####################################################################################################################
+    # !--BEGIN-GPU--
+
+    i = cu.grid(1)
+    if i < vectors.shape[0]:
+
+        # noinspection PyUnresolvedReferences
+        result[i] = _find_bmu_gpu(weights, vectors[i], mn)
+
+    # !--END-GPU--
 
 ########################################################################################################################
 
@@ -513,26 +519,26 @@ def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
         ################################################################################################################
         # !--BEGIN-CPU--
 
-        dist_2 = np.sum((weights[index] - vector) ** 2)
+        dist = np.sum((weights[index] - vector) ** 2)
 
         # !--END-CPU--
         ################################################################################################################
         # !--BEGIN-GPU--
 
-        dist_2 = 0.0
+        dist = 0.0
 
         weight = weights[index]
 
         for i in range(vector.shape[0]):
 
-            dist_2 += (weight[i] - vector[i]) ** 2
+            dist += (weight[i] - vector[i]) ** 2
 
         # !--END-GPU--
         ################################################################################################################
 
-        if min_dist_2 > dist_2:
+        if min_dist_2 > dist:
 
-            min_dist_2 = dist_2
+            min_dist_2 = dist
             min_index = index
 
         ################################################################################################################

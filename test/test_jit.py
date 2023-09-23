@@ -31,26 +31,28 @@ def foo_xpu(a, b):
 
 ########################################################################################################################
 
-@decontamination.jit(cpu_kernel = True)
-def foo_kernel_cpu(result, a, b):
+@decontamination.jit(kernel = True)
+def foo_kernel_xpu(result, a, b):
+
+    ####################################################################################################################
+    # !--BEGIN-CPU--
 
     for i in range(result.shape[0]):
 
         # noinspection PyUnresolvedReferences
         result[i] = foo_cpu(a[i], b[i])
 
-########################################################################################################################
-
-#, drop_on_cpu = ['if i < result.shape[0]:']
-
-@decontamination.jit(gpu_kernel = True)
-def foo_kernel_gpu(result, a, b):
+    # !--END-CPU--
+    ####################################################################################################################
+    # !--BEGIN-GPU--
 
     i = cu.grid(1)
     if i < result.shape[0]:
 
         # noinspection PyUnresolvedReferences
         result[i] = foo_gpu(a[i], b[i])
+
+    # !--END-GPU--
 
 ########################################################################################################################
 
@@ -64,6 +66,7 @@ def test_cpu():
 
     result = np.zeros_like(C)
 
+    # noinspection PyUnresolvedReferences
     foo_kernel_cpu[32, result.size](result, A, B)
 
     assert np.array_equal(result, C)
@@ -76,6 +79,7 @@ def test_gpu():
 
         result = cu.device_array_like(C)
 
+        # noinspection PyUnresolvedReferences
         foo_kernel_gpu[32, result.size](result, A, B)
 
         assert np.array_equal(result.copy_to_host(), C)

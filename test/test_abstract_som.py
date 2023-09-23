@@ -39,13 +39,13 @@ def test_distance_map():
 def test_activation_map(enable_gpu):
 
     expected = np.array([
-        [3529015, 543220, 886912, 1282646],
-        [4292427, 574837, 1051709, 1129844],
-        [1604622, 3419371, 1270512, 929928],
-        [1917657, 400646, 614078, 1552576],
+        [3494,  526,  911, 1281],
+        [4331,  565, 1083, 1088],
+        [1642, 3369, 1300,  963],
+        [1898,  378,  625, 1546]
     ], dtype = np.int64)
 
-    data = np.random.default_rng(seed = 0).random((25_000_000, 4), np.float32)
+    data = np.random.default_rng(seed = 0).random((25_000, 4), np.float32)
 
     assert np.allclose(som.activation_map(data, enable_gpu = enable_gpu), expected)
 

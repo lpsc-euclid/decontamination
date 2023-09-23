@@ -97,9 +97,9 @@ __all__ = [
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>kernel</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Indicates whether this function is a kernel.</dd>
+<dd>Indicates whether this function is a kernel (default: <strong>False</strong>).</dd>
 <dt><strong><code>parallel</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Enables automatic parallelization.</dd>
+<dd>Enables automatic parallelization (default: <strong>False</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -119,9 +119,9 @@ __all__ = [
         Parameters
         ---------
         kernel : bool
-            Indicates whether this function is a kernel.
+            Indicates whether this function is a kernel (default: **False**).
         parallel : bool
-            Enables automatic parallelization.
+            Enables automatic parallelization (default: **False**).
         &#34;&#34;&#34;
 
         self.kernel = kernel
@@ -290,7 +290,7 @@ __all__ = [
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class SOM_Abstract():
+<pre><code class="python">class SOM_Abstract(object):
 
     &#34;&#34;&#34;
     Self Organizing Maps (abstract class).
@@ -1307,11 +1307,11 @@ __all__ = [
             Topology of the map, either &#39;**square**&#39; or &#39;**hexagonal**&#39; (default: &#39;**hexagonal**&#39;).
         &#34;&#34;&#34;
 
-        ####################################################################################################################
+        ################################################################################################################
 
         super().__init__(m, n, dim, dtype, topology)
 
-        ####################################################################################################################
+        ################################################################################################################
 
         self._header_extra = {
             &#39;mode&#39;: &#39;__MODE__&#39;,
@@ -1519,7 +1519,7 @@ number of samples in the dataset to analyze.</p>
 <dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
 <dd>Topology of the map, either '<strong>square</strong>' or '<strong>hexagonal</strong>' (default: '<strong>hexagonal</strong>').</dd>
 <dt><strong><code>alpha</code></strong> :&ensp;<code>float</code></dt>
-<dd>Starting value of the learning rate (default: 0.3).</dd>
+<dd>Starting value of the learning rate (default: <strong>0.3</strong>).</dd>
 <dt><strong><code>sigma</code></strong> :&ensp;<code>float</code></dt>
 <dd>Starting value of the neighborhood radius (default: <span><span class="MathJax_Preview"> \mathrm{max}(m,n)/2 </span><script type="math/tex"> \mathrm{max}(m,n)/2 </script></span>).</dd>
 </dl></div>
@@ -1557,7 +1557,7 @@ number of samples in the dataset to analyze.</p>
         topology : Optional[str]
             Topology of the map, either &#39;**square**&#39; or &#39;**hexagonal**&#39; (default: &#39;**hexagonal**&#39;).
         alpha : float
-            Starting value of the learning rate (default: 0.3).
+            Starting value of the learning rate (default: **0.3**).
         sigma : float
             Starting value of the neighborhood radius (default: \\( \\mathrm{max}(m,n)/2 \\)).
         &#34;&#34;&#34;
@@ -1600,11 +1600,11 @@ number of samples in the dataset to analyze.</p>
         dataset : Union[np.ndarray, Callable]
             Training dataset array or generator builder.
         n_epochs : Optional[int]
-            Number of epochs to train for (default: None).
+            Number of epochs to train for (default: **None**).
         n_vectors : Optional[int]
-            Number of vectors to train for (default: None).
+            Number of vectors to train for (default: **None**).
         n_error_bins : int
-            Number of error bins (default: 10).
+            Number of error bins (default: **10**).
         show_progress_bar : bool
             Specifies whether to display a progress bar (default: **False**).
         &#34;&#34;&#34;
@@ -1629,11 +1629,11 @@ number of samples in the dataset to analyze.</p>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
 <dd>Training dataset array or generator builder.</dd>
 <dt><strong><code>n_epochs</code></strong> :&ensp;<code>Optional[int]</code></dt>
-<dd>Number of epochs to train for (default: None).</dd>
+<dd>Number of epochs to train for (default: <strong>None</strong>).</dd>
 <dt><strong><code>n_vectors</code></strong> :&ensp;<code>Optional[int]</code></dt>
-<dd>Number of vectors to train for (default: None).</dd>
+<dd>Number of vectors to train for (default: <strong>None</strong>).</dd>
 <dt><strong><code>n_error_bins</code></strong> :&ensp;<code>int</code></dt>
-<dd>Number of error bins (default: 10).</dd>
+<dd>Number of error bins (default: <strong>10</strong>).</dd>
 <dt><strong><code>show_progress_bar</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Specifies whether to display a progress bar (default: <strong>False</strong>).</dd>
 </dl></div>
@@ -1651,11 +1651,11 @@ number of samples in the dataset to analyze.</p>
     dataset : Union[np.ndarray, Callable]
         Training dataset array or generator builder.
     n_epochs : Optional[int]
-        Number of epochs to train for (default: None).
+        Number of epochs to train for (default: **None**).
     n_vectors : Optional[int]
-        Number of vectors to train for (default: None).
+        Number of vectors to train for (default: **None**).
     n_error_bins : int
-        Number of error bins (default: 10).
+        Number of error bins (default: **10**).
     show_progress_bar : bool
         Specifies whether to display a progress bar (default: **False**).
     &#34;&#34;&#34;
@@ -1689,7 +1689,7 @@ number of samples in the dataset to analyze.</p>
 <dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
 <dd>Topology of the map, either '<strong>square</strong>' or '<strong>hexagonal</strong>' (default: '<strong>hexagonal</strong>').</dd>
 <dt><strong><code>alpha</code></strong> :&ensp;<code>float</code></dt>
-<dd>Starting value of the learning rate (default: 0.3).</dd>
+<dd>Starting value of the learning rate (default: <strong>0.3</strong>).</dd>
 <dt><strong><code>sigma</code></strong> :&ensp;<code>float</code></dt>
 <dd>Starting value of the neighborhood radius (default: <span><span class="MathJax_Preview"> \mathrm{max}(m,n)/2 </span><script type="math/tex"> \mathrm{max}(m,n)/2 </script></span>).</dd>
 </dl></div>
@@ -1727,7 +1727,7 @@ number of samples in the dataset to analyze.</p>
         topology : Optional[str]
             Topology of the map, either &#39;**square**&#39; or &#39;**hexagonal**&#39; (default: &#39;**hexagonal**&#39;).
         alpha : float
-            Starting value of the learning rate (default: 0.3).
+            Starting value of the learning rate (default: **0.3**).
         sigma : float
             Starting value of the neighborhood radius (default: \\( \\mathrm{max}(m,n)/2 \\)).
         &#34;&#34;&#34;
@@ -1818,11 +1818,11 @@ number of samples in the dataset to analyze.</p>
         dataset : Union[np.ndarray, Callable]
             Training dataset array or generator builder.
         n_epochs : Optional[int]
-            Number of epochs to train for (default: None).
+            Number of epochs to train for (default: **None**).
         n_vectors : Optional[int]
-            Number of vectors to train for (default: None).
+            Number of vectors to train for (default: **None**).
         n_error_bins : int
-            Number of error bins (default: 10).
+            Number of error bins (default: **10**).
         show_progress_bar : bool
             Specifies whether to display a progress bar (default: **False**).
         &#34;&#34;&#34;
@@ -1954,11 +1954,11 @@ number of samples in the dataset to analyze.</p>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
 <dd>Training dataset array or generator builder.</dd>
 <dt><strong><code>n_epochs</code></strong> :&ensp;<code>Optional[int]</code></dt>
-<dd>Number of epochs to train for (default: None).</dd>
+<dd>Number of epochs to train for (default: <strong>None</strong>).</dd>
 <dt><strong><code>n_vectors</code></strong> :&ensp;<code>Optional[int]</code></dt>
-<dd>Number of vectors to train for (default: None).</dd>
+<dd>Number of vectors to train for (default: <strong>None</strong>).</dd>
 <dt><strong><code>n_error_bins</code></strong> :&ensp;<code>int</code></dt>
-<dd>Number of error bins (default: 10).</dd>
+<dd>Number of error bins (default: <strong>10</strong>).</dd>
 <dt><strong><code>show_progress_bar</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Specifies whether to display a progress bar (default: <strong>False</strong>).</dd>
 </dl></div>
@@ -1976,11 +1976,11 @@ number of samples in the dataset to analyze.</p>
     dataset : Union[np.ndarray, Callable]
         Training dataset array or generator builder.
     n_epochs : Optional[int]
-        Number of epochs to train for (default: None).
+        Number of epochs to train for (default: **None**).
     n_vectors : Optional[int]
-        Number of vectors to train for (default: None).
+        Number of vectors to train for (default: **None**).
     n_error_bins : int
-        Number of error bins (default: 10).
+        Number of error bins (default: **10**).
     show_progress_bar : bool
         Specifies whether to display a progress bar (default: **False**).
     &#34;&#34;&#34;

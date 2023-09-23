@@ -42,7 +42,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
         topology : typing.Optional[str]
             Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
         alpha : float
-            Starting value of the learning rate (default: 0.3).
+            Starting value of the learning rate (default: **0.3**).
         sigma : float
             Starting value of the neighborhood radius (default: \\( \\mathrm{max}(m,n)/2 \\)).
         """
@@ -133,11 +133,11 @@ class SOM_Online(som_abstract.SOM_Abstract):
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
         n_epochs : typing.Optional[int]
-            Number of epochs to train for (default: None).
+            Number of epochs to train for (default: **None**).
         n_vectors : typing.Optional[int]
-            Number of vectors to train for (default: None).
+            Number of vectors to train for (default: **None**).
         n_error_bins : int
-            Number of error bins (default: 10).
+            Number of error bins (default: **10**).
         show_progress_bar : bool
             Specifies whether to display a progress bar (default: **False**).
         """

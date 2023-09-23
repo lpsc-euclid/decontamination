@@ -27,37 +27,15 @@ __pdoc__['GPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba GPU optimi
 
 ########################################################################################################################
 
-class NBKernel:
+class Kernel:
 
     ####################################################################################################################
 
-    def __init__(self, func: typing.Callable, parallel: bool):
+    def __init__(self, cpu_func: typing.Callable, gpu_func: typing.Callable, parallel: bool):
 
-        self.func = nb.njit(func, parallel = parallel)
+        self.cpu_func = nb.njit(cpu_func, parallel = parallel) if CPU_OPTIMIZATION_AVAILABLE else cpu_func
 
-    ####################################################################################################################
-
-    def __getitem__(self, extra_params):
-
-        ################################################################################################################
-
-        def wrapper(*args, **kwargs):
-
-            return self.func(*args, **kwargs)
-
-        ################################################################################################################
-
-        return wrapper
-
-########################################################################################################################
-
-class CUKernel:
-
-    ####################################################################################################################
-
-    def __init__(self, func: typing.Callable, device: bool):
-
-        self.func = cu.jit(func, device = device) if GPU_OPTIMIZATION_AVAILABLE else func
+        self.gpu_func = cu.jit(gpu_func, device = False) if GPU_OPTIMIZATION_AVAILABLE else gpu_func
 
     ####################################################################################################################
 
@@ -65,15 +43,15 @@ class CUKernel:
 
         ################################################################################################################
 
-        if not isinstance(extra_params, tuple) or len(extra_params) < 2:
+        if not isinstance(extra_params, tuple) or len(extra_params) != 3 or not isinstance(extra_params[0], bool):
 
-            raise ValueError('At least two parameters expected: threads_per_blocks and data_sizes')
+            raise ValueError('Three parameters expected: run_on_gpu, threads_per_blocks and data_sizes')
 
         ################################################################################################################
 
-        threads_per_blocks = extra_params[0] if isinstance(extra_params[0], tuple) else (extra_params[0], )
+        threads_per_blocks = extra_params[1] if isinstance(extra_params[1], tuple) else (extra_params[1], )
 
-        data_sizes = extra_params[1] if isinstance(extra_params[1], tuple) else (extra_params[1], )
+        data_sizes = extra_params[2] if isinstance(extra_params[2], tuple) else (extra_params[2], )
 
         num_blocks = tuple((s + t - 1) // t for s, t in zip(data_sizes, threads_per_blocks))
 
@@ -81,15 +59,15 @@ class CUKernel:
 
         def wrapper(*args, **kwargs):
 
-            if GPU_OPTIMIZATION_AVAILABLE:
+            if extra_params[0] and GPU_OPTIMIZATION_AVAILABLE:
 
                 args = [cu.to_device(arg) if isinstance(arg, np.ndarray) else arg for arg in args]
 
-                return self.func[num_blocks, threads_per_blocks](*args, **kwargs)
+                return self.gpu_func[num_blocks, threads_per_blocks](*args, **kwargs)
 
             else:
 
-                return self.func(*args, **kwargs)
+                return self.cpu_func(*args, **kwargs)
 
         ################################################################################################################
 
@@ -112,9 +90,9 @@ class jit(object):
         Parameters
         ---------
         kernel : bool
-            Indicates whether this function is a kernel.
+            Indicates whether this function is a kernel (default: **False**).
         parallel : bool
-            Enables automatic parallelization.
+            Enables automatic parallelization (default: **False**).
         """
 
         self.kernel = kernel
@@ -188,14 +166,14 @@ class jit(object):
     ####################################################################################################################
 
     @staticmethod
-    def _inject_cpu(orig_funct: typing.Callable, new_funct: typing.Union[typing.Callable, NBKernel]) -> None:
+    def _inject_cpu(orig_funct: typing.Callable, new_funct: typing.Callable) -> None:
 
         orig_funct.__globals__[orig_funct.__name__.replace('_xpu', '_cpu')] = new_funct
 
     ####################################################################################################################
 
     @staticmethod
-    def _inject_gpu(orig_funct: typing.Callable, new_funct: typing.Union[typing.Callable, CUKernel]) -> None:
+    def _inject_gpu(orig_funct: typing.Callable, new_funct: typing.Callable) -> None:
 
         orig_funct.__globals__[orig_funct.__name__.replace('_xpu', '_gpu')] = new_funct
 
@@ -203,7 +181,7 @@ class jit(object):
 
     def __call__(self, funct: typing.Callable):
 
-        if not funct.__name__.endswith('_xpu'):
+        if not self.kernel and not funct.__name__.endswith('_xpu'):
 
             raise Exception(f'Function `{funct.__name__}` name must ends with `_xpu`')
 
@@ -231,9 +209,8 @@ class jit(object):
 
         funct_cpu = eval(name_cpu, funct.__globals__)
 
-        if self.kernel:
-            jit._inject_cpu(funct, NBKernel(funct_cpu, parallel = self.parallel))
-        else:
+        if not self.kernel:
+
             jit._inject_cpu(funct, nb.njit(funct_cpu, parallel = self.parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu)
 
         ################################################################################################################
@@ -250,10 +227,17 @@ class jit(object):
 
         funct_gpu = eval(name_gpu, funct.__globals__)
 
-        if self.kernel:
-            jit._inject_gpu(funct, CUKernel(funct_gpu, device = False))
-        else:
+        if not self.kernel:
+
             jit._inject_gpu(funct, cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else funct_gpu)
+
+        ################################################################################################################
+        # KERNEL                                                                                                       #
+        ################################################################################################################
+
+        if self.kernel:
+
+            funct = Kernel(funct_cpu, funct_gpu, parallel = self.parallel)
 
         ################################################################################################################
 

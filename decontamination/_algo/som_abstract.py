@@ -449,15 +449,13 @@ class SOM_Abstract(object):
             if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
 
                 bmus = cu.device_array(data.shape[0], dtype = np.int32)
-                # noinspection PyUnresolvedReferences
-                _find_bmus_kernel_gpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
+                _find_bmus_kernel[True, threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
                 SOM_Abstract._count_bmus(result, bmus.copy_to_host())
 
             else:
 
                 bmus = np.empty(data.shape[0], dtype = np.int32)
-                # noinspection PyUnresolvedReferences
-                _find_bmus_kernel_cpu[threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
+                _find_bmus_kernel[False, threads_per_blocks, data.shape[0]](bmus, self._weights, data, self._m * self._n)
                 SOM_Abstract._count_bmus(result, bmus)
 
         ################################################################################################################
@@ -488,15 +486,13 @@ class SOM_Abstract(object):
         if enable_gpu and GPU_OPTIMIZATION_AVAILABLE:
 
             bmus = cu.device_array(dataset.shape[0], dtype = np.int32)
-            # noinspection PyUnresolvedReferences
-            _find_bmus_kernel_gpu[threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
+            _find_bmus_kernel[True, threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
             result = bmus.copy_to_host()
 
         else:
 
             bmus = np.empty(dataset.shape[0], dtype = np.int32)
-            # noinspection PyUnresolvedReferences
-            _find_bmus_kernel_cpu[threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
+            _find_bmus_kernel[False, threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
             result = bmus
 
         ################################################################################################################
@@ -506,7 +502,7 @@ class SOM_Abstract(object):
 ########################################################################################################################
 
 @jit(kernel = True)
-def _find_bmus_kernel_xpu(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, mn: int) -> None:
+def _find_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, mn: int) -> None:
 
     ####################################################################################################################
     # !--BEGIN-CPU--

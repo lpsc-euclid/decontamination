@@ -32,7 +32,7 @@ def foo_xpu(a, b):
 ########################################################################################################################
 
 @decontamination.jit(kernel = True)
-def foo_kernel_xpu(result, a, b):
+def foo_kernel(result, a, b):
 
     ####################################################################################################################
     # !--BEGIN-CPU--
@@ -66,8 +66,7 @@ def test_cpu():
 
     result = np.zeros_like(C)
 
-    # noinspection PyUnresolvedReferences
-    foo_kernel_cpu[32, result.size](result, A, B)
+    foo_kernel[False, 32, result.size](result, A, B)
 
     assert np.array_equal(result, C)
 
@@ -79,8 +78,7 @@ def test_gpu():
 
         result = cu.device_array_like(C)
 
-        # noinspection PyUnresolvedReferences
-        foo_kernel_gpu[32, result.size](result, A, B)
+        foo_kernel[True, 32, result.size](result, A, B)
 
         assert np.array_equal(result.copy_to_host(), C)
 

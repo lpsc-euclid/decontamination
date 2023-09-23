@@ -67,7 +67,7 @@ class result_array(object):
     def shape(self):
 
         """
-        Shape for the array.
+        Shape of the array.
         """
 
         return self._shape
@@ -78,7 +78,7 @@ class result_array(object):
     def dtype(self):
 
         """
-        Data-type for the array.
+        Data-type of the array.
         """
 
         return self._dtype

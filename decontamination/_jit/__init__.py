@@ -36,16 +36,81 @@ def nb_to_device(ndarray):
 
 ########################################################################################################################
 
-# noinspection PyPep8Naming
-class result_array(object):
+def device_array_from(array: np.ndarray):
 
     """
-    Empty device ndarray to be used as result when calling a CPU/GPU kernel. Similar to `numpy.empty`.
+    New device array (see `DeviceArray`), initialized from a ndarray.
+    """
+
+    return DeviceArray(array.shape, array.dtype, content = array)
+
+########################################################################################################################
+
+def device_array_empty(shape: typing.Union[typing.Tuple[int], int], dtype: typing.Type[np.single] = np.float32):
+
+    """
+    New empty device array (see `DeviceArray`).
+
+    Parameters
+    ----------
+    shape : typing.Union[typing.Tuple[int], int]
+        Desired shape for the new array.
+    dtype : typing.Type[np.single]
+        Desired data-type for the new array.
+    """
+
+    return DeviceArray(shape, dtype, content = None)
+
+########################################################################################################################
+
+def device_array_zeros(shape: typing.Union[typing.Tuple[int], int], dtype: typing.Type[np.single] = np.float32):
+
+    """
+    New device array (see `DeviceArray`), filled with **0**.
+
+    Parameters
+    ----------
+    shape : typing.Union[typing.Tuple[int], int]
+        Desired shape for the new array.
+    dtype : typing.Type[np.single]
+        Desired data-type for the new array.
+    """
+
+    return DeviceArray(shape, dtype, content = 0)
+
+########################################################################################################################
+
+def device_array_full(shape: typing.Union[typing.Tuple[int], int], value: typing.Union[int, float], dtype: typing.Type[np.single] = np.float32):
+
+    """
+    New device array (see `DeviceArray`), filled with **value**.
+
+    Parameters
+    ----------
+    shape : typing.Union[typing.Tuple[int], int]
+        Desired shape for the new array.
+    value : typing.Union[int, float]
+        Desired value for the new array.
+    dtype : typing.Type[np.single]
+        Desired data-type for the new array.
+    """
+
+    return DeviceArray(shape, dtype, content = value)
+
+########################################################################################################################
+
+class DeviceArray(object):
+
+    """
+    Device array to be used when calling a CPU/GPU kernel.
+
+    Prefer using primitives `device_array_from`, `device_array_empty`, `device_array_zeros`, `device_array_full`
+    to instantiate a device array.
     """
 
     ####################################################################################################################
 
-    def __init__(self, shape: typing.Union[typing.Tuple[int], int], dtype: typing.Type[np.single] = np.float32):
+    def __init__(self, shape: typing.Union[typing.Tuple[int], int], dtype: typing.Type[np.single] = np.float32, content: typing.Optional[typing.Union[int, float, np.ndarray]] = None):
 
         """
         Parameters
@@ -54,10 +119,14 @@ class result_array(object):
             Desired shape for the new array.
         dtype : typing.Type[np.single]
             Desired data-type for the new array.
+        content : typing.Optional[typing.Union[int, float, np.ndarray]]
+            Optional content, integer, floating ot Numpy ndarray.
         """
 
         self._shape = shape
         self._dtype = dtype
+
+        self._content = content
 
         self._instance = None
 
@@ -97,11 +166,47 @@ class result_array(object):
 
         if is_gpu:
 
-            self._instance = cu.device_array(shape = self._shape, dtype = self._dtype)
+            ############################################################################################################
+            # GPU INSTANTIATION                                                                                        #
+            ############################################################################################################
+
+            if isinstance(self._content, np.ndarray):
+
+                self._instance = cu.to_device(self._content)
+
+            elif self._content is not None:
+
+                if float(self._content) == 0.0:
+                    self._instance = cu.device_array(shape = self._shape, dtype = self._dtype)
+                else:
+                    self._instance = cu.device_array_like(np.full(shape = self._shape, fill_value = self._content, dtype = self._dtype))
+
+            else:
+
+                self._instance = cu.device_array(shape = self._shape, dtype = self._dtype)
+
+            ############################################################################################################
 
         else:
 
-            self._instance = np.empty(shape = self._shape, dtype = self._dtype)
+            ############################################################################################################
+            # CPU INSTANTIATION                                                                                        #
+            ############################################################################################################
+
+            if isinstance(self._content, np.ndarray):
+
+                self._instance = nb_to_device(self._content)
+
+            elif self._content is not None:
+
+                if float(self._content) == 0.0:
+                    self._instance = np.zeros(shape = self._shape, dtype = self._dtype)
+                else:
+                    self._instance = np.full(shape = self._shape, fill_value = self._content, dtype = self._dtype)
+
+            else:
+
+                self._instance = np.empty(shape = self._shape, dtype = self._dtype)
 
         ################################################################################################################
 
@@ -123,7 +228,7 @@ class result_array(object):
 
         ################################################################################################################
 
-        if self._instance.__class__.__name__ == 'DeviceNDArray':
+        if cu.is_cuda_array(self._instance):
 
             return self._instance.copy_to_host()
 
@@ -177,7 +282,7 @@ class Kernel:
 
                     if isinstance(arg, np.ndarray):
                         new_args.append(cu.to_device(arg))
-                    elif isinstance(arg, result_array):
+                    elif isinstance(arg, DeviceArray):
                         # noinspection PyProtectedMember
                         new_args.append(arg._instantiate(True))
                     else:
@@ -203,7 +308,7 @@ class Kernel:
 
                     if isinstance(arg, np.ndarray):
                         new_args.append(nb_to_device(arg))
-                    elif isinstance(arg, result_array):
+                    elif isinstance(arg, DeviceArray):
                         # noinspection PyProtectedMember
                         new_args.append(arg._instantiate(False))
                     else:
@@ -273,7 +378,7 @@ class jit(object):
             A = np.random.randn(100_000).astype(np.float32)
             B = np.random.randn(100_000).astype(np.float32)
 
-            result = result_array(100_000, dtype = np.float32)
+            result = device_array_empty(100_000, dtype = np.float32)
 
             foo_kernel[use_gpu, threads_per_block, result.shape[0]](result, A, B)
 

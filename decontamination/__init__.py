@@ -13,7 +13,9 @@ import numpy as np
 # JIT                                                                                                                  #
 ########################################################################################################################
 
-from ._jit import CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE, result_array, jit
+from ._jit import CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE, jit
+
+from ._jit import DeviceArray, device_array_from, device_array_empty, device_array_zeros, device_array_full
 
 ########################################################################################################################
 # ALGO                                                                                                                 #
@@ -42,7 +44,8 @@ def array_to_string(arr):
 ########################################################################################################################
 
 __all__ = [
-    'CPU_OPTIMIZATION_AVAILABLE', 'GPU_OPTIMIZATION_AVAILABLE', 'result_array', 'jit',
+    'CPU_OPTIMIZATION_AVAILABLE', 'GPU_OPTIMIZATION_AVAILABLE', 'jit',
+    'DeviceArray', 'device_array_from', 'device_array_empty', 'device_array_zeros', 'device_array_full',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
 ]
 

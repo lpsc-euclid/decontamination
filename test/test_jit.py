@@ -62,7 +62,7 @@ def test_xpu():
 
 def test_cpu():
 
-    result = decontamination.result_array(C.shape, dtype = C.dtype)
+    result = decontamination.device_array_empty(C.shape, dtype = C.dtype)
 
     foo_kernel[False, 32, result.shape[0]](result, A, B)
 
@@ -72,7 +72,7 @@ def test_cpu():
 
 def test_gpu():
 
-    result = decontamination.result_array(C.shape, dtype = C.dtype)
+    result = decontamination.device_array_empty(C.shape, dtype = C.dtype)
 
     foo_kernel[True, 32, result.shape[0]](result, A, B)
 

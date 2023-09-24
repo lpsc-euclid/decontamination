@@ -43,7 +43,9 @@ import numpy as np
 # JIT                                                                                                                  #
 ########################################################################################################################
 
-from ._jit import CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE, result_array, jit
+from ._jit import CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE, jit
+
+from ._jit import DeviceArray, device_array_from, device_array_empty, device_array_zeros, device_array_full
 
 ########################################################################################################################
 # ALGO                                                                                                                 #
@@ -72,7 +74,8 @@ def array_to_string(arr):
 ########################################################################################################################
 
 __all__ = [
-    &#39;CPU_OPTIMIZATION_AVAILABLE&#39;, &#39;GPU_OPTIMIZATION_AVAILABLE&#39;, &#39;result_array&#39;, &#39;jit&#39;,
+    &#39;CPU_OPTIMIZATION_AVAILABLE&#39;, &#39;GPU_OPTIMIZATION_AVAILABLE&#39;, &#39;jit&#39;,
+    &#39;DeviceArray&#39;, &#39;device_array_from&#39;, &#39;device_array_empty&#39;, &#39;device_array_zeros&#39;, &#39;device_array_full&#39;,
     &#39;SOM_Abstract&#39;, &#39;SOM_PCA&#39;, &#39;SOM_Batch&#39;, &#39;SOM_Online&#39;,
 ]
 
@@ -84,16 +87,31 @@ __all__ = [
 <section>
 </section>
 <section>
-</section>
-<section>
-<h2 class="section-title" id="header-classes">Classes</h2>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="decontamination.result_array"><code class="flex name class">
-<span>class <span class="ident">result_array</span></span>
-<span>(</span><span>shape: Union[Tuple[int], int], dtype: Type[np.float32] = np.float32)</span>
+<dt id="decontamination.device_array_from"><code class="name flex">
+<span>def <span class="ident">device_array_from</span></span>(<span>array: np.ndarray)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Empty device ndarray to be used as result when calling a CPU/GPU kernel. Similar to <code>np.empty</code>.</p>
+<div class="desc"><p>New device array (see <code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code>), initialized from a ndarray.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def device_array_from(array: np.ndarray):
+
+    &#34;&#34;&#34;
+    New device array (see `DeviceArray`), initialized from a ndarray.
+    &#34;&#34;&#34;
+
+    return DeviceArray(array.shape, array.dtype, content = array)</code></pre>
+</details>
+</dd>
+<dt id="decontamination.device_array_empty"><code class="name flex">
+<span>def <span class="ident">device_array_empty</span></span>(<span>shape: Union[Tuple[int], int], dtype: Type[np.float32] = np.float32)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>New empty device array (see <code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code>).</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>shape</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
@@ -105,173 +123,95 @@ __all__ = [
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class result_array(object):
+<pre><code class="python">def device_array_empty(shape: Union[Tuple[int], int], dtype: Type[np.single] = np.float32):
 
     &#34;&#34;&#34;
-    Empty device ndarray to be used as result when calling a CPU/GPU kernel. Similar to `np.empty`.
+    New empty device array (see `DeviceArray`).
+
+    Parameters
+    ----------
+    shape : Union[Tuple[int], int]
+        Desired shape for the new array.
+    dtype : Type[np.single]
+        Desired data-type for the new array.
     &#34;&#34;&#34;
 
-    ####################################################################################################################
-
-    def __init__(self, shape: Union[Tuple[int], int], dtype: Type[np.single] = np.float32):
-
-        &#34;&#34;&#34;
-        Parameters
-        ----------
-        shape : Union[Tuple[int], int]
-            Desired shape for the new array.
-        dtype : Type[np.single]
-            Desired data-type for the new array.
-        &#34;&#34;&#34;
-
-        self._shape = shape
-        self._dtype = dtype
-
-        self._instance = None
-
-    ####################################################################################################################
-
-    @property
-    def shape(self):
-
-        &#34;&#34;&#34;
-        Shape of the array.
-        &#34;&#34;&#34;
-
-        return self._shape
-
-    ####################################################################################################################
-
-    @property
-    def dtype(self):
-
-        &#34;&#34;&#34;
-        Data-type of the array.
-        &#34;&#34;&#34;
-
-        return self._dtype
-
-    ####################################################################################################################
-
-    def _instantiate(self, is_gpu: bool):
-
-        ################################################################################################################
-
-        if self._instance is not None:
-
-            raise Exception(&#39;Device array already instanced&#39;)
-
-        ################################################################################################################
-
-        if is_gpu:
-
-            self._instance = cu.device_array(shape = self._shape, dtype = self._dtype)
-
-        else:
-
-            self._instance = np.empty(shape = self._shape, dtype = self._dtype)
-
-        ################################################################################################################
-
-        return self._instance
-
-    ####################################################################################################################
-
-    def copy_to_host(self) -&gt; np.ndarray:
-
-        &#34;&#34;&#34;
-        Create a new Numpy ndarray from the underlying device ndarray.
-        &#34;&#34;&#34;
-
-        ################################################################################################################
-
-        if self._instance is None:
-
-            raise Exception(&#39;Device array not instanced&#39;)
-
-        ################################################################################################################
-
-        if self._instance.__class__.__name__ == &#39;DeviceNDArray&#39;:
-
-            return self._instance.copy_to_host()
-
-        else:
-
-            return self._instance</code></pre>
-</details>
-<h3>Instance variables</h3>
-<dl>
-<dt id="decontamination.result_array.shape"><code class="name">var <span class="ident">shape</span></code></dt>
-<dd>
-<div class="desc"><p>Shape of the array.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def shape(self):
-
-    &#34;&#34;&#34;
-    Shape of the array.
-    &#34;&#34;&#34;
-
-    return self._shape</code></pre>
+    return DeviceArray(shape, dtype, content = None)</code></pre>
 </details>
 </dd>
-<dt id="decontamination.result_array.dtype"><code class="name">var <span class="ident">dtype</span></code></dt>
-<dd>
-<div class="desc"><p>Data-type of the array.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def dtype(self):
-
-    &#34;&#34;&#34;
-    Data-type of the array.
-    &#34;&#34;&#34;
-
-    return self._dtype</code></pre>
-</details>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="decontamination.result_array.copy_to_host"><code class="name flex">
-<span>def <span class="ident">copy_to_host</span></span>(<span>self) ‑> np.ndarray</span>
+<dt id="decontamination.device_array_zeros"><code class="name flex">
+<span>def <span class="ident">device_array_zeros</span></span>(<span>shape: Union[Tuple[int], int], dtype: Type[np.float32] = np.float32)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a new Numpy ndarray from the underlying device ndarray.</p></div>
+<div class="desc"><p>New device array (see <code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code>), filled with <strong>0</strong>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>shape</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
+<dd>Desired shape for the new array.</dd>
+<dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
+<dd>Desired data-type for the new array.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def copy_to_host(self) -&gt; np.ndarray:
+<pre><code class="python">def device_array_zeros(shape: Union[Tuple[int], int], dtype: Type[np.single] = np.float32):
 
     &#34;&#34;&#34;
-    Create a new Numpy ndarray from the underlying device ndarray.
+    New device array (see `DeviceArray`), filled with **0**.
+
+    Parameters
+    ----------
+    shape : Union[Tuple[int], int]
+        Desired shape for the new array.
+    dtype : Type[np.single]
+        Desired data-type for the new array.
     &#34;&#34;&#34;
 
-    ################################################################################################################
+    return DeviceArray(shape, dtype, content = 0)</code></pre>
+</details>
+</dd>
+<dt id="decontamination.device_array_full"><code class="name flex">
+<span>def <span class="ident">device_array_full</span></span>(<span>shape: Union[Tuple[int], int], value: Union[int, float], dtype: Type[np.float32] = np.float32)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>New device array (see <code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code>), filled with <strong>value</strong>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>shape</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
+<dd>Desired shape for the new array.</dd>
+<dt><strong><code>value</code></strong> :&ensp;<code>Union[int, float]</code></dt>
+<dd>Desired value for the new array.</dd>
+<dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
+<dd>Desired data-type for the new array.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def device_array_full(shape: Union[Tuple[int], int], value: Union[int, float], dtype: Type[np.single] = np.float32):
 
-    if self._instance is None:
+    &#34;&#34;&#34;
+    New device array (see `DeviceArray`), filled with **value**.
 
-        raise Exception(&#39;Device array not instanced&#39;)
+    Parameters
+    ----------
+    shape : Union[Tuple[int], int]
+        Desired shape for the new array.
+    value : Union[int, float]
+        Desired value for the new array.
+    dtype : Type[np.single]
+        Desired data-type for the new array.
+    &#34;&#34;&#34;
 
-    ################################################################################################################
-
-    if self._instance.__class__.__name__ == &#39;DeviceNDArray&#39;:
-
-        return self._instance.copy_to_host()
-
-    else:
-
-        return self._instance</code></pre>
+    return DeviceArray(shape, dtype, content = value)</code></pre>
 </details>
 </dd>
 </dl>
-</dd>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
 <dt id="decontamination.jit"><code class="flex name class">
 <span>class <span class="ident">jit</span></span>
 <span>(</span><span>kernel: bool = False, parallel: bool = False)</span>
@@ -319,7 +259,7 @@ threads_per_block = 32
 A = np.random.randn(100_000).astype(np.float32)
 B = np.random.randn(100_000).astype(np.float32)
 
-result = result_array(100_000, dtype = np.float32)
+result = device_array_empty(100_000, dtype = np.float32)
 
 foo_kernel[use_gpu, threads_per_block, result.shape[0]](result, A, B)
 
@@ -382,7 +322,7 @@ print(result.copy_to_host())
             A = np.random.randn(100_000).astype(np.float32)
             B = np.random.randn(100_000).astype(np.float32)
 
-            result = result_array(100_000, dtype = np.float32)
+            result = device_array_empty(100_000, dtype = np.float32)
 
             foo_kernel[use_gpu, threads_per_block, result.shape[0]](result, A, B)
 
@@ -537,6 +477,237 @@ print(result.copy_to_host())
 
         return funct</code></pre>
 </details>
+</dd>
+<dt id="decontamination.DeviceArray"><code class="flex name class">
+<span>class <span class="ident">DeviceArray</span></span>
+<span>(</span><span>shape: Union[Tuple[int], int], dtype: Type[np.float32] = np.float32, content: Union[int, float, np.ndarray, ForwardRef(None)] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Device array to be used when calling a CPU/GPU kernel.</p>
+<p>Prefer using primitives <code><a title="decontamination.device_array_from" href="#decontamination.device_array_from">device_array_from()</a></code>, <code><a title="decontamination.device_array_empty" href="#decontamination.device_array_empty">device_array_empty()</a></code>, <code><a title="decontamination.device_array_zeros" href="#decontamination.device_array_zeros">device_array_zeros()</a></code>, <code><a title="decontamination.device_array_full" href="#decontamination.device_array_full">device_array_full()</a></code>
+to instantiate a device array.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>shape</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
+<dd>Desired shape for the new array.</dd>
+<dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
+<dd>Desired data-type for the new array.</dd>
+<dt><strong><code>content</code></strong> :&ensp;<code>Optional[Union[int, float, np.ndarray]]</code></dt>
+<dd>Optional content, integer, floating ot Numpy ndarray.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DeviceArray(object):
+
+    &#34;&#34;&#34;
+    Device array to be used when calling a CPU/GPU kernel.
+
+    Prefer using primitives `device_array_from`, `device_array_empty`, `device_array_zeros`, `device_array_full`
+    to instantiate a device array.
+    &#34;&#34;&#34;
+
+    ####################################################################################################################
+
+    def __init__(self, shape: Union[Tuple[int], int], dtype: Type[np.single] = np.float32, content: Optional[Union[int, float, np.ndarray]] = None):
+
+        &#34;&#34;&#34;
+        Parameters
+        ----------
+        shape : Union[Tuple[int], int]
+            Desired shape for the new array.
+        dtype : Type[np.single]
+            Desired data-type for the new array.
+        content : Optional[Union[int, float, np.ndarray]]
+            Optional content, integer, floating ot Numpy ndarray.
+        &#34;&#34;&#34;
+
+        self._shape = shape
+        self._dtype = dtype
+
+        self._content = content
+
+        self._instance = None
+
+    ####################################################################################################################
+
+    @property
+    def shape(self):
+
+        &#34;&#34;&#34;
+        Shape of the array.
+        &#34;&#34;&#34;
+
+        return self._shape
+
+    ####################################################################################################################
+
+    @property
+    def dtype(self):
+
+        &#34;&#34;&#34;
+        Data-type of the array.
+        &#34;&#34;&#34;
+
+        return self._dtype
+
+    ####################################################################################################################
+
+    def _instantiate(self, is_gpu: bool):
+
+        ################################################################################################################
+
+        if self._instance is not None:
+
+            raise Exception(&#39;Device array already instanced&#39;)
+
+        ################################################################################################################
+
+        if is_gpu:
+
+            ############################################################################################################
+            # GPU INSTANTIATION                                                                                        #
+            ############################################################################################################
+
+            if isinstance(self._content, np.ndarray):
+
+                self._instance = cu.to_device(self._content)
+
+            elif self._content is not None:
+
+                if float(self._content) == 0.0:
+                    self._instance = cu.device_array(shape = self._shape, dtype = self._dtype)
+                else:
+                    self._instance = cu.device_array_like(np.full(shape = self._shape, fill_value = self._content, dtype = self._dtype))
+
+            else:
+
+                self._instance = cu.device_array(shape = self._shape, dtype = self._dtype)
+
+            ############################################################################################################
+
+        else:
+
+            ############################################################################################################
+            # CPU INSTANTIATION                                                                                        #
+            ############################################################################################################
+
+            if isinstance(self._content, np.ndarray):
+
+                self._instance = nb_to_device(self._content)
+
+            elif self._content is not None:
+
+                if float(self._content) == 0.0:
+                    self._instance = np.zeros(shape = self._shape, dtype = self._dtype)
+                else:
+                    self._instance = np.full(shape = self._shape, fill_value = self._content, dtype = self._dtype)
+
+            else:
+
+                self._instance = np.empty(shape = self._shape, dtype = self._dtype)
+
+        ################################################################################################################
+
+        return self._instance
+
+    ####################################################################################################################
+
+    def copy_to_host(self) -&gt; np.ndarray:
+
+        &#34;&#34;&#34;
+        Create a new Numpy ndarray from the underlying device ndarray.
+        &#34;&#34;&#34;
+
+        ################################################################################################################
+
+        if self._instance is None:
+
+            raise Exception(&#39;Device array not instanced&#39;)
+
+        ################################################################################################################
+
+        if cu.is_cuda_array(self._instance):
+
+            return self._instance.copy_to_host()
+
+        else:
+
+            return self._instance</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="decontamination.DeviceArray.shape"><code class="name">var <span class="ident">shape</span></code></dt>
+<dd>
+<div class="desc"><p>Shape of the array.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def shape(self):
+
+    &#34;&#34;&#34;
+    Shape of the array.
+    &#34;&#34;&#34;
+
+    return self._shape</code></pre>
+</details>
+</dd>
+<dt id="decontamination.DeviceArray.dtype"><code class="name">var <span class="ident">dtype</span></code></dt>
+<dd>
+<div class="desc"><p>Data-type of the array.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dtype(self):
+
+    &#34;&#34;&#34;
+    Data-type of the array.
+    &#34;&#34;&#34;
+
+    return self._dtype</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="decontamination.DeviceArray.copy_to_host"><code class="name flex">
+<span>def <span class="ident">copy_to_host</span></span>(<span>self) ‑> np.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a new Numpy ndarray from the underlying device ndarray.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def copy_to_host(self) -&gt; np.ndarray:
+
+    &#34;&#34;&#34;
+    Create a new Numpy ndarray from the underlying device ndarray.
+    &#34;&#34;&#34;
+
+    ################################################################################################################
+
+    if self._instance is None:
+
+        raise Exception(&#39;Device array not instanced&#39;)
+
+    ################################################################################################################
+
+    if cu.is_cuda_array(self._instance):
+
+        return self._instance.copy_to_host()
+
+    else:
+
+        return self._instance</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 <dt id="decontamination.SOM_Abstract"><code class="flex name class">
 <span>class <span class="ident">SOM_Abstract</span></span>
@@ -995,7 +1166,7 @@ print(result.copy_to_host())
 
             for chunk in batch_iterator(data, n_chunks):
 
-                bmus = result_array(data.shape[0], dtype = np.int32)
+                bmus = device_array_empty(data.shape[0], dtype = np.int32)
 
                 _find_bmus_kernel[enable_gpu, threads_per_blocks, data.shape[0]](bmus, self._weights, chunk, self._m * self._n)
 
@@ -1026,7 +1197,7 @@ print(result.copy_to_host())
 
         ################################################################################################################
 
-        bmus = result_array(dataset.shape[0], dtype = np.int32)
+        bmus = device_array_empty(dataset.shape[0], dtype = np.int32)
 
         _find_bmus_kernel[enable_gpu, threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
 
@@ -1437,7 +1608,7 @@ print(result.copy_to_host())
 
         for chunk in batch_iterator(data, n_chunks):
 
-            bmus = result_array(data.shape[0], dtype = np.int32)
+            bmus = device_array_empty(data.shape[0], dtype = np.int32)
 
             _find_bmus_kernel[enable_gpu, threads_per_blocks, data.shape[0]](bmus, self._weights, chunk, self._m * self._n)
 
@@ -1487,7 +1658,7 @@ print(result.copy_to_host())
 
     ################################################################################################################
 
-    bmus = result_array(dataset.shape[0], dtype = np.int32)
+    bmus = device_array_empty(dataset.shape[0], dtype = np.int32)
 
     _find_bmus_kernel[enable_gpu, threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
 
@@ -1629,7 +1800,7 @@ print(result.copy_to_host())
         Parameters
         ----------
         dataset : Union[np.ndarray, Callable]
-            Training dataset array or generator of generator.
+            Training dataset array or generator builder.
         &#34;&#34;&#34;
 
         ################################################################################################################
@@ -1680,7 +1851,7 @@ print(result.copy_to_host())
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
-<dd>Training dataset array or generator of generator.</dd>
+<dd>Training dataset array or generator builder.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1694,7 +1865,7 @@ print(result.copy_to_host())
     Parameters
     ----------
     dataset : Union[np.ndarray, Callable]
-        Training dataset array or generator of generator.
+        Training dataset array or generator builder.
     &#34;&#34;&#34;
 
     ################################################################################################################
@@ -2345,18 +2516,26 @@ number of samples in the dataset to analyze.</p>
 <ul></ul>
 </div>
 <ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="decontamination.device_array_from" href="#decontamination.device_array_from">device_array_from</a></code></li>
+<li><code><a title="decontamination.device_array_empty" href="#decontamination.device_array_empty">device_array_empty</a></code></li>
+<li><code><a title="decontamination.device_array_zeros" href="#decontamination.device_array_zeros">device_array_zeros</a></code></li>
+<li><code><a title="decontamination.device_array_full" href="#decontamination.device_array_full">device_array_full</a></code></li>
+</ul>
+</li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="decontamination.result_array" href="#decontamination.result_array">result_array</a></code></h4>
-<ul class="">
-<li><code><a title="decontamination.result_array.copy_to_host" href="#decontamination.result_array.copy_to_host">copy_to_host</a></code></li>
-<li><code><a title="decontamination.result_array.shape" href="#decontamination.result_array.shape">shape</a></code></li>
-<li><code><a title="decontamination.result_array.dtype" href="#decontamination.result_array.dtype">dtype</a></code></li>
-</ul>
+<h4><code><a title="decontamination.jit" href="#decontamination.jit">jit</a></code></h4>
 </li>
 <li>
-<h4><code><a title="decontamination.jit" href="#decontamination.jit">jit</a></code></h4>
+<h4><code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code></h4>
+<ul class="">
+<li><code><a title="decontamination.DeviceArray.copy_to_host" href="#decontamination.DeviceArray.copy_to_host">copy_to_host</a></code></li>
+<li><code><a title="decontamination.DeviceArray.shape" href="#decontamination.DeviceArray.shape">shape</a></code></li>
+<li><code><a title="decontamination.DeviceArray.dtype" href="#decontamination.DeviceArray.dtype">dtype</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="decontamination.SOM_Abstract" href="#decontamination.SOM_Abstract">SOM_Abstract</a></code></h4>

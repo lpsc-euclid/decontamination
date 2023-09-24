@@ -7,7 +7,7 @@ import numpy as np
 import numba as nb
 import numba.cuda as cu
 
-from .. import jit, result_array
+from .. import jit, device_array_empty
 
 from . import batch_iterator, dataset_to_generator_builder
 
@@ -448,7 +448,7 @@ class SOM_Abstract(object):
 
             for chunk in batch_iterator(data, n_chunks):
 
-                bmus = result_array(data.shape[0], dtype = np.int32)
+                bmus = device_array_empty(data.shape[0], dtype = np.int32)
 
                 _find_bmus_kernel[enable_gpu, threads_per_blocks, data.shape[0]](bmus, self._weights, chunk, self._m * self._n)
 
@@ -479,7 +479,7 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        bmus = result_array(dataset.shape[0], dtype = np.int32)
+        bmus = device_array_empty(dataset.shape[0], dtype = np.int32)
 
         _find_bmus_kernel[enable_gpu, threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
 

@@ -56,7 +56,9 @@ def foo_kernel(result, a, b):
 
 def test_xpu():
 
-    assert np.array_equal(3, foo_xpu(1, 2))
+    with pytest.raises(RuntimeError):
+
+        foo_xpu(1, 2)
 
 ########################################################################################################################
 

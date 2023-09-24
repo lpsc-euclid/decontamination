@@ -238,6 +238,13 @@ class DeviceArray(object):
 
 ########################################################################################################################
 
+# noinspection PyUnusedLocal
+def dont_call(*args, **kwargs):
+
+    raise RuntimeError('D\'ont call me')
+
+########################################################################################################################
+
 class Kernel:
 
     ####################################################################################################################
@@ -246,7 +253,7 @@ class Kernel:
 
         self.cpu_func = nb.njit(cpu_func, parallel = parallel) if CPU_OPTIMIZATION_AVAILABLE else cpu_func
 
-        self.gpu_func = cu.jit(gpu_func, device = False) if GPU_OPTIMIZATION_AVAILABLE else gpu_func
+        self.gpu_func = cu.jit(gpu_func, device = False) if GPU_OPTIMIZATION_AVAILABLE else dont_call
 
     ####################################################################################################################
 
@@ -298,7 +305,7 @@ class Kernel:
 
                 if kernel_params[0]:
 
-                    print('Will emulate GPU kernel...', file = sys.stderr, flush = True)
+                    print('Will emulate a GPU kernel...', file = sys.stderr, flush = True)
 
                 ########################################################################################################
                 # RUN CPU KERNEL                                                                                       #
@@ -427,26 +434,14 @@ class jit(object):
     @staticmethod
     def _patch_gpu_code(code: str) -> str:
 
-        if GPU_OPTIMIZATION_AVAILABLE:
-
-            return jit.CPU_CODE_RE.sub(
-                '',
-                code.replace('_xpu', '_gpu')
-                    .replace('np.prange', 'range')
-                    .replace('xpu.local_empty', 'cu.local.array')
-                    .replace('xpu.shared_empty', 'cu.shared.array')
-                    .replace('xpu.syncthreads', 'cu.syncthreads'),
-            )
-
-        else:
-
-            return jit.GPU_CODE_RE.sub(
-                '',
-                code.replace('_xpu', '_cpu')
-                    .replace('xpu.local_empty', 'np.empty')
-                    .replace('xpu.shared_empty', 'np.empty')
-                    .replace('xpu.syncthreads', '#######')
-            )
+        return jit.CPU_CODE_RE.sub(
+            '',
+            code.replace('_xpu', '_gpu')
+                .replace('nb.prange', 'range')
+                .replace('xpu.local_empty', 'cu.local.array')
+                .replace('xpu.shared_empty', 'cu.shared.array')
+                .replace('xpu.syncthreads', 'cu.syncthreads'),
+        )
 
     ####################################################################################################################
 
@@ -510,7 +505,7 @@ class jit(object):
 
         if not self.kernel:
 
-            jit._inject_gpu_funct(funct, cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else funct_gpu)
+            jit._inject_gpu_funct(funct, cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else dont_call)
 
         ################################################################################################################
         # KERNEL                                                                                                       #
@@ -519,6 +514,10 @@ class jit(object):
         if self.kernel:
 
             funct = Kernel(funct_cpu, funct_gpu, parallel = self.parallel)
+
+        else:
+
+            funct = dont_call
 
         ################################################################################################################
 

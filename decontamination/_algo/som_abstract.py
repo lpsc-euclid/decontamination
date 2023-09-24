@@ -7,9 +7,9 @@ import numpy as np
 import numba as nb
 import numba.cuda as cu
 
-from .. import jit, device_array_empty
+from .. import jit, device_array_empty, device_array_zeros
 
-from . import batch_iterator, dataset_to_generator_builder
+from . import dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -415,7 +415,7 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], n_chunks: int = 1, enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024) -> np.ndarray:
+    def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024) -> np.ndarray:
 
         """
         ???
@@ -423,8 +423,6 @@ class SOM_Abstract(object):
         Parameters
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
-            ???
-        n_chunks : int
             ???
         enable_gpu : bool
             ???
@@ -440,23 +438,17 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        result = np.zeros(self._m * self._n, dtype = np.int64)
+        result = device_array_zeros(self._m * self._n, dtype = np.int64)
 
         ################################################################################################################
 
         for data in generator():
 
-            for chunk in batch_iterator(data, n_chunks):
-
-                bmus = device_array_empty(data.shape[0], dtype = np.int32)
-
-                _find_bmus_kernel[enable_gpu, threads_per_blocks, data.shape[0]](bmus, self._weights, chunk, self._m * self._n)
-
-                SOM_Abstract._count_bmus(result, bmus.copy_to_host())
+            _count_bmus_kernel[enable_gpu, threads_per_blocks, data.shape[0]](result, self._weights, data, self._m * self._n)
 
         ################################################################################################################
 
-        return result.reshape((self._m, self._n, ))
+        return result.copy_to_host().reshape((self._m, self._n, ))
 
     ####################################################################################################################
 
@@ -479,15 +471,45 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        bmus = device_array_empty(dataset.shape[0], dtype = np.int32)
-
-        _find_bmus_kernel[enable_gpu, threads_per_blocks, dataset.shape[0]](bmus, self._weights, dataset, self._m * self._n)
-
-        result = bmus.copy_to_host()
+        result = device_array_empty(dataset.shape[0], dtype = np.int32)
 
         ################################################################################################################
 
-        return self._topography[result] if locations else result
+        _find_bmus_kernel[enable_gpu, threads_per_blocks, dataset.shape[0]](result, self._weights, dataset, self._m * self._n)
+
+        ################################################################################################################
+
+        if locations:
+
+            return self._topography[result.copy_to_host()]
+
+        else:
+
+            return result.copy_to_host()
+
+########################################################################################################################
+
+@jit(kernel = True)
+def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, mn: int) -> None:
+
+    ####################################################################################################################
+    # !--BEGIN-CPU--
+
+    for i in nb.prange(vectors.shape[0]):
+
+        result[_find_bmu_xpu(weights, vectors[i], mn)] += 1
+
+    # !--END-CPU--
+    ####################################################################################################################
+    # !--BEGIN-GPU--
+
+    i = cu.grid(1)
+    if i < vectors.shape[0]:
+
+        # noinspection PyArgumentList
+        cu.atomic.add(result, _find_bmu_xpu(weights, vectors[i], mn), 1)
+
+    # !--END-GPU--
 
 ########################################################################################################################
 

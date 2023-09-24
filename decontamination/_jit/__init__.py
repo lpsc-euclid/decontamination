@@ -340,11 +340,11 @@ class jit(object):
 
     ####################################################################################################################
 
-    METHOD_RE = re.compile('def[^(]+(\\(.*)', flags = re.DOTALL)
+    _METHOD_RE = re.compile('def[^(]+(\\(.*)', flags = re.DOTALL)
 
-    CPU_CODE_RE = re.compile(re.escape('!--BEGIN-CPU--') + '.*?' + re.escape('!--END-CPU--'), re.DOTALL)
+    _CPU_CODE_RE = re.compile(re.escape('!--BEGIN-CPU--') + '.*?' + re.escape('!--END-CPU--'), re.DOTALL)
 
-    GPU_CODE_RE = re.compile(re.escape('!--BEGIN-GPU--') + '.*?' + re.escape('!--END-GPU--'), re.DOTALL)
+    _GPU_CODE_RE = re.compile(re.escape('!--BEGIN-GPU--') + '.*?' + re.escape('!--END-GPU--'), re.DOTALL)
 
     ####################################################################################################################
 
@@ -421,7 +421,7 @@ class jit(object):
     @staticmethod
     def _patch_cpu_code(code: str) -> str:
 
-        return jit.GPU_CODE_RE.sub(
+        return jit._GPU_CODE_RE.sub(
             '',
             code.replace('_xpu', '_cpu')
                 .replace('xpu.local_empty', 'np.empty')
@@ -434,10 +434,9 @@ class jit(object):
     @staticmethod
     def _patch_gpu_code(code: str) -> str:
 
-        return jit.CPU_CODE_RE.sub(
+        return jit._CPU_CODE_RE.sub(
             '',
             code.replace('_xpu', '_gpu')
-                .replace('nb.prange', 'range')
                 .replace('xpu.local_empty', 'cu.local.array')
                 .replace('xpu.shared_empty', 'cu.shared.array')
                 .replace('xpu.syncthreads', 'cu.syncthreads'),
@@ -469,7 +468,7 @@ class jit(object):
         # SOURCE CODE                                                                                                  #
         ################################################################################################################
 
-        code_raw = jit.METHOD_RE.search(inspect.getsource(funct)).group(1)
+        code_raw = jit._METHOD_RE.search(inspect.getsource(funct)).group(1)
 
         ################################################################################################################
         # NUMBA ON GPU                                                                                                 #

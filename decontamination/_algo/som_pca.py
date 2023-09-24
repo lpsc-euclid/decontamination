@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
-import tqdm
 import typing
 
 import numpy as np
@@ -80,7 +79,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _diag_cov_matrix(weights: np.ndarray, cov_matrix: np.ndarray, m: int, n: int) -> None:
+    def _diag_cov_matrix(weights: np.ndarray, cov_matrix: np.ndarray, min_weight: float, max_weight: float, m: int, n: int) -> None:
 
         ################################################################################################################
 
@@ -93,8 +92,8 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        linspace_x = np.linspace(-1, 1, m)
-        linspace_y = np.linspace(-1, 1, n)
+        linspace_x = np.linspace(min_weight, max_weight, m)
+        linspace_y = np.linspace(min_weight, max_weight, n)
 
         for i in range(m):
             c1 = linspace_x[i]
@@ -110,7 +109,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable]) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], min_weight: float = 0.0, max_weight: float = 1.0) -> None:
 
         """
         Trains the neural network.
@@ -119,6 +118,10 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
+        min_weight : float
+            ??? (default: **O.O**)
+        max_weight : float
+            ??? (default: **1.O**)
         """
 
         ################################################################################################################
@@ -153,6 +156,6 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        SOM_PCA._diag_cov_matrix(self.get_centroids(), cov_matrix, self._m, self._n)
+        SOM_PCA._diag_cov_matrix(self.get_centroids(), cov_matrix, min_weight, max_weight, self._m, self._n)
 
 ########################################################################################################################

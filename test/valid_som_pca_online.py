@@ -38,7 +38,7 @@ som_ref.pca_weights_init(data)
 
 som_new = decontamination.SOM_PCA(M, N, 4)
 
-som_new.train(data)
+som_new.train(data, min_weight = -1.0)
 
 ########################################################################################################################
 

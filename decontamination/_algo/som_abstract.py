@@ -507,7 +507,8 @@ def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndar
     if i < vectors.shape[0]:
 
         # noinspection PyArgumentList
-        cu.atomic.add(result, _find_bmu_xpu(weights, vectors[i], mn), 1)
+        #cu.atomic.add(result, _find_bmu_xpu(weights, vectors[i], mn), 1)
+        pass
 
     # !--END-GPU--
 

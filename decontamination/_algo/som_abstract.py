@@ -481,7 +481,7 @@ class SOM_Abstract(object):
 
         if locations:
 
-            return self._topography[result.copy_to_host()]
+            return self._topography[result.copy_to_host()] # !!! BERK : faire un kernel différent !!!
 
         else:
 

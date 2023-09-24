@@ -333,6 +333,14 @@ class jit(object):
 
     ####################################################################################################################
 
+    METHOD_RE = re.compile('def[^(]+(\\(.*)', flags = re.DOTALL)
+
+    CPU_CODE_RE = re.compile(re.escape('!--BEGIN-CPU--') + '.*?' + re.escape('!--END-CPU--'), re.DOTALL)
+
+    GPU_CODE_RE = re.compile(re.escape('!--BEGIN-GPU--') + '.*?' + re.escape('!--END-GPU--'), re.DOTALL)
+
+    ####################################################################################################################
+
     def __init__(self, kernel: bool = False, parallel: bool = False):
 
         """
@@ -404,25 +412,15 @@ class jit(object):
     ####################################################################################################################
 
     @staticmethod
-    def _process_directives(code: str, tag_s: str, tag_e: str) -> str:
-
-        pattern = re.compile(re.escape(tag_s) + '.*?' + re.escape(tag_e), re.DOTALL)
-
-        return re.sub(pattern, '', code)
-
-    ####################################################################################################################
-
-    @staticmethod
     def _patch_cpu_code(code: str) -> str:
 
-        return jit._process_directives(
+        return jit.GPU_CODE_RE.sub(
+            '',
             code.replace('_xpu', '_cpu')
                 .replace('xpu.local_empty', 'np.empty')
                 .replace('xpu.shared_empty', 'np.empty')
-                .replace('xpu.syncthreads', '#######'),
-            '!--BEGIN-GPU--',
-            '!--END-GPU--'
-        )
+                .replace('xpu.syncthreads', '#######')
+       )
 
     ####################################################################################################################
 
@@ -431,26 +429,23 @@ class jit(object):
 
         if GPU_OPTIMIZATION_AVAILABLE:
 
-            return jit._process_directives(
+            return jit.CPU_CODE_RE.sub(
+                '',
                 code.replace('_xpu', '_gpu')
                     .replace('np.prange', 'range')
                     .replace('xpu.local_empty', 'cu.local.array')
                     .replace('xpu.shared_empty', 'cu.shared.array')
                     .replace('xpu.syncthreads', 'cu.syncthreads'),
-                '!--BEGIN-CPU--',
-                '!--END-CPU--'
             )
 
         else:
 
-            return jit._process_directives(
-                code.replace('_xpu', '_gpu')
-                    .replace('np.prange', 'range')
+            return jit.GPU_CODE_RE.sub(
+                '',
+                code.replace('_xpu', '_cpu')
                     .replace('xpu.local_empty', 'np.empty')
                     .replace('xpu.shared_empty', 'np.empty')
-                    .replace('xpu.syncthreads', '#######'),
-                '!--BEGIN-CPU--',
-                '!--END-CPU--'
+                    .replace('xpu.syncthreads', '#######')
             )
 
     ####################################################################################################################
@@ -479,11 +474,7 @@ class jit(object):
         # SOURCE CODE                                                                                                  #
         ################################################################################################################
 
-        code_raw = '\n'.join(inspect.getsource(funct).splitlines())
-
-        code_raw = code_raw[code_raw.find("def"):]
-
-        code_raw = code_raw[code_raw.find("("):]
+        code_raw = jit.METHOD_RE.search(inspect.getsource(funct)).group(1)
 
         ################################################################################################################
         # NUMBA ON GPU                                                                                                 #

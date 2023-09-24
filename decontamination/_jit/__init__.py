@@ -49,7 +49,7 @@ def device_array_from(array: np.ndarray):
 def device_array_empty(shape: typing.Union[typing.Tuple[int], int], dtype: typing.Type[np.single] = np.float32):
 
     """
-    New empty device array (see `DeviceArray`).
+    New device array (see `DeviceArray`), not initialized.
 
     Parameters
     ----------

@@ -48,7 +48,7 @@ def test_centroids():
         [0.47022098, -0.7303566, 1.0066836, 0.48172566]],
     ])
 
-    som.train(data)
+    som.train(data, min_weight = -1.0, max_weight = +1.0)
 
     assert np.allclose(som.get_centroids(), expected)
 

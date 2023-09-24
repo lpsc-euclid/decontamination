@@ -489,7 +489,7 @@ class SOM_Abstract(object):
 
 ########################################################################################################################
 
-@jit(kernel = True)
+@jit(kernel = True, parallel = False)
 def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, mn: int) -> None:
 
     ####################################################################################################################
@@ -507,14 +507,13 @@ def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndar
     if i < vectors.shape[0]:
 
         # noinspection PyArgumentList
-        #cu.atomic.add(result, _find_bmu_xpu(weights, vectors[i], mn), 1)
-        pass
+        cu.atomic.add(result, _find_bmu_xpu(weights, vectors[i], mn), 1)
 
     # !--END-GPU--
 
 ########################################################################################################################
 
-@jit(kernel = True)
+@jit(kernel = True, parallel = True)
 def _find_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, mn: int) -> None:
 
     ####################################################################################################################

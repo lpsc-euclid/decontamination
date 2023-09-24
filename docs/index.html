@@ -93,7 +93,7 @@ __all__ = [
 <span>def <span class="ident">device_array_from</span></span>(<span>array: np.ndarray)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>New device array (see <code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code>), initialized from a ndarray.</p></div>
+<div class="desc"><p>New device array (see <code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code>), initialized from a Numpy ndarray.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -101,7 +101,7 @@ __all__ = [
 <pre><code class="python">def device_array_from(array: np.ndarray):
 
     &#34;&#34;&#34;
-    New device array (see `DeviceArray`), initialized from a ndarray.
+    New device array (see `DeviceArray`), initialized from a Numpy ndarray.
     &#34;&#34;&#34;
 
     return DeviceArray(array.shape, array.dtype, content = array)</code></pre>

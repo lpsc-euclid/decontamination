@@ -39,7 +39,7 @@ def nb_to_device(ndarray):
 def device_array_from(array: np.ndarray):
 
     """
-    New device array (see `DeviceArray`), initialized from a ndarray.
+    New device array (see `DeviceArray`), initialized from a Numpy ndarray.
     """
 
     return DeviceArray(array.shape, array.dtype, content = array)

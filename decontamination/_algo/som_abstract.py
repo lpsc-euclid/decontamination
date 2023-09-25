@@ -92,14 +92,14 @@ class SOM_Abstract(object):
 
                 i_offset = (j & 1) * (-0.5)
 
-                yield [i_offset + i, j * 0.8660254037844386]  # √3/2 = 0.8660254037844386
+                yield [i + i_offset, j * 0.8660254037844386]  # √3/2 = 0.8660254037844386
 
     ####################################################################################################################
     def _rebuild_topography(self):
 
         if self._topology == 'square':
 
-            self._topography = np.array(list(SOM_Abstract._neuron_locations_square(self._m, self._n)), dtype = np.int64)
+            self._topography = np.array(list(SOM_Abstract._neuron_locations_square(self._m, self._n)), dtype = np.float32)
 
         else:
 

@@ -1080,7 +1080,7 @@ def dtype(self):
     def get_distance_map(self, scaling: Optional[str] = None) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
-        Returns the distance map of the neural network weights.
+        Returns a matrix of the distances between each weight.
 
         Parameters
         ----------
@@ -1134,16 +1134,16 @@ def dtype(self):
     def get_activation_map(self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
-        ???
+        Returns a matrix containing the number of times each neuron have been activated for the given input.
 
         Parameters
         ----------
         dataset : Union[np.ndarray, Callable]
             ???
         enable_gpu : bool
-            ???
+            ??? (default: **True**)
         threads_per_blocks : Union[Tuple[int], int]
-            ???
+            ??? (default: **1024**)
         &#34;&#34;&#34;
 
         ################################################################################################################
@@ -1171,7 +1171,7 @@ def dtype(self):
     def get_winners(self, dataset: np.ndarray, locations: bool = False, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
-        ???
+        Returns a vector of the best matching unit indices or locations for the given input.
 
         Parameters
         ----------
@@ -1180,9 +1180,9 @@ def dtype(self):
         locations : bool
             ???
         enable_gpu : bool
-            ???
+            ??? (default: **True**)
         threads_per_blocks : Union[Tuple[int], int]
-            ???
+            ??? (default: **1024**)
         &#34;&#34;&#34;
 
         ################################################################################################################
@@ -1498,7 +1498,7 @@ def dtype(self):
 <span>def <span class="ident">get_distance_map</span></span>(<span>self, scaling: Optional[str] = None) ‑> np.ndarray</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns the distance map of the neural network weights.</p>
+<div class="desc"><p>Returns a matrix of the distances between each weight.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>scaling</code></strong> :&ensp;<code>Optional[str]</code></dt>
@@ -1511,7 +1511,7 @@ def dtype(self):
 <pre><code class="python">def get_distance_map(self, scaling: Optional[str] = None) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
-    Returns the distance map of the neural network weights.
+    Returns a matrix of the distances between each weight.
 
     Parameters
     ----------
@@ -1555,15 +1555,15 @@ def dtype(self):
 <span>def <span class="ident">get_activation_map</span></span>(<span>self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) ‑> np.ndarray</span>
 </code></dt>
 <dd>
-<div class="desc"><p>???</p>
+<div class="desc"><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
 <dd>???</dd>
 <dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
-<dd>???</dd>
+<dd>??? (default: <strong>True</strong>)</dd>
 <dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
-<dd>???</dd>
+<dd>??? (default: <strong>1024</strong>)</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1572,16 +1572,16 @@ def dtype(self):
 <pre><code class="python">def get_activation_map(self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
-    ???
+    Returns a matrix containing the number of times each neuron have been activated for the given input.
 
     Parameters
     ----------
     dataset : Union[np.ndarray, Callable]
         ???
     enable_gpu : bool
-        ???
+        ??? (default: **True**)
     threads_per_blocks : Union[Tuple[int], int]
-        ???
+        ??? (default: **1024**)
     &#34;&#34;&#34;
 
     ################################################################################################################
@@ -1609,7 +1609,7 @@ def dtype(self):
 <span>def <span class="ident">get_winners</span></span>(<span>self, dataset: np.ndarray, locations: bool = False, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) ‑> np.ndarray</span>
 </code></dt>
 <dd>
-<div class="desc"><p>???</p>
+<div class="desc"><p>Returns a vector of the best matching unit indices or locations for the given input.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>np.ndarray</code></dt>
@@ -1617,9 +1617,9 @@ def dtype(self):
 <dt><strong><code>locations</code></strong> :&ensp;<code>bool</code></dt>
 <dd>???</dd>
 <dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
-<dd>???</dd>
+<dd>??? (default: <strong>True</strong>)</dd>
 <dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
-<dd>???</dd>
+<dd>??? (default: <strong>1024</strong>)</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1628,7 +1628,7 @@ def dtype(self):
 <pre><code class="python">def get_winners(self, dataset: np.ndarray, locations: bool = False, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
-    ???
+    Returns a vector of the best matching unit indices or locations for the given input.
 
     Parameters
     ----------
@@ -1637,9 +1637,9 @@ def dtype(self):
     locations : bool
         ???
     enable_gpu : bool
-        ???
+        ??? (default: **True**)
     threads_per_blocks : Union[Tuple[int], int]
-        ???
+        ??? (default: **1024**)
     &#34;&#34;&#34;
 
     ################################################################################################################
@@ -1911,7 +1911,7 @@ def dtype(self):
 </dd>
 <dt id="decontamination.SOM_Batch"><code class="flex name class">
 <span>class <span class="ident">SOM_Batch</span></span>
-<span>(</span><span>m: int, n: int, dim: int, dtype: Type[np.float32] = np.float32, topology: Optional[str] = None, alpha: float = None, sigma: float = None)</span>
+<span>(</span><span>m: int, n: int, dim: int, dtype: Type[np.float32] = np.float32, topology: Optional[str] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Self Organizing Maps (standard batch implementation).</p>
@@ -1930,10 +1930,6 @@ number of samples in the dataset to analyze.</p>
 <dd>Neural network data type (default: <strong>np.float32</strong>).</dd>
 <dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
 <dd>Topology of the map, either '<strong>square</strong>' or '<strong>hexagonal</strong>' (default: '<strong>hexagonal</strong>').</dd>
-<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code></dt>
-<dd>Starting value of the learning rate (default: <strong>0.3</strong>).</dd>
-<dt><strong><code>sigma</code></strong> :&ensp;<code>float</code></dt>
-<dd>Starting value of the neighborhood radius (default: <span><span class="MathJax_Preview"> \mathrm{max}(m,n)/2 </span><script type="math/tex"> \mathrm{max}(m,n)/2 </script></span>).</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1949,7 +1945,7 @@ number of samples in the dataset to analyze.</p>
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: Type[np.single] = np.float32, topology: Optional[str] = None, alpha: float = None, sigma: float = None):
+    def __init__(self, m: int, n: int, dim: int, dtype: Type[np.single] = np.float32, topology: Optional[str] = None):
 
         &#34;&#34;&#34;
         A rule of thumb to set the size of the grid for a dimensionality reduction
@@ -1968,21 +1964,12 @@ number of samples in the dataset to analyze.</p>
             Neural network data type (default: **np.float32**).
         topology : Optional[str]
             Topology of the map, either &#39;**square**&#39; or &#39;**hexagonal**&#39; (default: &#39;**hexagonal**&#39;).
-        alpha : float
-            Starting value of the learning rate (default: **0.3**).
-        sigma : float
-            Starting value of the neighborhood radius (default: \\( \\mathrm{max}(m,n)/2 \\)).
         &#34;&#34;&#34;
 
         ################################################################################################################
 
         super().__init__(m, n, dim, dtype, topology)
 
-        ################################################################################################################
-
-        self._alpha = 0.3 if alpha is None else float(alpha)
-
-        self._sigma = max(m, n) / 2.0 if sigma is None else float(sigma)
 
         ################################################################################################################
 
@@ -1994,8 +1981,6 @@ number of samples in the dataset to analyze.</p>
 
         self._header_extra = {
             &#39;mode&#39;: &#39;__MODE__&#39;,
-            &#39;alpha&#39;: &#39;_alpha&#39;,
-            &#39;sigma&#39;: &#39;_sigma&#39;,
             &#39;n_epochs&#39;: &#39;_n_epochs&#39;,
             &#39;n_vectors&#39;: &#39;_n_vectors&#39;,
         }
@@ -2005,7 +1990,7 @@ number of samples in the dataset to analyze.</p>
     def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
 
         &#34;&#34;&#34;
-        Trains the neural network. Use either the `n_epochs` or `n_vectors` methods.
+        Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(e)\\equiv\\mathrm{bmu}(x_i,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ n_{ji}(e)=\\left\\{\\begin{array}{ll}1&amp;j=c_i(e)\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}n_{ji}(e)x_i}{\\sum_{i=0}^{N-1}n_{ji}(e)}} $$ where \\( j=0\\dots m\\times n-1 \\).
 
         Parameters
         ----------
@@ -2035,7 +2020,7 @@ number of samples in the dataset to analyze.</p>
 <span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Trains the neural network. Use either the <code>n_epochs</code> or <code>n_vectors</code> methods.</p>
+<div class="desc"><p>Trains the neural network. Use either the "<em>number of epochs</em>" training method by specifying <code>n_epochs</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </script></span>) or the "<em>number of vectors</em>" training method by specifying <code>n_vectors</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </script></span>). A batch formulation of updating weights is implemented: <span><span class="MathJax_Preview"> c_i(e)\equiv\mathrm{bmu}(x_i,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </span><script type="math/tex; mode=display"> c_i(e)\equiv\mathrm{bmu}(x_i,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </script></span> <span><span class="MathJax_Preview"> n_{ji}(e)=\left\{\begin{array}{ll}1&amp;j=c_i(e)\\0&amp;\mathrm{otherwise}\end{array}\right. </span><script type="math/tex; mode=display"> n_{ji}(e)=\left\{\begin{array}{ll}1&j=c_i(e)\\0&\mathrm{otherwise}\end{array}\right. </script></span> <span><span class="MathJax_Preview"> \boxed{w_j(e+1)=\frac{\sum_{i=0}^{N-1}n_{ji}(e)x_i}{\sum_{i=0}^{N-1}n_{ji}(e)}} </span><script type="math/tex; mode=display"> \boxed{w_j(e+1)=\frac{\sum_{i=0}^{N-1}n_{ji}(e)x_i}{\sum_{i=0}^{N-1}n_{ji}(e)}} </script></span> where <span><span class="MathJax_Preview"> j=0\dots m\times n-1 </span><script type="math/tex"> j=0\dots m\times n-1 </script></span>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
@@ -2056,7 +2041,7 @@ number of samples in the dataset to analyze.</p>
 <pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
 
     &#34;&#34;&#34;
-    Trains the neural network. Use either the `n_epochs` or `n_vectors` methods.
+    Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(e)\\equiv\\mathrm{bmu}(x_i,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ n_{ji}(e)=\\left\\{\\begin{array}{ll}1&amp;j=c_i(e)\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}n_{ji}(e)x_i}{\\sum_{i=0}^{N-1}n_{ji}(e)}} $$ where \\( j=0\\dots m\\times n-1 \\).
 
     Parameters
     ----------
@@ -2223,7 +2208,7 @@ number of samples in the dataset to analyze.</p>
     def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
 
         &#34;&#34;&#34;
-        Trains the neural network. Use either the training &#34;*number of epochs*&#34; by specifying `n_epochs` (where \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the training &#34;*number of vectors*&#34; by specifying `n_vectors` (where \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(e)\\equiv\\mathrm{bmu}(x_i,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(e)\\equiv\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n-1 \\) and, at epoch \\( e \\), \\( \\alpha(e)\\equiv\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
+        Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(e)\\equiv\\mathrm{bmu}(x_i,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(e)\\equiv\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N-1\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n-1 \\) and, at epoch \\( e \\), \\( \\alpha(e)\\equiv\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
 
         Parameters
         ----------
@@ -2360,7 +2345,7 @@ number of samples in the dataset to analyze.</p>
 <span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Trains the neural network. Use either the training "<em>number of epochs</em>" by specifying <code>n_epochs</code> (where <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </script></span>) or the training "<em>number of vectors</em>" by specifying <code>n_vectors</code> (where <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </script></span>). An online formulation of updating weights is implemented: <span><span class="MathJax_Preview"> c_i(e)\equiv\mathrm{bmu}(x_i,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </span><script type="math/tex; mode=display"> c_i(e)\equiv\mathrm{bmu}(x_i,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </script></span> <span><span class="MathJax_Preview"> \Theta_{ji}(e)\equiv\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i\rVert}{2\sigma^2(e)}\right) </span><script type="math/tex; mode=display"> \Theta_{ji}(e)\equiv\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i\rVert}{2\sigma^2(e)}\right) </script></span> <span><span class="MathJax_Preview"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(e)[x_i-w_j(e)]} </span><script type="math/tex; mode=display"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(e)[x_i-w_j(e)]} </script></span> where <span><span class="MathJax_Preview"> j=0\dots m\times n-1 </span><script type="math/tex"> j=0\dots m\times n-1 </script></span> and, at epoch <span><span class="MathJax_Preview"> e </span><script type="math/tex"> e </script></span>, <span><span class="MathJax_Preview"> \alpha(e)\equiv\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \alpha(e)\equiv\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the learning rate and <span><span class="MathJax_Preview"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the neighborhood radius.</p>
+<div class="desc"><p>Trains the neural network. Use either the "<em>number of epochs</em>" training method by specifying <code>n_epochs</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </script></span>) or the "<em>number of vectors</em>" training method by specifying <code>n_vectors</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </script></span>). An online formulation of updating weights is implemented: <span><span class="MathJax_Preview"> c_i(e)\equiv\mathrm{bmu}(x_i,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </span><script type="math/tex; mode=display"> c_i(e)\equiv\mathrm{bmu}(x_i,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </script></span> <span><span class="MathJax_Preview"> \Theta_{ji}(e)\equiv\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i\rVert}{2\sigma^2(e)}\right) </span><script type="math/tex; mode=display"> \Theta_{ji}(e)\equiv\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i\rVert}{2\sigma^2(e)}\right) </script></span> <span><span class="MathJax_Preview"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N-1\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(e)[x_i-w_j(e)]} </span><script type="math/tex; mode=display"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N-1\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(e)[x_i-w_j(e)]} </script></span> where <span><span class="MathJax_Preview"> j=0\dots m\times n-1 </span><script type="math/tex"> j=0\dots m\times n-1 </script></span> and, at epoch <span><span class="MathJax_Preview"> e </span><script type="math/tex"> e </script></span>, <span><span class="MathJax_Preview"> \alpha(e)\equiv\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \alpha(e)\equiv\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the learning rate and <span><span class="MathJax_Preview"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the neighborhood radius.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
@@ -2381,7 +2366,7 @@ number of samples in the dataset to analyze.</p>
 <pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
 
     &#34;&#34;&#34;
-    Trains the neural network. Use either the training &#34;*number of epochs*&#34; by specifying `n_epochs` (where \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the training &#34;*number of vectors*&#34; by specifying `n_vectors` (where \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(e)\\equiv\\mathrm{bmu}(x_i,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(e)\\equiv\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n-1 \\) and, at epoch \\( e \\), \\( \\alpha(e)\\equiv\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
+    Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(e)\\equiv\\mathrm{bmu}(x_i,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(e)\\equiv\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N-1\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n-1 \\) and, at epoch \\( e \\), \\( \\alpha(e)\\equiv\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
 
     Parameters
     ----------

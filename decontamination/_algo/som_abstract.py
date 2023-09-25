@@ -380,7 +380,7 @@ class SOM_Abstract(object):
     def get_distance_map(self, scaling: typing.Optional[str] = None) -> np.ndarray:
 
         """
-        Returns the distance map of the neural network weights.
+        Returns a matrix of the distances between each weight.
 
         Parameters
         ----------
@@ -434,16 +434,16 @@ class SOM_Abstract(object):
     def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024) -> np.ndarray:
 
         """
-        ???
+        Returns a matrix containing the number of times each neuron have been activated for the given input.
 
         Parameters
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             ???
         enable_gpu : bool
-            ???
+            ??? (default: **True**)
         threads_per_blocks : typing.Union[typing.Tuple[int], int]
-            ???
+            ??? (default: **1024**)
         """
 
         ################################################################################################################
@@ -471,16 +471,16 @@ class SOM_Abstract(object):
     def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024) -> np.ndarray:
 
         """
-        ???
+        Returns a vector of the best matching unit indices or locations for the given input.
 
         Parameters
         ----------
         dataset : np.ndarray
             ???
         enable_gpu : bool
-            ???
+            ??? (default: **True**)
         threads_per_blocks : typing.Union[typing.Tuple[int], int]
-            ???
+            ??? (default: **1024**)
         """
 
         ################################################################################################################

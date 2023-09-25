@@ -21,7 +21,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None, alpha: float = None, sigma: float = None):
+    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None):
 
         """
         A rule of thumb to set the size of the grid for a dimensionality reduction
@@ -40,21 +40,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             Neural network data type (default: **np.float32**).
         topology : typing.Optional[str]
             Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
-        alpha : float
-            Starting value of the learning rate (default: **0.3**).
-        sigma : float
-            Starting value of the neighborhood radius (default: \\( \\mathrm{max}(m,n)/2 \\)).
         """
 
         ################################################################################################################
 
         super().__init__(m, n, dim, dtype, topology)
 
-        ################################################################################################################
-
-        self._alpha = 0.3 if alpha is None else float(alpha)
-
-        self._sigma = max(m, n) / 2.0 if sigma is None else float(sigma)
 
         ################################################################################################################
 
@@ -66,8 +57,6 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         self._header_extra = {
             'mode': '__MODE__',
-            'alpha': '_alpha',
-            'sigma': '_sigma',
             'n_epochs': '_n_epochs',
             'n_vectors': '_n_vectors',
         }
@@ -77,7 +66,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
     def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, n_error_bins: typing.Optional[int] = 10, show_progress_bar: bool = False) -> None:
 
         """
-        Trains the neural network. Use either the `n_epochs` or `n_vectors` methods.
+        Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the "*number of vectors*" training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(e)\\equiv\\mathrm{bmu}(x_i,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ n_{ji}(e)=\\left\\{\\begin{array}{ll}1&j=c_i(e)\\\\0&\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}n_{ji}(e)x_i}{\\sum_{i=0}^{N-1}n_{ji}(e)}} $$ where \\( j=0\\dots m\\times n-1 \\).
 
         Parameters
         ----------

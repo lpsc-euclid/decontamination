@@ -791,7 +791,7 @@ def dtype(self):
     ####################################################################################################################
 
     @staticmethod
-    def _neuron_locations(m: int, n: int) -&gt; Iterator[List[int]]:
+    def _neuron_locations_square(m: int, n: int) -&gt; Iterator[List[int]]:
 
         for i in range(m):
 
@@ -801,9 +801,27 @@ def dtype(self):
 
     ####################################################################################################################
 
+    @staticmethod
+    def _neuron_locations_hexagonal(m: int, n: int) -&gt; Iterator[List[float]]:
+
+        for i in range(m):
+
+            for j in range(n):
+
+                i_offset = (j &amp; 1) * (- 0.5)
+
+                yield [i_offset + i, j * 0.8660254037844386] # 0.8660254037844386 = sqrt(3) / 2
+
+    ####################################################################################################################
     def _rebuild_topography(self):
 
-        self._topography = np.array(list(SOM_Abstract._neuron_locations(self._m, self._m)), dtype = np.int64)
+        if self._topology == &#39;square&#39;:
+
+            self._topography = np.array(list(SOM_Abstract._neuron_locations_square(self._m, self._n)), dtype = np.int64)
+
+        else:
+
+            self._topography = np.array(list(SOM_Abstract._neuron_locations_hexagonal(self._m, self._n)), dtype = np.float32)
 
     ####################################################################################################################
 
@@ -1092,17 +1110,17 @@ def dtype(self):
 
         ################################################################################################################
 
-        if self._topology == &#39;hexagonal&#39;:
-
-            result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
-
-            SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
-
-        else:
+        if self._topology == &#39;square&#39;:
 
             result = np.full(shape = (self._m, self._n, 8), fill_value = np.nan, dtype = self._dtype)
 
             SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
+
+        else:
+
+            result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
+
+            SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
 
         ################################################################################################################
 
@@ -1168,7 +1186,7 @@ def dtype(self):
 
     ####################################################################################################################
 
-    def get_winners(self, dataset: np.ndarray, locations: bool = False, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
+    def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
         Returns a vector of the best matching unit indices or locations for the given input.
@@ -1176,8 +1194,6 @@ def dtype(self):
         Parameters
         ----------
         dataset : np.ndarray
-            ???
-        locations : bool
             ???
         enable_gpu : bool
             ??? (default: **True**)
@@ -1195,13 +1211,7 @@ def dtype(self):
 
         ################################################################################################################
 
-        if locations:
-
-            return self._topography[result.copy_to_host()] # !!! BERK : faire un kernel différent !!!
-
-        else:
-
-            return result.copy_to_host()</code></pre>
+        return result.copy_to_host()</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -1523,17 +1533,17 @@ def dtype(self):
 
     ################################################################################################################
 
-    if self._topology == &#39;hexagonal&#39;:
-
-        result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
-
-        SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
-
-    else:
+    if self._topology == &#39;square&#39;:
 
         result = np.full(shape = (self._m, self._n, 8), fill_value = np.nan, dtype = self._dtype)
 
         SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
+
+    else:
+
+        result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
+
+        SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
 
     ################################################################################################################
 
@@ -1606,15 +1616,13 @@ def dtype(self):
 </details>
 </dd>
 <dt id="decontamination.SOM_Abstract.get_winners"><code class="name flex">
-<span>def <span class="ident">get_winners</span></span>(<span>self, dataset: np.ndarray, locations: bool = False, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) ‑> np.ndarray</span>
+<span>def <span class="ident">get_winners</span></span>(<span>self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) ‑> np.ndarray</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Returns a vector of the best matching unit indices or locations for the given input.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>np.ndarray</code></dt>
-<dd>???</dd>
-<dt><strong><code>locations</code></strong> :&ensp;<code>bool</code></dt>
 <dd>???</dd>
 <dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
 <dd>??? (default: <strong>True</strong>)</dd>
@@ -1625,7 +1633,7 @@ def dtype(self):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_winners(self, dataset: np.ndarray, locations: bool = False, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
+<pre><code class="python">def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
     Returns a vector of the best matching unit indices or locations for the given input.
@@ -1633,8 +1641,6 @@ def dtype(self):
     Parameters
     ----------
     dataset : np.ndarray
-        ???
-    locations : bool
         ???
     enable_gpu : bool
         ??? (default: **True**)
@@ -1652,13 +1658,7 @@ def dtype(self):
 
     ################################################################################################################
 
-    if locations:
-
-        return self._topography[result.copy_to_host()] # !!! BERK : faire un kernel différent !!!
-
-    else:
-
-        return result.copy_to_host()</code></pre>
+    return result.copy_to_host()</code></pre>
 </details>
 </dd>
 </dl>
@@ -2159,7 +2159,7 @@ number of samples in the dataset to analyze.</p>
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, mn: int):
+    def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
 
         ################################################################################################################
 
@@ -2173,7 +2173,7 @@ number of samples in the dataset to analyze.</p>
 
         for i in range(data.shape[0]):
 
-            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, mn)
+            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, penalty_dist, mn)
 
             quantization_errors[cur_epoch] += quantization_error
             topographic_errors[cur_epoch] += topographic_error
@@ -2181,8 +2181,8 @@ number of samples in the dataset to analyze.</p>
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(parallel = False)
-    def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, mn: int):
+    # @nb.njit(parallel = False)
+    def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
 
         for i in range(data.shape[0]):
 
@@ -2196,7 +2196,7 @@ number of samples in the dataset to analyze.</p>
 
             ############################################################################################################
 
-            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, mn)
+            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, penalty_dist, mn)
 
             cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
 
@@ -2236,6 +2236,8 @@ number of samples in the dataset to analyze.</p>
 
         self._n_vectors = n_vectors
 
+        penalty_dist = 2.0 if self._topology == &#39;square&#39; else 1.0
+
         if not (n_epochs is None) and (n_vectors is None):
 
             ############################################################################################################
@@ -2266,6 +2268,7 @@ number of samples in the dataset to analyze.</p>
                         n_epochs,
                         self._alpha,
                         self._sigma,
+                        penalty_dist,
                         self._m * self._n
                     )
 
@@ -2310,6 +2313,7 @@ number of samples in the dataset to analyze.</p>
                     n_error_bins,
                     self._alpha,
                     self._sigma,
+                    penalty_dist,
                     self._m * self._n
                 )
 
@@ -2394,6 +2398,8 @@ number of samples in the dataset to analyze.</p>
 
     self._n_vectors = n_vectors
 
+    penalty_dist = 2.0 if self._topology == &#39;square&#39; else 1.0
+
     if not (n_epochs is None) and (n_vectors is None):
 
         ############################################################################################################
@@ -2424,6 +2430,7 @@ number of samples in the dataset to analyze.</p>
                     n_epochs,
                     self._alpha,
                     self._sigma,
+                    penalty_dist,
                     self._m * self._n
                 )
 
@@ -2468,6 +2475,7 @@ number of samples in the dataset to analyze.</p>
                 n_error_bins,
                 self._alpha,
                 self._sigma,
+                penalty_dist,
                 self._m * self._n
             )
 

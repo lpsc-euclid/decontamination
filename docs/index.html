@@ -2233,7 +2233,6 @@ number of samples in the dataset to analyze.</p>
         &#34;&#34;&#34;
         Trains the neural network. Use either the methods `n_epochs` (here \\( e\\equiv 0\\dots\\mathrm{n\\_epochs}-1 \\)) or `n_vectors` (here \\( e\\equiv 0\\dots\\mathrm{n\\_vectors}-1 \\)). An online formulation of updating weights is implemented: $$ c_i=\\mathrm{bmu}(x_i)=\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j\\rVert $$ $$ \\Theta_{ji}(e)=\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n \\) and, at epoch \\( e \\), \\( \\alpha(e)=\\alpha\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)=\\sigma\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
 
-
         Parameters
         ----------
         dataset : Union[np.ndarray, Callable]
@@ -2391,7 +2390,6 @@ number of samples in the dataset to analyze.</p>
 
     &#34;&#34;&#34;
     Trains the neural network. Use either the methods `n_epochs` (here \\( e\\equiv 0\\dots\\mathrm{n\\_epochs}-1 \\)) or `n_vectors` (here \\( e\\equiv 0\\dots\\mathrm{n\\_vectors}-1 \\)). An online formulation of updating weights is implemented: $$ c_i=\\mathrm{bmu}(x_i)=\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j\\rVert $$ $$ \\Theta_{ji}(e)=\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n \\) and, at epoch \\( e \\), \\( \\alpha(e)=\\alpha\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)=\\sigma\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
-
 
     Parameters
     ----------

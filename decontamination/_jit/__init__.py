@@ -263,7 +263,7 @@ class Kernel:
 
         if not isinstance(kernel_params, tuple) or len(kernel_params) != 3 or not isinstance(kernel_params[0], bool):
 
-            raise ValueError('Three kernel parameters expected: run_on_gpu, threads_per_blocks and data_sizes')
+            raise ValueError('Three kernel parameters are expected: run_on_gpu, threads_per_blocks and data_sizes')
 
         ################################################################################################################
 

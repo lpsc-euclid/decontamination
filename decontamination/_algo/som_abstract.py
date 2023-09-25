@@ -439,7 +439,7 @@ class SOM_Abstract(object):
         Parameters
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
-            ???
+            Dataset array or generator builder.
         enable_gpu : bool
             ??? (default: **True**)
         threads_per_blocks : typing.Union[typing.Tuple[int], int]
@@ -476,7 +476,7 @@ class SOM_Abstract(object):
         Parameters
         ----------
         dataset : np.ndarray
-            ???
+            Dataset array.
         enable_gpu : bool
             ??? (default: **True**)
         threads_per_blocks : typing.Union[typing.Tuple[int], int]

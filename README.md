@@ -1,8 +1,8 @@
 [![][License img]][License]
-&nbsp;&nbsp;
+&nbsp;
 [![][MainRepo img]][MainRepo]
 <!--
-&nbsp;&nbsp;
+&nbsp;
 [![][AltRepo img]][AltRepo]
 -->
 

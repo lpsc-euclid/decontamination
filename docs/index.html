@@ -808,9 +808,9 @@ def dtype(self):
 
             for j in range(n):
 
-                i_offset = (j &amp; 1) * (- 0.5)
+                i_offset = (j &amp; 1) * (-0.5)
 
-                yield [i_offset + i, j * 0.8660254037844386] # 0.8660254037844386 = sqrt(3) / 2
+                yield [i_offset + i, j * 0.8660254037844386]  # √3/2 = 0.8660254037844386
 
     ####################################################################################################################
     def _rebuild_topography(self):
@@ -2181,7 +2181,7 @@ number of samples in the dataset to analyze.</p>
     ####################################################################################################################
 
     @staticmethod
-    # @nb.njit(parallel = False)
+    @nb.njit(parallel = False)
     def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
 
         for i in range(data.shape[0]):

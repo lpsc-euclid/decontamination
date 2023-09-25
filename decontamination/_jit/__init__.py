@@ -18,7 +18,7 @@ __pdoc__ = {}
 
 ########################################################################################################################
 
-CPU_OPTIMIZATION_AVAILABLE = os.environ.get('FOO_USE_NUMBA', '1') != '0'
+CPU_OPTIMIZATION_AVAILABLE = os.environ.get('USE_NUMBA', '1') != '0'
 __pdoc__['CPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba CPU optimization is available.'
 
 ########################################################################################################################

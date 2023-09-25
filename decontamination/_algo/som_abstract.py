@@ -306,7 +306,7 @@ class SOM_Abstract(object):
     def get_topographic_errors(self) -> np.ndarray:
 
         """
-        Returns the topographic errors. $$ c_i^n=\\mathrm{n^\\mathrm{th}\\,bmu}=\\underset{j}{\\mathrm{arg\\,min}_n}\\lVert x_i-w_j\\rVert $$ $$ t(x_i)=\\left\\{\\begin{array}{ll}1&\\lVert c_i^1-c_i^2\\rVert>\\sqrt{2}\\\\0&\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{e_t=\\frac{1}{N}\\sum_{i=0}^Nt(x_i)} $$
+        Returns the topographic errors. $$ c_i^n=\\mathrm{n^\\mathrm{th}\\,bmu}=\\underset{j}{\\mathrm{arg\\,min}_n}\\lVert x_i-w_j\\rVert $$ $$ r=\\left\\{\\begin{array}{ll}\\sqrt{1}&\\mathrm{topology=hexagon}\\\\\\sqrt{2}&\\mathrm{topology=square}\\end{array}\\right. $$ $$ t(x_i)=\\left\\{\\begin{array}{ll}1&\\lVert c_i^1-c_i^2\\rVert>r\\\\0&\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{e_t=\\frac{1}{N}\\sum_{i=0}^Nt(x_i)} $$
         """
 
         return self._topographic_errors

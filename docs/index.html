@@ -398,7 +398,6 @@ print(result.copy_to_host())
         return jit._CPU_CODE_RE.sub(
             &#39;&#39;,
             code.replace(&#39;_xpu&#39;, &#39;_gpu&#39;)
-                .replace(&#39;nb.prange&#39;, &#39;range&#39;)
                 .replace(&#39;xpu.local_empty&#39;, &#39;cu.local.array&#39;)
                 .replace(&#39;xpu.shared_empty&#39;, &#39;cu.shared.array&#39;)
                 .replace(&#39;xpu.syncthreads&#39;, &#39;cu.syncthreads&#39;),
@@ -1031,7 +1030,7 @@ def dtype(self):
     def get_topographic_errors(self) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
-        Returns the topographic errors. $$ c_i^n=\\mathrm{n^\\mathrm{th}\\,bmu}=\\underset{j}{\\mathrm{arg\\,min}_n}\\lVert x_i-w_j\\rVert $$ $$ t(x_i)=\\left\\{\\begin{array}{ll}1&amp;\\lVert c_i^1-c_i^2\\rVert&gt;\\sqrt{2}\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{e_t=\\frac{1}{N}\\sum_{i=0}^Nt(x_i)} $$
+        Returns the topographic errors. $$ c_i^n=\\mathrm{n^\\mathrm{th}\\,bmu}=\\underset{j}{\\mathrm{arg\\,min}_n}\\lVert x_i-w_j\\rVert $$ $$ r=\\left\\{\\begin{array}{ll}\\sqrt{1}&amp;\\mathrm{topology=hexagon}\\\\\\sqrt{2}&amp;\\mathrm{topology=square}\\end{array}\\right. $$ $$ t(x_i)=\\left\\{\\begin{array}{ll}1&amp;\\lVert c_i^1-c_i^2\\rVert&gt;r\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{e_t=\\frac{1}{N}\\sum_{i=0}^Nt(x_i)} $$
         &#34;&#34;&#34;
 
         return self._topographic_errors
@@ -1489,7 +1488,7 @@ def dtype(self):
 <span>def <span class="ident">get_topographic_errors</span></span>(<span>self) ‑> np.ndarray</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns the topographic errors. <span><span class="MathJax_Preview"> c_i^n=\mathrm{n^\mathrm{th}\,bmu}=\underset{j}{\mathrm{arg\,min}_n}\lVert x_i-w_j\rVert </span><script type="math/tex; mode=display"> c_i^n=\mathrm{n^\mathrm{th}\,bmu}=\underset{j}{\mathrm{arg\,min}_n}\lVert x_i-w_j\rVert </script></span> <span><span class="MathJax_Preview"> t(x_i)=\left\{\begin{array}{ll}1&amp;\lVert c_i^1-c_i^2\rVert&gt;\sqrt{2}\\0&amp;\mathrm{otherwise}\end{array}\right. </span><script type="math/tex; mode=display"> t(x_i)=\left\{\begin{array}{ll}1&\lVert c_i^1-c_i^2\rVert>\sqrt{2}\\0&\mathrm{otherwise}\end{array}\right. </script></span> <span><span class="MathJax_Preview"> \boxed{e_t=\frac{1}{N}\sum_{i=0}^Nt(x_i)} </span><script type="math/tex; mode=display"> \boxed{e_t=\frac{1}{N}\sum_{i=0}^Nt(x_i)} </script></span></p></div>
+<div class="desc"><p>Returns the topographic errors. <span><span class="MathJax_Preview"> c_i^n=\mathrm{n^\mathrm{th}\,bmu}=\underset{j}{\mathrm{arg\,min}_n}\lVert x_i-w_j\rVert </span><script type="math/tex; mode=display"> c_i^n=\mathrm{n^\mathrm{th}\,bmu}=\underset{j}{\mathrm{arg\,min}_n}\lVert x_i-w_j\rVert </script></span> <span><span class="MathJax_Preview"> r=\left\{\begin{array}{ll}\sqrt{1}&amp;\mathrm{topology=hexagon}\\\sqrt{2}&amp;\mathrm{topology=square}\end{array}\right. </span><script type="math/tex; mode=display"> r=\left\{\begin{array}{ll}\sqrt{1}&\mathrm{topology=hexagon}\\\sqrt{2}&\mathrm{topology=square}\end{array}\right. </script></span> <span><span class="MathJax_Preview"> t(x_i)=\left\{\begin{array}{ll}1&amp;\lVert c_i^1-c_i^2\rVert&gt;r\\0&amp;\mathrm{otherwise}\end{array}\right. </span><script type="math/tex; mode=display"> t(x_i)=\left\{\begin{array}{ll}1&\lVert c_i^1-c_i^2\rVert>r\\0&\mathrm{otherwise}\end{array}\right. </script></span> <span><span class="MathJax_Preview"> \boxed{e_t=\frac{1}{N}\sum_{i=0}^Nt(x_i)} </span><script type="math/tex; mode=display"> \boxed{e_t=\frac{1}{N}\sum_{i=0}^Nt(x_i)} </script></span></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1497,7 +1496,7 @@ def dtype(self):
 <pre><code class="python">def get_topographic_errors(self) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
-    Returns the topographic errors. $$ c_i^n=\\mathrm{n^\\mathrm{th}\\,bmu}=\\underset{j}{\\mathrm{arg\\,min}_n}\\lVert x_i-w_j\\rVert $$ $$ t(x_i)=\\left\\{\\begin{array}{ll}1&amp;\\lVert c_i^1-c_i^2\\rVert&gt;\\sqrt{2}\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{e_t=\\frac{1}{N}\\sum_{i=0}^Nt(x_i)} $$
+    Returns the topographic errors. $$ c_i^n=\\mathrm{n^\\mathrm{th}\\,bmu}=\\underset{j}{\\mathrm{arg\\,min}_n}\\lVert x_i-w_j\\rVert $$ $$ r=\\left\\{\\begin{array}{ll}\\sqrt{1}&amp;\\mathrm{topology=hexagon}\\\\\\sqrt{2}&amp;\\mathrm{topology=square}\\end{array}\\right. $$ $$ t(x_i)=\\left\\{\\begin{array}{ll}1&amp;\\lVert c_i^1-c_i^2\\rVert&gt;r\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{e_t=\\frac{1}{N}\\sum_{i=0}^Nt(x_i)} $$
     &#34;&#34;&#34;
 
     return self._topographic_errors</code></pre>
@@ -2232,7 +2231,8 @@ number of samples in the dataset to analyze.</p>
     def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
 
         &#34;&#34;&#34;
-        Trains the neural network. Use either the `n_epochs` or `n_vectors` methods.
+        Trains the neural network. Use either the methods `n_epochs` (here \\( e=0\\dots\\mathrm{n\\_epochs}-1 \\)) or `n_vectors` (here \\( e=0\\dots\\mathrm{n\\_vectors}-1 \\)). An online formulation of updating weights is implemented: $$ c_i=\\mathrm{bmu}(x_i)=\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j\\rVert $$ $$ \\Theta_{ji}(e)=\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n \\) and, at epoch \\( e \\), \\( \\alpha(e)=\\alpha\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)=\\sigma\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
+
 
         Parameters
         ----------
@@ -2369,7 +2369,7 @@ number of samples in the dataset to analyze.</p>
 <span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Trains the neural network. Use either the <code>n_epochs</code> or <code>n_vectors</code> methods.</p>
+<div class="desc"><p>Trains the neural network. Use either the methods <code>n_epochs</code> (here <span><span class="MathJax_Preview"> e=0\dots\mathrm{n\_epochs}-1 </span><script type="math/tex"> e=0\dots\mathrm{n\_epochs}-1 </script></span>) or <code>n_vectors</code> (here <span><span class="MathJax_Preview"> e=0\dots\mathrm{n\_vectors}-1 </span><script type="math/tex"> e=0\dots\mathrm{n\_vectors}-1 </script></span>). An online formulation of updating weights is implemented: <span><span class="MathJax_Preview"> c_i=\mathrm{bmu}(x_i)=\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j\rVert </span><script type="math/tex; mode=display"> c_i=\mathrm{bmu}(x_i)=\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j\rVert </script></span> <span><span class="MathJax_Preview"> \Theta_{ji}(e)=\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i\rVert}{2\sigma^2(e)}\right) </span><script type="math/tex; mode=display"> \Theta_{ji}(e)=\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i\rVert}{2\sigma^2(e)}\right) </script></span> <span><span class="MathJax_Preview"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(e)[x_i-w_j(e)]} </span><script type="math/tex; mode=display"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(e)[x_i-w_j(e)]} </script></span> where <span><span class="MathJax_Preview"> j=0\dots m\times n </span><script type="math/tex"> j=0\dots m\times n </script></span> and, at epoch <span><span class="MathJax_Preview"> e </span><script type="math/tex"> e </script></span>, <span><span class="MathJax_Preview"> \alpha(e)=\alpha\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \alpha(e)=\alpha\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the learning rate and <span><span class="MathJax_Preview"> \sigma(e)=\sigma\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \sigma(e)=\sigma\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the neighborhood radius.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
@@ -2390,7 +2390,8 @@ number of samples in the dataset to analyze.</p>
 <pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
 
     &#34;&#34;&#34;
-    Trains the neural network. Use either the `n_epochs` or `n_vectors` methods.
+    Trains the neural network. Use either the methods `n_epochs` (here \\( e=0\\dots\\mathrm{n\\_epochs}-1 \\)) or `n_vectors` (here \\( e=0\\dots\\mathrm{n\\_vectors}-1 \\)). An online formulation of updating weights is implemented: $$ c_i=\\mathrm{bmu}(x_i)=\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j\\rVert $$ $$ \\Theta_{ji}(e)=\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n \\) and, at epoch \\( e \\), \\( \\alpha(e)=\\alpha\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)=\\sigma\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
+
 
     Parameters
     ----------

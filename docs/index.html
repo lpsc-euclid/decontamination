@@ -1189,7 +1189,7 @@ def dtype(self):
     def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
-        Returns a vector of the best matching unit indices or locations for the given input.
+        Returns a vector of the best matching unit indices (shape m×n) for the given input.
 
         Parameters
         ----------
@@ -1619,7 +1619,7 @@ def dtype(self):
 <span>def <span class="ident">get_winners</span></span>(<span>self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) ‑> np.ndarray</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns a vector of the best matching unit indices or locations for the given input.</p>
+<div class="desc"><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>np.ndarray</code></dt>
@@ -1636,7 +1636,7 @@ def dtype(self):
 <pre><code class="python">def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
-    Returns a vector of the best matching unit indices or locations for the given input.
+    Returns a vector of the best matching unit indices (shape m×n) for the given input.
 
     Parameters
     ----------

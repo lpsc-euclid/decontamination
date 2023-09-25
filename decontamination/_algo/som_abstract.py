@@ -471,7 +471,7 @@ class SOM_Abstract(object):
     def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024) -> np.ndarray:
 
         """
-        Returns a vector of the best matching unit indices or locations for the given input.
+        Returns a vector of the best matching unit indices (shape m×n) for the given input.
 
         Parameters
         ----------

@@ -76,7 +76,6 @@ class SOM_Abstract(object):
     def _neuron_locations_square(m: int, n: int) -> typing.Iterator[typing.List[int]]:
 
         for i in range(m):
-
             for j in range(n):
 
                 yield [i, j]
@@ -87,7 +86,6 @@ class SOM_Abstract(object):
     def _neuron_locations_hexagonal(m: int, n: int) -> typing.Iterator[typing.List[float]]:
 
         for i in range(m):
-
             for j in range(n):
 
                 i_offset = (j & 1) * (-0.5)
@@ -364,7 +362,7 @@ class SOM_Abstract(object):
 
                 offset = (y & 1) * l
 
-                w = centroids[x, y]
+                w1 = centroids[x, y]
 
                 for z in range(l):
 
@@ -373,7 +371,9 @@ class SOM_Abstract(object):
 
                     if 0 <= i < m and 0 <= j < n:
 
-                        result[x, y, z] = np.sqrt(np.sum((w - centroids[i, j]) ** 2))
+                        w2 = centroids[i, j]
+
+                        result[x, y, z] = np.sqrt(np.sum((w1 - w2) ** 2))
 
     ####################################################################################################################
 
@@ -421,16 +421,6 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    @staticmethod
-    @nb.njit(parallel = False)
-    def _count_bmus(result: np.ndarray, bmus: np.ndarray):
-
-        for i in range(bmus.shape[0]):
-
-            result[bmus[i]] += 1
-
-    ####################################################################################################################
-
     def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024) -> np.ndarray:
 
         """
@@ -441,9 +431,9 @@ class SOM_Abstract(object):
         dataset : typing.Union[np.ndarray, typing.Callable]
             Dataset array or generator builder.
         enable_gpu : bool
-            ??? (default: **True**)
+            If available, run on GPU rather than CPU (default: **True**)
         threads_per_blocks : typing.Union[typing.Tuple[int], int]
-            ??? (default: **1024**)
+            Number of GPU threads per blocks (default: **1024**)
         """
 
         ################################################################################################################
@@ -478,9 +468,9 @@ class SOM_Abstract(object):
         dataset : np.ndarray
             Dataset array.
         enable_gpu : bool
-            ??? (default: **True**)
+            If available, run on GPU rather than CPU (default: **True**)
         threads_per_blocks : typing.Union[typing.Tuple[int], int]
-            ??? (default: **1024**)
+            Number of GPU threads per blocks (default: **1024**)
         """
 
         ################################################################################################################

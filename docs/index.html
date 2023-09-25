@@ -794,7 +794,6 @@ def dtype(self):
     def _neuron_locations_square(m: int, n: int) -&gt; Iterator[List[int]]:
 
         for i in range(m):
-
             for j in range(n):
 
                 yield [i, j]
@@ -805,19 +804,18 @@ def dtype(self):
     def _neuron_locations_hexagonal(m: int, n: int) -&gt; Iterator[List[float]]:
 
         for i in range(m):
-
             for j in range(n):
 
                 i_offset = (j &amp; 1) * (-0.5)
 
-                yield [i_offset + i, j * 0.8660254037844386]  # √3/2 = 0.8660254037844386
+                yield [i + i_offset, j * 0.8660254037844386]  # √3/2 = 0.8660254037844386
 
     ####################################################################################################################
     def _rebuild_topography(self):
 
         if self._topology == &#39;square&#39;:
 
-            self._topography = np.array(list(SOM_Abstract._neuron_locations_square(self._m, self._n)), dtype = np.int64)
+            self._topography = np.array(list(SOM_Abstract._neuron_locations_square(self._m, self._n)), dtype = np.float32)
 
         else:
 
@@ -1082,7 +1080,7 @@ def dtype(self):
 
                 offset = (y &amp; 1) * l
 
-                w = centroids[x, y]
+                w1 = centroids[x, y]
 
                 for z in range(l):
 
@@ -1091,7 +1089,9 @@ def dtype(self):
 
                     if 0 &lt;= i &lt; m and 0 &lt;= j &lt; n:
 
-                        result[x, y, z] = np.sqrt(np.sum((w - centroids[i, j]) ** 2))
+                        w2 = centroids[i, j]
+
+                        result[x, y, z] = np.sqrt(np.sum((w1 - w2) ** 2))
 
     ####################################################################################################################
 
@@ -1139,16 +1139,6 @@ def dtype(self):
 
     ####################################################################################################################
 
-    @staticmethod
-    @nb.njit(parallel = False)
-    def _count_bmus(result: np.ndarray, bmus: np.ndarray):
-
-        for i in range(bmus.shape[0]):
-
-            result[bmus[i]] += 1
-
-    ####################################################################################################################
-
     def get_activation_map(self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
@@ -1159,9 +1149,9 @@ def dtype(self):
         dataset : Union[np.ndarray, Callable]
             Dataset array or generator builder.
         enable_gpu : bool
-            ??? (default: **True**)
+            If available, run on GPU rather than CPU (default: **True**)
         threads_per_blocks : Union[Tuple[int], int]
-            ??? (default: **1024**)
+            Number of GPU threads per blocks (default: **1024**)
         &#34;&#34;&#34;
 
         ################################################################################################################
@@ -1196,9 +1186,9 @@ def dtype(self):
         dataset : np.ndarray
             Dataset array.
         enable_gpu : bool
-            ??? (default: **True**)
+            If available, run on GPU rather than CPU (default: **True**)
         threads_per_blocks : Union[Tuple[int], int]
-            ??? (default: **1024**)
+            Number of GPU threads per blocks (default: **1024**)
         &#34;&#34;&#34;
 
         ################################################################################################################
@@ -1571,9 +1561,9 @@ def dtype(self):
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
 <dd>Dataset array or generator builder.</dd>
 <dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
-<dd>??? (default: <strong>True</strong>)</dd>
+<dd>If available, run on GPU rather than CPU (default: <strong>True</strong>)</dd>
 <dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
-<dd>??? (default: <strong>1024</strong>)</dd>
+<dd>Number of GPU threads per blocks (default: <strong>1024</strong>)</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1589,9 +1579,9 @@ def dtype(self):
     dataset : Union[np.ndarray, Callable]
         Dataset array or generator builder.
     enable_gpu : bool
-        ??? (default: **True**)
+        If available, run on GPU rather than CPU (default: **True**)
     threads_per_blocks : Union[Tuple[int], int]
-        ??? (default: **1024**)
+        Number of GPU threads per blocks (default: **1024**)
     &#34;&#34;&#34;
 
     ################################################################################################################
@@ -1625,9 +1615,9 @@ def dtype(self):
 <dt><strong><code>dataset</code></strong> :&ensp;<code>np.ndarray</code></dt>
 <dd>Dataset array.</dd>
 <dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
-<dd>??? (default: <strong>True</strong>)</dd>
+<dd>If available, run on GPU rather than CPU (default: <strong>True</strong>)</dd>
 <dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
-<dd>??? (default: <strong>1024</strong>)</dd>
+<dd>Number of GPU threads per blocks (default: <strong>1024</strong>)</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1643,9 +1633,9 @@ def dtype(self):
     dataset : np.ndarray
         Dataset array.
     enable_gpu : bool
-        ??? (default: **True**)
+        If available, run on GPU rather than CPU (default: **True**)
     threads_per_blocks : Union[Tuple[int], int]
-        ??? (default: **1024**)
+        Number of GPU threads per blocks (default: **1024**)
     &#34;&#34;&#34;
 
     ################################################################################################################

@@ -78,7 +78,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, mn: int):
+    def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
 
         ################################################################################################################
 
@@ -92,7 +92,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
         for i in range(data.shape[0]):
 
-            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, mn)
+            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, penalty_dist, mn)
 
             quantization_errors[cur_epoch] += quantization_error
             topographic_errors[cur_epoch] += topographic_error
@@ -100,8 +100,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(parallel = False)
-    def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, mn: int):
+    # @nb.njit(parallel = False)
+    def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
 
         for i in range(data.shape[0]):
 
@@ -115,7 +115,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
-            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, mn)
+            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, penalty_dist, mn)
 
             cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
 
@@ -155,6 +155,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
         self._n_vectors = n_vectors
 
+        penalty_dist = 2.0 if self._topology == 'square' else 1.0
+
         if not (n_epochs is None) and (n_vectors is None):
 
             ############################################################################################################
@@ -185,6 +187,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
                         n_epochs,
                         self._alpha,
                         self._sigma,
+                        penalty_dist,
                         self._m * self._n
                     )
 
@@ -229,6 +232,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
                     n_error_bins,
                     self._alpha,
                     self._sigma,
+                    penalty_dist,
                     self._m * self._n
                 )
 
@@ -256,8 +260,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
 ########################################################################################################################
 
-@nb.njit(parallel = False, fastmath = True)
-def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, alpha: float, sigma: float, mn: int):
+# @nb.njit(parallel = False, fastmath = True)
+def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, alpha: float, sigma: float, penalty_dist: float, mn: int):
 
     ####################################################################################################################
     # BMUS CALCULATION                                                                                                 #
@@ -304,7 +308,7 @@ def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray
     # UPDATE ERRORS                                                                                                    #
     ####################################################################################################################
 
-    if np.sum((bmu1 - bmu2) ** 2) > 2:
+    if np.sum((bmu1 - bmu2) ** 2) > penalty_dist:
 
         return math.sqrt(min_distance1), 1
 

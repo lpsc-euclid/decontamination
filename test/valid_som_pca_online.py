@@ -19,10 +19,12 @@ import matplotlib.pyplot as plt
 
 ########################################################################################################################
 
-M = 30
-N = 30
+M = 10
+N = 15
 SEED = 10
-DATASET_SIZE = 25_000
+# DATASET_SIZE = 25_000
+DATASET_SIZE = 100
+TOPOLOGY = 'hexagonal'
 
 ########################################################################################################################
 
@@ -30,13 +32,13 @@ data = np.random.default_rng(seed = SEED).random((DATASET_SIZE, 4), dtype = np.f
 
 ########################################################################################################################
 
-som_ref = minisom.MiniSom(M, N, 4, learning_rate = 0.3, sigma = max(M, N) / 2)
+som_ref = minisom.MiniSom(M, N, 4, learning_rate = 0.3, sigma = max(M, N) / 2, topology = 'hexagonal' if TOPOLOGY == 'hexagonal' else 'rectangular')
 
 som_ref.pca_weights_init(data)
 
 ########################################################################################################################
 
-som_new = decontamination.SOM_PCA(M, N, 4)
+som_new = decontamination.SOM_PCA(M, N, 4, topology = TOPOLOGY)
 
 som_new.train(data, min_weight = -1.0)
 
@@ -76,7 +78,7 @@ print('minisom training time: ', (timeit.default_timer() - start))
 
 ########################################################################################################################
 
-som_next = decontamination.SOM_Online(M, N, 4, alpha = 0.3, sigma = max(M, N) / 2.0)
+som_next = decontamination.SOM_Online(M, N, 4, alpha = 0.3, sigma = max(M, N) / 2.0, topology = TOPOLOGY)
 
 som_next.init_from(som_new)
 
@@ -84,6 +86,10 @@ start = timeit.default_timer()
 #som_next.train(data, n_epochs = 3)
 som_next.train(data, n_vectors = data.shape[0])
 print('som online training time: ', (timeit.default_timer() - start))
+
+print(np.sqrt(som_ref._xx ** 2 + som_ref._yy ** 2) - np.linalg.norm(som_next._topography, axis = -1).reshape(M, N).T)
+
+# print(np.linalg.norm(som_next._topography, axis = -1).reshape(M, N))
 
 som_next.save('test.hdf5')
 som_next.load('test.hdf5')
@@ -114,7 +120,7 @@ for i in range(2):
 ########################################################################################################################
 
 print(som_ref.quantization_error(data))
-print(som_ref.topographic_error(data))
+# print(som_ref.topographic_error(data))
 
 print(som_next.get_quantization_errors())
 print(som_next.get_topographic_errors())

@@ -73,7 +73,7 @@ class SOM_Abstract(object):
     ####################################################################################################################
 
     @staticmethod
-    def _neuron_locations(m: int, n: int) -> typing.Iterator[typing.List[int]]:
+    def _neuron_locations_square(m: int, n: int) -> typing.Iterator[typing.List[int]]:
 
         for i in range(m):
 
@@ -83,9 +83,27 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
+    @staticmethod
+    def _neuron_locations_hexagonal(m: int, n: int) -> typing.Iterator[typing.List[float]]:
+
+        for i in range(m):
+
+            for j in range(n):
+
+                i_offset = (j & 1) * (- 0.5)
+
+                yield [i_offset + i, j * 0.8660254037844386] # 0.8660254037844386 = sqrt(3) / 2
+
+    ####################################################################################################################
     def _rebuild_topography(self):
 
-        self._topography = np.array(list(SOM_Abstract._neuron_locations(self._m, self._m)), dtype = np.int64)
+        if self._topology == 'square':
+
+            self._topography = np.array(list(SOM_Abstract._neuron_locations_square(self._m, self._n)), dtype = np.int64)
+
+        else:
+
+            self._topography = np.array(list(SOM_Abstract._neuron_locations_hexagonal(self._m, self._n)), dtype = np.float32)
 
     ####################################################################################################################
 
@@ -374,17 +392,17 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        if self._topology == 'hexagonal':
-
-            result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
-
-            SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
-
-        else:
+        if self._topology == 'square':
 
             result = np.full(shape = (self._m, self._n, 8), fill_value = np.nan, dtype = self._dtype)
 
             SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
+
+        else:
+
+            result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
+
+            SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
 
         ################################################################################################################
 
@@ -450,7 +468,7 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def get_winners(self, dataset: np.ndarray, locations: bool = False, enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024) -> np.ndarray:
+    def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024) -> np.ndarray:
 
         """
         ???
@@ -458,8 +476,6 @@ class SOM_Abstract(object):
         Parameters
         ----------
         dataset : np.ndarray
-            ???
-        locations : bool
             ???
         enable_gpu : bool
             ???
@@ -477,13 +493,7 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        if locations:
-
-            return self._topography[result.copy_to_host()] # !!! BERK : faire un kernel différent !!!
-
-        else:
-
-            return result.copy_to_host()
+        return result.copy_to_host()
 
 ########################################################################################################################
 

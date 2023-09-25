@@ -33,7 +33,7 @@ def batch_iterator(vectors: np.ndarray, n_chunks: int) -> typing.Iterator[np.nda
 
     if chunk_remaining > 0:
 
-        yield vectors[n_chunks * chunk_size: ]
+        yield vectors[n_chunks * chunk_size:]
 
 ########################################################################################################################
 

@@ -100,7 +100,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
     ####################################################################################################################
 
     @staticmethod
-    # @nb.njit(parallel = False)
+    @nb.njit(parallel = False)
     def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
 
         for i in range(data.shape[0]):
@@ -260,7 +260,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
 ########################################################################################################################
 
-# @nb.njit(parallel = False, fastmath = True)
+@nb.njit(parallel = False, fastmath = True)
 def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, alpha: float, sigma: float, penalty_dist: float, mn: int):
 
     ####################################################################################################################

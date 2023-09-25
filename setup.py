@@ -26,16 +26,16 @@ if __name__ == '__main__':
                 description = 'A toolbox for performing systematics decontamination in cosmology analyses.',
                 long_description = readme,
                 long_description_content_type = 'text/markdown',
-                keywords = [],
-                url = '???',
+                keywords = ['cosmology', 'systematics', 'decontamination'],
+                url = 'https://gitlab.in2p3.fr/lpsc-euclid/decontamination/',
                 license = 'CeCILL-C',
                 packages = ['decontamination', 'decontamination._jit', 'decontamination._algo'],
                 data_files = [('decontamination', ['decontamination/metadata.json'])],
                 include_package_data = True,
-                install_requires = ['h5py', 'tqdm', 'numpy', 'numba', 'healpy'],
+                install_requires = ['h5py', 'tqdm', 'numpy', 'numba', 'healpy', 'matplotlib'],
                 extras_require = {
+                    'pytest': ['pytest'],
                     'astropy': ['astropy'],
-                    'matplotlib': ['matplotlib'],
                 }
             )
 

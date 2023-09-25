@@ -382,25 +382,25 @@ print(result.copy_to_host())
     @staticmethod
     def _patch_cpu_code(code: str) -&gt; str:
 
-        return jit._GPU_CODE_RE.sub(
-            &#39;&#39;,
-            code.replace(&#39;_xpu&#39;, &#39;_cpu&#39;)
-                .replace(&#39;xpu.local_empty&#39;, &#39;np.empty&#39;)
-                .replace(&#39;xpu.shared_empty&#39;, &#39;np.empty&#39;)
-                .replace(&#39;xpu.syncthreads&#39;, &#39;#######&#39;)
-       )
+        return (
+            jit._GPU_CODE_RE.sub(&#39;&#39;, code)
+            .replace(&#39;_xpu&#39;, &#39;_cpu&#39;)
+            .replace(&#39;xpu.local_empty&#39;, &#39;np.empty&#39;)
+            .replace(&#39;xpu.shared_empty&#39;, &#39;np.empty&#39;)
+            .replace(&#39;xpu.syncthreads&#39;, &#39;#######&#39;)
+        )
 
     ####################################################################################################################
 
     @staticmethod
     def _patch_gpu_code(code: str) -&gt; str:
 
-        return jit._CPU_CODE_RE.sub(
-            &#39;&#39;,
-            code.replace(&#39;_xpu&#39;, &#39;_gpu&#39;)
-                .replace(&#39;xpu.local_empty&#39;, &#39;cu.local.array&#39;)
-                .replace(&#39;xpu.shared_empty&#39;, &#39;cu.shared.array&#39;)
-                .replace(&#39;xpu.syncthreads&#39;, &#39;cu.syncthreads&#39;),
+        return (
+            jit._CPU_CODE_RE.sub(&#39;&#39;, code)
+            .replace(&#39;_xpu&#39;, &#39;_gpu&#39;)
+            .replace(&#39;xpu.local_empty&#39;, &#39;cu.local.array&#39;)
+            .replace(&#39;xpu.shared_empty&#39;, &#39;cu.shared.array&#39;)
+            .replace(&#39;xpu.syncthreads&#39;, &#39;cu.syncthreads&#39;)
         )
 
     ####################################################################################################################
@@ -471,13 +471,7 @@ print(result.copy_to_host())
         # KERNEL                                                                                                       #
         ################################################################################################################
 
-        if self.kernel:
-
-            funct = Kernel(funct_cpu, funct_gpu, parallel = self.parallel)
-
-        else:
-
-            funct = dont_call
+        funct = Kernel(funct_cpu, funct_gpu, parallel = self.parallel) if self.kernel else dont_call
 
         ################################################################################################################
 
@@ -1079,9 +1073,7 @@ def dtype(self):
 
                     if 0 &lt;= i &lt; m and 0 &lt;= j &lt; n:
 
-                        diff = w - centroids[i, j]
-
-                        result[x, y, z] = np.sqrt(np.sum(diff ** 2))
+                        result[x, y, z] = np.sqrt(np.sum((w - centroids[i, j]) ** 2))
 
     ####################################################################################################################
 
@@ -2231,7 +2223,7 @@ number of samples in the dataset to analyze.</p>
     def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
 
         &#34;&#34;&#34;
-        Trains the neural network. Use either the methods `n_epochs` (here \\( e\\equiv 0\\dots\\mathrm{n\\_epochs}-1 \\)) or `n_vectors` (here \\( e\\equiv 0\\dots\\mathrm{n\\_vectors}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(e)=\\mathrm{bmu}(x_i,e)=\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(e)=\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n \\) and, at epoch \\( e \\), \\( \\alpha(e)=\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)=\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
+        Trains the neural network. Use either the methods `n_epochs` (here \\( e\\equiv 0\\dots\\mathrm{n\\_epochs}-1 \\)) or `n_vectors` (here \\( e\\equiv 0\\dots\\mathrm{n\\_vectors}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(e)=\\mathrm{bmu}(x_i,e)=\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(e)=\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n \\) and, at epoch \\( e \\), \\( \\alpha(e)=\\alpha\\cdot\\frac{1}{1+2\\frac{e}{\\mathrm{n\\_epochs}}} \\) is the learning rate and \\( \\sigma(e)=\\sigma\\cdot\\frac{1}{1+2\\frac{e}{\\mathrm{n\\_vectors}}} \\) is the neighborhood radius.
 
         Parameters
         ----------
@@ -2368,7 +2360,7 @@ number of samples in the dataset to analyze.</p>
 <span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Trains the neural network. Use either the methods <code>n_epochs</code> (here <span><span class="MathJax_Preview"> e\equiv 0\dots\mathrm{n\_epochs}-1 </span><script type="math/tex"> e\equiv 0\dots\mathrm{n\_epochs}-1 </script></span>) or <code>n_vectors</code> (here <span><span class="MathJax_Preview"> e\equiv 0\dots\mathrm{n\_vectors}-1 </span><script type="math/tex"> e\equiv 0\dots\mathrm{n\_vectors}-1 </script></span>). An online formulation of updating weights is implemented: <span><span class="MathJax_Preview"> c_i(e)=\mathrm{bmu}(x_i,e)=\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </span><script type="math/tex; mode=display"> c_i(e)=\mathrm{bmu}(x_i,e)=\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </script></span> <span><span class="MathJax_Preview"> \Theta_{ji}(e)=\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i\rVert}{2\sigma^2(e)}\right) </span><script type="math/tex; mode=display"> \Theta_{ji}(e)=\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i\rVert}{2\sigma^2(e)}\right) </script></span> <span><span class="MathJax_Preview"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(e)[x_i-w_j(e)]} </span><script type="math/tex; mode=display"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(e)[x_i-w_j(e)]} </script></span> where <span><span class="MathJax_Preview"> j=0\dots m\times n </span><script type="math/tex"> j=0\dots m\times n </script></span> and, at epoch <span><span class="MathJax_Preview"> e </span><script type="math/tex"> e </script></span>, <span><span class="MathJax_Preview"> \alpha(e)=\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \alpha(e)=\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the learning rate and <span><span class="MathJax_Preview"> \sigma(e)=\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \sigma(e)=\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the neighborhood radius.</p>
+<div class="desc"><p>Trains the neural network. Use either the methods <code>n_epochs</code> (here <span><span class="MathJax_Preview"> e\equiv 0\dots\mathrm{n\_epochs}-1 </span><script type="math/tex"> e\equiv 0\dots\mathrm{n\_epochs}-1 </script></span>) or <code>n_vectors</code> (here <span><span class="MathJax_Preview"> e\equiv 0\dots\mathrm{n\_vectors}-1 </span><script type="math/tex"> e\equiv 0\dots\mathrm{n\_vectors}-1 </script></span>). An online formulation of updating weights is implemented: <span><span class="MathJax_Preview"> c_i(e)=\mathrm{bmu}(x_i,e)=\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </span><script type="math/tex; mode=display"> c_i(e)=\mathrm{bmu}(x_i,e)=\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </script></span> <span><span class="MathJax_Preview"> \Theta_{ji}(e)=\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i\rVert}{2\sigma^2(e)}\right) </span><script type="math/tex; mode=display"> \Theta_{ji}(e)=\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i\rVert}{2\sigma^2(e)}\right) </script></span> <span><span class="MathJax_Preview"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(e)[x_i-w_j(e)]} </span><script type="math/tex; mode=display"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(e)[x_i-w_j(e)]} </script></span> where <span><span class="MathJax_Preview"> j=0\dots m\times n </span><script type="math/tex"> j=0\dots m\times n </script></span> and, at epoch <span><span class="MathJax_Preview"> e </span><script type="math/tex"> e </script></span>, <span><span class="MathJax_Preview"> \alpha(e)=\alpha\cdot\frac{1}{1+2\frac{e}{\mathrm{n\_epochs}}} </span><script type="math/tex"> \alpha(e)=\alpha\cdot\frac{1}{1+2\frac{e}{\mathrm{n\_epochs}}} </script></span> is the learning rate and <span><span class="MathJax_Preview"> \sigma(e)=\sigma\cdot\frac{1}{1+2\frac{e}{\mathrm{n\_vectors}}} </span><script type="math/tex"> \sigma(e)=\sigma\cdot\frac{1}{1+2\frac{e}{\mathrm{n\_vectors}}} </script></span> is the neighborhood radius.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
@@ -2389,7 +2381,7 @@ number of samples in the dataset to analyze.</p>
 <pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
 
     &#34;&#34;&#34;
-    Trains the neural network. Use either the methods `n_epochs` (here \\( e\\equiv 0\\dots\\mathrm{n\\_epochs}-1 \\)) or `n_vectors` (here \\( e\\equiv 0\\dots\\mathrm{n\\_vectors}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(e)=\\mathrm{bmu}(x_i,e)=\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(e)=\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n \\) and, at epoch \\( e \\), \\( \\alpha(e)=\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)=\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
+    Trains the neural network. Use either the methods `n_epochs` (here \\( e\\equiv 0\\dots\\mathrm{n\\_epochs}-1 \\)) or `n_vectors` (here \\( e\\equiv 0\\dots\\mathrm{n\\_vectors}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(e)=\\mathrm{bmu}(x_i,e)=\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(e)=\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n \\) and, at epoch \\( e \\), \\( \\alpha(e)=\\alpha\\cdot\\frac{1}{1+2\\frac{e}{\\mathrm{n\\_epochs}}} \\) is the learning rate and \\( \\sigma(e)=\\sigma\\cdot\\frac{1}{1+2\\frac{e}{\\mathrm{n\\_vectors}}} \\) is the neighborhood radius.
 
     Parameters
     ----------

@@ -421,25 +421,25 @@ class jit(object):
     @staticmethod
     def _patch_cpu_code(code: str) -> str:
 
-        return jit._GPU_CODE_RE.sub(
-            '',
-            code.replace('_xpu', '_cpu')
-                .replace('xpu.local_empty', 'np.empty')
-                .replace('xpu.shared_empty', 'np.empty')
-                .replace('xpu.syncthreads', '#######')
-       )
+        return (
+            jit._GPU_CODE_RE.sub('', code)
+            .replace('_xpu', '_cpu')
+            .replace('xpu.local_empty', 'np.empty')
+            .replace('xpu.shared_empty', 'np.empty')
+            .replace('xpu.syncthreads', '#######')
+        )
 
     ####################################################################################################################
 
     @staticmethod
     def _patch_gpu_code(code: str) -> str:
 
-        return jit._CPU_CODE_RE.sub(
-            '',
-            code.replace('_xpu', '_gpu')
-                .replace('xpu.local_empty', 'cu.local.array')
-                .replace('xpu.shared_empty', 'cu.shared.array')
-                .replace('xpu.syncthreads', 'cu.syncthreads'),
+        return (
+            jit._CPU_CODE_RE.sub('', code)
+            .replace('_xpu', '_gpu')
+            .replace('xpu.local_empty', 'cu.local.array')
+            .replace('xpu.shared_empty', 'cu.shared.array')
+            .replace('xpu.syncthreads', 'cu.syncthreads')
         )
 
     ####################################################################################################################
@@ -510,13 +510,7 @@ class jit(object):
         # KERNEL                                                                                                       #
         ################################################################################################################
 
-        if self.kernel:
-
-            funct = Kernel(funct_cpu, funct_gpu, parallel = self.parallel)
-
-        else:
-
-            funct = dont_call
+        funct = Kernel(funct_cpu, funct_gpu, parallel = self.parallel) if self.kernel else dont_call
 
         ################################################################################################################
 

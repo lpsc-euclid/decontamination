@@ -355,9 +355,7 @@ class SOM_Abstract(object):
 
                     if 0 <= i < m and 0 <= j < n:
 
-                        diff = w - centroids[i, j]
-
-                        result[x, y, z] = np.sqrt(np.sum(diff ** 2))
+                        result[x, y, z] = np.sqrt(np.sum((w - centroids[i, j]) ** 2))
 
     ####################################################################################################################
 

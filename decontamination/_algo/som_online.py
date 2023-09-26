@@ -41,7 +41,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
         dtype : typing.Type[np.single]
             Neural network data type (default: **np.float32**).
         topology : typing.Optional[str]
-            Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
+            Topology of the model, either **'square'** or **'hexagonal'** (default: **'hexagonal'**).
         alpha : float
             Starting value of the learning rate (default: **0.3**).
         sigma : float

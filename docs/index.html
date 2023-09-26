@@ -245,17 +245,17 @@ __all__ = [
 <div class="desc"><h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>weights</code></strong> :&ensp;<code>np.ndarray</code></dt>
-<dd>???</dd>
+<dd>Weights of the map.</dd>
 <dt><strong><code>topology</code></strong> :&ensp;<code>str</code></dt>
-<dd>??? : (default: <strong>'hexagonal'</strong>)</dd>
+<dd>Topology of the map, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>'hexagonal'</strong>).</dd>
 <dt><strong><code>cmap</code></strong> :&ensp;<code>str</code></dt>
-<dd>??? (default: <strong>'viridis'</strong>)</dd>
+<dd>Color map (default: <strong>'viridis'</strong>).</dd>
 <dt><strong><code>show_frame</code></strong> :&ensp;<code>bool</code></dt>
-<dd>??? (default: <strong>True</strong>)</dd>
+<dd>Specifies whether to display the frame (default: <strong>True</strong>).</dd>
 <dt><strong><code>show_colorbar</code></strong> :&ensp;<code>bool</code></dt>
-<dd>??? (default: <strong>True</strong>)</dd>
+<dd>Specifies whether to display the colorbar (default: <strong>True</strong>).</dd>
 <dt><strong><code>show_histogram</code></strong> :&ensp;<code>bool</code></dt>
-<dd>??? (default: <strong>True</strong>)</dd>
+<dd>Specifies whether to display the histogram (default: <strong>True</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -267,17 +267,17 @@ __all__ = [
     Parameters
     ----------
     weights : np.ndarray
-        ???
+        Weights of the map.
     topology : str
-        ??? : (default: **&#39;hexagonal&#39;**)
+        Topology of the map, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **&#39;hexagonal&#39;**).
     cmap : str
-        ??? (default: **&#39;viridis&#39;**)
+        Color map (default: **&#39;viridis&#39;**).
     show_frame : bool
-        ??? (default: **True**)
+        Specifies whether to display the frame (default: **True**).
     show_colorbar : bool
-        ??? (default: **True**)
+        Specifies whether to display the colorbar (default: **True**).
     show_histogram : bool
-        ??? (default: **True**)
+        Specifies whether to display the histogram (default: **True**).
     &#34;&#34;&#34;
 
     ####################################################################################################################
@@ -293,6 +293,7 @@ __all__ = [
     ####################################################################################################################
 
     ax.set_frame_on(show_frame)
+
     ax.set_aspect(&#39;equal&#39;)
 
     ####################################################################################################################
@@ -795,7 +796,7 @@ def dtype(self):
 <dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
 <dd>Neural network data type (default: <strong>np.float32</strong>).</dd>
 <dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
-<dd>Topology of the map, either '<strong>square</strong>' or '<strong>hexagonal</strong>' (default: '<strong>hexagonal</strong>').</dd>
+<dd>Topology of the model, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>'hexagonal'</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -825,7 +826,7 @@ def dtype(self):
         dtype : Type[np.single]
             Neural network data type (default: **np.float32**).
         topology : Optional[str]
-            Topology of the map, either &#39;**square**&#39; or &#39;**hexagonal**&#39; (default: &#39;**hexagonal**&#39;).
+            Topology of the model, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **&#39;hexagonal&#39;**).
         &#34;&#34;&#34;
 
         ################################################################################################################
@@ -1988,7 +1989,7 @@ number of samples in the dataset to analyze.</p>
 <dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
 <dd>Neural network data type (default: <strong>np.float32</strong>).</dd>
 <dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
-<dd>Topology of the map, either '<strong>square</strong>' or '<strong>hexagonal</strong>' (default: '<strong>hexagonal</strong>').</dd>
+<dd>Topology of the model, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>'hexagonal'</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -2022,13 +2023,12 @@ number of samples in the dataset to analyze.</p>
         dtype : Type[np.single]
             Neural network data type (default: **np.float32**).
         topology : Optional[str]
-            Topology of the map, either &#39;**square**&#39; or &#39;**hexagonal**&#39; (default: &#39;**hexagonal**&#39;).
+            Topology of the model, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **&#39;hexagonal&#39;**).
         &#34;&#34;&#34;
 
         ################################################################################################################
 
         super().__init__(m, n, dim, dtype, topology)
-
 
         ################################################################################################################
 
@@ -2143,7 +2143,7 @@ number of samples in the dataset to analyze.</p>
 <dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
 <dd>Neural network data type (default: <strong>np.float32</strong>).</dd>
 <dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
-<dd>Topology of the map, either '<strong>square</strong>' or '<strong>hexagonal</strong>' (default: '<strong>hexagonal</strong>').</dd>
+<dd>Topology of the model, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>'hexagonal'</strong>).</dd>
 <dt><strong><code>alpha</code></strong> :&ensp;<code>float</code></dt>
 <dd>Starting value of the learning rate (default: <strong>0.3</strong>).</dd>
 <dt><strong><code>sigma</code></strong> :&ensp;<code>float</code></dt>
@@ -2181,7 +2181,7 @@ number of samples in the dataset to analyze.</p>
         dtype : Type[np.single]
             Neural network data type (default: **np.float32**).
         topology : Optional[str]
-            Topology of the map, either &#39;**square**&#39; or &#39;**hexagonal**&#39; (default: &#39;**hexagonal**&#39;).
+            Topology of the model, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **&#39;hexagonal&#39;**).
         alpha : float
             Starting value of the learning rate (default: **0.3**).
         sigma : float

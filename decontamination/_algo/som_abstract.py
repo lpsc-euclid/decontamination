@@ -38,7 +38,7 @@ class SOM_Abstract(object):
         dtype : typing.Type[np.single]
             Neural network data type (default: **np.float32**).
         topology : typing.Optional[str]
-            Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
+            Topology of the model, either **'square'** or **'hexagonal'** (default: **'hexagonal'**).
         """
 
         ################################################################################################################

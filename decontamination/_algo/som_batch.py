@@ -4,9 +4,8 @@
 import typing
 
 import numpy as np
-import numba as nb
 
-from . import som_abstract, asymptotic_decay, dataset_to_generator_builder
+from . import som_abstract
 
 ########################################################################################################################
 
@@ -39,13 +38,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         dtype : typing.Type[np.single]
             Neural network data type (default: **np.float32**).
         topology : typing.Optional[str]
-            Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
+            Topology of the model, either **'square'** or **'hexagonal'** (default: **'hexagonal'**).
         """
 
         ################################################################################################################
 
         super().__init__(m, n, dim, dtype, topology)
-
 
         ################################################################################################################
 

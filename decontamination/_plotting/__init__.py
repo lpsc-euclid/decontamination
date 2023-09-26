@@ -161,17 +161,17 @@ def display(weights: np.ndarray, topology: str = 'hexagonal', cmap: str = 'virid
     Parameters
     ----------
     weights : np.ndarray
-        ???
+        Weights of the map.
     topology : str
-        ??? : (default: **'hexagonal'**)
+        Topology of the map, either **'square'** or **'hexagonal'** (default: **'hexagonal'**).
     cmap : str
-        ??? (default: **'viridis'**)
+        Color map (default: **'viridis'**).
     show_frame : bool
-        ??? (default: **True**)
+        Specifies whether to display the frame (default: **True**).
     show_colorbar : bool
-        ??? (default: **True**)
+        Specifies whether to display the colorbar (default: **True**).
     show_histogram : bool
-        ??? (default: **True**)
+        Specifies whether to display the histogram (default: **True**).
     """
 
     ####################################################################################################################

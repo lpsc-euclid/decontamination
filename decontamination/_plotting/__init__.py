@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
+import typing
+
 import numpy as np
 
 import matplotlib.pyplot as plt
+import matplotlib.colors as colors
 import matplotlib.patches as patches
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 ########################################################################################################################
 
-def _build_colorbar(ax, cmap, weights, show_histogram: bool):
+def _build_colorbar(ax: plt.Axes, cmap: colors.Colormap, weights: np.ndarray, show_histogram: bool) -> None:
 
     ####################################################################################################################
 
@@ -44,39 +47,39 @@ def _build_colorbar(ax, cmap, weights, show_histogram: bool):
 
 ########################################################################################################################
 
-def _setup_ticks(ax, grid_size, hori_spacing, vert_spacing):
+def _setup_ticks(ax: plt.Axes, grid_x: int, grid_y: int, hori_spacing: float, vert_spacing: float) -> None:
 
     ####################################################################################################################
 
-    if max(grid_size[0], grid_size[1]) < 10:
+    if max(grid_y, grid_x) < 10:
 
-        x_interval = 1
         y_interval = 1
+        x_interval = 1
 
     else:
 
-        x_interval = max(1, grid_size[1] // 10)
-        y_interval = max(1, grid_size[0] // 10)
+        y_interval = max(1, grid_y // 10)
+        x_interval = max(1, grid_x // 10)
 
     ####################################################################################################################
 
-    ax.set_xticks([j * hori_spacing for j in range(0, grid_size[1] + 1, x_interval)])
-    ax.set_yticks([i * vert_spacing for i in range(0, grid_size[0] + 1, y_interval)])
+    ax.set_xticks([j * hori_spacing for j in range(0, grid_y + 1, y_interval)])
+    ax.set_yticks([i * vert_spacing for i in range(0, grid_x + 1, x_interval)])
 
     ####################################################################################################################
 
-    ax.set_xticklabels(range(0, grid_size[1] + 1, x_interval))
-    ax.set_yticklabels(range(0, grid_size[0] + 1, y_interval))
+    ax.set_xticklabels(range(0, grid_y + 1, y_interval))
+    ax.set_yticklabels(range(0, grid_x + 1, x_interval))
 
 ########################################################################################################################
 
-def _display_square(weights: np.ndarray, cmap: str, show_colorbar: bool, show_histogram: bool):
+def _display_square(weights: np.ndarray, cmap: str, show_colorbar: bool, show_histogram: bool) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     fig, ax = plt.subplots()
 
     ####################################################################################################################
 
-    _setup_ticks(ax, weights.shape, 1.0, 1.0)
+    _setup_ticks(ax, weights.shape[0], weights.shape[1], 1.0, 1.0)
 
     ####################################################################################################################
 
@@ -98,7 +101,7 @@ def _display_square(weights: np.ndarray, cmap: str, show_colorbar: bool, show_hi
 
 ########################################################################################################################
 
-def _display_hexagonal(weights: np.ndarray, cmap: str, show_colorbar: bool, show_histogram: bool):
+def _display_hexagonal(weights: np.ndarray, cmap: str, show_colorbar: bool, show_histogram: bool) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     fig, ax = plt.subplots()
 
@@ -109,7 +112,7 @@ def _display_hexagonal(weights: np.ndarray, cmap: str, show_colorbar: bool, show
     hori_spacing = np.sqrt(4.0) * radius
     vert_spacing = np.sqrt(3.0) * radius
 
-    _setup_ticks(ax, weights.shape, hori_spacing * 0.75, vert_spacing * 1.00)
+    _setup_ticks(ax, weights.shape[0], weights.shape[1], hori_spacing * 0.75, vert_spacing * 1.00)
 
     ####################################################################################################################
 
@@ -152,7 +155,7 @@ def _display_hexagonal(weights: np.ndarray, cmap: str, show_colorbar: bool, show
 
 ########################################################################################################################
 
-def display(weights: np.ndarray, topology: str = 'hexagonal', cmap: str = 'viridis', show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True):
+def display(weights: np.ndarray, topology: str = 'hexagonal', cmap: str = 'viridis', show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Parameters

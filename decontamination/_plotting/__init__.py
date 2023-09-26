@@ -80,7 +80,7 @@ def _display_square(weights, cmap, show_colorbar, show_histogram):
 
     ####################################################################################################################
 
-    ax.imshow(weights, cmap = cmap, interpolation = 'nearest')
+    ax.imshow(weights, cmap = cmap)
 
     ####################################################################################################################
 

@@ -19,12 +19,11 @@ import matplotlib.pyplot as plt
 
 ########################################################################################################################
 
-M = 10
-N = 15
+M = 30
+N = 45
 SEED = 10
-# DATASET_SIZE = 25_000
-DATASET_SIZE = 100
-TOPOLOGY = 'hexagonal'
+DATASET_SIZE = 25_000
+TOPOLOGY = 'square'
 
 ########################################################################################################################
 
@@ -91,8 +90,8 @@ print(np.sqrt(som_ref._xx ** 2 + som_ref._yy ** 2) - np.linalg.norm(som_next._to
 
 # print(np.linalg.norm(som_next._topography, axis = -1).reshape(M, N))
 
-som_next.save('test.hdf5')
-som_next.load('test.hdf5')
+som_next.save('random_model.hdf5')
+som_next.load('random_model.hdf5')
 
 ########################################################################################################################
 

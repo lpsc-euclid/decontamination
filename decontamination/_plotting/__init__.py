@@ -14,6 +14,8 @@ def _build_colorbar(ax, cmap, weights, show_histogram):
 
     ####################################################################################################################
 
+    weights = weights[~np.isnan(weights)]
+
     v_min = weights.min()
     v_max = weights.max()
 
@@ -33,7 +35,7 @@ def _build_colorbar(ax, cmap, weights, show_histogram):
 
     if show_histogram:
 
-        hist, bins = np.histogram(weights[~np.isnan(weights)], bins = 50)
+        hist, bins = np.histogram(weights, bins = 50)
 
         colorbar.ax.plot(hist.astype(float) / hist.max(), (bins[:-1] + bins[+1:]) / 2.0, color = 'k')
 

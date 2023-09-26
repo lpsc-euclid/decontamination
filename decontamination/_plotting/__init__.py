@@ -10,7 +10,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 ########################################################################################################################
 
-def _build_colorbar(ax, cmap, weights, show_histogram):
+def _build_colorbar(ax, cmap, weights, show_histogram: bool):
 
     ####################################################################################################################
 
@@ -70,7 +70,7 @@ def _setup_ticks(ax, grid_size, hori_spacing, vert_spacing):
 
 ########################################################################################################################
 
-def _display_square(weights, cmap, show_colorbar, show_histogram):
+def _display_square(weights: np.ndarray, cmap: str, show_colorbar: bool, show_histogram: bool):
 
     fig, ax = plt.subplots()
 
@@ -98,7 +98,7 @@ def _display_square(weights, cmap, show_colorbar, show_histogram):
 
 ########################################################################################################################
 
-def _display_hexagonal(weights, cmap, show_colorbar, show_histogram):
+def _display_hexagonal(weights: np.ndarray, cmap: str, show_colorbar: bool, show_histogram: bool):
 
     fig, ax = plt.subplots()
 
@@ -152,7 +152,24 @@ def _display_hexagonal(weights, cmap, show_colorbar, show_histogram):
 
 ########################################################################################################################
 
-def display(weights, topology = 'hexagonal', cmap = 'viridis', show_frame = True, show_colorbar = True, show_histogram = True):
+def display(weights: np.ndarray, topology: str = 'hexagonal', cmap: str = 'viridis', show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True):
+
+    """
+    Parameters
+    ----------
+    weights : np.ndarray
+        ???
+    topology : str
+        ??? : (default: **'hexagonal'**)
+    cmap : str
+        ??? (default: **'viridis'**)
+    show_frame : bool
+        ??? (default: **True**)
+    show_colorbar : bool
+        ??? (default: **True**)
+    show_histogram : bool
+        ??? (default: **True**)
+    """
 
     ####################################################################################################################
 

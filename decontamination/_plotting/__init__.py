@@ -35,9 +35,9 @@ def _build_colorbar(ax, cmap, weights, show_histogram):
 
     if show_histogram:
 
-        hist, bins = np.histogram(weights, bins = 50)
+        hist, bins = np.histogram(weights, bins = 100)
 
-        colorbar.ax.plot(hist.astype(float) / hist.max(), (bins[:-1] + bins[+1:]) / 2.0, color = 'k')
+        colorbar.ax.plot(hist.astype(float) / hist.max(), (bins[:-1] + bins[+1:]) / 2.0, linewidth = 0.75, color = 'k')
 
         colorbar.ax.set_xticks([0.000, 1.000])
         colorbar.ax.set_yticks([v_min, v_max])
@@ -80,6 +80,10 @@ def _display_square(weights, cmap, show_colorbar, show_histogram):
 
     ####################################################################################################################
 
+    cmap = plt.get_cmap(cmap)
+
+    ####################################################################################################################
+
     ax.imshow(weights, cmap = cmap)
 
     ####################################################################################################################
@@ -109,7 +113,7 @@ def _display_hexagonal(weights, cmap, show_colorbar, show_histogram):
 
     ####################################################################################################################
 
-    colormap = plt.get_cmap(cmap)
+    cmap = plt.get_cmap(cmap)
 
     ####################################################################################################################
 
@@ -121,11 +125,9 @@ def _display_hexagonal(weights, cmap, show_colorbar, show_histogram):
 
             if (j & 1) == 1:
 
-                y += vert_spacing / 2
+                y += vert_spacing * 0.5
 
-            color = colormap(weights[i, j])
-
-            ax.add_patch(patches.RegularPolygon((x, y), numVertices = 6, radius = radius, orientation = np.pi / 6, facecolor = color, edgecolor = 'none'))
+            ax.add_patch(patches.RegularPolygon((x, y), numVertices = 6, radius = radius, orientation = np.pi / 6, facecolor = cmap(weights[i, j]), edgecolor = 'none'))
 
     ####################################################################################################################
 
@@ -142,6 +144,10 @@ def _display_hexagonal(weights, cmap, show_colorbar, show_histogram):
 
     ####################################################################################################################
 
+    ax.invert_yaxis()
+
+    ####################################################################################################################
+
     return fig, ax
 
 ########################################################################################################################
@@ -150,7 +156,7 @@ def display(weights, topology = 'hexagonal', cmap = 'viridis', show_frame = True
 
     ####################################################################################################################
 
-    if topology == 'square':
+    if topology == 'square' or max(weights.shape[0], weights.shape[1]) > 150:
 
         fig, ax = _display_square(weights, cmap, show_colorbar, show_histogram)
 

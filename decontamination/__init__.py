@@ -31,6 +31,8 @@ from ._algo.som_batch import SOM_Batch
 
 from ._algo.som_online import SOM_Online
 
+from ._algo.clustering import Clustering
+
 ########################################################################################################################
 # PLOTTING                                                                                                             #
 ########################################################################################################################
@@ -55,6 +57,7 @@ __all__ = [
     'CPU_OPTIMIZATION_AVAILABLE', 'GPU_OPTIMIZATION_AVAILABLE', 'jit',
     'DeviceArray', 'device_array_from', 'device_array_empty', 'device_array_zeros', 'device_array_full',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
+    'Clustering',
     'display',
 ]
 

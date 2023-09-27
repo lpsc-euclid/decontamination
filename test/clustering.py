@@ -9,96 +9,73 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 ########################################################################################################################
 
-import timeit
+import numpy as np
 
 import decontamination
 
-import numpy as np
-import numba as nb
-
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import matplotlib.lines as lines
 
 ########################################################################################################################
 
-som_next = decontamination.SOM_Online(0, 0, 0)
+som = decontamination.SOM_Online(0, 0, 0)
 
-som_next.load('random_model.hdf5')
-
-# decontamination.display(som_next.get_centroids()[:, :, 0], topology = 'square')
+som.load('random_model.hdf5')
 
 ########################################################################################################################
 
-@nb.njit(parallel = True)
-def init_distances(weights: np.ndarray) -> np.ndarray:
+clusters = decontamination.Clustering.clusterize(som.get_weights(), 10)
 
-    n_weights = weights.shape[0]
+clustered = decontamination.Clustering.average_over_clusters(som.get_weights(), clusters)
 
-    distances = np.full((n_weights, n_weights), np.inf, dtype = np.float32)
+fig, ax = decontamination.display(clustered[:, 0].reshape(som.m, som.n), topology ='squdare')
 
-    for i in nb.prange(n_weights):
+# decontamination.display(som.get_distance_map(), topology= 'square')
 
-        row = distances[i]
+def display_contour(ax, clusters, m, n):
 
-        for j in range(i):
+    clusters = clusters.reshape(m, n)
 
-            row[j] = np.sum((weights[i] - weights[j]) ** 2)
+    radius = 0.5
 
-    return distances
+    hori_spacing = np.sqrt(4.0) * radius
+    vert_spacing = np.sqrt(3.0) * radius
 
-########################################################################################################################
+    for j in range(n):
 
-@nb.njit
-def update_clusters(dist: np.ndarray, clusters: np.ndarray) -> None:
+        x = j * hori_spacing * 0.75
 
-    index = np.argmin(dist)
-    j, i = divmod(index, dist.shape[0])
+        for i in range(m):
 
-    dist[i, :i] = np.maximum(dist[i, :i], dist[j, :i])
-    dist[i+1:j, i] = np.maximum(dist[i+1:j, i], dist[j, i+1:j])
-    dist[j+1:, i] = np.maximum(dist[j+1:, i], dist[j+1:, j])
+            y = i * vert_spacing * 1.00
 
-    dist[j, :i] = np.inf
-    dist[j, i:j] = np.inf
-    dist[j+1:, j] = np.inf
+            if (j & 1) == 1:
 
-    clusters[np.where(clusters == clusters[j])[0]] = clusters[i]
+                y += vert_spacing * 0.5
 
-########################################################################################################################
+            value = clusters[i, j]
 
-def average_over_clusters(weights: np.ndarray, clusters: np.ndarray) -> None:
+            q1 = i + 1 < m
+            q2 = j + 1 < n
+            q3 = i - 1 >= 0
 
-    for cluster in np.unique(clusters):
+            if q1 and value != clusters[i + 1, j]:
+                ax.add_patch(patches.RegularPolygon((x, y), numVertices = 4, radius = radius / 2, orientation = np.pi / 6, facecolor = 'red', edgecolor = 'none'))
+                ax.add_line(lines.Line2D([x + 0.8 * radius / np.sqrt(3), x - 0.8 * radius / np.sqrt(3)], [y + 0.5 * np.sqrt(3.0) * radius, y + 0.5 * np.sqrt(3.0) * radius], lw=1, color='red'))
+                # pass
 
-        cluster_indices = np.where(clusters == cluster)
+            if q2 and value != clusters[i, j + 1]:
+                # ax.add_patch(patches.RegularPolygon((x, y), numVertices = 4, radius = radius / 2, orientation = np.pi / 6, facecolor = 'red', edgecolor = 'none'))
+                # ax.add_line(lines.Line2D([x - hori_spacing * 0.75 / np.sqrt(3), x - 0.5 * hori_spacing * 0.75 / np.sqrt(3)], [y, y + 0.5 * vert_spacing * 1.00], lw=1, color='red'))
+                pass
 
-        weights[cluster_indices] = np.mean(weights[cluster_indices], axis = 0)
+            if q3 and q2 and value != clusters[i - 1, j + 1]:
+                # ax.add_patch(patches.RegularPolygon((x, y), numVertices = 4, radius = radius / 2, orientation = np.pi / 6, facecolor = 'red', edgecolor = 'none'))
+                pass
 
-########################################################################################################################
+display_contour(ax, clusters, som.m, som.n)
 
-def cluster(weights: np.ndarray, n_clusters: np.ndarray) -> np.ndarray:
-
-    result = weights.copy()
-
-    dist = init_distances(result)
-
-    n_weights = result.shape[0]
-
-    clusters = np.arange(n_weights)
-
-    for _ in range(n_weights - n_clusters):
-
-        update_clusters(dist, clusters)
-
-    average_over_clusters(result, clusters)
-
-    return result
-
-########################################################################################################################
-
-clustered = cluster(som_next.get_weights(), 10)
-
-decontamination.display(clustered[:, 2].reshape(som_next._m, som_next._n))
-decontamination.display(clustered[:, 2].reshape(som_next._m, som_next._n), topology = 'square')
 
 
 ########################################################################################################################

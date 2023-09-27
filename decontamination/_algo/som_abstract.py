@@ -270,7 +270,7 @@ class SOM_Abstract(object):
             for name, field in header_extra.items():
 
                 try:
-                    setattr(self, field, np.array(model_group.attrs[name]))
+                    setattr(self, field, model_group.attrs[name])
                 except KeyError:
                     pass
 
@@ -337,7 +337,7 @@ class SOM_Abstract(object):
     def topology(self) -> str:
 
         """
-        Returns the model topology, **'square'** or **'hexagonal'**.
+        Returns the model topology, either **'square'** or **'hexagonal'**.
         """
 
         return self._topology
@@ -387,24 +387,24 @@ class SOM_Abstract(object):
     _X_HEX_STENCIL = np.array([
         +1, +1, +1, +0, -1, +0,  # Even line
         +0, +1, +0, -1, -1, -1,  # Odd line
-    ], dtype = np.int64)
+    ], dtype = int)
 
     _Y_HEX_STENCIL = np.array([
         +1, +0, -1, -1, +0, +1,  # Even line
         +1, +0, -1, -1, +0, +1,  # Odd line
-    ], dtype = np.int64)
+    ], dtype = int)
 
     ####################################################################################################################
 
     _X_SQU_STENCIL = np.array([
         +0, -1, -1, -1, +0, +1, +1, +1,  # Even line
         +0, -1, -1, -1, +0, +1, +1, +1,  # Odd line
-    ], dtype = np.int64)
+    ], dtype = int)
 
     _Y_SQU_STENCIL = np.array([
         -1, -1, +0, +1, +1, +1, +0, -1,  # Even line
         -1, -1, +0, +1, +1, +1, +0, -1,  # Odd line
-    ], dtype = np.int64)
+    ], dtype = int)
 
     ####################################################################################################################
 

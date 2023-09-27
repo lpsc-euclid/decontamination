@@ -119,9 +119,9 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
         min_weight : float
-            Minimum value in the latent space (default: **O.O**).
+            Latent space minimum value (default: **O.O**).
         max_weight : float
-            Maximum value in the latent space (default: **1.O**).
+            Latent space maximum value (default: **1.O**).
         """
 
         ################################################################################################################

@@ -120,6 +120,9 @@ def _display_hexagonal(weights: np.ndarray, cmap: str, show_colorbar: bool, show
 
     ####################################################################################################################
 
+    v_min = weights.min()
+    v_max = weights.max()
+
     for i in range(weights.shape[0]):
         for j in range(weights.shape[1]):
 
@@ -130,7 +133,7 @@ def _display_hexagonal(weights: np.ndarray, cmap: str, show_colorbar: bool, show
 
                 y += vert_spacing * 0.5
 
-            ax.add_patch(patches.RegularPolygon((x, y), numVertices = 6, radius = radius, orientation = np.pi / 6, facecolor = cmap(weights[i, j]), edgecolor = 'none'))
+            ax.add_patch(patches.RegularPolygon((x, y), numVertices = 6, radius = radius, orientation = np.pi / 6, facecolor = cmap((weights[i, j] - v_min / (v_max - v_min))), edgecolor = 'none'))
 
     ####################################################################################################################
 

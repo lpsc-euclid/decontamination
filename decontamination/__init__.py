@@ -37,7 +37,8 @@ from ._algo.clustering import Clustering
 # PLOTTING                                                                                                             #
 ########################################################################################################################
 
-from ._plotting import display
+from ._plotting.latent_space import display_latent_space
+from ._plotting.clustering import display_clusters
 
 ########################################################################################################################
 # UTILITIES                                                                                                            #
@@ -58,7 +59,7 @@ __all__ = [
     'DeviceArray', 'device_array_from', 'device_array_empty', 'device_array_zeros', 'device_array_full',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
     'Clustering',
-    'display',
+    'display_latent_space', 'display_clusters'
 ]
 
 ########################################################################################################################

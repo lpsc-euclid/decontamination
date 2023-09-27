@@ -136,6 +136,17 @@ def display_clusters_hexagonal(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None
 
 def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: str = 'hexagonal') -> None:
 
+    """
+    Parameters
+    ----------
+    ax : pyplot.Axes
+        ???
+    cluster_ids : np.ndarray
+        ???
+    topology : str
+        Topology of the map, either **'square'** or **'hexagonal'** (default: **'hexagonal'**).
+    """
+
     if max(cluster_ids.shape[0], cluster_ids.shape[1]) > 150:
 
         raise Exception('Method not implemented for map size > 150')

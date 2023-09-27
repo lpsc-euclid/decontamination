@@ -289,6 +289,61 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
+    @property
+    def m(self) -> int:
+
+        """
+        Returns the number of neuron rows.
+        """
+
+        return self._m
+
+    ####################################################################################################################
+
+    @property
+    def n(self) -> int:
+
+        """
+        Returns the number of neuron columns.
+        """
+
+        return self._n
+
+    ####################################################################################################################
+
+    @property
+    def dim(self) -> int:
+
+        """
+        Returns the dimensionality of the input data.
+        """
+
+        return self._dim
+
+    ####################################################################################################################
+
+    @property
+    def dtype(self) -> typing.Type[np.single]:
+
+        """
+        Returns the neural network data type.
+        """
+
+        return self._dtype
+
+    ####################################################################################################################
+
+    @property
+    def topology(self) -> str:
+
+        """
+        Returns the model topology, **'square'** or **'hexagonal'**.
+        """
+
+        return self._topology
+
+    ####################################################################################################################
+
     def get_weights(self) -> np.ndarray:
 
         """

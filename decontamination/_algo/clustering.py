@@ -8,40 +8,57 @@ import numba as nb
 
 class Clustering(object):
 
+    ####################################################################################################################
+
     @staticmethod
     @nb.njit(parallel = True)
     def _init_distances(weights: np.ndarray) -> np.ndarray:
 
-        n_weights = weights.shape[0]
+        ################################################################################################################
 
-        distances = np.full((n_weights, n_weights), np.inf, dtype = np.float32)
+        result = np.full((weights.shape[0], weights.shape[0]), np.inf, dtype = np.float32)
 
-        for i in nb.prange(n_weights):
+        ################################################################################################################
 
-            row = distances[i]
+        for i in nb.prange(weights.shape[0]):
+
+            row = result[i]
+
+            weight_i = weights[i]
 
             for j in range(i):
 
-                row[j] = np.sum((weights[i] - weights[j]) ** 2)
+                row[j] = np.sum((weight_i - weights[j]) ** 2)
 
-        return distances
+        ################################################################################################################
+
+        return result
 
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit
+    @nb.njit(parallel = False)
     def _update_clusters(dist: np.ndarray, clusters: np.ndarray) -> None:
 
+        ################################################################################################################
+
         index = np.argmin(dist)
+
         j, i = divmod(index, dist.shape[0])
 
-        dist[i, :i] = np.maximum(dist[i, :i], dist[j, :i])
-        dist[i+1:j, i] = np.maximum(dist[i+1:j, i], dist[j, i+1:j])
-        dist[j+1:, i] = np.maximum(dist[j+1:, i], dist[j+1:, j])
+        ################################################################################################################
 
-        dist[j, :i] = np.inf
-        dist[j, i:j] = np.inf
-        dist[j+1:, j] = np.inf
+        dist[i, : i] = np.maximum(dist[i, : i], dist[j, : i])
+        dist[j + 1:, i] = np.maximum(dist[j + 1:, i], dist[j + 1:, j])
+        dist[i + 1: j, i] = np.maximum(dist[i + 1: j, i], dist[j, i + 1: j])
+
+        ################################################################################################################
+
+        dist[j, : i] = np.inf
+        dist[j, i: j] = np.inf
+        dist[j + 1:, j] = np.inf
+
+        ################################################################################################################
 
         clusters[np.where(clusters == clusters[j])[0]] = clusters[i]
 
@@ -50,28 +67,50 @@ class Clustering(object):
     @staticmethod
     def clusterize(weights: np.ndarray, n_clusters: int) -> np.ndarray:
 
-        dist = Clustering._init_distances(weights)
+        """
+        Parameters
+        ----------
+        weights : np.ndarray
+            ???
+        n_clusters : int
+            ???
+        """
 
-        n_weights = weights.shape[0]
+        ################################################################################################################
 
-        clusters = np.arange(n_weights)
+        distances = Clustering._init_distances(weights)
 
-        for _ in range(n_weights - n_clusters):
+        ################################################################################################################
 
-            Clustering._update_clusters(dist, clusters)
+        result = np.arange(weights.shape[0])
 
-        return clusters
+        for _ in range(weights.shape[0] - n_clusters):
+
+            Clustering._update_clusters(distances, result)
+
+        ################################################################################################################
+
+        return result
 
     ####################################################################################################################
 
     @staticmethod
-    def average_over_clusters(weights: np.ndarray, clusters: np.ndarray) -> np.ndarray:
+    def average_over_clusters(weights: np.ndarray, cluster_ids: np.ndarray) -> np.ndarray:
+
+        """
+        Parameters
+        ----------
+        weights : np.ndarray
+            ???
+        cluster_ids : np.ndarray
+            ???
+        """
 
         result = weights.copy()
 
-        for cluster in np.unique(clusters):
+        for cluster_id in np.unique(cluster_ids):
 
-            cluster_indices = np.where(clusters == cluster)
+            cluster_indices = np.where(cluster_ids == cluster_id)[0]
 
             result[cluster_indices] = np.mean(result[cluster_indices], axis = 0)
 

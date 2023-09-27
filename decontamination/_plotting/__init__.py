@@ -13,14 +13,11 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 ########################################################################################################################
 
-def _build_colorbar(ax: plt.Axes, cmap: colors.Colormap, weights: np.ndarray, show_histogram: bool) -> None:
+def _build_colorbar(ax: plt.Axes, cmap: colors.Colormap, weights: np.ndarray, v_min: float, v_max: float, show_histogram: bool) -> None:
 
     ####################################################################################################################
 
     weights = weights[~np.isnan(weights)]
-
-    v_min = weights.min()
-    v_max = weights.max()
 
     ####################################################################################################################
 
@@ -83,6 +80,8 @@ def _display_square(weights: np.ndarray, cmap: str, show_colorbar: bool, show_hi
 
     ####################################################################################################################
 
+    v_min, v_max = np.min(weights), np.max(weights)
+
     cmap = plt.get_cmap(cmap)
 
     ####################################################################################################################
@@ -93,7 +92,7 @@ def _display_square(weights: np.ndarray, cmap: str, show_colorbar: bool, show_hi
 
     if show_colorbar:
 
-        _build_colorbar(ax, cmap, weights, show_histogram)
+        _build_colorbar(ax, cmap, weights, v_min, v_max, show_histogram)
 
     ####################################################################################################################
 
@@ -116,12 +115,11 @@ def _display_hexagonal(weights: np.ndarray, cmap: str, show_colorbar: bool, show
 
     ####################################################################################################################
 
+    v_min, v_max = np.nanmin(weights), np.nanmax(weights)
+
     cmap = plt.get_cmap(cmap)
 
     ####################################################################################################################
-
-    v_min = weights.min()
-    v_max = weights.max()
 
     for i in range(weights.shape[0]):
         for j in range(weights.shape[1]):
@@ -146,7 +144,7 @@ def _display_hexagonal(weights: np.ndarray, cmap: str, show_colorbar: bool, show
 
     if show_colorbar:
 
-        _build_colorbar(ax, cmap, weights, show_histogram)
+        _build_colorbar(ax, cmap, weights, v_min, v_max, show_histogram)
 
     ####################################################################################################################
 

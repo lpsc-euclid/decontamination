@@ -1077,6 +1077,61 @@ def dtype(self):
 
     ####################################################################################################################
 
+    @property
+    def m(self) -&gt; int:
+
+        &#34;&#34;&#34;
+        Returns the number of neuron rows.
+        &#34;&#34;&#34;
+
+        return self._m
+
+    ####################################################################################################################
+
+    @property
+    def n(self) -&gt; int:
+
+        &#34;&#34;&#34;
+        Returns the number of neuron columns.
+        &#34;&#34;&#34;
+
+        return self._n
+
+    ####################################################################################################################
+
+    @property
+    def dim(self) -&gt; int:
+
+        &#34;&#34;&#34;
+        Returns the dimensionality of the input data.
+        &#34;&#34;&#34;
+
+        return self._dim
+
+    ####################################################################################################################
+
+    @property
+    def dtype(self) -&gt; Type[np.single]:
+
+        &#34;&#34;&#34;
+        Returns the neural network data type.
+        &#34;&#34;&#34;
+
+        return self._dtype
+
+    ####################################################################################################################
+
+    @property
+    def topology(self) -&gt; str:
+
+        &#34;&#34;&#34;
+        Returns the model topology, **&#39;square&#39;** or **&#39;hexagonal&#39;**.
+        &#34;&#34;&#34;
+
+        return self._topology
+
+    ####################################################################################################################
+
     def get_weights(self) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
@@ -1279,6 +1334,94 @@ def dtype(self):
 <li>decontamination._algo.som_online.SOM_Online</li>
 <li>decontamination._algo.som_pca.SOM_PCA</li>
 </ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="decontamination.SOM_Abstract.m"><code class="name">var <span class="ident">m</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Returns the number of neuron rows.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def m(self) -&gt; int:
+
+    &#34;&#34;&#34;
+    Returns the number of neuron rows.
+    &#34;&#34;&#34;
+
+    return self._m</code></pre>
+</details>
+</dd>
+<dt id="decontamination.SOM_Abstract.n"><code class="name">var <span class="ident">n</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Returns the number of neuron columns.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def n(self) -&gt; int:
+
+    &#34;&#34;&#34;
+    Returns the number of neuron columns.
+    &#34;&#34;&#34;
+
+    return self._n</code></pre>
+</details>
+</dd>
+<dt id="decontamination.SOM_Abstract.dim"><code class="name">var <span class="ident">dim</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Returns the dimensionality of the input data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dim(self) -&gt; int:
+
+    &#34;&#34;&#34;
+    Returns the dimensionality of the input data.
+    &#34;&#34;&#34;
+
+    return self._dim</code></pre>
+</details>
+</dd>
+<dt id="decontamination.SOM_Abstract.dtype"><code class="name">var <span class="ident">dtype</span> : Type[np.float32]</code></dt>
+<dd>
+<div class="desc"><p>Returns the neural network data type.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dtype(self) -&gt; Type[np.single]:
+
+    &#34;&#34;&#34;
+    Returns the neural network data type.
+    &#34;&#34;&#34;
+
+    return self._dtype</code></pre>
+</details>
+</dd>
+<dt id="decontamination.SOM_Abstract.topology"><code class="name">var <span class="ident">topology</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Returns the model topology, <strong>'square'</strong> or <strong>'hexagonal'</strong>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def topology(self) -&gt; str:
+
+    &#34;&#34;&#34;
+    Returns the model topology, **&#39;square&#39;** or **&#39;hexagonal&#39;**.
+    &#34;&#34;&#34;
+
+    return self._topology</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="decontamination.SOM_Abstract.init_rand"><code class="name flex">
@@ -2608,6 +2751,11 @@ number of samples in the dataset to analyze.</p>
 <li><code><a title="decontamination.SOM_Abstract.get_distance_map" href="#decontamination.SOM_Abstract.get_distance_map">get_distance_map</a></code></li>
 <li><code><a title="decontamination.SOM_Abstract.get_activation_map" href="#decontamination.SOM_Abstract.get_activation_map">get_activation_map</a></code></li>
 <li><code><a title="decontamination.SOM_Abstract.get_winners" href="#decontamination.SOM_Abstract.get_winners">get_winners</a></code></li>
+<li><code><a title="decontamination.SOM_Abstract.m" href="#decontamination.SOM_Abstract.m">m</a></code></li>
+<li><code><a title="decontamination.SOM_Abstract.n" href="#decontamination.SOM_Abstract.n">n</a></code></li>
+<li><code><a title="decontamination.SOM_Abstract.dim" href="#decontamination.SOM_Abstract.dim">dim</a></code></li>
+<li><code><a title="decontamination.SOM_Abstract.dtype" href="#decontamination.SOM_Abstract.dtype">dtype</a></code></li>
+<li><code><a title="decontamination.SOM_Abstract.topology" href="#decontamination.SOM_Abstract.topology">topology</a></code></li>
 </ul>
 </li>
 <li>

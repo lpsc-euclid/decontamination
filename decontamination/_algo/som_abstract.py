@@ -282,9 +282,9 @@ class SOM_Abstract(object):
 
                     data = np.array(model_group[name]).astype(dtype = self._dtype)
 
-                    data = data.byteswap(inplace = True).newbyteorder() \
-                           if data.dtype.byteorder == '>' else \
-                           data
+                    if data.dtype.byteorder == '>':
+
+                        data = data.byteswap(inplace = True).newbyteorder()
 
                     setattr(self, field, data)
 

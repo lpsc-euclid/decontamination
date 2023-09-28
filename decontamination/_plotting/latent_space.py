@@ -13,6 +13,13 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 ########################################################################################################################
 
+# For a hexagon with a radius of 1:
+
+H_LENGTH = 3.0 / 2.0     # 1.500
+V_LENGTH = np.sqrt(3.0)  # 1.732
+
+########################################################################################################################
+
 def _build_colorbar(ax: plt.Axes, cmap: colors.Colormap, weights: np.ndarray, v_min: float, v_max: float, show_histogram: bool, n_histogram_bins: int) -> None:
 
     ####################################################################################################################
@@ -44,7 +51,7 @@ def _build_colorbar(ax: plt.Axes, cmap: colors.Colormap, weights: np.ndarray, v_
 
 ########################################################################################################################
 
-def _setup_ticks(ax: plt.Axes, grid_x: int, grid_y: int, hori_spacing: float, vert_spacing: float) -> None:
+def _setup_ticks(ax: plt.Axes, grid_x: int, grid_y: int) -> None:
 
     ####################################################################################################################
 
@@ -60,8 +67,8 @@ def _setup_ticks(ax: plt.Axes, grid_x: int, grid_y: int, hori_spacing: float, ve
 
     ####################################################################################################################
 
-    ax.set_xticks([j * hori_spacing for j in range(0, grid_y + 1, y_interval)])
-    ax.set_yticks([i * vert_spacing for i in range(0, grid_x + 1, x_interval)])
+    ax.set_xticks([j * H_LENGTH for j in range(0, grid_y + 1, y_interval)])
+    ax.set_yticks([i * V_LENGTH for i in range(0, grid_x + 1, x_interval)])
 
     ####################################################################################################################
 
@@ -76,17 +83,23 @@ def _display_latent_space_big(weights: np.ndarray, cmap: str, show_colorbar: boo
 
     ####################################################################################################################
 
-    _setup_ticks(ax, weights.shape[0], weights.shape[1], 1.0, 1.0)
+    _setup_ticks(ax, weights.shape[0], weights.shape[1])
 
-    ####################################################################################################################
-
-    v_min, v_max = np.min(weights), np.max(weights)
+    v_min, v_max = np.nanmin(weights), np.nanmax(weights)
 
     cmap = plt.get_cmap(cmap)
 
     ####################################################################################################################
 
-    ax.imshow(weights, cmap = cmap)
+    ax.imshow(weights, cmap = cmap, extent = (
+        0, weights.shape[1] * H_LENGTH,
+        weights.shape[0] * V_LENGTH, 0,
+    ))
+
+    ####################################################################################################################
+
+    ax.set_xlim(0, weights.shape[1] * H_LENGTH)
+    ax.set_ylim(0, weights.shape[0] * V_LENGTH)
 
     ####################################################################################################################
 
@@ -100,22 +113,13 @@ def _display_latent_space_big(weights: np.ndarray, cmap: str, show_colorbar: boo
 
 ########################################################################################################################
 
-def _display_latent_space_square(weights: np.ndarray, cmap: str, show_colorbar: bool, show_histogram: bool, n_histogram_bins: int) -> typing.Tuple[plt.Figure, plt.Axes]:
+def _display_latent_space_square(weights: np.ndarray, cmap: str, antialiased: bool, show_colorbar: bool, show_histogram: bool, n_histogram_bins: int) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     fig, ax = plt.subplots()
 
     ####################################################################################################################
 
-    # Hexagon with a radius of 1
-
-    hori_len = 3.0 / 2.0
-    vert_len = np.sqrt(3.0)
-
-    ####################################################################################################################
-
-    _setup_ticks(ax, weights.shape[0], weights.shape[1], hori_len, vert_len)
-
-    ####################################################################################################################
+    _setup_ticks(ax, weights.shape[0], weights.shape[1])
 
     v_min, v_max = np.nanmin(weights), np.nanmax(weights)
 
@@ -124,21 +128,19 @@ def _display_latent_space_square(weights: np.ndarray, cmap: str, show_colorbar: 
     ####################################################################################################################
 
     for j in range(weights.shape[1]):
-        y = j * hori_len
+        y = j * H_LENGTH
 
         for i in range(weights.shape[0]):
-            x = i * vert_len
+            x = i * V_LENGTH
 
-            ax.add_patch(patches.Rectangle((y, x), hori_len, vert_len, facecolor = cmap((weights[i, j] - v_min) / (v_max - v_min)), edgecolor = 'none', antialiased = False))
+            ax.add_patch(patches.Rectangle((y, x), H_LENGTH, V_LENGTH, facecolor = cmap((weights[i, j] - v_min) / (v_max - v_min)), edgecolor ='none', antialiased = antialiased))
 
     ####################################################################################################################
 
     ax.invert_yaxis()
 
-    ax.autoscale_view(scalex = False, scaley = False)
-
-    ax.set_xlim(0, weights.shape[1] * hori_len)
-    ax.set_ylim(0, weights.shape[0] * vert_len)
+    ax.set_xlim(0, weights.shape[1] * H_LENGTH)
+    ax.set_ylim(0, weights.shape[0] * V_LENGTH)
 
     ####################################################################################################################
 
@@ -152,22 +154,13 @@ def _display_latent_space_square(weights: np.ndarray, cmap: str, show_colorbar: 
 
 ########################################################################################################################
 
-def _display_latent_space_hexagonal(weights: np.ndarray, cmap: str, show_colorbar: bool, show_histogram: bool, n_histogram_bins: int) -> typing.Tuple[plt.Figure, plt.Axes]:
+def _display_latent_space_hexagonal(weights: np.ndarray, cmap: str, antialiased: bool, show_colorbar: bool, show_histogram: bool, n_histogram_bins: int) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     fig, ax = plt.subplots()
 
     ####################################################################################################################
 
-    # Hexagon with a radius of 1
-
-    hori_len = 3.0 / 2.0
-    vert_len = np.sqrt(3.0)
-
-    ####################################################################################################################
-
-    _setup_ticks(ax, weights.shape[0], weights.shape[1], hori_len, vert_len)
-
-    ####################################################################################################################
+    _setup_ticks(ax, weights.shape[0], weights.shape[1])
 
     v_min, v_max = np.nanmin(weights), np.nanmax(weights)
 
@@ -176,25 +169,23 @@ def _display_latent_space_hexagonal(weights: np.ndarray, cmap: str, show_colorba
     ####################################################################################################################
 
     for j in range(weights.shape[1]):
-        y = j * hori_len
+        y = j * H_LENGTH
 
         for i in range(weights.shape[0]):
-            x = i * vert_len
+            x = i * V_LENGTH
 
             if (j & 1) == 1:
 
-                x += 0.5 * vert_len
+                x += 0.5 * V_LENGTH
 
-            ax.add_patch(patches.RegularPolygon((y, x), numVertices = 6, radius = 1.0, orientation = np.pi / 6, facecolor = cmap((weights[i, j] - v_min) / (v_max - v_min)), edgecolor = 'none', antialiased = False))
+            ax.add_patch(patches.RegularPolygon((y, x), numVertices = 6, radius = 1.0, orientation = np.pi / 6, facecolor = cmap((weights[i, j] - v_min) / (v_max - v_min)), edgecolor = 'none', antialiased = antialiased))
 
     ####################################################################################################################
 
     ax.invert_yaxis()
 
-    ax.autoscale_view(scalex = False, scaley = False)
-
-    ax.set_xlim(-1.0, (weights.shape[1] - 1) * hori_len + 1.0)
-    ax.set_ylim(-0.5 * vert_len, weights.shape[0] * vert_len)
+    ax.set_xlim(-1.0, (weights.shape[1] - 1) * H_LENGTH + 1.0)
+    ax.set_ylim(-0.5 * V_LENGTH, weights.shape[0] * V_LENGTH)
 
     ####################################################################################################################
 
@@ -208,7 +199,7 @@ def _display_latent_space_hexagonal(weights: np.ndarray, cmap: str, show_colorba
 
 ########################################################################################################################
 
-def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', cmap: str = 'viridis', show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100) -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', cmap: str = 'viridis', antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Parameters
@@ -219,6 +210,8 @@ def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', cmap:
         Topology of the map, either **'square'** or **'hexagonal'** (default: **'hexagonal'**).
     cmap : str
         Color map (default: **'viridis'**).
+    antialiased : bool
+        Specifies whether antialiasing must be enabled (default: **False**).
     show_frame : bool
         Specifies whether to display the frame (default: **True**).
     show_colorbar : bool
@@ -231,7 +224,7 @@ def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', cmap:
 
     ####################################################################################################################
 
-    if max(weights.shape[0], weights.shape[1]) > 150:
+    if max(weights.shape[0], weights.shape[1]) > 200:
 
         fig, ax = _display_latent_space_big(weights, cmap, show_colorbar, show_histogram, n_histogram_bins)
 
@@ -239,11 +232,11 @@ def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', cmap:
 
         if topology == 'square':
 
-            fig, ax = _display_latent_space_square(weights, cmap, show_colorbar, show_histogram, n_histogram_bins)
+            fig, ax = _display_latent_space_square(weights, cmap, antialiased, show_colorbar, show_histogram, n_histogram_bins)
 
         else:
 
-            fig, ax = _display_latent_space_hexagonal(weights, cmap, show_colorbar, show_histogram, n_histogram_bins)
+            fig, ax = _display_latent_space_hexagonal(weights, cmap, antialiased, show_colorbar, show_histogram, n_histogram_bins)
 
     ####################################################################################################################
 

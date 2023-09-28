@@ -8,14 +8,14 @@ import matplotlib.pyplot as pyplot
 
 ########################################################################################################################
 
+# For a hexagon with a radius of 1:
+
+H_LENGTH = 3.0 / 2.0     # 1.500
+V_LENGTH = np.sqrt(3.0)  # 1.732
+
+########################################################################################################################
+
 def display_clusters_square(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None:
-
-    ####################################################################################################################
-
-    # Hexagon with a radius of 1
-
-    hori_len = 3.0 / 2.0
-    vert_len = np.sqrt(3.0)
 
     ####################################################################################################################
 
@@ -24,10 +24,10 @@ def display_clusters_square(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None:
     ####################################################################################################################
 
     for j in range(n):
-        y = j * hori_len
+        y = j * H_LENGTH
 
         for i in range(m):
-            x = i * vert_len
+            x = i * V_LENGTH
 
             ############################################################################################################
 
@@ -39,10 +39,10 @@ def display_clusters_square(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None:
 
                 ax.add_line(lines.Line2D([
                     y,
-                    y + hori_len,
+                    y + H_LENGTH,
                 ], [
-                    x + vert_len,
-                    x + vert_len,
+                    x + V_LENGTH,
+                    x + V_LENGTH,
                 ], lw = 1, color = 'black'))
 
             ############################################################################################################
@@ -50,11 +50,11 @@ def display_clusters_square(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None:
             if j + 1 < n and cluster_id != cluster_ids[i, j + 1]:
 
                 ax.add_line(lines.Line2D([
-                    y + hori_len,
-                    y + hori_len,
+                    y + H_LENGTH,
+                    y + H_LENGTH,
                 ], [
                     x,
-                    x + vert_len,
+                    x + V_LENGTH,
                 ], lw = 1, color = 'black'))
 
 ########################################################################################################################
@@ -63,28 +63,21 @@ def display_clusters_hexagonal(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None
 
     ####################################################################################################################
 
-    # Hexagon with a radius of 1
-
-    hori_len = 3.0 / 2.0
-    vert_len = np.sqrt(3.0)
-
-    ####################################################################################################################
-
     m, n = cluster_ids.shape
 
     ####################################################################################################################
 
     for j in range(n):
-        y = j * hori_len
+        y = j * H_LENGTH
 
         for i in range(m):
-            x = i * vert_len
+            x = i * V_LENGTH
 
             i2 = i
 
             if (j & 1) == 1:
 
-                x += 0.5 * vert_len
+                x += 0.5 * V_LENGTH
 
                 i2 += 1
 
@@ -100,8 +93,8 @@ def display_clusters_hexagonal(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None
                     y - 0.5,
                     y + 0.5,
                 ], [
-                    x + 0.5 * vert_len,
-                    x + 0.5 * vert_len,
+                    x + 0.5 * V_LENGTH,
+                    x + 0.5 * V_LENGTH,
                 ], lw = 1, color = 'black'))
 
             ############################################################################################################
@@ -116,8 +109,8 @@ def display_clusters_hexagonal(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None
                         y - 1.0,
                         y - 0.5,
                     ], [
-                        x - 0.0 * vert_len,
-                        x + 0.5 * vert_len,
+                        x - 0.0 * V_LENGTH,
+                        x + 0.5 * V_LENGTH,
                     ], lw = 1, color = 'black'))
 
                 ########################################################################################################
@@ -128,8 +121,8 @@ def display_clusters_hexagonal(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None
                         y + 1.0,
                         y + 0.5,
                     ], [
-                        x - 0.0 * vert_len,
-                        x + 0.5 * vert_len,
+                        x - 0.0 * V_LENGTH,
+                        x + 0.5 * V_LENGTH,
                     ], lw = 1, color = 'black'))
 
 ########################################################################################################################
@@ -147,18 +140,12 @@ def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: str = '
         Topology of the map, either **'square'** or **'hexagonal'** (default: **'hexagonal'**).
     """
 
-    if max(cluster_ids.shape[0], cluster_ids.shape[1]) > 150:
+    if max(cluster_ids.shape[0], cluster_ids.shape[1]) > 200 or topology == 'square':
 
-        raise Exception('Method not implemented for map size > 150')
+        display_clusters_square(ax, cluster_ids)
 
     else:
 
-        if topology == 'square':
-
-            display_clusters_square(ax, cluster_ids)
-
-        else:
-
-            display_clusters_hexagonal(ax, cluster_ids)
+        display_clusters_hexagonal(ax, cluster_ids)
 
 ########################################################################################################################

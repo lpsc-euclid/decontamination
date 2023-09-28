@@ -17,11 +17,13 @@ import matplotlib.pyplot as plt
 
 ########################################################################################################################
 
+TOPOLOGY = 'square'
+
+########################################################################################################################
+
 som = decontamination.SOM_Online(0, 0, 0)
 
 som.load('random_model.hdf5')
-
-topology = 'square2'
 
 ########################################################################################################################
 
@@ -29,9 +31,9 @@ clusters = decontamination.Clustering.clusterize(som.get_weights(), 20)
 
 clustered_weights = decontamination.Clustering.average_over_clusters(som.get_weights(), clusters)
 
-fig, ax = decontamination.display_latent_space(clustered_weights[:, 0].reshape(som.m, som.n), topology = topology, n_histogram_bins = np.unique(clusters).shape[0])
+fig, ax = decontamination.display_latent_space(clustered_weights[:, 0].reshape(som.m, som.n), topology = TOPOLOGY, n_histogram_bins = np.unique(clusters).shape[0])
 
-decontamination.display_clusters(ax, clusters.reshape(som.m, som.n), topology = topology)
+decontamination.display_clusters(ax, clusters.reshape(som.m, som.n), topology = TOPOLOGY)
 
 ax.set_xlabel('n, j, y')
 ax.set_ylabel('m, i, x')

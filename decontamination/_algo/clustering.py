@@ -112,7 +112,7 @@ class Clustering(object):
 
             cluster_indices = np.where(cluster_ids == cluster_id)[0]
 
-            result[cluster_indices] = np.nanmean(result[cluster_indices], axis = 0)
+            result[cluster_indices] = np.nanmean(weights[cluster_indices], axis = 0)
 
         return result
 

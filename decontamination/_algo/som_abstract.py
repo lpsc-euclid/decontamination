@@ -279,7 +279,15 @@ class SOM_Abstract(object):
             for name, field in dataset_extra.items():
 
                 try:
-                    setattr(self, field, np.array(model_group[name]).astype(dtype = self._dtype))
+
+                    data = np.array(model_group[name]).astype(dtype = self._dtype)
+
+                    data = data.byteswap(inplace = True).newbyteorder() \
+                           if data.dtype.byteorder == '>' else \
+                           data
+
+                    setattr(self, field, data)
+
                 except KeyError:
                     pass
 

@@ -243,7 +243,7 @@ __all__ = [
 </details>
 </dd>
 <dt id="decontamination.display_latent_space"><code class="name flex">
-<span>def <span class="ident">display_latent_space</span></span>(<span>weights: np.ndarray, topology: str = 'hexagonal', cmap: str = 'viridis', show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100) ‑> Tuple[plt.Figure, plt.Axes]</span>
+<span>def <span class="ident">display_latent_space</span></span>(<span>weights: np.ndarray, topology: str = 'hexagonal', cmap: str = 'viridis', antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100) ‑> Tuple[plt.Figure, plt.Axes]</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="parameters">Parameters</h2>
@@ -254,6 +254,8 @@ __all__ = [
 <dd>Topology of the map, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>'hexagonal'</strong>).</dd>
 <dt><strong><code>cmap</code></strong> :&ensp;<code>str</code></dt>
 <dd>Color map (default: <strong>'viridis'</strong>).</dd>
+<dt><strong><code>antialiased</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Specifies whether antialiasing must be enabled (default: <strong>False</strong>).</dd>
 <dt><strong><code>show_frame</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Specifies whether to display the frame (default: <strong>True</strong>).</dd>
 <dt><strong><code>show_colorbar</code></strong> :&ensp;<code>bool</code></dt>
@@ -267,7 +269,7 @@ __all__ = [
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def display_latent_space(weights: np.ndarray, topology: str = &#39;hexagonal&#39;, cmap: str = &#39;viridis&#39;, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100) -&gt; Tuple[plt.Figure, plt.Axes]:
+<pre><code class="python">def display_latent_space(weights: np.ndarray, topology: str = &#39;hexagonal&#39;, cmap: str = &#39;viridis&#39;, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100) -&gt; Tuple[plt.Figure, plt.Axes]:
 
     &#34;&#34;&#34;
     Parameters
@@ -278,6 +280,8 @@ __all__ = [
         Topology of the map, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **&#39;hexagonal&#39;**).
     cmap : str
         Color map (default: **&#39;viridis&#39;**).
+    antialiased : bool
+        Specifies whether antialiasing must be enabled (default: **False**).
     show_frame : bool
         Specifies whether to display the frame (default: **True**).
     show_colorbar : bool
@@ -290,7 +294,7 @@ __all__ = [
 
     ####################################################################################################################
 
-    if max(weights.shape[0], weights.shape[1]) &gt; 150:
+    if max(weights.shape[0], weights.shape[1]) &gt; 200:
 
         fig, ax = _display_latent_space_big(weights, cmap, show_colorbar, show_histogram, n_histogram_bins)
 
@@ -298,11 +302,11 @@ __all__ = [
 
         if topology == &#39;square&#39;:
 
-            fig, ax = _display_latent_space_square(weights, cmap, show_colorbar, show_histogram, n_histogram_bins)
+            fig, ax = _display_latent_space_square(weights, cmap, antialiased, show_colorbar, show_histogram, n_histogram_bins)
 
         else:
 
-            fig, ax = _display_latent_space_hexagonal(weights, cmap, show_colorbar, show_histogram, n_histogram_bins)
+            fig, ax = _display_latent_space_hexagonal(weights, cmap, antialiased, show_colorbar, show_histogram, n_histogram_bins)
 
     ####################################################################################################################
 
@@ -345,19 +349,13 @@ __all__ = [
         Topology of the map, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **&#39;hexagonal&#39;**).
     &#34;&#34;&#34;
 
-    if max(cluster_ids.shape[0], cluster_ids.shape[1]) &gt; 150:
+    if max(cluster_ids.shape[0], cluster_ids.shape[1]) &gt; 200 or topology == &#39;square&#39;:
 
-        raise Exception(&#39;Method not implemented for map size &gt; 150&#39;)
+        display_clusters_square(ax, cluster_ids)
 
     else:
 
-        if topology == &#39;square&#39;:
-
-            display_clusters_square(ax, cluster_ids)
-
-        else:
-
-            display_clusters_hexagonal(ax, cluster_ids)</code></pre>
+        display_clusters_hexagonal(ax, cluster_ids)</code></pre>
 </details>
 </dd>
 </dl>

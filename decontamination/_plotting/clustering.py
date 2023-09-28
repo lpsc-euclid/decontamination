@@ -43,7 +43,7 @@ def display_clusters_square(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None:
                 ], [
                     x + V_LENGTH,
                     x + V_LENGTH,
-                ], lw = 1, color = 'black'))
+                ], lw = 1, color = 'black', antialiased = True))
 
             ############################################################################################################
 
@@ -55,7 +55,7 @@ def display_clusters_square(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None:
                 ], [
                     x,
                     x + V_LENGTH,
-                ], lw = 1, color = 'black'))
+                ], lw = 1, color = 'black', antialiased = True))
 
 ########################################################################################################################
 
@@ -95,7 +95,7 @@ def display_clusters_hexagonal(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None
                 ], [
                     x + 0.5 * V_LENGTH,
                     x + 0.5 * V_LENGTH,
-                ], lw = 1, color = 'black'))
+                ], lw = 1, color = 'black', antialiased = True))
 
             ############################################################################################################
 
@@ -111,7 +111,7 @@ def display_clusters_hexagonal(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None
                     ], [
                         x - 0.0 * V_LENGTH,
                         x + 0.5 * V_LENGTH,
-                    ], lw = 1, color = 'black'))
+                    ], lw = 1, color = 'black', antialiased = True))
 
                 ########################################################################################################
 
@@ -123,7 +123,7 @@ def display_clusters_hexagonal(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None
                     ], [
                         x - 0.0 * V_LENGTH,
                         x + 0.5 * V_LENGTH,
-                    ], lw = 1, color = 'black'))
+                    ], lw = 1, color = 'black', antialiased = True))
 
 ########################################################################################################################
 

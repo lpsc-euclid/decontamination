@@ -95,7 +95,7 @@ class Clustering(object):
     ####################################################################################################################
 
     @staticmethod
-    def average_over_clusters(weights: np.ndarray, cluster_ids: np.ndarray) -> np.ndarray:
+    def average(weights: np.ndarray, cluster_ids: np.ndarray) -> np.ndarray:
 
         """
         Parameters

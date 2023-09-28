@@ -137,8 +137,6 @@ def _display_latent_space_square(weights: np.ndarray, cmap: str, antialiased: bo
 
     ####################################################################################################################
 
-    ax.invert_yaxis()
-
     ax.set_xlim(0, weights.shape[1] * H_LENGTH)
     ax.set_ylim(0, weights.shape[0] * V_LENGTH)
 
@@ -149,6 +147,8 @@ def _display_latent_space_square(weights: np.ndarray, cmap: str, antialiased: bo
         _build_colorbar(ax, cmap, weights, v_min, v_max, show_histogram, n_histogram_bins)
 
     ####################################################################################################################
+
+    ax.invert_yaxis()
 
     return fig, ax
 
@@ -182,8 +182,6 @@ def _display_latent_space_hexagonal(weights: np.ndarray, cmap: str, antialiased:
 
     ####################################################################################################################
 
-    ax.invert_yaxis()
-
     ax.set_xlim(-1.0, (weights.shape[1] - 1) * H_LENGTH + 1.0)
     ax.set_ylim(-0.5 * V_LENGTH, weights.shape[0] * V_LENGTH)
 
@@ -194,6 +192,8 @@ def _display_latent_space_hexagonal(weights: np.ndarray, cmap: str, antialiased:
         _build_colorbar(ax, cmap, weights, v_min, v_max, show_histogram, n_histogram_bins)
 
     ####################################################################################################################
+
+    ax.invert_yaxis()
 
     return fig, ax
 

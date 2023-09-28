@@ -106,13 +106,13 @@ class Clustering(object):
             ???
         """
 
-        result = weights.copy()
+        result = np.empty_like(weights)
 
         for cluster_id in np.unique(cluster_ids):
 
             cluster_indices = np.where(cluster_ids == cluster_id)[0]
 
-            result[cluster_indices] = np.mean(result[cluster_indices], axis = 0)
+            result[cluster_indices] = np.nanmean(result[cluster_indices], axis = 0)
 
         return result
 

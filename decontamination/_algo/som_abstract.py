@@ -55,7 +55,7 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        self._weights = np.empty(shape = (self._m * self._n, self._dim), dtype = self._dtype)
+        self._weights = np.empty((self._m * self._n, self._dim), dtype = self._dtype)
 
         self._quantization_errors = np.empty(0, dtype = np.float32)
 
@@ -480,13 +480,13 @@ class SOM_Abstract(object):
 
         if self._topology == 'square':
 
-            result = np.full(shape = (self._m, self._n, 8), fill_value = np.nan, dtype = self._dtype)
+            result = np.full((self._m, self._n, 8), np.nan, dtype = self._dtype)
 
             SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
 
         else:
 
-            result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
+            result = np.full((self._m, self._n, 6), np.nan, dtype = self._dtype)
 
             SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
 
@@ -540,7 +540,7 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        return result.copy_to_host().reshape((self._m, self._n, ))
+        return result.copy_to_host().reshape((self._m, self._n))
 
     ####################################################################################################################
 

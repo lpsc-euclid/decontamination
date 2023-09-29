@@ -935,7 +935,7 @@ def dtype(self):
 
         ################################################################################################################
 
-        self._weights = np.empty(shape = (self._m * self._n, self._dim), dtype = self._dtype)
+        self._weights = np.empty((self._m * self._n, self._dim), dtype = self._dtype)
 
         self._quantization_errors = np.empty(0, dtype = np.float32)
 
@@ -1360,13 +1360,13 @@ def dtype(self):
 
         if self._topology == &#39;square&#39;:
 
-            result = np.full(shape = (self._m, self._n, 8), fill_value = np.nan, dtype = self._dtype)
+            result = np.full((self._m, self._n, 8), np.nan, dtype = self._dtype)
 
             SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
 
         else:
 
-            result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
+            result = np.full((self._m, self._n, 6), np.nan, dtype = self._dtype)
 
             SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
 
@@ -1420,7 +1420,7 @@ def dtype(self):
 
         ################################################################################################################
 
-        return result.copy_to_host().reshape((self._m, self._n, ))
+        return result.copy_to_host().reshape((self._m, self._n))
 
     ####################################################################################################################
 
@@ -1891,13 +1891,13 @@ def topology(self) -&gt; str:
 
     if self._topology == &#39;square&#39;:
 
-        result = np.full(shape = (self._m, self._n, 8), fill_value = np.nan, dtype = self._dtype)
+        result = np.full((self._m, self._n, 8), np.nan, dtype = self._dtype)
 
         SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
 
     else:
 
-        result = np.full(shape = (self._m, self._n, 6), fill_value = np.nan, dtype = self._dtype)
+        result = np.full((self._m, self._n, 6), np.nan, dtype = self._dtype)
 
         SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
 
@@ -1968,7 +1968,7 @@ def topology(self) -&gt; str:
 
     ################################################################################################################
 
-    return result.copy_to_host().reshape((self._m, self._n, ))</code></pre>
+    return result.copy_to_host().reshape((self._m, self._n))</code></pre>
 </details>
 </dd>
 <dt id="decontamination.SOM_Abstract.get_winners"><code class="name flex">
@@ -2166,7 +2166,7 @@ def topology(self) -&gt; str:
         total_nb = 0
 
         total_sum = np.zeros((self._dim, ), dtype = np.float64)
-        total_prods = np.zeros((self._dim, self._dim, ), dtype = np.float64)
+        total_prods = np.zeros((self._dim, self._dim), dtype = np.float64)
 
         ################################################################################################################
 
@@ -2239,7 +2239,7 @@ def topology(self) -&gt; str:
     total_nb = 0
 
     total_sum = np.zeros((self._dim, ), dtype = np.float64)
-    total_prods = np.zeros((self._dim, self._dim, ), dtype = np.float64)
+    total_prods = np.zeros((self._dim, self._dim), dtype = np.float64)
 
     ################################################################################################################
 

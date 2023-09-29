@@ -46,14 +46,14 @@ def device_array_from(array: np.ndarray):
 
 ########################################################################################################################
 
-def device_array_empty(shape: typing.Union[typing.Tuple[int], int], dtype: typing.Type[np.single] = np.float32):
+def device_array_empty(shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32):
 
     """
     New device array (see `DeviceArray`), not initialized.
 
     Parameters
     ----------
-    shape : typing.Union[typing.Tuple[int], int]
+    shape : typing.Union[tuple, int]
         Desired shape for the new array.
     dtype : typing.Type[np.single]
         Desired data-type for the new array.
@@ -63,14 +63,14 @@ def device_array_empty(shape: typing.Union[typing.Tuple[int], int], dtype: typin
 
 ########################################################################################################################
 
-def device_array_zeros(shape: typing.Union[typing.Tuple[int], int], dtype: typing.Type[np.single] = np.float32):
+def device_array_zeros(shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32):
 
     """
     New device array (see `DeviceArray`), filled with **0**.
 
     Parameters
     ----------
-    shape : typing.Union[typing.Tuple[int], int]
+    shape : typing.Union[tuple, int]
         Desired shape for the new array.
     dtype : typing.Type[np.single]
         Desired data-type for the new array.
@@ -80,14 +80,14 @@ def device_array_zeros(shape: typing.Union[typing.Tuple[int], int], dtype: typin
 
 ########################################################################################################################
 
-def device_array_full(shape: typing.Union[typing.Tuple[int], int], value: typing.Union[int, float], dtype: typing.Type[np.single] = np.float32):
+def device_array_full(shape: typing.Union[tuple, int], value: typing.Union[int, float], dtype: typing.Type[np.single] = np.float32):
 
     """
     New device array (see `DeviceArray`), filled with **value**.
 
     Parameters
     ----------
-    shape : typing.Union[typing.Tuple[int], int]
+    shape : typing.Union[tuple, int]
         Desired shape for the new array.
     value : typing.Union[int, float]
         Desired value for the new array.
@@ -110,12 +110,12 @@ class DeviceArray(object):
 
     ####################################################################################################################
 
-    def __init__(self, shape: typing.Union[typing.Tuple[int], int], dtype: typing.Type[np.single] = np.float32, content: typing.Optional[typing.Union[int, float, np.ndarray]] = None):
+    def __init__(self, shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32, content: typing.Optional[typing.Union[int, float, np.ndarray]] = None):
 
         """
         Parameters
         ----------
-        shape : typing.Union[typing.Tuple[int], int]
+        shape : typing.Union[tuple, int]
             Desired shape for the new array.
         dtype : typing.Type[np.single]
             Desired data-type for the new array.

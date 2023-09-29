@@ -14,11 +14,11 @@ class Clustering(object):
     ####################################################################################################################
 
     @staticmethod
-    def _init_distances(weights: np.ndarray, enable_gpu: bool, threads_per_block: int) -> np.ndarray:
+    def _init_distances(weights: np.ndarray, enable_gpu: bool, threads_per_blocks: int) -> np.ndarray:
 
         result = device_array_full(2 * (weights.shape[0], ), np.inf, dtype = np.float32)
 
-        _init_distances_kernel[enable_gpu, 2 * (threads_per_block, ), 2 * (weights.shape[0], )](
+        _init_distances_kernel[enable_gpu, 2 * (threads_per_blocks, ), 2 * (weights.shape[0], )](
             result,
             weights
         )
@@ -56,38 +56,47 @@ class Clustering(object):
     ####################################################################################################################
 
     @staticmethod
-    def clusterize(weights: np.ndarray, n_clusters: int, enable_gpu: bool = True, threads_per_block: int = 32) -> np.ndarray:
+    def clusterize(vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 32) -> np.ndarray:
 
         """
-        Clusterizes the input vectors using Lance-Williams hierarchical clustering with complete-linkage
+        Clusterizes the input array using Lance-Williams hierarchical clustering with complete-linkage.
 
         Parameters
         ----------
-        weights : np.ndarray
-            Flat array of input vectors to be clustered
+        vectors : np.ndarray
+            Flat input array to be clustered.
         n_clusters : int
-            Desired number of clusters (number of iterations: weights.shape[0] - n_clusters)
+            Desired number of clusters.
+        enable_gpu : bool
+            If available, run on GPU rather than CPU (default: **True**).
+        threads_per_blocks : int
+            Number of GPU threads per blocks (default: **32**).
+
+        Note
+        ----
+
+        Number of iterations: weights.shape[0] - n_clusters.
 
         Return
         ------
-        Array giving a cluster identifier for each input vector
+        Array giving a cluster identifier for each input vector.
         """
 
         ################################################################################################################
 
         if n_clusters < 1:
 
-            return np.arange(weights.shape[0], dtype = np.int64)
+            return np.arange(vectors.shape[0], dtype = np.int64)
 
         ################################################################################################################
 
-        distances = Clustering._init_distances(weights, enable_gpu = enable_gpu, threads_per_block = threads_per_block)
+        distances = Clustering._init_distances(vectors, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
         ################################################################################################################
 
-        result = np.arange(weights.shape[0])
+        result = np.arange(vectors.shape[0])
 
-        for _ in range(weights.shape[0] - n_clusters):
+        for _ in range(vectors.shape[0] - n_clusters):
 
             Clustering._update_clusters(distances, result)
 
@@ -101,14 +110,14 @@ class Clustering(object):
     def average(vectors: np.ndarray, cluster_ids: np.ndarray) -> np.ndarray:
 
         """
-        Averages input values into each cluster
+        Performs averaging per cluster.
 
         Parameters
         ----------
         vectors : np.ndarray
-            Flat array of input values or vectors
+            Flat input array.
         cluster_ids : np.ndarray
-            Array of cluster ids
+            Array of cluster ids.
         """
 
         result = np.empty_like(vectors)

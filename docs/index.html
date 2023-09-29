@@ -143,13 +143,13 @@ __all__ = [
 </details>
 </dd>
 <dt id="decontamination.device_array_empty"><code class="name flex">
-<span>def <span class="ident">device_array_empty</span></span>(<span>shape: Union[Tuple[int], int], dtype: Type[np.float32] = np.float32)</span>
+<span>def <span class="ident">device_array_empty</span></span>(<span>shape: Union[tuple, int], dtype: Type[np.float32] = np.float32)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>New device array (see <code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code>), not initialized.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>shape</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
+<dt><strong><code>shape</code></strong> :&ensp;<code>Union[tuple, int]</code></dt>
 <dd>Desired shape for the new array.</dd>
 <dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
 <dd>Desired data-type for the new array.</dd>
@@ -158,14 +158,14 @@ __all__ = [
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def device_array_empty(shape: Union[Tuple[int], int], dtype: Type[np.single] = np.float32):
+<pre><code class="python">def device_array_empty(shape: Union[tuple, int], dtype: Type[np.single] = np.float32):
 
     &#34;&#34;&#34;
     New device array (see `DeviceArray`), not initialized.
 
     Parameters
     ----------
-    shape : Union[Tuple[int], int]
+    shape : Union[tuple, int]
         Desired shape for the new array.
     dtype : Type[np.single]
         Desired data-type for the new array.
@@ -175,13 +175,13 @@ __all__ = [
 </details>
 </dd>
 <dt id="decontamination.device_array_zeros"><code class="name flex">
-<span>def <span class="ident">device_array_zeros</span></span>(<span>shape: Union[Tuple[int], int], dtype: Type[np.float32] = np.float32)</span>
+<span>def <span class="ident">device_array_zeros</span></span>(<span>shape: Union[tuple, int], dtype: Type[np.float32] = np.float32)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>New device array (see <code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code>), filled with <strong>0</strong>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>shape</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
+<dt><strong><code>shape</code></strong> :&ensp;<code>Union[tuple, int]</code></dt>
 <dd>Desired shape for the new array.</dd>
 <dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
 <dd>Desired data-type for the new array.</dd>
@@ -190,14 +190,14 @@ __all__ = [
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def device_array_zeros(shape: Union[Tuple[int], int], dtype: Type[np.single] = np.float32):
+<pre><code class="python">def device_array_zeros(shape: Union[tuple, int], dtype: Type[np.single] = np.float32):
 
     &#34;&#34;&#34;
     New device array (see `DeviceArray`), filled with **0**.
 
     Parameters
     ----------
-    shape : Union[Tuple[int], int]
+    shape : Union[tuple, int]
         Desired shape for the new array.
     dtype : Type[np.single]
         Desired data-type for the new array.
@@ -207,13 +207,13 @@ __all__ = [
 </details>
 </dd>
 <dt id="decontamination.device_array_full"><code class="name flex">
-<span>def <span class="ident">device_array_full</span></span>(<span>shape: Union[Tuple[int], int], value: Union[int, float], dtype: Type[np.float32] = np.float32)</span>
+<span>def <span class="ident">device_array_full</span></span>(<span>shape: Union[tuple, int], value: Union[int, float], dtype: Type[np.float32] = np.float32)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>New device array (see <code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code>), filled with <strong>value</strong>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>shape</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
+<dt><strong><code>shape</code></strong> :&ensp;<code>Union[tuple, int]</code></dt>
 <dd>Desired shape for the new array.</dd>
 <dt><strong><code>value</code></strong> :&ensp;<code>Union[int, float]</code></dt>
 <dd>Desired value for the new array.</dd>
@@ -224,14 +224,14 @@ __all__ = [
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def device_array_full(shape: Union[Tuple[int], int], value: Union[int, float], dtype: Type[np.single] = np.float32):
+<pre><code class="python">def device_array_full(shape: Union[tuple, int], value: Union[int, float], dtype: Type[np.single] = np.float32):
 
     &#34;&#34;&#34;
     New device array (see `DeviceArray`), filled with **value**.
 
     Parameters
     ----------
-    shape : Union[Tuple[int], int]
+    shape : Union[tuple, int]
         Desired shape for the new array.
     value : Union[int, float]
         Desired value for the new array.
@@ -243,7 +243,7 @@ __all__ = [
 </details>
 </dd>
 <dt id="decontamination.display_latent_space"><code class="name flex">
-<span>def <span class="ident">display_latent_space</span></span>(<span>weights: np.ndarray, topology: str = 'hexagonal', cmap: str = 'viridis', antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100) ‑> Tuple[plt.Figure, plt.Axes]</span>
+<span>def <span class="ident">display_latent_space</span></span>(<span>weights: np.ndarray, topology: str = 'hexagonal', v_min: float = None, v_max: float = None, cmap: str = 'viridis', log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100, cluster_ids: np.ndarray = None) ‑> Tuple[plt.Figure, plt.Axes]</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="parameters">Parameters</h2>
@@ -254,8 +254,14 @@ __all__ = [
 <dd>Topology of the map, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>'hexagonal'</strong>).</dd>
 <dt><strong><code>cmap</code></strong> :&ensp;<code>str</code></dt>
 <dd>Color map (default: <strong>'viridis'</strong>).</dd>
+<dt><strong><code>v_min</code></strong> :&ensp;<code>float</code></dt>
+<dd>??? (default: <strong>None</strong>).</dd>
+<dt><strong><code>v_max</code></strong> :&ensp;<code>float</code></dt>
+<dd>??? (default: <strong>None</strong>).</dd>
+<dt><strong><code>log_scale</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Specifies whether to enable the logarithm scaling (default: <strong>False</strong>).</dd>
 <dt><strong><code>antialiased</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Specifies whether antialiasing must be enabled (default: <strong>False</strong>).</dd>
+<dd>Specifies whether to enable the antialiasing (default: <strong>False</strong>).</dd>
 <dt><strong><code>show_frame</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Specifies whether to display the frame (default: <strong>True</strong>).</dd>
 <dt><strong><code>show_colorbar</code></strong> :&ensp;<code>bool</code></dt>
@@ -263,13 +269,15 @@ __all__ = [
 <dt><strong><code>show_histogram</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Specifies whether to display the histogram (default: <strong>True</strong>).</dd>
 <dt><strong><code>n_histogram_bins</code></strong> :&ensp;<code>bool</code></dt>
-<dd>???</dd>
+<dd>Number of histogram bins (default: <strong>None</strong>).</dd>
+<dt><strong><code>cluster_ids</code></strong> :&ensp;<code>np.ndarray</code></dt>
+<dd>Array of cluster ids (see <code><a title="decontamination.Clustering" href="#decontamination.Clustering">Clustering</a></code>, default: <strong>None</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def display_latent_space(weights: np.ndarray, topology: str = &#39;hexagonal&#39;, cmap: str = &#39;viridis&#39;, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100) -&gt; Tuple[plt.Figure, plt.Axes]:
+<pre><code class="python">def display_latent_space(weights: np.ndarray, topology: str = &#39;hexagonal&#39;, v_min: float = None, v_max: float = None, cmap: str = &#39;viridis&#39;, log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100, cluster_ids: np.ndarray = None) -&gt; Tuple[plt.Figure, plt.Axes]:
 
     &#34;&#34;&#34;
     Parameters
@@ -280,8 +288,14 @@ __all__ = [
         Topology of the map, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **&#39;hexagonal&#39;**).
     cmap : str
         Color map (default: **&#39;viridis&#39;**).
+    v_min : float
+        ??? (default: **None**).
+    v_max : float
+        ??? (default: **None**).
+    log_scale : bool
+        Specifies whether to enable the logarithm scaling (default: **False**).
     antialiased : bool
-        Specifies whether antialiasing must be enabled (default: **False**).
+        Specifies whether to enable the antialiasing (default: **False**).
     show_frame : bool
         Specifies whether to display the frame (default: **True**).
     show_colorbar : bool
@@ -289,30 +303,46 @@ __all__ = [
     show_histogram : bool
         Specifies whether to display the histogram (default: **True**).
     n_histogram_bins : bool
-        ???
+        Number of histogram bins (default: **None**).
+    cluster_ids : np.ndarray
+        Array of cluster ids (see `Clustering`, default: **None**).
     &#34;&#34;&#34;
+
+    ####################################################################################################################
+
+    if len(weights.shape) != 2:
+
+        raise ValueError(&#39;Invalid latent space shape, must be (m, n)&#39;)
 
     ####################################################################################################################
 
     if max(weights.shape[0], weights.shape[1]) &gt; 200:
 
-        fig, ax = _display_latent_space_big(weights, cmap, show_colorbar, show_histogram, n_histogram_bins)
+        fig, ax = _display_latent_space_big(weights, v_min, v_max, cmap, log_scale, show_colorbar, show_histogram, n_histogram_bins)
 
     else:
 
         if topology == &#39;square&#39;:
 
-            fig, ax = _display_latent_space_square(weights, cmap, antialiased, show_colorbar, show_histogram, n_histogram_bins)
+            fig, ax = _display_latent_space_square(weights, v_min, v_max, cmap, log_scale, antialiased, show_colorbar, show_histogram, n_histogram_bins)
 
         else:
 
-            fig, ax = _display_latent_space_hexagonal(weights, cmap, antialiased, show_colorbar, show_histogram, n_histogram_bins)
+            fig, ax = _display_latent_space_hexagonal(weights, v_min, v_max, cmap, log_scale, antialiased, show_colorbar, show_histogram, n_histogram_bins)
+
+    ####################################################################################################################
+
+    if cluster_ids is not None:
+
+        clustering.display_clusters(ax, cluster_ids.reshape(weights.shape[0], weights.shape[1]), topology = topology)
 
     ####################################################################################################################
 
     ax.set_frame_on(show_frame)
 
     ax.set_aspect(&#39;equal&#39;)
+
+    ax.invert_yaxis()
 
     ####################################################################################################################
 
@@ -328,7 +358,7 @@ __all__ = [
 <dt><strong><code>ax</code></strong> :&ensp;<code>pyplot.Axes</code></dt>
 <dd>???</dd>
 <dt><strong><code>cluster_ids</code></strong> :&ensp;<code>np.ndarray</code></dt>
-<dd>???</dd>
+<dd>Array of cluster ids.</dd>
 <dt><strong><code>topology</code></strong> :&ensp;<code>str</code></dt>
 <dd>Topology of the map, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>'hexagonal'</strong>).</dd>
 </dl></div>
@@ -344,7 +374,7 @@ __all__ = [
     ax : pyplot.Axes
         ???
     cluster_ids : np.ndarray
-        ???
+        Array of cluster ids.
     topology : str
         Topology of the map, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **&#39;hexagonal&#39;**).
     &#34;&#34;&#34;
@@ -365,7 +395,7 @@ __all__ = [
 <dl>
 <dt id="decontamination.jit"><code class="flex name class">
 <span>class <span class="ident">jit</span></span>
-<span>(</span><span>kernel: bool = False, parallel: bool = False)</span>
+<span>(</span><span>kernel: bool = False, fastmath: bool = False, parallel: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Decorator to recompile Python functions into native CPU/GPU ones.</p>
@@ -373,6 +403,8 @@ __all__ = [
 <dl>
 <dt><strong><code>kernel</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Indicates whether this function is a CPU/GPU kernel (default: <strong>False</strong>).</dd>
+<dt><strong><code>fastmath</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Enables fast-math optimizations when running on CPU (default: <strong>False</strong>).</dd>
 <dt><strong><code>parallel</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Enables automatic parallelization when running on CPU (default: <strong>False</strong>).</dd>
 </dl>
@@ -436,13 +468,15 @@ print(result.copy_to_host())
 
     ####################################################################################################################
 
-    def __init__(self, kernel: bool = False, parallel: bool = False):
+    def __init__(self, kernel: bool = False, fastmath: bool = False, parallel: bool = False):
 
         &#34;&#34;&#34;
         Parameters
         ----------
         kernel : bool
             Indicates whether this function is a CPU/GPU kernel (default: **False**).
+        fastmath : bool
+            Enables fast-math optimizations when running on CPU (default: **False**).
         parallel : bool
             Enables automatic parallelization when running on CPU (default: **False**).
 
@@ -488,8 +522,9 @@ print(result.copy_to_host())
             print(result.copy_to_host())
         &#34;&#34;&#34;
 
-        self.kernel = kernel
-        self.parallel = parallel
+        self._kernel = kernel
+        self._fastmath = fastmath
+        self._parallel = parallel
 
     ####################################################################################################################
 
@@ -548,7 +583,7 @@ print(result.copy_to_host())
 
     def __call__(self, funct: Callable):
 
-        if not self.kernel and not funct.__name__.endswith(&#39;_xpu&#39;):
+        if not self._kernel and not funct.__name__.endswith(&#39;_xpu&#39;):
 
             raise Exception(f&#39;Function `{funct.__name__}` name must ends with `_xpu`&#39;)
 
@@ -572,9 +607,9 @@ print(result.copy_to_host())
 
         funct_cpu = eval(name_cpu, funct.__globals__)
 
-        if not self.kernel:
+        if not self._kernel:
 
-            jit._inject_cpu_funct(funct, nb.njit(funct_cpu, parallel = self.parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu)
+            jit._inject_cpu_funct(funct, nb.njit(funct_cpu, fastmath = self._fastmath, parallel = self._parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu)
 
         ################################################################################################################
         # NUMBA ON CPU                                                                                                 #
@@ -590,7 +625,7 @@ print(result.copy_to_host())
 
         funct_gpu = eval(name_gpu, funct.__globals__)
 
-        if not self.kernel:
+        if not self._kernel:
 
             jit._inject_gpu_funct(funct, cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else dont_call)
 
@@ -598,7 +633,7 @@ print(result.copy_to_host())
         # KERNEL                                                                                                       #
         ################################################################################################################
 
-        funct = Kernel(funct_cpu, funct_gpu, parallel = self.parallel) if self.kernel else dont_call
+        funct = Kernel(funct_cpu, funct_gpu, fastmath = self._fastmath, parallel = self._parallel) if self._kernel else dont_call
 
         ################################################################################################################
 
@@ -607,7 +642,7 @@ print(result.copy_to_host())
 </dd>
 <dt id="decontamination.DeviceArray"><code class="flex name class">
 <span>class <span class="ident">DeviceArray</span></span>
-<span>(</span><span>shape: Union[Tuple[int], int], dtype: Type[np.float32] = np.float32, content: Union[int, float, np.ndarray, ForwardRef(None)] = None)</span>
+<span>(</span><span>shape: Union[tuple, int], dtype: Type[np.float32] = np.float32, content: Union[int, float, np.ndarray, ForwardRef(None)] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Device array to be used when calling a CPU/GPU kernel.</p>
@@ -615,7 +650,7 @@ print(result.copy_to_host())
 to instantiate a device array.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>shape</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
+<dt><strong><code>shape</code></strong> :&ensp;<code>Union[tuple, int]</code></dt>
 <dd>Desired shape for the new array.</dd>
 <dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
 <dd>Desired data-type for the new array.</dd>
@@ -637,12 +672,12 @@ to instantiate a device array.</p>
 
     ####################################################################################################################
 
-    def __init__(self, shape: Union[Tuple[int], int], dtype: Type[np.single] = np.float32, content: Optional[Union[int, float, np.ndarray]] = None):
+    def __init__(self, shape: Union[tuple, int], dtype: Type[np.single] = np.float32, content: Optional[Union[int, float, np.ndarray]] = None):
 
         &#34;&#34;&#34;
         Parameters
         ----------
-        shape : Union[Tuple[int], int]
+        shape : Union[tuple, int]
             Desired shape for the new array.
         dtype : Type[np.single]
             Desired data-type for the new array.
@@ -706,7 +741,7 @@ to instantiate a device array.</p>
                 if float(self._content) == 0.0:
                     self._instance = cu.device_array(shape = self._shape, dtype = self._dtype)
                 else:
-                    self._instance = cu.device_array_like(np.full(shape = self._shape, fill_value = self._content, dtype = self._dtype))
+                    self._instance = cu.to_device(np.full(shape = self._shape, fill_value = self._content, dtype = self._dtype))
 
             else:
 
@@ -938,6 +973,7 @@ def dtype(self):
                 yield [i + i_offset, j * 0.8660254037844386]  # √3/2 = 0.8660254037844386
 
     ####################################################################################################################
+
     def _rebuild_topography(self):
 
         if self._topology == &#39;square&#39;:
@@ -1054,7 +1090,9 @@ def dtype(self):
 
             model_group = file.create_group(&#39;model&#39;, track_order = True)
 
-            # HEADERS #
+            ############################################################################################################
+            # HEADERS                                                                                                  #
+            ############################################################################################################
 
             for name, field in header_extra.items():
 
@@ -1064,7 +1102,9 @@ def dtype(self):
 
                     model_group.attrs[name] = data
 
-            # DATASETS #
+            ############################################################################################################
+            # DATASETS                                                                                                 #
+            ############################################################################################################
 
             for name, field in dataset_extra.items():
 
@@ -1110,22 +1150,48 @@ def dtype(self):
 
             model_group = file[&#39;model&#39;]
 
-            # HEADERS #
+            ############################################################################################################
+            # HEADERS                                                                                                  #
+            ############################################################################################################
 
             for name, field in header_extra.items():
 
                 try:
-                    setattr(self, field, model_group.attrs[name])
+
+                    value = model_group.attrs[name]
+
+                    if isinstance(value, np.int32) or isinstance(value, np.int64):
+
+                        setattr(self, field, int(value))
+
+                    elif isinstance(value, np.float32) or isinstance(value, np.float64):
+
+                        setattr(self, field, float(value))
+
+                    else:
+
+                        setattr(self, field, value)
+
                 except KeyError:
+
                     pass
 
-            # DATASETS #
+            ############################################################################################################
+            # DATASETS                                                                                                 #
+            ############################################################################################################
 
             for name, field in dataset_extra.items():
 
                 try:
-                    setattr(self, field, np.array(model_group[name]))
+
+                    array = np.array(model_group[name])
+
+                    array = array.astype(self._dtype)
+
+                    setattr(self, field, array)
+
                 except KeyError:
+
                     pass
 
         ################################################################################################################
@@ -1331,9 +1397,9 @@ def dtype(self):
         dataset : Union[np.ndarray, Callable]
             Dataset array or generator builder.
         enable_gpu : bool
-            If available, run on GPU rather than CPU (default: **True**)
+            If available, run on GPU rather than CPU (default: **True**).
         threads_per_blocks : Union[Tuple[int], int]
-            Number of GPU threads per blocks (default: **1024**)
+            Number of GPU threads per blocks (default: **1024**).
         &#34;&#34;&#34;
 
         ################################################################################################################
@@ -1344,7 +1410,7 @@ def dtype(self):
 
         ################################################################################################################
 
-        result = device_array_zeros(self._m * self._n, dtype = np.int64)
+        result = device_array_zeros(shape = (self._m * self._n, ), dtype = np.int64)
 
         ################################################################################################################
 
@@ -1368,9 +1434,9 @@ def dtype(self):
         dataset : np.ndarray
             Dataset array.
         enable_gpu : bool
-            If available, run on GPU rather than CPU (default: **True**)
+            If available, run on GPU rather than CPU (default: **True**).
         threads_per_blocks : Union[Tuple[int], int]
-            Number of GPU threads per blocks (default: **1024**)
+            Number of GPU threads per blocks (default: **1024**).
         &#34;&#34;&#34;
 
         ################################################################################################################
@@ -1600,7 +1666,9 @@ def topology(self) -&gt; str:
 
         model_group = file.create_group(&#39;model&#39;, track_order = True)
 
-        # HEADERS #
+        ############################################################################################################
+        # HEADERS                                                                                                  #
+        ############################################################################################################
 
         for name, field in header_extra.items():
 
@@ -1610,7 +1678,9 @@ def topology(self) -&gt; str:
 
                 model_group.attrs[name] = data
 
-        # DATASETS #
+        ############################################################################################################
+        # DATASETS                                                                                                 #
+        ############################################################################################################
 
         for name, field in dataset_extra.items():
 
@@ -1669,22 +1739,48 @@ def topology(self) -&gt; str:
 
         model_group = file[&#39;model&#39;]
 
-        # HEADERS #
+        ############################################################################################################
+        # HEADERS                                                                                                  #
+        ############################################################################################################
 
         for name, field in header_extra.items():
 
             try:
-                setattr(self, field, model_group.attrs[name])
+
+                value = model_group.attrs[name]
+
+                if isinstance(value, np.int32) or isinstance(value, np.int64):
+
+                    setattr(self, field, int(value))
+
+                elif isinstance(value, np.float32) or isinstance(value, np.float64):
+
+                    setattr(self, field, float(value))
+
+                else:
+
+                    setattr(self, field, value)
+
             except KeyError:
+
                 pass
 
-        # DATASETS #
+        ############################################################################################################
+        # DATASETS                                                                                                 #
+        ############################################################################################################
 
         for name, field in dataset_extra.items():
 
             try:
-                setattr(self, field, np.array(model_group[name]))
+
+                array = np.array(model_group[name])
+
+                array = array.astype(self._dtype)
+
+                setattr(self, field, array)
+
             except KeyError:
+
                 pass
 
     ################################################################################################################
@@ -1831,9 +1927,9 @@ def topology(self) -&gt; str:
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
 <dd>Dataset array or generator builder.</dd>
 <dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
-<dd>If available, run on GPU rather than CPU (default: <strong>True</strong>)</dd>
+<dd>If available, run on GPU rather than CPU (default: <strong>True</strong>).</dd>
 <dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
-<dd>Number of GPU threads per blocks (default: <strong>1024</strong>)</dd>
+<dd>Number of GPU threads per blocks (default: <strong>1024</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1849,9 +1945,9 @@ def topology(self) -&gt; str:
     dataset : Union[np.ndarray, Callable]
         Dataset array or generator builder.
     enable_gpu : bool
-        If available, run on GPU rather than CPU (default: **True**)
+        If available, run on GPU rather than CPU (default: **True**).
     threads_per_blocks : Union[Tuple[int], int]
-        Number of GPU threads per blocks (default: **1024**)
+        Number of GPU threads per blocks (default: **1024**).
     &#34;&#34;&#34;
 
     ################################################################################################################
@@ -1862,7 +1958,7 @@ def topology(self) -&gt; str:
 
     ################################################################################################################
 
-    result = device_array_zeros(self._m * self._n, dtype = np.int64)
+    result = device_array_zeros(shape = (self._m * self._n, ), dtype = np.int64)
 
     ################################################################################################################
 
@@ -1885,9 +1981,9 @@ def topology(self) -&gt; str:
 <dt><strong><code>dataset</code></strong> :&ensp;<code>np.ndarray</code></dt>
 <dd>Dataset array.</dd>
 <dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
-<dd>If available, run on GPU rather than CPU (default: <strong>True</strong>)</dd>
+<dd>If available, run on GPU rather than CPU (default: <strong>True</strong>).</dd>
 <dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
-<dd>Number of GPU threads per blocks (default: <strong>1024</strong>)</dd>
+<dd>Number of GPU threads per blocks (default: <strong>1024</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1903,9 +1999,9 @@ def topology(self) -&gt; str:
     dataset : np.ndarray
         Dataset array.
     enable_gpu : bool
-        If available, run on GPU rather than CPU (default: **True**)
+        If available, run on GPU rather than CPU (default: **True**).
     threads_per_blocks : Union[Tuple[int], int]
-        Number of GPU threads per blocks (default: **1024**)
+        Number of GPU threads per blocks (default: **1024**).
     &#34;&#34;&#34;
 
     ################################################################################################################
@@ -2777,28 +2873,16 @@ number of samples in the dataset to analyze.</p>
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(parallel = True)
-    def _init_distances(weights: np.ndarray) -&gt; np.ndarray:
+    def _init_distances(weights: np.ndarray, enable_gpu: bool, threads_per_blocks: int) -&gt; np.ndarray:
 
-        ################################################################################################################
+        result = device_array_full(2 * (weights.shape[0], ), np.inf, dtype = np.float32)
 
-        result = np.full((weights.shape[0], weights.shape[0]), np.inf, dtype = np.float32)
+        _init_distances_kernel[enable_gpu, 2 * (threads_per_blocks, ), 2 * (weights.shape[0], )](
+            result,
+            weights
+        )
 
-        ################################################################################################################
-
-        for i in nb.prange(weights.shape[0]):
-
-            row = result[i]
-
-            weight_i = weights[i]
-
-            for j in range(i):
-
-                row[j] = np.sum((weight_i - weights[j]) ** 2)
-
-        ################################################################################################################
-
-        return result
+        return result.copy_to_host()
 
     ####################################################################################################################
 
@@ -2831,26 +2915,47 @@ number of samples in the dataset to analyze.</p>
     ####################################################################################################################
 
     @staticmethod
-    def clusterize(weights: np.ndarray, n_clusters: int) -&gt; np.ndarray:
+    def clusterize(vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 32) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
+        Clusterizes the input array using Lance-Williams hierarchical clustering with complete-linkage.
+
         Parameters
         ----------
-        weights : np.ndarray
-            ???
+        vectors : np.ndarray
+            Flat input array to be clustered.
         n_clusters : int
-            ???
+            Desired number of clusters.
+        enable_gpu : bool
+            If available, run on GPU rather than CPU (default: **True**).
+        threads_per_blocks : int
+            Number of GPU threads per blocks (default: **32**).
+
+        Note
+        ----
+
+        Number of iterations: weights.shape[0] - n_clusters.
+
+        Return
+        ------
+        Array giving a cluster identifier for each input vector.
         &#34;&#34;&#34;
 
         ################################################################################################################
 
-        distances = Clustering._init_distances(weights)
+        if n_clusters &lt; 1:
+
+            return np.arange(vectors.shape[0], dtype = np.int64)
 
         ################################################################################################################
 
-        result = np.arange(weights.shape[0])
+        distances = Clustering._init_distances(vectors, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
-        for _ in range(weights.shape[0] - n_clusters):
+        ################################################################################################################
+
+        result = np.arange(vectors.shape[0])
+
+        for _ in range(vectors.shape[0] - n_clusters):
 
             Clustering._update_clusters(distances, result)
 
@@ -2861,65 +2966,97 @@ number of samples in the dataset to analyze.</p>
     ####################################################################################################################
 
     @staticmethod
-    def average(weights: np.ndarray, cluster_ids: np.ndarray) -&gt; np.ndarray:
+    def average(vectors: np.ndarray, cluster_ids: np.ndarray) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
+        Performs averaging per cluster.
+
         Parameters
         ----------
-        weights : np.ndarray
-            ???
+        vectors : np.ndarray
+            Flat input array.
         cluster_ids : np.ndarray
-            ???
+            Array of cluster ids.
         &#34;&#34;&#34;
 
-        result = weights.copy()
+        result = np.empty_like(vectors)
 
         for cluster_id in np.unique(cluster_ids):
 
             cluster_indices = np.where(cluster_ids == cluster_id)[0]
 
-            result[cluster_indices] = np.mean(result[cluster_indices], axis = 0)
+            result[cluster_indices] = np.nanmean(vectors[cluster_indices], axis = 0)
 
         return result</code></pre>
 </details>
 <h3>Static methods</h3>
 <dl>
 <dt id="decontamination.Clustering.clusterize"><code class="name flex">
-<span>def <span class="ident">clusterize</span></span>(<span>weights: np.ndarray, n_clusters: int) ‑> np.ndarray</span>
+<span>def <span class="ident">clusterize</span></span>(<span>vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 32) ‑> np.ndarray</span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="parameters">Parameters</h2>
+<div class="desc"><p>Clusterizes the input array using Lance-Williams hierarchical clustering with complete-linkage.</p>
+<h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>weights</code></strong> :&ensp;<code>np.ndarray</code></dt>
-<dd>???</dd>
+<dt><strong><code>vectors</code></strong> :&ensp;<code>np.ndarray</code></dt>
+<dd>Flat input array to be clustered.</dd>
 <dt><strong><code>n_clusters</code></strong> :&ensp;<code>int</code></dt>
-<dd>???</dd>
-</dl></div>
+<dd>Desired number of clusters.</dd>
+<dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If available, run on GPU rather than CPU (default: <strong>True</strong>).</dd>
+<dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of GPU threads per blocks (default: <strong>32</strong>).</dd>
+</dl>
+<h2 id="note">Note</h2>
+<p>Number of iterations: weights.shape[0] - n_clusters.</p>
+<h2 id="return">Return</h2>
+<p>Array giving a cluster identifier for each input vector.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def clusterize(weights: np.ndarray, n_clusters: int) -&gt; np.ndarray:
+def clusterize(vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 32) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
+    Clusterizes the input array using Lance-Williams hierarchical clustering with complete-linkage.
+
     Parameters
     ----------
-    weights : np.ndarray
-        ???
+    vectors : np.ndarray
+        Flat input array to be clustered.
     n_clusters : int
-        ???
+        Desired number of clusters.
+    enable_gpu : bool
+        If available, run on GPU rather than CPU (default: **True**).
+    threads_per_blocks : int
+        Number of GPU threads per blocks (default: **32**).
+
+    Note
+    ----
+
+    Number of iterations: weights.shape[0] - n_clusters.
+
+    Return
+    ------
+    Array giving a cluster identifier for each input vector.
     &#34;&#34;&#34;
 
     ################################################################################################################
 
-    distances = Clustering._init_distances(weights)
+    if n_clusters &lt; 1:
+
+        return np.arange(vectors.shape[0], dtype = np.int64)
 
     ################################################################################################################
 
-    result = np.arange(weights.shape[0])
+    distances = Clustering._init_distances(vectors, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
-    for _ in range(weights.shape[0] - n_clusters):
+    ################################################################################################################
+
+    result = np.arange(vectors.shape[0])
+
+    for _ in range(vectors.shape[0] - n_clusters):
 
         Clustering._update_clusters(distances, result)
 
@@ -2929,39 +3066,42 @@ def clusterize(weights: np.ndarray, n_clusters: int) -&gt; np.ndarray:
 </details>
 </dd>
 <dt id="decontamination.Clustering.average"><code class="name flex">
-<span>def <span class="ident">average</span></span>(<span>weights: np.ndarray, cluster_ids: np.ndarray) ‑> np.ndarray</span>
+<span>def <span class="ident">average</span></span>(<span>vectors: np.ndarray, cluster_ids: np.ndarray) ‑> np.ndarray</span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="parameters">Parameters</h2>
+<div class="desc"><p>Performs averaging per cluster.</p>
+<h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>weights</code></strong> :&ensp;<code>np.ndarray</code></dt>
-<dd>???</dd>
+<dt><strong><code>vectors</code></strong> :&ensp;<code>np.ndarray</code></dt>
+<dd>Flat input array.</dd>
 <dt><strong><code>cluster_ids</code></strong> :&ensp;<code>np.ndarray</code></dt>
-<dd>???</dd>
+<dd>Array of cluster ids.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def average(weights: np.ndarray, cluster_ids: np.ndarray) -&gt; np.ndarray:
+def average(vectors: np.ndarray, cluster_ids: np.ndarray) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
+    Performs averaging per cluster.
+
     Parameters
     ----------
-    weights : np.ndarray
-        ???
+    vectors : np.ndarray
+        Flat input array.
     cluster_ids : np.ndarray
-        ???
+        Array of cluster ids.
     &#34;&#34;&#34;
 
-    result = weights.copy()
+    result = np.empty_like(vectors)
 
     for cluster_id in np.unique(cluster_ids):
 
         cluster_indices = np.where(cluster_ids == cluster_id)[0]
 
-        result[cluster_indices] = np.mean(result[cluster_indices], axis = 0)
+        result[cluster_indices] = np.nanmean(vectors[cluster_indices], axis = 0)
 
     return result</code></pre>
 </details>

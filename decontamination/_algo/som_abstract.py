@@ -517,9 +517,9 @@ class SOM_Abstract(object):
         dataset : typing.Union[np.ndarray, typing.Callable]
             Dataset array or generator builder.
         enable_gpu : bool
-            If available, run on GPU rather than CPU (default: **True**)
+            If available, run on GPU rather than CPU (default: **True**).
         threads_per_blocks : typing.Union[typing.Tuple[int], int]
-            Number of GPU threads per blocks (default: **1024**)
+            Number of GPU threads per blocks (default: **1024**).
         """
 
         ################################################################################################################
@@ -554,9 +554,9 @@ class SOM_Abstract(object):
         dataset : np.ndarray
             Dataset array.
         enable_gpu : bool
-            If available, run on GPU rather than CPU (default: **True**)
+            If available, run on GPU rather than CPU (default: **True**).
         threads_per_blocks : typing.Union[typing.Tuple[int], int]
-            Number of GPU threads per blocks (default: **1024**)
+            Number of GPU threads per blocks (default: **1024**).
         """
 
         ################################################################################################################

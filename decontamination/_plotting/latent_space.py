@@ -22,7 +22,7 @@ V_LENGTH = np.sqrt(3.0)  # 1.732
 
 ########################################################################################################################
 
-def _build_colorbar(ax: plt.Axes, cmap: colors.Colormap, weights: np.ndarray, norm: typing.Any, v_min: float, v_max: float, log_scale: bool, show_histogram: bool, n_histogram_bins: int) -> None:
+def _build_colorbar(ax: plt.Axes, weights: np.ndarray, v_min: float, v_max: float, cmap: colors.Colormap, norm: typing.Any, log_scale: bool, show_histogram: bool, n_histogram_bins: int) -> None:
 
     ####################################################################################################################
 
@@ -83,7 +83,7 @@ def _setup_ticks(ax: plt.Axes, grid_x: int, grid_y: int) -> None:
 
 ########################################################################################################################
 
-def _init_plot(weights: np.ndarray, cmap: str, log_scale: bool) -> typing.Tuple[plt.Figure, plt.Axes, float, float, typing.Any, colors.Colormap]:
+def _init_plot(weights: np.ndarray, v_min: float, v_max: float, cmap: str, log_scale: bool) -> typing.Tuple[plt.Figure, plt.Axes, float, float, typing.Any, colors.Colormap]:
 
     ####################################################################################################################
 
@@ -95,13 +95,20 @@ def _init_plot(weights: np.ndarray, cmap: str, log_scale: bool) -> typing.Tuple[
 
     ####################################################################################################################
 
-    v_min, v_max = np.nanmin(weights), np.nanmax(weights)
+    if v_min is None:
+
+        v_min = np.nanmin(weights[weights > 0] if log_scale else weights)
+
+    if v_max is None:
+
+        v_max = np.nanmax(weights)
+
+    ####################################################################################################################
 
     if log_scale:
 
-        v_min = np.nanmin(weights[weights > 0])
-
         norm = colors.LogNorm(vmin = v_min, vmax = v_max)
+
     else:
 
         norm = colors.Normalize(vmin = v_min, vmax = v_max)
@@ -116,11 +123,11 @@ def _init_plot(weights: np.ndarray, cmap: str, log_scale: bool) -> typing.Tuple[
 
 ########################################################################################################################
 
-def _display_latent_space_big(weights: np.ndarray, cmap: str, show_colorbar: bool, log_scale: bool, show_histogram: bool, n_histogram_bins: int) -> typing.Tuple[plt.Figure, plt.Axes]:
+def _display_latent_space_big(weights: np.ndarray, v_min: float, v_max: float, cmap: str, log_scale: bool, show_colorbar: bool, show_histogram: bool, n_histogram_bins: int) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     ####################################################################################################################
 
-    fig, ax, v_min, v_max, norm, cmap = _init_plot(weights, cmap, log_scale)
+    fig, ax, v_min, v_max, norm, cmap = _init_plot(weights, v_min, v_max, cmap, log_scale)
 
     ####################################################################################################################
 
@@ -138,7 +145,7 @@ def _display_latent_space_big(weights: np.ndarray, cmap: str, show_colorbar: boo
 
     if show_colorbar:
 
-        _build_colorbar(ax, cmap, weights, norm, v_min, v_max, log_scale, show_histogram, n_histogram_bins)
+        _build_colorbar(ax, weights, v_min, v_max, cmap, norm, log_scale, show_histogram, n_histogram_bins)
 
     ####################################################################################################################
 
@@ -146,11 +153,11 @@ def _display_latent_space_big(weights: np.ndarray, cmap: str, show_colorbar: boo
 
 ########################################################################################################################
 
-def _display_latent_space_square(weights: np.ndarray, cmap: str, log_scale: bool, antialiased: bool, show_colorbar: bool, show_histogram: bool, n_histogram_bins: int) -> typing.Tuple[plt.Figure, plt.Axes]:
+def _display_latent_space_square(weights: np.ndarray, v_min: float, v_max: float, cmap: str, log_scale: bool, antialiased: bool, show_colorbar: bool, show_histogram: bool, n_histogram_bins: int) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     ####################################################################################################################
 
-    fig, ax, v_min, v_max, norm, cmap = _init_plot(weights, cmap, log_scale)
+    fig, ax, v_min, v_max, norm, cmap = _init_plot(weights, v_min, v_max, cmap, log_scale)
 
     ####################################################################################################################
 
@@ -171,7 +178,7 @@ def _display_latent_space_square(weights: np.ndarray, cmap: str, log_scale: bool
 
     if show_colorbar:
 
-        _build_colorbar(ax, cmap, weights, norm, v_min, v_max, log_scale, show_histogram, n_histogram_bins)
+        _build_colorbar(ax, weights, v_min, v_max, cmap, norm, log_scale, show_histogram, n_histogram_bins)
 
     ####################################################################################################################
 
@@ -179,11 +186,11 @@ def _display_latent_space_square(weights: np.ndarray, cmap: str, log_scale: bool
 
 ########################################################################################################################
 
-def _display_latent_space_hexagonal(weights: np.ndarray, cmap: str, log_scale: bool, antialiased: bool, show_colorbar: bool, show_histogram: bool, n_histogram_bins: int) -> typing.Tuple[plt.Figure, plt.Axes]:
+def _display_latent_space_hexagonal(weights: np.ndarray, v_min: float, v_max: float, cmap: str, log_scale: bool, antialiased: bool, show_colorbar: bool, show_histogram: bool, n_histogram_bins: int) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     ####################################################################################################################
 
-    fig, ax, v_min, v_max, norm, cmap = _init_plot(weights, cmap, log_scale)
+    fig, ax, v_min, v_max, norm, cmap = _init_plot(weights, v_min, v_max, cmap, log_scale)
 
     ####################################################################################################################
 
@@ -208,7 +215,7 @@ def _display_latent_space_hexagonal(weights: np.ndarray, cmap: str, log_scale: b
 
     if show_colorbar:
 
-        _build_colorbar(ax, cmap, weights, norm, v_min, v_max, log_scale, show_histogram, n_histogram_bins)
+        _build_colorbar(ax, weights, v_min, v_max, cmap, norm, log_scale, show_histogram, n_histogram_bins)
 
     ####################################################################################################################
 
@@ -216,7 +223,7 @@ def _display_latent_space_hexagonal(weights: np.ndarray, cmap: str, log_scale: b
 
 ########################################################################################################################
 
-def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', cmap: str = 'viridis', log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100, cluster_ids: np.ndarray = None) -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', v_min: float = None, v_max: float = None, cmap: str = 'viridis', log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100, cluster_ids: np.ndarray = None) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Parameters
@@ -227,6 +234,10 @@ def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', cmap:
         Topology of the map, either **'square'** or **'hexagonal'** (default: **'hexagonal'**).
     cmap : str
         Color map (default: **'viridis'**).
+    v_min : float
+        ??? (default: **None**).
+    v_max : float
+        ??? (default: **None**).
     log_scale : bool
         Specifies whether to enable the logarithm scaling (default: **False**).
     antialiased : bool
@@ -238,9 +249,9 @@ def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', cmap:
     show_histogram : bool
         Specifies whether to display the histogram (default: **True**).
     n_histogram_bins : bool
-        ??? (default: **None**)
+        Number of histogram bins (default: **None**).
     cluster_ids : np.ndarray
-        ??? (default: **None**)
+        Array of cluster ids (see `Clustering`, default: **None**).
     """
 
     ####################################################################################################################
@@ -253,17 +264,17 @@ def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', cmap:
 
     if max(weights.shape[0], weights.shape[1]) > 200:
 
-        fig, ax = _display_latent_space_big(weights, cmap, log_scale, show_colorbar, show_histogram, n_histogram_bins)
+        fig, ax = _display_latent_space_big(weights, v_min, v_max, cmap, log_scale, show_colorbar, show_histogram, n_histogram_bins)
 
     else:
 
         if topology == 'square':
 
-            fig, ax = _display_latent_space_square(weights, cmap, log_scale, antialiased, show_colorbar, show_histogram, n_histogram_bins)
+            fig, ax = _display_latent_space_square(weights, v_min, v_max, cmap, log_scale, antialiased, show_colorbar, show_histogram, n_histogram_bins)
 
         else:
 
-            fig, ax = _display_latent_space_hexagonal(weights, cmap, log_scale, antialiased, show_colorbar, show_histogram, n_histogram_bins)
+            fig, ax = _display_latent_space_hexagonal(weights, v_min, v_max, cmap, log_scale, antialiased, show_colorbar, show_histogram, n_histogram_bins)
 
     ####################################################################################################################
 

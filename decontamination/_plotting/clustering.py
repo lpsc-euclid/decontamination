@@ -135,7 +135,7 @@ def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: str = '
     ax : pyplot.Axes
         ???
     cluster_ids : np.ndarray
-        ???
+        Array of cluster ids.
     topology : str
         Topology of the map, either **'square'** or **'hexagonal'** (default: **'hexagonal'**).
     """

@@ -270,8 +270,11 @@ class SOM_Abstract(object):
             for name, field in header_extra.items():
 
                 try:
+
                     setattr(self, field, model_group.attrs[name])
+
                 except KeyError:
+
                     pass
 
             # DATASETS #
@@ -280,15 +283,20 @@ class SOM_Abstract(object):
 
                 try:
 
-                    data = np.array(model_group[name]).astype(dtype = self._dtype)
+                    array = model_group[name]
 
-                    if data.dtype.byteorder == '>':
+                    shape = array.shape
 
-                        data = data.byteswap(inplace = True).newbyteorder()
+                    if isinstance(shape, int) or isinstance(shape, np.int32) or isinstance(shape, np.int64):
 
-                    setattr(self, field, data)
+                        setattr(self, field, np.array(array).reshape((shape, )))
+
+                    else:
+
+                        setattr(self, field, np.array(array))
 
                 except KeyError:
+
                     pass
 
         ################################################################################################################

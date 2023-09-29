@@ -56,12 +56,18 @@ class Clustering(object):
     def clusterize(weights: np.ndarray, n_clusters: int, enable_gpu: bool = True, threads_per_block: int = 32) -> np.ndarray:
 
         """
+        Clusterizes the input vectors using Lance-Williams hierarchical clustering with complete-linkage
+
         Parameters
         ----------
         weights : np.ndarray
-            ???
+            Flat array of input vectors to be clustered
         n_clusters : int
-            ???
+            Desired number of clusters (number of iterations: weights.shape[0] - n_clusters)
+
+        Return
+        ------
+        Array giving a cluster identifier for each input vector
         """
 
         ################################################################################################################
@@ -86,12 +92,14 @@ class Clustering(object):
     def average(weights: np.ndarray, cluster_ids: np.ndarray) -> np.ndarray:
 
         """
+        Averages input values into each cluster
+
         Parameters
         ----------
         weights : np.ndarray
-            ???
+            Flat array of input values or vectors
         cluster_ids : np.ndarray
-            ???
+            Array of cluster ids
         """
 
         result = np.empty_like(weights)

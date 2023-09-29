@@ -295,7 +295,7 @@ class SOM_Abstract(object):
 
                 try:
 
-                    array = np.empty(model_group[name])
+                    array = np.array(model_group[name])
 
                     setattr(self, field, array)
 

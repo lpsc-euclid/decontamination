@@ -115,9 +115,9 @@ class Clustering(object):
         Parameters
         ----------
         vectors : np.ndarray
-            Flat input array.
+            Flat input array be averaged.
         cluster_ids : np.ndarray
-            Array of cluster ids.
+            Array of cluster identifiers.
         """
 
         result = np.empty_like(vectors)

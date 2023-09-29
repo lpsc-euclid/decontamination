@@ -271,7 +271,7 @@ __all__ = [
 <dt><strong><code>n_histogram_bins</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Number of histogram bins (default: <strong>None</strong>).</dd>
 <dt><strong><code>cluster_ids</code></strong> :&ensp;<code>np.ndarray</code></dt>
-<dd>Array of cluster ids (see <code><a title="decontamination.Clustering" href="#decontamination.Clustering">Clustering</a></code>, default: <strong>None</strong>).</dd>
+<dd>Array of cluster identifiers (see <code><a title="decontamination.Clustering" href="#decontamination.Clustering">Clustering</a></code>, default: <strong>None</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -305,7 +305,7 @@ __all__ = [
     n_histogram_bins : bool
         Number of histogram bins (default: **None**).
     cluster_ids : np.ndarray
-        Array of cluster ids (see `Clustering`, default: **None**).
+        Array of cluster identifiers (see `Clustering`, default: **None**).
     &#34;&#34;&#34;
 
     ####################################################################################################################
@@ -356,9 +356,9 @@ __all__ = [
 <div class="desc"><h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>ax</code></strong> :&ensp;<code>pyplot.Axes</code></dt>
-<dd>???</dd>
+<dd>Matplotlib <code>Axes</code> object.</dd>
 <dt><strong><code>cluster_ids</code></strong> :&ensp;<code>np.ndarray</code></dt>
-<dd>Array of cluster ids.</dd>
+<dd>Array of cluster identifiers.</dd>
 <dt><strong><code>topology</code></strong> :&ensp;<code>str</code></dt>
 <dd>Topology of the map, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>'hexagonal'</strong>).</dd>
 </dl></div>
@@ -372,9 +372,9 @@ __all__ = [
     Parameters
     ----------
     ax : pyplot.Axes
-        ???
+        Matplotlib `Axes` object.
     cluster_ids : np.ndarray
-        Array of cluster ids.
+        Array of cluster identifiers.
     topology : str
         Topology of the map, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **&#39;hexagonal&#39;**).
     &#34;&#34;&#34;
@@ -2974,9 +2974,9 @@ number of samples in the dataset to analyze.</p>
         Parameters
         ----------
         vectors : np.ndarray
-            Flat input array.
+            Flat input array be averaged.
         cluster_ids : np.ndarray
-            Array of cluster ids.
+            Array of cluster identifiers.
         &#34;&#34;&#34;
 
         result = np.empty_like(vectors)
@@ -3073,9 +3073,9 @@ def clusterize(vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, th
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>vectors</code></strong> :&ensp;<code>np.ndarray</code></dt>
-<dd>Flat input array.</dd>
+<dd>Flat input array be averaged.</dd>
 <dt><strong><code>cluster_ids</code></strong> :&ensp;<code>np.ndarray</code></dt>
-<dd>Array of cluster ids.</dd>
+<dd>Array of cluster identifiers.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -3090,9 +3090,9 @@ def average(vectors: np.ndarray, cluster_ids: np.ndarray) -&gt; np.ndarray:
     Parameters
     ----------
     vectors : np.ndarray
-        Flat input array.
+        Flat input array be averaged.
     cluster_ids : np.ndarray
-        Array of cluster ids.
+        Array of cluster identifiers.
     &#34;&#34;&#34;
 
     result = np.empty_like(vectors)

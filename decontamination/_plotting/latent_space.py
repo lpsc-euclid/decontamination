@@ -251,7 +251,7 @@ def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', v_min
     n_histogram_bins : bool
         Number of histogram bins (default: **None**).
     cluster_ids : np.ndarray
-        Array of cluster ids (see `Clustering`, default: **None**).
+        Array of cluster identifiers (see `Clustering`, default: **None**).
     """
 
     ####################################################################################################################

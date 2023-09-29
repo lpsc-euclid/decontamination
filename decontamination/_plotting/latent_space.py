@@ -13,6 +13,10 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 ########################################################################################################################
 
+from . import clustering
+
+########################################################################################################################
+
 # For a hexagon with a radius of 1:
 
 H_LENGTH = 3.0 / 2.0     # 1.500
@@ -214,7 +218,7 @@ def _display_latent_space_hexagonal(weights: np.ndarray, cmap: str, log_scale: b
 
 ########################################################################################################################
 
-def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', cmap: str = 'viridis', log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100) -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', cmap: str = 'viridis', log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100, cluster_ids: np.ndarray = None) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Parameters
@@ -236,8 +240,14 @@ def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', cmap:
     show_histogram : bool
         Specifies whether to display the histogram (default: **True**).
     n_histogram_bins : bool
-        ???
+        ??? (default: **None**)
+    cluster_ids : np.ndarray
+        ??? (default: **None**)
     """
+
+    if len(weights.shape) != 2:
+
+        raise ValueError('Invalid latent space shape, must be (m, n)')
 
     ####################################################################################################################
 
@@ -254,6 +264,12 @@ def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', cmap:
         else:
 
             fig, ax = _display_latent_space_hexagonal(weights, cmap, log_scale, antialiased, show_colorbar, show_histogram, n_histogram_bins)
+
+    ####################################################################################################################
+
+    if cluster_ids is not None:
+
+        clustering.display_clusters(ax, cluster_ids.reshape(weights.shape[0], weights.shape[1]), topology = topology)
 
     ####################################################################################################################
 

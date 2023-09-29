@@ -270,8 +270,11 @@ class SOM_Abstract(object):
             for name, field in header_extra.items():
 
                 try:
+
                     setattr(self, field, model_group.attrs[name])
+
                 except KeyError:
+
                     pass
 
             # DATASETS #
@@ -280,15 +283,14 @@ class SOM_Abstract(object):
 
                 try:
 
-                    data = np.array(model_group[name]).astype(dtype = self._dtype)
+                    array = np.empty_like(model_group[name])
 
-                    if data.dtype.byteorder == '>':
+                    array[...] = model_group[name]
 
-                        data = data.byteswap(inplace = True).newbyteorder()
-
-                    setattr(self, field, data)
+                    setattr(self, field, array)
 
                 except KeyError:
+
                     pass
 
         ################################################################################################################
@@ -507,7 +509,7 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        result = device_array_zeros(self._m * self._n, dtype = np.int64)
+        result = device_array_zeros(shape = (self._m * self._n, ), dtype = np.int64)
 
         ################################################################################################################
 

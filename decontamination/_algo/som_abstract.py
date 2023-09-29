@@ -297,6 +297,8 @@ class SOM_Abstract(object):
 
                     array = np.array(model_group[name])
 
+                    array = array.astype(self._dtype)
+
                     setattr(self, field, array)
 
                 except KeyError:

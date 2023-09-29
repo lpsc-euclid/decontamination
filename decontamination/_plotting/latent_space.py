@@ -81,7 +81,7 @@ def _setup_ticks(ax: plt.Axes, grid_x: int, grid_y: int) -> None:
 
 ########################################################################################################################
 
-def _init(weights: np.ndarray, cmap: str, log_scale: bool) -> typing.Tuple[plt.Figure, plt.Axes, float, float, typing.Any, colors.Colormap]:
+def _init_plot(weights: np.ndarray, cmap: str, log_scale: bool) -> typing.Tuple[plt.Figure, plt.Axes, float, float, typing.Any, colors.Colormap]:
 
     ####################################################################################################################
 
@@ -96,8 +96,12 @@ def _init(weights: np.ndarray, cmap: str, log_scale: bool) -> typing.Tuple[plt.F
     v_min, v_max = np.nanmin(weights), np.nanmax(weights)
 
     if log_scale:
+
+        v_min = np.nanmin(weights[weights > 0])
+
         norm = colors.LogNorm(vmin = v_min, vmax = v_max)
     else:
+
         norm = colors.Normalize(vmin = v_min, vmax = v_max)
 
     ####################################################################################################################
@@ -114,7 +118,7 @@ def _display_latent_space_big(weights: np.ndarray, cmap: str, show_colorbar: boo
 
     ####################################################################################################################
 
-    fig, ax, v_min, v_max, norm, cmap = _init(weights, cmap, log_scale)
+    fig, ax, v_min, v_max, norm, cmap = _init_plot(weights, cmap, log_scale)
 
     ####################################################################################################################
 
@@ -144,7 +148,7 @@ def _display_latent_space_square(weights: np.ndarray, cmap: str, log_scale: bool
 
     ####################################################################################################################
 
-    fig, ax, v_min, v_max, norm, cmap = _init(weights, cmap, log_scale)
+    fig, ax, v_min, v_max, norm, cmap = _init_plot(weights, cmap, log_scale)
 
     ####################################################################################################################
 
@@ -169,8 +173,6 @@ def _display_latent_space_square(weights: np.ndarray, cmap: str, log_scale: bool
 
     ####################################################################################################################
 
-    ax.invert_yaxis()
-
     return fig, ax
 
 ########################################################################################################################
@@ -179,7 +181,7 @@ def _display_latent_space_hexagonal(weights: np.ndarray, cmap: str, log_scale: b
 
     ####################################################################################################################
 
-    fig, ax, v_min, v_max, norm, cmap = _init(weights, cmap, log_scale)
+    fig, ax, v_min, v_max, norm, cmap = _init_plot(weights, cmap, log_scale)
 
     ####################################################################################################################
 
@@ -207,8 +209,6 @@ def _display_latent_space_hexagonal(weights: np.ndarray, cmap: str, log_scale: b
         _build_colorbar(ax, cmap, weights, norm, v_min, v_max, log_scale, show_histogram, n_histogram_bins)
 
     ####################################################################################################################
-
-    ax.invert_yaxis()
 
     return fig, ax
 
@@ -260,6 +260,8 @@ def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', cmap:
     ax.set_frame_on(show_frame)
 
     ax.set_aspect('equal')
+
+    ax.invert_yaxis()
 
     ####################################################################################################################
 

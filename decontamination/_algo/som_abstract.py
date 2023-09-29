@@ -283,17 +283,11 @@ class SOM_Abstract(object):
 
                 try:
 
-                    array = model_group[name]
+                    array = np.empty_like(model_group[name])
 
-                    shape = array.shape
+                    array[...] = model_group[name]
 
-                    if isinstance(shape, int) or isinstance(shape, np.int32) or isinstance(shape, np.int64):
-
-                        setattr(self, field, np.array(array).reshape((shape, )))
-
-                    else:
-
-                        setattr(self, field, np.array(array))
+                    setattr(self, field, array)
 
                 except KeyError:
 

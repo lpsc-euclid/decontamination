@@ -11,8 +11,6 @@ import matplotlib.patches as patches
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-########################################################################################################################
-
 from . import clustering
 
 ########################################################################################################################
@@ -244,6 +242,8 @@ def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', cmap:
     cluster_ids : np.ndarray
         ??? (default: **None**)
     """
+
+    ####################################################################################################################
 
     if len(weights.shape) != 2:
 

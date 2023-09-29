@@ -249,9 +249,9 @@ class Kernel:
 
     ####################################################################################################################
 
-    def __init__(self, cpu_func: typing.Callable, gpu_func: typing.Callable, parallel: bool):
+    def __init__(self, cpu_func: typing.Callable, gpu_func: typing.Callable, fastmath: bool, parallel: bool):
 
-        self.cpu_func = nb.njit(cpu_func, parallel = parallel) if CPU_OPTIMIZATION_AVAILABLE else cpu_func
+        self.cpu_func = nb.njit(cpu_func, fastmath = fastmath, parallel = parallel) if CPU_OPTIMIZATION_AVAILABLE else cpu_func
 
         self.gpu_func = cu.jit(gpu_func, device = False) if GPU_OPTIMIZATION_AVAILABLE else dont_call
 
@@ -348,13 +348,15 @@ class jit(object):
 
     ####################################################################################################################
 
-    def __init__(self, kernel: bool = False, parallel: bool = False):
+    def __init__(self, kernel: bool = False, fastmath: bool = False, parallel: bool = False):
 
         """
         Parameters
         ----------
         kernel : bool
             Indicates whether this function is a CPU/GPU kernel (default: **False**).
+        fastmath : bool
+            Enables fast-math optimizations when running on CPU (default: **False**).
         parallel : bool
             Enables automatic parallelization when running on CPU (default: **False**).
 
@@ -400,8 +402,9 @@ class jit(object):
             print(result.copy_to_host())
         """
 
-        self.kernel = kernel
-        self.parallel = parallel
+        self._kernel = kernel
+        self._fastmath = fastmath
+        self._parallel = parallel
 
     ####################################################################################################################
 
@@ -460,7 +463,7 @@ class jit(object):
 
     def __call__(self, funct: typing.Callable):
 
-        if not self.kernel and not funct.__name__.endswith('_xpu'):
+        if not self._kernel and not funct.__name__.endswith('_xpu'):
 
             raise Exception(f'Function `{funct.__name__}` name must ends with `_xpu`')
 
@@ -484,9 +487,9 @@ class jit(object):
 
         funct_cpu = eval(name_cpu, funct.__globals__)
 
-        if not self.kernel:
+        if not self._kernel:
 
-            jit._inject_cpu_funct(funct, nb.njit(funct_cpu, parallel = self.parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu)
+            jit._inject_cpu_funct(funct, nb.njit(funct_cpu, fastmath = self._fastmath, parallel = self._parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu)
 
         ################################################################################################################
         # NUMBA ON CPU                                                                                                 #
@@ -502,7 +505,7 @@ class jit(object):
 
         funct_gpu = eval(name_gpu, funct.__globals__)
 
-        if not self.kernel:
+        if not self._kernel:
 
             jit._inject_gpu_funct(funct, cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else dont_call)
 
@@ -510,7 +513,7 @@ class jit(object):
         # KERNEL                                                                                                       #
         ################################################################################################################
 
-        funct = Kernel(funct_cpu, funct_gpu, parallel = self.parallel) if self.kernel else dont_call
+        funct = Kernel(funct_cpu, funct_gpu, fastmath = self._fastmath, parallel = self._parallel) if self._kernel else dont_call
 
         ################################################################################################################
 

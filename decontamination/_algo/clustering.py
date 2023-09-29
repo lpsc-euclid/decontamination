@@ -14,11 +14,14 @@ class Clustering(object):
     ####################################################################################################################
 
     @staticmethod
-    def _init_distances(weights: np.ndarray, enable_gpu: bool = True, threads_per_block: int = 32) -> np.ndarray:
+    def _init_distances(weights: np.ndarray, enable_gpu: bool, threads_per_block: int) -> np.ndarray:
 
-        result = device_array_full((weights.shape[0], weights.shape[0]), np.inf, dtype = np.float32)
+        result = device_array_full(2 * (weights.shape[0], ), np.inf, dtype = np.float32)
 
-        _init_distances_kernel[enable_gpu, (threads_per_block, threads_per_block), (result.shape[0], result.shape[1])](result, weights)
+        _init_distances_kernel[enable_gpu, 2 * (threads_per_block, ), 2 * (weights.shape[0], )](
+            result,
+            weights
+        )
 
         return result.copy_to_host()
 
@@ -72,6 +75,12 @@ class Clustering(object):
 
         ################################################################################################################
 
+        if n_clusters < 1:
+
+            return np.arange(weights.shape[0], dtype = np.int64)
+
+        ################################################################################################################
+
         distances = Clustering._init_distances(weights, enable_gpu = enable_gpu, threads_per_block = threads_per_block)
 
         ################################################################################################################
@@ -89,26 +98,26 @@ class Clustering(object):
     ####################################################################################################################
 
     @staticmethod
-    def average(weights: np.ndarray, cluster_ids: np.ndarray) -> np.ndarray:
+    def average(vectors: np.ndarray, cluster_ids: np.ndarray) -> np.ndarray:
 
         """
         Averages input values into each cluster
 
         Parameters
         ----------
-        weights : np.ndarray
+        vectors : np.ndarray
             Flat array of input values or vectors
         cluster_ids : np.ndarray
             Array of cluster ids
         """
 
-        result = np.empty_like(weights)
+        result = np.empty_like(vectors)
 
         for cluster_id in np.unique(cluster_ids):
 
             cluster_indices = np.where(cluster_ids == cluster_id)[0]
 
-            result[cluster_indices] = np.nanmean(weights[cluster_indices], axis = 0)
+            result[cluster_indices] = np.nanmean(vectors[cluster_indices], axis = 0)
 
         return result
 
@@ -136,12 +145,12 @@ def _init_distances_kernel(result: np.ndarray, weights: np.ndarray) -> None:
 
     i, j = cu.grid(2)
 
-    if i < weights.shape[0] and j < i:
+    if j < i < weights.shape[0]:
+
+        dist = 0.0
 
         weight_i = weights[i]
         weight_j = weights[j]
-
-        dist = 0.0
 
         for k in range(weight_i.shape[0]):
 

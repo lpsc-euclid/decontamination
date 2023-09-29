@@ -271,7 +271,19 @@ class SOM_Abstract(object):
 
                 try:
 
-                    setattr(self, field, model_group.attrs[name])
+                    value = model_group.attrs[name]
+
+                    if isinstance(value, np.int32) or isinstance(value, np.int64):
+
+                        setattr(self, field, int(value))
+
+                    elif isinstance(value, np.float32) or isinstance(value, np.float64):
+
+                        setattr(self, field, float(value))
+
+                    else:
+
+                        setattr(self, field, value)
 
                 except KeyError:
 
@@ -283,9 +295,7 @@ class SOM_Abstract(object):
 
                 try:
 
-                    array = np.empty_like(model_group[name])
-
-                    array[...] = model_group[name]
+                    array = np.empty(model_group[name])
 
                     setattr(self, field, array)
 

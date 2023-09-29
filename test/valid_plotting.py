@@ -17,25 +17,21 @@ import matplotlib.pyplot as plt
 
 ########################################################################################################################
 
-TOPOLOGY = 'square2'
+for topology in ['square', 'hexagonal']:
 
-N_CLUSTERS = 20
+    weights = np.array([[0, 1], [2, 3], [4, 5]])
 
-########################################################################################################################
+    fig, ax = decontamination.display_latent_space(weights, log_scale = False, topology = topology)
 
-som = decontamination.SOM_Online(0, 0, 0)
+    ax.set_xlabel('n, j, y')
+    ax.set_ylabel('m, i, x')
 
-som.load('random_model.hdf5')
+    weights = np.array([[0, 1], [1, 10], [100, 1000]])
 
-########################################################################################################################
+    fig, ax = decontamination.display_latent_space(weights, log_scale = True, topology = topology)
 
-clusters = decontamination.Clustering.clusterize(som.get_weights(), N_CLUSTERS)
-
-clustered_weights = decontamination.Clustering.average(som.get_weights(), clusters)
-
-fig, ax = decontamination.display_latent_space(clustered_weights[:, 0].reshape(som.m, som.n), topology = TOPOLOGY, n_histogram_bins = N_CLUSTERS)
-
-decontamination.display_clusters(ax, clusters.reshape(som.m, som.n), topology = TOPOLOGY)
+    ax.set_xlabel('n, j, y')
+    ax.set_ylabel('m, i, x')
 
 ########################################################################################################################
 

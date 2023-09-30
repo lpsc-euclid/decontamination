@@ -2330,14 +2330,11 @@ number of samples in the dataset to analyze.</p>
 
         self._n_epochs = None
 
-        self._n_vectors = None
-
         ################################################################################################################
 
         self._header_extra = {
             &#39;mode&#39;: &#39;__MODE__&#39;,
             &#39;n_epochs&#39;: &#39;_n_epochs&#39;,
-            &#39;n_vectors&#39;: &#39;_n_vectors&#39;,
         }
 
     ####################################################################################################################
@@ -2370,6 +2367,10 @@ number of samples in the dataset to analyze.</p>
         quantization_errors = device_array_empty(n_epochs, dtype = np.float32)
 
         topographic_errors = device_array_empty(n_epochs, dtype = np.float32)
+
+        ################################################################################################################
+
+        self._n_epochs = n_epochs
 
         ################################################################################################################
 
@@ -2465,6 +2466,10 @@ number of samples in the dataset to analyze.</p>
     quantization_errors = device_array_empty(n_epochs, dtype = np.float32)
 
     topographic_errors = device_array_empty(n_epochs, dtype = np.float32)
+
+    ################################################################################################################
+
+    self._n_epochs = n_epochs
 
     ################################################################################################################
 

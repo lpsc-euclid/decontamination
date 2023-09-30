@@ -526,13 +526,13 @@ class SOM_Abstract(object):
 
         generator_builder = dataset_to_generator_builder(dataset)
 
-        generator = generator_builder()
-
         ################################################################################################################
 
         result = device_array_zeros(shape = (self._m * self._n, ), dtype = np.int64)
 
         ################################################################################################################
+
+        generator = generator_builder()
 
         for data in generator():
 

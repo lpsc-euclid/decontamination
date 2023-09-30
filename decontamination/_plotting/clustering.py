@@ -87,7 +87,7 @@ def display_clusters_hexagonal(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None
 
             ############################################################################################################
 
-            if i + 1 < m and cluster_id != cluster_ids[i + 1, j + 0]:
+            if i + 1 < m and cluster_id != cluster_ids[i + 1, j]:
 
                 ax.add_line(lines.Line2D([
                     y - 0.5,

@@ -185,21 +185,21 @@ def _display_latent_space_hexagonal(ax: plt.Axes, weights: np.ndarray, cmap: col
 
 ########################################################################################################################
 
-def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', v_min: float = None, v_max: float = None, cmap: str = 'viridis', log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100, cluster_ids: np.ndarray = None) -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = 'viridis', log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100, cluster_ids: typing.Optional[np.ndarray] = None) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Parameters
     ----------
     weights : np.ndarray
         Weights of the map.
-    topology : str
-        Topology of the map, either **'square'** or **'hexagonal'** (default: **'hexagonal'**).
+    topology : typing.Optional[str]
+        Topology of the map, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
     cmap : str
         Color map (default: **'viridis'**).
     v_min : float
-        ??? (default: **None**).
+        Minimum color scale (default: **None**, uses: min(data)).
     v_max : float
-        ??? (default: **None**).
+        Maximum color scale (default: **None**, uses: max(data)).
     log_scale : bool
         Specifies whether to enable the logarithm scaling (default: **False**).
     antialiased : bool
@@ -210,9 +210,9 @@ def display_latent_space(weights: np.ndarray, topology: str = 'hexagonal', v_min
         Specifies whether to display the colorbar (default: **True**).
     show_histogram : bool
         Specifies whether to display the histogram (default: **True**).
-    n_histogram_bins : bool
-        Number of histogram bins (default: **None**).
-    cluster_ids : np.ndarray
+    n_histogram_bins : int
+        Number of histogram bins (default: **100**).
+    cluster_ids : typing.Optional[np.ndarray]
         Array of cluster identifiers (see `Clustering`, default: **None**).
     """
 

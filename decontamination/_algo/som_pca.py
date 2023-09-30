@@ -35,7 +35,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         dtype : typing.Type[np.single]
             Neural network data type (default: **np.float32**).
         topology : typing.Optional[str]
-            Topology of the map, either '**square**' or '**hexagonal**' (default: '**hexagonal**').
+            Topology of the map, either '**square**' or '**hexagonal**' (default: **None**, uses: '**hexagonal**').
         """
 
         ################################################################################################################

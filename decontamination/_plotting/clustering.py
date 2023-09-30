@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
+import typing
 
 import numpy as np
 
@@ -127,7 +128,7 @@ def display_clusters_hexagonal(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None
 
 ########################################################################################################################
 
-def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: str = 'hexagonal') -> None:
+def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: typing.Optional[str] = None) -> None:
 
     """
     Parameters
@@ -136,8 +137,8 @@ def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: str = '
         Matplotlib `Axes` object.
     cluster_ids : np.ndarray
         Array of cluster identifiers.
-    topology : str
-        Topology of the map, either **'square'** or **'hexagonal'** (default: **'hexagonal'**).
+    topology : typing.Optional[str]
+        Topology of the map, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
     """
 
     if max(cluster_ids.shape[0], cluster_ids.shape[1]) > 200 or topology == 'square':

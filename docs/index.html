@@ -243,21 +243,21 @@ __all__ = [
 </details>
 </dd>
 <dt id="decontamination.display_latent_space"><code class="name flex">
-<span>def <span class="ident">display_latent_space</span></span>(<span>weights: np.ndarray, topology: str = 'hexagonal', v_min: float = None, v_max: float = None, cmap: str = 'viridis', log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100, cluster_ids: np.ndarray = None) ‑> Tuple[plt.Figure, plt.Axes]</span>
+<span>def <span class="ident">display_latent_space</span></span>(<span>weights: np.ndarray, topology: Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = 'viridis', log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100, cluster_ids: Optional[np.ndarray] = None) ‑> Tuple[plt.Figure, plt.Axes]</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>weights</code></strong> :&ensp;<code>np.ndarray</code></dt>
 <dd>Weights of the map.</dd>
-<dt><strong><code>topology</code></strong> :&ensp;<code>str</code></dt>
-<dd>Topology of the map, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>'hexagonal'</strong>).</dd>
+<dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
+<dd>Topology of the map, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>None</strong>, uses: <strong>'hexagonal'</strong>).</dd>
 <dt><strong><code>cmap</code></strong> :&ensp;<code>str</code></dt>
 <dd>Color map (default: <strong>'viridis'</strong>).</dd>
 <dt><strong><code>v_min</code></strong> :&ensp;<code>float</code></dt>
-<dd>??? (default: <strong>None</strong>).</dd>
+<dd>Minimum color scale (default: <strong>None</strong>, uses: min(data)).</dd>
 <dt><strong><code>v_max</code></strong> :&ensp;<code>float</code></dt>
-<dd>??? (default: <strong>None</strong>).</dd>
+<dd>Maximum color scale (default: <strong>None</strong>, uses: max(data)).</dd>
 <dt><strong><code>log_scale</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Specifies whether to enable the logarithm scaling (default: <strong>False</strong>).</dd>
 <dt><strong><code>antialiased</code></strong> :&ensp;<code>bool</code></dt>
@@ -268,30 +268,30 @@ __all__ = [
 <dd>Specifies whether to display the colorbar (default: <strong>True</strong>).</dd>
 <dt><strong><code>show_histogram</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Specifies whether to display the histogram (default: <strong>True</strong>).</dd>
-<dt><strong><code>n_histogram_bins</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Number of histogram bins (default: <strong>None</strong>).</dd>
-<dt><strong><code>cluster_ids</code></strong> :&ensp;<code>np.ndarray</code></dt>
+<dt><strong><code>n_histogram_bins</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of histogram bins (default: <strong>100</strong>).</dd>
+<dt><strong><code>cluster_ids</code></strong> :&ensp;<code>Optional[np.ndarray]</code></dt>
 <dd>Array of cluster identifiers (see <code><a title="decontamination.Clustering" href="#decontamination.Clustering">Clustering</a></code>, default: <strong>None</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def display_latent_space(weights: np.ndarray, topology: str = &#39;hexagonal&#39;, v_min: float = None, v_max: float = None, cmap: str = &#39;viridis&#39;, log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100, cluster_ids: np.ndarray = None) -&gt; Tuple[plt.Figure, plt.Axes]:
+<pre><code class="python">def display_latent_space(weights: np.ndarray, topology: Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = &#39;viridis&#39;, log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100, cluster_ids: Optional[np.ndarray] = None) -&gt; Tuple[plt.Figure, plt.Axes]:
 
     &#34;&#34;&#34;
     Parameters
     ----------
     weights : np.ndarray
         Weights of the map.
-    topology : str
-        Topology of the map, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **&#39;hexagonal&#39;**).
+    topology : Optional[str]
+        Topology of the map, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **None**, uses: **&#39;hexagonal&#39;**).
     cmap : str
         Color map (default: **&#39;viridis&#39;**).
     v_min : float
-        ??? (default: **None**).
+        Minimum color scale (default: **None**, uses: min(data)).
     v_max : float
-        ??? (default: **None**).
+        Maximum color scale (default: **None**, uses: max(data)).
     log_scale : bool
         Specifies whether to enable the logarithm scaling (default: **False**).
     antialiased : bool
@@ -302,9 +302,9 @@ __all__ = [
         Specifies whether to display the colorbar (default: **True**).
     show_histogram : bool
         Specifies whether to display the histogram (default: **True**).
-    n_histogram_bins : bool
-        Number of histogram bins (default: **None**).
-    cluster_ids : np.ndarray
+    n_histogram_bins : int
+        Number of histogram bins (default: **100**).
+    cluster_ids : Optional[np.ndarray]
         Array of cluster identifiers (see `Clustering`, default: **None**).
     &#34;&#34;&#34;
 
@@ -360,7 +360,7 @@ __all__ = [
 </details>
 </dd>
 <dt id="decontamination.display_clusters"><code class="name flex">
-<span>def <span class="ident">display_clusters</span></span>(<span>ax: plt.Axes, cluster_ids: np.ndarray, topology: str = 'hexagonal') ‑> None</span>
+<span>def <span class="ident">display_clusters</span></span>(<span>ax: plt.Axes, cluster_ids: np.ndarray, topology: Optional[str] = None) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="parameters">Parameters</h2>
@@ -369,14 +369,14 @@ __all__ = [
 <dd>Matplotlib <code>Axes</code> object.</dd>
 <dt><strong><code>cluster_ids</code></strong> :&ensp;<code>np.ndarray</code></dt>
 <dd>Array of cluster identifiers.</dd>
-<dt><strong><code>topology</code></strong> :&ensp;<code>str</code></dt>
-<dd>Topology of the map, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>'hexagonal'</strong>).</dd>
+<dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
+<dd>Topology of the map, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>None</strong>, uses: <strong>'hexagonal'</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: str = &#39;hexagonal&#39;) -&gt; None:
+<pre><code class="python">def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: Optional[str] = None) -&gt; None:
 
     &#34;&#34;&#34;
     Parameters
@@ -385,8 +385,8 @@ __all__ = [
         Matplotlib `Axes` object.
     cluster_ids : np.ndarray
         Array of cluster identifiers.
-    topology : str
-        Topology of the map, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **&#39;hexagonal&#39;**).
+    topology : Optional[str]
+        Topology of the map, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **None**, uses: **&#39;hexagonal&#39;**).
     &#34;&#34;&#34;
 
     if max(cluster_ids.shape[0], cluster_ids.shape[1]) &gt; 200 or topology == &#39;square&#39;:
@@ -898,7 +898,7 @@ def dtype(self):
 <dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
 <dd>Neural network data type (default: <strong>np.float32</strong>).</dd>
 <dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
-<dd>Topology of the model, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>'hexagonal'</strong>).</dd>
+<dd>Topology of the model, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>None</strong>, uses: <strong>'hexagonal'</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -928,7 +928,7 @@ def dtype(self):
         dtype : Type[np.single]
             Neural network data type (default: **np.float32**).
         topology : Optional[str]
-            Topology of the model, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **&#39;hexagonal&#39;**).
+            Topology of the model, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **None**, uses: **&#39;hexagonal&#39;**).
         &#34;&#34;&#34;
 
         ################################################################################################################
@@ -1361,7 +1361,7 @@ def dtype(self):
         Parameters
         ----------
         scaling : Optional[str]
-            Normalization method, either &#39;**sum**&#39; or &#39;**mean**&#39; (default: &#39;**sum**&#39;).
+            Normalization method, either &#39;**sum**&#39; or &#39;**mean**&#39; (default: **None**, uses: &#39;**sum**&#39;).
         &#34;&#34;&#34;
 
         scaling = scaling or &#39;sum&#39;
@@ -1878,7 +1878,7 @@ def topology(self) -&gt; str:
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>scaling</code></strong> :&ensp;<code>Optional[str]</code></dt>
-<dd>Normalization method, either '<strong>sum</strong>' or '<strong>mean</strong>' (default: '<strong>sum</strong>').</dd>
+<dd>Normalization method, either '<strong>sum</strong>' or '<strong>mean</strong>' (default: <strong>None</strong>, uses: '<strong>sum</strong>').</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1892,7 +1892,7 @@ def topology(self) -&gt; str:
     Parameters
     ----------
     scaling : Optional[str]
-        Normalization method, either &#39;**sum**&#39; or &#39;**mean**&#39; (default: &#39;**sum**&#39;).
+        Normalization method, either &#39;**sum**&#39; or &#39;**mean**&#39; (default: **None**, uses: &#39;**sum**&#39;).
     &#34;&#34;&#34;
 
     scaling = scaling or &#39;sum&#39;
@@ -2046,7 +2046,7 @@ def topology(self) -&gt; str:
 <dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
 <dd>Neural network data type (default: <strong>np.float32</strong>).</dd>
 <dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
-<dd>Topology of the map, either '<strong>square</strong>' or '<strong>hexagonal</strong>' (default: '<strong>hexagonal</strong>').</dd>
+<dd>Topology of the map, either '<strong>square</strong>' or '<strong>hexagonal</strong>' (default: <strong>None</strong>, uses: '<strong>hexagonal</strong>').</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -2076,7 +2076,7 @@ def topology(self) -&gt; str:
         dtype : Type[np.single]
             Neural network data type (default: **np.float32**).
         topology : Optional[str]
-            Topology of the map, either &#39;**square**&#39; or &#39;**hexagonal**&#39; (default: &#39;**hexagonal**&#39;).
+            Topology of the map, either &#39;**square**&#39; or &#39;**hexagonal**&#39; (default: **None**, uses: &#39;**hexagonal**&#39;).
         &#34;&#34;&#34;
 
         ################################################################################################################
@@ -2295,7 +2295,7 @@ number of samples in the dataset to analyze.</p>
 <dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
 <dd>Neural network data type (default: <strong>np.float32</strong>).</dd>
 <dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
-<dd>Topology of the model, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>'hexagonal'</strong>).</dd>
+<dd>Topology of the model, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>None</strong>, uses: <strong>'hexagonal'</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -2329,7 +2329,7 @@ number of samples in the dataset to analyze.</p>
         dtype : Type[np.single]
             Neural network data type (default: **np.float32**).
         topology : Optional[str]
-            Topology of the model, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **&#39;hexagonal&#39;**).
+            Topology of the model, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **None**, uses: **&#39;hexagonal&#39;**).
         &#34;&#34;&#34;
 
         ################################################################################################################
@@ -2349,7 +2349,7 @@ number of samples in the dataset to analyze.</p>
 
     ####################################################################################################################
 
-    def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -&gt; None:
+    def train(self, dataset: Union[np.ndarray, Callable], n_epochs: int, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -&gt; None:
 
         &#34;&#34;&#34;
         Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(w,e)\\equiv\\delta_{j,c_i(w,e)}\\equiv\\left\\{\\begin{array}{ll}1&amp;j=c_i(w,e)\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}} $$ where \\( j=0\\dots m\\times n-1 \\).
@@ -2358,8 +2358,8 @@ number of samples in the dataset to analyze.</p>
         ----------
         dataset : Union[np.ndarray, Callable]
             Training dataset array or generator builder.
-        n_epochs : Optional[int]
-            Number of epochs to train for (default: **None**).
+        n_epochs : int
+            Number of epochs to train for.
         show_progress_bar : bool
             Specifies whether to display a progress bar (default: **False**).
         enable_gpu : bool
@@ -2427,7 +2427,7 @@ number of samples in the dataset to analyze.</p>
 <h3>Methods</h3>
 <dl>
 <dt id="decontamination.SOM_Batch.train"><code class="name flex">
-<span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) ‑> None</span>
+<span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable], n_epochs: int, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Trains the neural network. Use either the "<em>number of epochs</em>" training method by specifying <code>n_epochs</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </script></span>) or the "<em>number of vectors</em>" training method by specifying <code>n_vectors</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </script></span>). A batch formulation of updating weights is implemented: <span><span class="MathJax_Preview"> c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </span><script type="math/tex; mode=display"> c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </script></span> <span><span class="MathJax_Preview"> \Theta_{ji}(w,e)\equiv\delta_{j,c_i(w,e)}\equiv\left\{\begin{array}{ll}1&amp;j=c_i(w,e)\\0&amp;\mathrm{otherwise}\end{array}\right. </span><script type="math/tex; mode=display"> \Theta_{ji}(w,e)\equiv\delta_{j,c_i(w,e)}\equiv\left\{\begin{array}{ll}1&j=c_i(w,e)\\0&\mathrm{otherwise}\end{array}\right. </script></span> <span><span class="MathJax_Preview"> \boxed{w_j(e+1)=\frac{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)x_i}{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)}} </span><script type="math/tex; mode=display"> \boxed{w_j(e+1)=\frac{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)x_i}{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)}} </script></span> where <span><span class="MathJax_Preview"> j=0\dots m\times n-1 </span><script type="math/tex"> j=0\dots m\times n-1 </script></span>.</p>
@@ -2435,8 +2435,8 @@ number of samples in the dataset to analyze.</p>
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
 <dd>Training dataset array or generator builder.</dd>
-<dt><strong><code>n_epochs</code></strong> :&ensp;<code>Optional[int]</code></dt>
-<dd>Number of epochs to train for (default: <strong>None</strong>).</dd>
+<dt><strong><code>n_epochs</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of epochs to train for.</dd>
 <dt><strong><code>show_progress_bar</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Specifies whether to display a progress bar (default: <strong>False</strong>).</dd>
 <dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
@@ -2448,7 +2448,7 @@ number of samples in the dataset to analyze.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -&gt; None:
+<pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable], n_epochs: int, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -&gt; None:
 
     &#34;&#34;&#34;
     Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(w,e)\\equiv\\delta_{j,c_i(w,e)}\\equiv\\left\\{\\begin{array}{ll}1&amp;j=c_i(w,e)\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}} $$ where \\( j=0\\dots m\\times n-1 \\).
@@ -2457,8 +2457,8 @@ number of samples in the dataset to analyze.</p>
     ----------
     dataset : Union[np.ndarray, Callable]
         Training dataset array or generator builder.
-    n_epochs : Optional[int]
-        Number of epochs to train for (default: **None**).
+    n_epochs : int
+        Number of epochs to train for.
     show_progress_bar : bool
         Specifies whether to display a progress bar (default: **False**).
     enable_gpu : bool
@@ -2542,11 +2542,11 @@ number of samples in the dataset to analyze.</p>
 <dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
 <dd>Neural network data type (default: <strong>np.float32</strong>).</dd>
 <dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
-<dd>Topology of the model, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>'hexagonal'</strong>).</dd>
+<dd>Topology of the model, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>None</strong>, uses: <strong>'hexagonal'</strong>).</dd>
 <dt><strong><code>alpha</code></strong> :&ensp;<code>float</code></dt>
-<dd>Starting value of the learning rate (default: <strong>0.3</strong>).</dd>
+<dd>Starting value of the learning rate (default: <strong>None</strong>, uses: <strong>0.3</strong>).</dd>
 <dt><strong><code>sigma</code></strong> :&ensp;<code>float</code></dt>
-<dd>Starting value of the neighborhood radius (default: <span><span class="MathJax_Preview"> \mathrm{max}(m,n)/2 </span><script type="math/tex"> \mathrm{max}(m,n)/2 </script></span>).</dd>
+<dd>Starting value of the neighborhood radius (default: <strong>None</strong>, uses: <span><span class="MathJax_Preview"> \mathrm{max}(m,n)/2 </span><script type="math/tex"> \mathrm{max}(m,n)/2 </script></span>).</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -2580,11 +2580,11 @@ number of samples in the dataset to analyze.</p>
         dtype : Type[np.single]
             Neural network data type (default: **np.float32**).
         topology : Optional[str]
-            Topology of the model, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **&#39;hexagonal&#39;**).
+            Topology of the model, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **None**, uses: **&#39;hexagonal&#39;**).
         alpha : float
-            Starting value of the learning rate (default: **0.3**).
+            Starting value of the learning rate (default: **None**, uses: **0.3**).
         sigma : float
-            Starting value of the neighborhood radius (default: \\( \\mathrm{max}(m,n)/2 \\)).
+            Starting value of the neighborhood radius (default: **None**, uses: \\( \\mathrm{max}(m,n)/2 \\)).
         &#34;&#34;&#34;
 
         ################################################################################################################

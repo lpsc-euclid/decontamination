@@ -41,7 +41,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         dtype : typing.Type[np.single]
             Neural network data type (default: **np.float32**).
         topology : typing.Optional[str]
-            Topology of the model, either **'square'** or **'hexagonal'** (default: **'hexagonal'**).
+            Topology of the model, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
         """
 
         ################################################################################################################
@@ -61,7 +61,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: int, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the "*number of vectors*" training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(w,e)\\equiv\\delta_{j,c_i(w,e)}\\equiv\\left\\{\\begin{array}{ll}1&j=c_i(w,e)\\\\0&\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}} $$ where \\( j=0\\dots m\\times n-1 \\).
@@ -70,8 +70,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
-        n_epochs : typing.Optional[int]
-            Number of epochs to train for (default: **None**).
+        n_epochs : int
+            Number of epochs to train for.
         show_progress_bar : bool
             Specifies whether to display a progress bar (default: **False**).
         enable_gpu : bool

@@ -3046,12 +3046,6 @@ number of samples in the dataset to analyze.</p>
 
         ################################################################################################################
 
-        if n_clusters &lt; 1:
-
-            return np.arange(vectors.shape[0], dtype = np.int64)
-
-        ################################################################################################################
-
         distances = Clustering._init_distances(vectors, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
         ################################################################################################################
@@ -3144,12 +3138,6 @@ def clusterize(vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, th
     ------
     Array giving a cluster identifier for each input vector.
     &#34;&#34;&#34;
-
-    ################################################################################################################
-
-    if n_clusters &lt; 1:
-
-        return np.arange(vectors.shape[0], dtype = np.int64)
 
     ################################################################################################################
 

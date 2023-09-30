@@ -14,6 +14,8 @@
 &nbsp;&nbsp;&nbsp;&nbsp;
 <a href="http://www.univ-grenoble-alpes.fr/" target="_blank"><img src="./docs/logo_uga.svg" alt="UGA" height="72" /></a>
 
+A toolbox for performing systematics decontamination in cosmology analyses.
+
 [License]:http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.txt
 [License img]:https://img.shields.io/badge/license-CeCILL--C-blue.svg
 

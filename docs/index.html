@@ -316,19 +316,29 @@ __all__ = [
 
     ####################################################################################################################
 
-    if max(weights.shape[0], weights.shape[1]) &gt; 200:
+    fig, ax, v_min, v_max, norm, cmap = _init_plot(weights, v_min, v_max, cmap, log_scale)
 
-        fig, ax = _display_latent_space_big(weights, v_min, v_max, cmap, log_scale, show_colorbar, show_histogram, n_histogram_bins)
+    ####################################################################################################################
+
+    if max(weights.shape) &gt; 200:
+
+        _display_latent_space_big(ax, weights, cmap, norm)
 
     else:
 
         if topology == &#39;square&#39;:
 
-            fig, ax = _display_latent_space_square(weights, v_min, v_max, cmap, log_scale, antialiased, show_colorbar, show_histogram, n_histogram_bins)
+            _display_latent_space_square(ax, weights, cmap, norm, antialiased)
 
         else:
 
-            fig, ax = _display_latent_space_hexagonal(weights, v_min, v_max, cmap, log_scale, antialiased, show_colorbar, show_histogram, n_histogram_bins)
+            _display_latent_space_hexagonal(ax, weights, cmap, norm, antialiased)
+
+    ####################################################################################################################
+
+    if show_colorbar:
+
+        _build_colorbar(ax, weights, v_min, v_max, cmap, norm, log_scale, show_histogram, n_histogram_bins)
 
     ####################################################################################################################
 
@@ -1406,13 +1416,13 @@ def dtype(self):
 
         generator_builder = dataset_to_generator_builder(dataset)
 
-        generator = generator_builder()
-
         ################################################################################################################
 
         result = device_array_zeros(shape = (self._m * self._n, ), dtype = np.int64)
 
         ################################################################################################################
+
+        generator = generator_builder()
 
         for data in generator():
 
@@ -1954,13 +1964,13 @@ def topology(self) -&gt; str:
 
     generator_builder = dataset_to_generator_builder(dataset)
 
-    generator = generator_builder()
-
     ################################################################################################################
 
     result = device_array_zeros(shape = (self._m * self._n, ), dtype = np.int64)
 
     ################################################################################################################
+
+    generator = generator_builder()
 
     for data in generator():
 

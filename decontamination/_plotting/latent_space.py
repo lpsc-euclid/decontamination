@@ -22,7 +22,7 @@ V_LENGTH = np.sqrt(3.0)  # 1.732
 
 ########################################################################################################################
 
-def _init_plot(weights: np.ndarray, v_min: float, v_max: float, cmap: str, log_scale: bool) -> typing.Tuple[plt.Figure, plt.Axes, float, float, typing.Any, colors.Colormap]:
+def _init_plot(weights: np.ndarray, v_min: float, v_max: float, cmap: str, log_scale: bool) -> typing.Tuple[plt.Figure, plt.Axes, float, float, colors.Normalize, colors.Colormap]:
 
     ####################################################################################################################
     # INIT FIGURE & AXES                                                                                               #
@@ -92,7 +92,7 @@ def _init_plot(weights: np.ndarray, v_min: float, v_max: float, cmap: str, log_s
 
 ########################################################################################################################
 
-def _build_colorbar(ax: plt.Axes, weights: np.ndarray, v_min: float, v_max: float, cmap: colors.Colormap, norm: typing.Any, log_scale: bool, show_histogram: bool, n_histogram_bins: int) -> None:
+def _build_colorbar(ax: plt.Axes, weights: np.ndarray, v_min: float, v_max: float, cmap: colors.Colormap, norm: colors.Normalize, log_scale: bool, show_histogram: bool, n_histogram_bins: int) -> None:
 
     ####################################################################################################################
 
@@ -127,7 +127,7 @@ def _build_colorbar(ax: plt.Axes, weights: np.ndarray, v_min: float, v_max: floa
 
 ########################################################################################################################
 
-def _display_latent_space_big(ax: plt.Axes, weights: np.ndarray, cmap: colors.Colormap, norm: typing.Any) -> None:
+def _display_latent_space_big(ax: plt.Axes, weights: np.ndarray, cmap: colors.Colormap, norm: colors.Normalize) -> None:
 
     ####################################################################################################################
 
@@ -143,7 +143,7 @@ def _display_latent_space_big(ax: plt.Axes, weights: np.ndarray, cmap: colors.Co
 
 ########################################################################################################################
 
-def _display_latent_space_square(ax: plt.Axes, weights: np.ndarray, cmap: colors.Colormap, norm: typing.Any, antialiased: bool) -> None:
+def _display_latent_space_square(ax: plt.Axes, weights: np.ndarray, cmap: colors.Colormap, norm: colors.Normalize, antialiased: bool) -> None:
 
     ####################################################################################################################
 
@@ -162,7 +162,7 @@ def _display_latent_space_square(ax: plt.Axes, weights: np.ndarray, cmap: colors
 
 ########################################################################################################################
 
-def _display_latent_space_hexagonal(ax: plt.Axes, weights: np.ndarray, cmap: colors.Colormap, norm: typing.Any, antialiased: bool) -> None:
+def _display_latent_space_hexagonal(ax: plt.Axes, weights: np.ndarray, cmap: colors.Colormap, norm: colors.Normalize, antialiased: bool) -> None:
 
     ####################################################################################################################
 

@@ -507,7 +507,7 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024) -> np.ndarray:
+    def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], enable_gpu: bool = True, threads_per_blocks: int = 1024) -> np.ndarray:
 
         """
         Returns a matrix containing the number of times each neuron have been activated for the given input.
@@ -518,7 +518,7 @@ class SOM_Abstract(object):
             Dataset array or generator builder.
         enable_gpu : bool
             If available, run on GPU rather than CPU (default: **True**).
-        threads_per_blocks : typing.Union[typing.Tuple[int], int]
+        threads_per_blocks : int
             Number of GPU threads per blocks (default: **1024**).
         """
 
@@ -544,7 +544,7 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: typing.Union[typing.Tuple[int], int] = 1024) -> np.ndarray:
+    def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> np.ndarray:
 
         """
         Returns a vector of the best matching unit indices (shape m×n) for the given input.
@@ -555,7 +555,7 @@ class SOM_Abstract(object):
             Dataset array.
         enable_gpu : bool
             If available, run on GPU rather than CPU (default: **True**).
-        threads_per_blocks : typing.Union[typing.Tuple[int], int]
+        threads_per_blocks : int
             Number of GPU threads per blocks (default: **1024**).
         """
 

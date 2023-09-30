@@ -1387,7 +1387,7 @@ def dtype(self):
 
     ####################################################################################################################
 
-    def get_activation_map(self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
+    def get_activation_map(self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: int = 1024) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
         Returns a matrix containing the number of times each neuron have been activated for the given input.
@@ -1398,7 +1398,7 @@ def dtype(self):
             Dataset array or generator builder.
         enable_gpu : bool
             If available, run on GPU rather than CPU (default: **True**).
-        threads_per_blocks : Union[Tuple[int], int]
+        threads_per_blocks : int
             Number of GPU threads per blocks (default: **1024**).
         &#34;&#34;&#34;
 
@@ -1424,7 +1424,7 @@ def dtype(self):
 
     ####################################################################################################################
 
-    def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
+    def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: int = 1024) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
         Returns a vector of the best matching unit indices (shape m×n) for the given input.
@@ -1435,7 +1435,7 @@ def dtype(self):
             Dataset array.
         enable_gpu : bool
             If available, run on GPU rather than CPU (default: **True**).
-        threads_per_blocks : Union[Tuple[int], int]
+        threads_per_blocks : int
             Number of GPU threads per blocks (default: **1024**).
         &#34;&#34;&#34;
 
@@ -1918,7 +1918,7 @@ def topology(self) -&gt; str:
 </details>
 </dd>
 <dt id="decontamination.SOM_Abstract.get_activation_map"><code class="name flex">
-<span>def <span class="ident">get_activation_map</span></span>(<span>self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) ‑> np.ndarray</span>
+<span>def <span class="ident">get_activation_map</span></span>(<span>self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: int = 1024) ‑> np.ndarray</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p>
@@ -1928,14 +1928,14 @@ def topology(self) -&gt; str:
 <dd>Dataset array or generator builder.</dd>
 <dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
 <dd>If available, run on GPU rather than CPU (default: <strong>True</strong>).</dd>
-<dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
+<dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>int</code></dt>
 <dd>Number of GPU threads per blocks (default: <strong>1024</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_activation_map(self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
+<pre><code class="python">def get_activation_map(self, dataset: Union[np.ndarray, Callable], enable_gpu: bool = True, threads_per_blocks: int = 1024) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
     Returns a matrix containing the number of times each neuron have been activated for the given input.
@@ -1946,7 +1946,7 @@ def topology(self) -&gt; str:
         Dataset array or generator builder.
     enable_gpu : bool
         If available, run on GPU rather than CPU (default: **True**).
-    threads_per_blocks : Union[Tuple[int], int]
+    threads_per_blocks : int
         Number of GPU threads per blocks (default: **1024**).
     &#34;&#34;&#34;
 
@@ -1972,7 +1972,7 @@ def topology(self) -&gt; str:
 </details>
 </dd>
 <dt id="decontamination.SOM_Abstract.get_winners"><code class="name flex">
-<span>def <span class="ident">get_winners</span></span>(<span>self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) ‑> np.ndarray</span>
+<span>def <span class="ident">get_winners</span></span>(<span>self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: int = 1024) ‑> np.ndarray</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p>
@@ -1982,14 +1982,14 @@ def topology(self) -&gt; str:
 <dd>Dataset array.</dd>
 <dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
 <dd>If available, run on GPU rather than CPU (default: <strong>True</strong>).</dd>
-<dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
+<dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>int</code></dt>
 <dd>Number of GPU threads per blocks (default: <strong>1024</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: Union[Tuple[int], int] = 1024) -&gt; np.ndarray:
+<pre><code class="python">def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: int = 1024) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
     Returns a vector of the best matching unit indices (shape m×n) for the given input.
@@ -2000,7 +2000,7 @@ def topology(self) -&gt; str:
         Dataset array.
     enable_gpu : bool
         If available, run on GPU rather than CPU (default: **True**).
-    threads_per_blocks : Union[Tuple[int], int]
+    threads_per_blocks : int
         Number of GPU threads per blocks (default: **1024**).
     &#34;&#34;&#34;
 
@@ -2342,10 +2342,10 @@ number of samples in the dataset to analyze.</p>
 
     ####################################################################################################################
 
-    def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
+    def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -&gt; None:
 
         &#34;&#34;&#34;
-        Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(e)\\equiv\\mathrm{bmu}(x_i,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ n_{ji}(e)=\\left\\{\\begin{array}{ll}1&amp;j=c_i(e)\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}n_{ji}(e)x_i}{\\sum_{i=0}^{N-1}n_{ji}(e)}} $$ where \\( j=0\\dots m\\times n-1 \\).
+        Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(w,e)\\equiv\\delta_{j,c_i(w,e)}\\equiv\\left\\{\\begin{array}{ll}1&amp;j=c_i(w,e)\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}} $$ where \\( j=0\\dots m\\times n-1 \\).
 
         Parameters
         ----------
@@ -2353,17 +2353,61 @@ number of samples in the dataset to analyze.</p>
             Training dataset array or generator builder.
         n_epochs : Optional[int]
             Number of epochs to train for (default: **None**).
-        n_vectors : Optional[int]
-            Number of vectors to train for (default: **None**).
-        n_error_bins : int
-            Number of error bins (default: **10**).
         show_progress_bar : bool
             Specifies whether to display a progress bar (default: **False**).
+        enable_gpu : bool
+            If available, run on GPU rather than CPU (default: **True**).
+        threads_per_blocks : int
+            Number of GPU threads per blocks (default: **1024**).
         &#34;&#34;&#34;
 
         ################################################################################################################
 
-        pass</code></pre>
+        generator_builder = dataset_to_generator_builder(dataset)
+
+        ################################################################################################################
+
+        quantization_errors = device_array_empty(n_epochs, dtype = np.float32)
+
+        topographic_errors = device_array_empty(n_epochs, dtype = np.float32)
+
+        ################################################################################################################
+
+        for cur_epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
+
+            ############################################################################################################
+
+            generator = generator_builder()
+
+            ############################################################################################################
+
+            numerator = device_array_zeros(shape = (self._m * self._n,), dtype = self._dtype)
+
+            denominator = device_array_zeros(shape = (self._m * self._n,), dtype = self._dtype)
+
+            ############################################################################################################
+
+            for data in generator():
+
+                _train_kernel[enable_gpu, threads_per_blocks, data.shape[0]](
+                    numerator,
+                    denominator,
+                    quantization_errors,
+                    topographic_errors,
+                    self._weights,
+                    data,
+                    cur_epoch
+                )
+
+            ############################################################################################################
+
+            self._weights = numerator.copy_to_host() / denominator.copy_to_host()
+
+        ################################################################################################################
+
+        self._quantization_errors = quantization_errors.copy_to_host()
+
+        self._topographic_errors = topographic_errors.copy_to_host()</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -2372,31 +2416,31 @@ number of samples in the dataset to analyze.</p>
 <h3>Methods</h3>
 <dl>
 <dt id="decontamination.SOM_Batch.train"><code class="name flex">
-<span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) ‑> None</span>
+<span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Trains the neural network. Use either the "<em>number of epochs</em>" training method by specifying <code>n_epochs</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </script></span>) or the "<em>number of vectors</em>" training method by specifying <code>n_vectors</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </script></span>). A batch formulation of updating weights is implemented: <span><span class="MathJax_Preview"> c_i(e)\equiv\mathrm{bmu}(x_i,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </span><script type="math/tex; mode=display"> c_i(e)\equiv\mathrm{bmu}(x_i,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </script></span> <span><span class="MathJax_Preview"> n_{ji}(e)=\left\{\begin{array}{ll}1&amp;j=c_i(e)\\0&amp;\mathrm{otherwise}\end{array}\right. </span><script type="math/tex; mode=display"> n_{ji}(e)=\left\{\begin{array}{ll}1&j=c_i(e)\\0&\mathrm{otherwise}\end{array}\right. </script></span> <span><span class="MathJax_Preview"> \boxed{w_j(e+1)=\frac{\sum_{i=0}^{N-1}n_{ji}(e)x_i}{\sum_{i=0}^{N-1}n_{ji}(e)}} </span><script type="math/tex; mode=display"> \boxed{w_j(e+1)=\frac{\sum_{i=0}^{N-1}n_{ji}(e)x_i}{\sum_{i=0}^{N-1}n_{ji}(e)}} </script></span> where <span><span class="MathJax_Preview"> j=0\dots m\times n-1 </span><script type="math/tex"> j=0\dots m\times n-1 </script></span>.</p>
+<div class="desc"><p>Trains the neural network. Use either the "<em>number of epochs</em>" training method by specifying <code>n_epochs</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </script></span>) or the "<em>number of vectors</em>" training method by specifying <code>n_vectors</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </script></span>). A batch formulation of updating weights is implemented: <span><span class="MathJax_Preview"> c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </span><script type="math/tex; mode=display"> c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </script></span> <span><span class="MathJax_Preview"> \Theta_{ji}(w,e)\equiv\delta_{j,c_i(w,e)}\equiv\left\{\begin{array}{ll}1&amp;j=c_i(w,e)\\0&amp;\mathrm{otherwise}\end{array}\right. </span><script type="math/tex; mode=display"> \Theta_{ji}(w,e)\equiv\delta_{j,c_i(w,e)}\equiv\left\{\begin{array}{ll}1&j=c_i(w,e)\\0&\mathrm{otherwise}\end{array}\right. </script></span> <span><span class="MathJax_Preview"> \boxed{w_j(e+1)=\frac{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)x_i}{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)}} </span><script type="math/tex; mode=display"> \boxed{w_j(e+1)=\frac{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)x_i}{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)}} </script></span> where <span><span class="MathJax_Preview"> j=0\dots m\times n-1 </span><script type="math/tex"> j=0\dots m\times n-1 </script></span>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
 <dd>Training dataset array or generator builder.</dd>
 <dt><strong><code>n_epochs</code></strong> :&ensp;<code>Optional[int]</code></dt>
 <dd>Number of epochs to train for (default: <strong>None</strong>).</dd>
-<dt><strong><code>n_vectors</code></strong> :&ensp;<code>Optional[int]</code></dt>
-<dd>Number of vectors to train for (default: <strong>None</strong>).</dd>
-<dt><strong><code>n_error_bins</code></strong> :&ensp;<code>int</code></dt>
-<dd>Number of error bins (default: <strong>10</strong>).</dd>
 <dt><strong><code>show_progress_bar</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Specifies whether to display a progress bar (default: <strong>False</strong>).</dd>
+<dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If available, run on GPU rather than CPU (default: <strong>True</strong>).</dd>
+<dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of GPU threads per blocks (default: <strong>1024</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
+<pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -&gt; None:
 
     &#34;&#34;&#34;
-    Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(e)\\equiv\\mathrm{bmu}(x_i,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ n_{ji}(e)=\\left\\{\\begin{array}{ll}1&amp;j=c_i(e)\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}n_{ji}(e)x_i}{\\sum_{i=0}^{N-1}n_{ji}(e)}} $$ where \\( j=0\\dots m\\times n-1 \\).
+    Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(w,e)\\equiv\\delta_{j,c_i(w,e)}\\equiv\\left\\{\\begin{array}{ll}1&amp;j=c_i(w,e)\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}} $$ where \\( j=0\\dots m\\times n-1 \\).
 
     Parameters
     ----------
@@ -2404,17 +2448,61 @@ number of samples in the dataset to analyze.</p>
         Training dataset array or generator builder.
     n_epochs : Optional[int]
         Number of epochs to train for (default: **None**).
-    n_vectors : Optional[int]
-        Number of vectors to train for (default: **None**).
-    n_error_bins : int
-        Number of error bins (default: **10**).
     show_progress_bar : bool
         Specifies whether to display a progress bar (default: **False**).
+    enable_gpu : bool
+        If available, run on GPU rather than CPU (default: **True**).
+    threads_per_blocks : int
+        Number of GPU threads per blocks (default: **1024**).
     &#34;&#34;&#34;
 
     ################################################################################################################
 
-    pass</code></pre>
+    generator_builder = dataset_to_generator_builder(dataset)
+
+    ################################################################################################################
+
+    quantization_errors = device_array_empty(n_epochs, dtype = np.float32)
+
+    topographic_errors = device_array_empty(n_epochs, dtype = np.float32)
+
+    ################################################################################################################
+
+    for cur_epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
+
+        ############################################################################################################
+
+        generator = generator_builder()
+
+        ############################################################################################################
+
+        numerator = device_array_zeros(shape = (self._m * self._n,), dtype = self._dtype)
+
+        denominator = device_array_zeros(shape = (self._m * self._n,), dtype = self._dtype)
+
+        ############################################################################################################
+
+        for data in generator():
+
+            _train_kernel[enable_gpu, threads_per_blocks, data.shape[0]](
+                numerator,
+                denominator,
+                quantization_errors,
+                topographic_errors,
+                self._weights,
+                data,
+                cur_epoch
+            )
+
+        ############################################################################################################
+
+        self._weights = numerator.copy_to_host() / denominator.copy_to_host()
+
+    ################################################################################################################
+
+    self._quantization_errors = quantization_errors.copy_to_host()
+
+    self._topographic_errors = topographic_errors.copy_to_host()</code></pre>
 </details>
 </dd>
 </dl>
@@ -2563,7 +2651,7 @@ number of samples in the dataset to analyze.</p>
     def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
 
         &#34;&#34;&#34;
-        Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(e)\\equiv\\mathrm{bmu}(x_i,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(e)\\equiv\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N-1\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n-1 \\) and, at epoch \\( e \\), \\( \\alpha(e)\\equiv\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
+        Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(w,e)\\equiv\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N-1\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(w,e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n-1 \\) and, at epoch \\( e \\), \\( \\alpha(e)\\equiv\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
 
         Parameters
         ----------
@@ -2704,7 +2792,7 @@ number of samples in the dataset to analyze.</p>
 <span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Trains the neural network. Use either the "<em>number of epochs</em>" training method by specifying <code>n_epochs</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </script></span>) or the "<em>number of vectors</em>" training method by specifying <code>n_vectors</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </script></span>). An online formulation of updating weights is implemented: <span><span class="MathJax_Preview"> c_i(e)\equiv\mathrm{bmu}(x_i,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </span><script type="math/tex; mode=display"> c_i(e)\equiv\mathrm{bmu}(x_i,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </script></span> <span><span class="MathJax_Preview"> \Theta_{ji}(e)\equiv\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i\rVert}{2\sigma^2(e)}\right) </span><script type="math/tex; mode=display"> \Theta_{ji}(e)\equiv\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i\rVert}{2\sigma^2(e)}\right) </script></span> <span><span class="MathJax_Preview"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N-1\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(e)[x_i-w_j(e)]} </span><script type="math/tex; mode=display"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N-1\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(e)[x_i-w_j(e)]} </script></span> where <span><span class="MathJax_Preview"> j=0\dots m\times n-1 </span><script type="math/tex"> j=0\dots m\times n-1 </script></span> and, at epoch <span><span class="MathJax_Preview"> e </span><script type="math/tex"> e </script></span>, <span><span class="MathJax_Preview"> \alpha(e)\equiv\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \alpha(e)\equiv\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the learning rate and <span><span class="MathJax_Preview"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the neighborhood radius.</p>
+<div class="desc"><p>Trains the neural network. Use either the "<em>number of epochs</em>" training method by specifying <code>n_epochs</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </script></span>) or the "<em>number of vectors</em>" training method by specifying <code>n_vectors</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </script></span>). An online formulation of updating weights is implemented: <span><span class="MathJax_Preview"> c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </span><script type="math/tex; mode=display"> c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </script></span> <span><span class="MathJax_Preview"> \Theta_{ji}(w,e)\equiv\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i(w,e)\rVert}{2\sigma^2(e)}\right) </span><script type="math/tex; mode=display"> \Theta_{ji}(w,e)\equiv\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i(w,e)\rVert}{2\sigma^2(e)}\right) </script></span> <span><span class="MathJax_Preview"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N-1\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(w,e)[x_i-w_j(e)]} </span><script type="math/tex; mode=display"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N-1\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(w,e)[x_i-w_j(e)]} </script></span> where <span><span class="MathJax_Preview"> j=0\dots m\times n-1 </span><script type="math/tex"> j=0\dots m\times n-1 </script></span> and, at epoch <span><span class="MathJax_Preview"> e </span><script type="math/tex"> e </script></span>, <span><span class="MathJax_Preview"> \alpha(e)\equiv\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \alpha(e)\equiv\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the learning rate and <span><span class="MathJax_Preview"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the neighborhood radius.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
@@ -2725,7 +2813,7 @@ number of samples in the dataset to analyze.</p>
 <pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
 
     &#34;&#34;&#34;
-    Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(e)\\equiv\\mathrm{bmu}(x_i,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(e)\\equiv\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N-1\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n-1 \\) and, at epoch \\( e \\), \\( \\alpha(e)\\equiv\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
+    Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(w,e)\\equiv\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N-1\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(w,e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n-1 \\) and, at epoch \\( e \\), \\( \\alpha(e)\\equiv\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
 
     Parameters
     ----------

@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
+import tqdm
 import typing
 
 import numpy as np
 
-from . import som_abstract
+from .. import jit, device_array_empty, device_array_zeros
+
+from . import som_abstract, dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -61,10 +64,10 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, n_error_bins: typing.Optional[int] = 10, show_progress_bar: bool = False) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
-        Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the "*number of vectors*" training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(e)\\equiv\\mathrm{bmu}(x_i,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ n_{ji}(e)=\\left\\{\\begin{array}{ll}1&j=c_i(e)\\\\0&\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}n_{ji}(e)x_i}{\\sum_{i=0}^{N-1}n_{ji}(e)}} $$ where \\( j=0\\dots m\\times n-1 \\).
+        Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the "*number of vectors*" training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(w,e)\\equiv\\delta_{j,c_i(w,e)}\\equiv\\left\\{\\begin{array}{ll}1&j=c_i(w,e)\\\\0&\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}} $$ where \\( j=0\\dots m\\times n-1 \\).
 
         Parameters
         ----------
@@ -72,16 +75,67 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             Training dataset array or generator builder.
         n_epochs : typing.Optional[int]
             Number of epochs to train for (default: **None**).
-        n_vectors : typing.Optional[int]
-            Number of vectors to train for (default: **None**).
-        n_error_bins : int
-            Number of error bins (default: **10**).
         show_progress_bar : bool
             Specifies whether to display a progress bar (default: **False**).
+        enable_gpu : bool
+            If available, run on GPU rather than CPU (default: **True**).
+        threads_per_blocks : int
+            Number of GPU threads per blocks (default: **1024**).
         """
 
         ################################################################################################################
 
-        pass
+        generator_builder = dataset_to_generator_builder(dataset)
+
+        ################################################################################################################
+
+        quantization_errors = device_array_empty(n_epochs, dtype = np.float32)
+
+        topographic_errors = device_array_empty(n_epochs, dtype = np.float32)
+
+        ################################################################################################################
+
+        for cur_epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
+
+            ############################################################################################################
+
+            generator = generator_builder()
+
+            ############################################################################################################
+
+            numerator = device_array_zeros(shape = (self._m * self._n,), dtype = self._dtype)
+
+            denominator = device_array_zeros(shape = (self._m * self._n,), dtype = self._dtype)
+
+            ############################################################################################################
+
+            for data in generator():
+
+                _train_kernel[enable_gpu, threads_per_blocks, data.shape[0]](
+                    numerator,
+                    denominator,
+                    quantization_errors,
+                    topographic_errors,
+                    self._weights,
+                    data,
+                    cur_epoch
+                )
+
+            ############################################################################################################
+
+            self._weights = numerator.copy_to_host() / denominator.copy_to_host()
+
+        ################################################################################################################
+
+        self._quantization_errors = quantization_errors.copy_to_host()
+
+        self._topographic_errors = topographic_errors.copy_to_host()
+
+########################################################################################################################
+
+@jit(kernel = True, parallel = False)
+def _train_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, vectors: np.ndarray, cur_epoch: int) -> None:
+
+    pass
 
 ########################################################################################################################

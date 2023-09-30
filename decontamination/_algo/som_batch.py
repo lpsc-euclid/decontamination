@@ -52,14 +52,11 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         self._n_epochs = None
 
-        self._n_vectors = None
-
         ################################################################################################################
 
         self._header_extra = {
             'mode': '__MODE__',
             'n_epochs': '_n_epochs',
-            'n_vectors': '_n_vectors',
         }
 
     ####################################################################################################################
@@ -92,6 +89,10 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         quantization_errors = device_array_empty(n_epochs, dtype = np.float32)
 
         topographic_errors = device_array_empty(n_epochs, dtype = np.float32)
+
+        ################################################################################################################
+
+        self._n_epochs = n_epochs
 
         ################################################################################################################
 

@@ -46,11 +46,11 @@ def _init_plot(weights: np.ndarray, v_min: float, v_max: float, cmap: str, log_s
 
     ####################################################################################################################
 
-    ax.set_xticks([j * H_LENGTH for j in range(0, weights.shape[1] + 1, y_interval)])
-    ax.set_yticks([i * V_LENGTH for i in range(0, weights.shape[0] + 1, x_interval)])
+    ax.set_xticks(np.arange(0, (weights.shape[1] + 1) * H_LENGTH, y_interval * H_LENGTH))
+    ax.set_yticks(np.arange(0, (weights.shape[0] + 1) * V_LENGTH, x_interval * V_LENGTH))
 
-    ax.set_xticklabels(range(0, weights.shape[1] + 1, y_interval))
-    ax.set_yticklabels(range(0, weights.shape[0] + 1, x_interval))
+    ax.set_xticklabels(range(0, (weights.shape[1] + 1) * 0x000001, y_interval * 0x000001))
+    ax.set_yticklabels(range(0, (weights.shape[0] + 1) * 0x000001, x_interval * 0x000001))
 
     ####################################################################################################################
     # INIT MIN & MAX                                                                                                   #
@@ -96,30 +96,20 @@ def _build_colorbar(ax: plt.Axes, weights: np.ndarray, v_min: float, v_max: floa
 
     ####################################################################################################################
 
-    weights = weights[~np.isnan(weights)]
+    ad = make_axes_locatable(ax)
 
-    ####################################################################################################################
-
-    mappable = plt.cm.ScalarMappable(cmap = cmap, norm = norm)
-
-    cax = make_axes_locatable(ax).append_axes('right', '7.5%', pad = 0.05)
-
-    ####################################################################################################################
-
-    mappable.set_array([])
-
-    colorbar = plt.colorbar(mappable = mappable, cax = cax)
+    colorbar = plt.colorbar(
+        mappable = plt.cm.ScalarMappable(cmap = cmap, norm = norm),
+        cax = ad.append_axes('right', '7.5%', pad = 0.05)
+    )
 
     ####################################################################################################################
 
     if show_histogram:
 
-        hist, bins = np.histogram(weights, bins = np.logspace(np.log10(v_min), np.log10(v_max), n_histogram_bins) if log_scale else n_histogram_bins)
+        hist, bins = np.histogram(weights[np.isfinite(weights)], bins = np.logspace(np.log10(v_min), np.log10(v_max), n_histogram_bins) if log_scale else n_histogram_bins)
 
-        colorbar.ax.plot(hist.astype(float) / hist.max(), (bins[:-1] + bins[+1:]) / 2.0, linewidth = 0.75, color = 'k')
-
-        colorbar.ax.set_xticks([0.000, 1.000])
-        colorbar.ax.set_yticks([v_min, v_max])
+        colorbar.ax.plot(hist.astype(float) / hist.max(), bins[: -1], linewidth = 0.75, color = 'k')
 
         if log_scale:
 

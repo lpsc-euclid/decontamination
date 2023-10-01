@@ -26,9 +26,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
     def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None):
 
         """
-        A rule of thumb to set the size of the grid for a dimensionality reduction
-        task is that it should contain \\( 5\\sqrt{N} \\) neurons where N is the
-        number of samples in the dataset to analyze.
+        A rule of thumb to set the size of the grid for a dimensionality reduction task is that it should contain \\( 5\\sqrt{N} \\) neurons where N is the number of samples in the dataset to analyze.
 
         Parameters
         ----------

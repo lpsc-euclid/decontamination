@@ -588,6 +588,7 @@ def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndar
     # !--BEGIN-GPU--
 
     i = cu.grid(1)
+
     if i < vectors.shape[0]:
 
         # noinspection PyArgumentList
@@ -612,6 +613,7 @@ def _find_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndarr
     # !--BEGIN-GPU--
 
     i = cu.grid(1)
+
     if i < vectors.shape[0]:
 
         result[i] = _find_bmu_xpu(weights, vectors[i], mn)

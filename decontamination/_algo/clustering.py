@@ -140,7 +140,9 @@ def _init_distances_kernel(result: np.ndarray, weights: np.ndarray) -> None:
 
         for j in range(i):
 
-            row[j] = np.sum((weight_i - weights[j]) ** 2)
+            weight_j = weights[j]
+
+            row[j] = np.sum((weight_i - weight_j) ** 2)
 
     # !--END-CPU--
     ####################################################################################################################

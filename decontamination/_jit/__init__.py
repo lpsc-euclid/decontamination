@@ -177,7 +177,7 @@ class DeviceArray(object):
             elif self._content is not None:
 
                 if float(self._content) == 0.0:
-                    self._instance = cu.device_array(shape = self._shape, dtype = self._dtype)
+                    self._instance = cu.to_device(np.zeros(shape = self._shape, dtype = self._dtype))
                 else:
                     self._instance = cu.to_device(np.full(shape = self._shape, fill_value = self._content, dtype = self._dtype))
 

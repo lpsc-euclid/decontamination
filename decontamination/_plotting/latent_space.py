@@ -86,6 +86,8 @@ def _init_plot(weights: np.ndarray, v_min: float, v_max: float, cmap: str, log_s
 
     cmap = plt.get_cmap(cmap)
 
+    cmap.set_bad(color = 'gray')
+
     ####################################################################################################################
 
     return fig, ax, v_min, v_max, norm, cmap

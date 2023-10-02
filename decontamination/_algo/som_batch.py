@@ -211,6 +211,8 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
     # UPDATE ERRORS                                                                                                    #
     ####################################################################################################################
 
+    # !--BEGIN-CPU--
+
     if square_distance_xpu(bmu1, bmu2) > penalty_dist:
 
         quantization_errors[err_bin] += math.sqrt(min_distance1)
@@ -218,5 +220,19 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
 
     quantization_errors[err_bin] += math.sqrt(min_distance1)
     topographic_errors[err_bin] += 0.0000000000000000000000
+
+    # !--END-CPU--
+
+    # !--BEGIN-GPU--
+
+    if square_distance_xpu(bmu1, bmu2) > penalty_dist:
+
+        cu.atomic.add(quantization_errors, err_bin, math.sqrt(min_distance1))
+        cu.atomic.add(topographic_errors, err_bin, 1.0000000000000000000000)
+
+    cu.atomic.add(quantization_errors, err_bin, math.sqrt(min_distance1))
+    cu.atomic.add(topographic_errors, err_bin, 0.0000000000000000000000)
+
+    # !--END-GPU--
 
 ########################################################################################################################

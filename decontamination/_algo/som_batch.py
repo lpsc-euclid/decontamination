@@ -134,7 +134,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
-            self._weights = numerator.copy_to_host() / denominator.copy_to_host()
+            self._weights = np.divide(
+                numerator.copy_to_host(),
+                denominator.copy_to_host(),
+                out = np.zeros_like(numerator),
+                where = denominator != 0.0
+            )
 
         ################################################################################################################
 
@@ -205,7 +210,7 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
     ####################################################################################################################
 
     add_vector_xpu(numerator[min_index1], vector)
-    add_scalar_xpu(denominator[min_index1], 1.000)
+    add_scalar_xpu(denominator[min_index1], 1.0000)
 
     ####################################################################################################################
     # UPDATE ERRORS                                                                                                    #
@@ -222,7 +227,7 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
     topographic_errors[err_bin] += 0.0000000000000000000000
 
     # !--END-CPU--
-
+    ####################################################################################################################
     # !--BEGIN-GPU--
 
     if square_distance_xpu(bmu1, bmu2) > penalty_dist:

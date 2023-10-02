@@ -90,10 +90,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
         for i in range(data.shape[0]):
 
-            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, penalty_dist, mn)
-
-            quantization_errors[cur_epoch] += quantization_error
-            topographic_errors[cur_epoch] += topographic_error
+            _train_step2(quantization_errors, topographic_errors, weights, topography, data[i], alpha, sigma, penalty_dist, cur_epoch, mn)
 
     ####################################################################################################################
 
@@ -105,6 +102,10 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
+            cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
+
+            ############################################################################################################
+
             decay_function = asymptotic_decay(cur_vector + i, n_vectors)
 
             alpha = alpha0 * decay_function
@@ -113,12 +114,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
-            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, penalty_dist, mn)
-
-            cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
-
-            quantization_errors[cur_err_bin] += quantization_error
-            topographic_errors[cur_err_bin] += topographic_error
+            _train_step2(quantization_errors, topographic_errors, weights, topography, data[i], alpha, sigma, penalty_dist, cur_err_bin, mn)
 
     ####################################################################################################################
 
@@ -259,7 +255,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 ########################################################################################################################
 
 @nb.njit(parallel = False, fastmath = True)
-def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, alpha: float, sigma: float, penalty_dist: float, mn: int):
+def _train_step2(quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, alpha: float, sigma: float, penalty_dist: float, err_bin: int, mn: int) -> None:
 
     ####################################################################################################################
     # BMUS CALCULATION                                                                                                 #
@@ -308,8 +304,10 @@ def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray
 
     if np.sum((bmu1 - bmu2) ** 2) > penalty_dist:
 
-        return math.sqrt(min_distance1), 1
+        quantization_errors[err_bin] += math.sqrt(min_distance1)
+        topographic_errors[err_bin] += 1.0000000000000000000000
 
-    return math.sqrt(min_distance1), 0
+    quantization_errors[err_bin] += math.sqrt(min_distance1)
+    topographic_errors[err_bin] += 0.0000000000000000000000
 
 ########################################################################################################################

@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
+import math
 import tqdm
 import typing
 
 import numpy as np
+import numba as nb
+import numba.cuda as cu
 
 from .. import jit, device_array_empty, device_array_zeros
 
@@ -84,13 +87,19 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
+        cur_vector = 0
+
+        self._n_epochs = n_epochs
+
+        penalty_dist = 2.0 if self._topology == 'square' else 1.0
+
+        ################################################################################################################
+        # TRAINING BY NUMBER OF EPOCHS                                                                                 #
+        ################################################################################################################
+
         quantization_errors = device_array_empty(n_epochs, dtype = np.float32)
 
         topographic_errors = device_array_empty(n_epochs, dtype = np.float32)
-
-        ################################################################################################################
-
-        self._n_epochs = n_epochs
 
         ################################################################################################################
 
@@ -98,17 +107,17 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
+            numerator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
+
+            denominator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
+
+            ############################################################################################################
+
             generator = generator_builder()
 
-            ############################################################################################################
-
-            numerator = device_array_zeros(shape = (self._m * self._n,), dtype = self._dtype)
-
-            denominator = device_array_zeros(shape = (self._m * self._n,), dtype = self._dtype)
-
-            ############################################################################################################
-
             for data in generator():
+
+                cur_vector += data.shape[0]
 
                 _train_kernel[enable_gpu, threads_per_blocks, data.shape[0]](
                     numerator,
@@ -116,8 +125,11 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                     quantization_errors,
                     topographic_errors,
                     self._weights,
+                    self._topography,
                     data,
-                    cur_epoch
+                    penalty_dist,
+                    cur_epoch,
+                    self._m * self._n
                 )
 
             ############################################################################################################
@@ -126,15 +138,85 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        self._quantization_errors = quantization_errors.copy_to_host()
+        if cur_vector > 0:
 
-        self._topographic_errors = topographic_errors.copy_to_host()
+            self._quantization_errors = quantization_errors.copy_to_host() * n_epochs / cur_vector
+
+            self._topographic_errors = topographic_errors.copy_to_host() * n_epochs / cur_vector
 
 ########################################################################################################################
 
 @jit(kernel = True, parallel = False)
-def _train_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, vectors: np.ndarray, cur_epoch: int) -> None:
+def _train_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, penalty_dist: float, cur_epoch: int, mn: int) -> None:
 
-    pass
+    ####################################################################################################################
+    # !--BEGIN-CPU--
+
+    for i in nb.prange(vectors.shape[0]):
+
+        _train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], penalty_dist, cur_epoch, mn)
+
+    # !--END-CPU--
+    ####################################################################################################################
+    # !--BEGIN-GPU--
+
+    i = cu.grid(1)
+
+    if i < vectors.shape[0]:
+
+        _train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], penalty_dist, cur_epoch, mn)
+
+    # !--END-GPU--
+
+########################################################################################################################
+
+@jit(parallel = False)
+def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, penalty_dist: float, err_bin: int, mn: int) -> None:
+
+    ####################################################################################################################
+    # BMUS CALCULATION                                                                                                 #
+    ####################################################################################################################
+
+    ###_distance2 = 1.0e99
+    min_distance1 = 1.0e99
+
+    min_index2 = 0
+    min_index1 = 0
+
+    for min_index0 in range(mn):
+
+        min_distance0 = np.sum((weights[min_index0] - vector) ** 2)
+
+        if min_distance1 > min_distance0:
+
+            ###_distance2 = min_distance1
+            min_distance1 = min_distance0
+
+            min_index2 = min_index1
+            min_index1 = min_index0
+
+    ####################################################################################################################
+
+    bmu2 = topography[min_index2]
+    bmu1 = topography[min_index1]
+
+    ####################################################################################################################
+    # UPDATE WEIGHTS                                                                                                   #
+    ####################################################################################################################
+
+    numerator[min_index1] += vector
+    denominator[min_index1] += 1.000
+
+    ####################################################################################################################
+    # UPDATE ERRORS                                                                                                    #
+    ####################################################################################################################
+
+    if np.sum((bmu1 - bmu2) ** 2) > penalty_dist:
+
+        quantization_errors[err_bin] += math.sqrt(min_distance1)
+        topographic_errors[err_bin] += 1.0000000000000000000000
+
+    quantization_errors[err_bin] += math.sqrt(min_distance1)
+    topographic_errors[err_bin] += 0.0000000000000000000000
 
 ########################################################################################################################

@@ -159,7 +159,7 @@ class DeviceArray(object):
 
         if self._instance is not None:
 
-            raise Exception('Device array already instanced')
+            return self._instance
 
         ################################################################################################################
 

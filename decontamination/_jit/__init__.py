@@ -428,8 +428,6 @@ class jit(object):
 
         code_cpu = cls._CALL_RE.sub(lambda m: f'jit_module.{m.group(1)}_cpu(', cls._GPU_CODE_RE.sub('', code))
 
-        print(code_cpu)
-
         return (
             code_cpu
             .replace('xpu.local_empty', 'np.empty')

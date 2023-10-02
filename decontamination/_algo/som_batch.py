@@ -205,8 +205,7 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
     ####################################################################################################################
 
     add_xpu(numerator[min_index1], vector)
-
-    denominator[min_index1] += 1.000
+    add_xpu(denominator[min_index1], 1.000)
 
     ####################################################################################################################
     # UPDATE ERRORS                                                                                                    #

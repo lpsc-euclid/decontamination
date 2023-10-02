@@ -4,6 +4,7 @@
 import typing
 
 import numpy as np
+import numba.cuda as cu
 
 from .. import jit
 
@@ -43,7 +44,7 @@ def batch_iterator(vectors: np.ndarray, n_chunks: int) -> typing.Iterator[np.nda
 ########################################################################################################################
 
 @jit(parallel = False)
-def add_xpu(dest: np.ndarray, src: np.ndarray) -> None:
+def add_scalar_xpu(dest: np.ndarray, src: float) -> None:
 
     ####################################################################################################################
     # !--BEGIN-CPU--
@@ -54,9 +55,32 @@ def add_xpu(dest: np.ndarray, src: np.ndarray) -> None:
     ####################################################################################################################
     # !--BEGIN-GPU--
 
-    pass
+    for i in range(dest.shape[0]):
+
+        cu.atomic.add(dest, i, src)
 
     # !--END-GPU--
+
+########################################################################################################################
+
+@jit(parallel = False)
+def add_vector_xpu(dest: np.ndarray, src: np.ndarray) -> None:
+
+    ####################################################################################################################
+    # !--BEGIN-CPU--
+
+    dest += src
+
+    # !--END-CPU--
+    ####################################################################################################################
+    # !--BEGIN-GPU--
+
+    for i in range(dest.shape[0]):
+
+        cu.atomic.add(dest, i, src[i])
+
+    # !--END-GPU--
+
 ########################################################################################################################
 
 @jit(parallel = False)

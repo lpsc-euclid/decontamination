@@ -450,12 +450,12 @@ class jit(object):
 
         return (
             code_gpu
-            .replace('jit.grid', 'cu_module.grid')
-            .replace('jit.local_empty', 'cu_module.local.array')
-            .replace('jit.shared_empty', 'cu_module.shared.array')
-            .replace('jit.syncthreads', 'cu_module.syncthreads')
-            .replace('jit.atomic.add', 'cu_module.atomic.add')
-            .replace('jit.atomic.sub', 'cu_module.atomic.sub')
+            .replace('jit.grid', 'cuda_module.grid')
+            .replace('jit.local_empty', 'cuda_module.local.array')
+            .replace('jit.shared_empty', 'cuda_module.shared.array')
+            .replace('jit.syncthreads', 'cuda_module.syncthreads')
+            .replace('jit.atomic.add', 'cuda_module.atomic.add')
+            .replace('jit.atomic.sub', 'cuda_module.atomic.sub')
         )
 
     ####################################################################################################################

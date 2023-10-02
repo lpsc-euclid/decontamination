@@ -104,4 +104,5 @@ def square_distance_xpu(vector1: np.ndarray, vector2: np.ndarray) -> float:
     return result
 
     # !--END-GPU--
+
 ########################################################################################################################

@@ -11,7 +11,7 @@ import numba.cuda as cu
 
 from .. import jit, device_array_empty, device_array_zeros
 
-from . import add_xpu, som_abstract, square_distance_xpu, dataset_to_generator_builder
+from . import som_abstract, add_scalar_xpu, add_vector_xpu, square_distance_xpu, dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -204,8 +204,8 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
     # UPDATE WEIGHTS                                                                                                   #
     ####################################################################################################################
 
-    add_xpu(numerator[min_index1], vector)
-    add_xpu(denominator[min_index1], 1.000)
+    add_scalar_xpu(numerator[min_index1], vector)
+    add_vector_xpu(denominator[min_index1], 1.000)
 
     ####################################################################################################################
     # UPDATE ERRORS                                                                                                    #

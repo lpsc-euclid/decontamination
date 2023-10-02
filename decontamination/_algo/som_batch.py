@@ -154,8 +154,7 @@ def _train_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_e
 
     for i in nb.prange(vectors.shape[0]):
 
-        #_train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], penalty_dist, cur_epoch, mn)
-        pass
+        _train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], penalty_dist, cur_epoch, mn)
 
     # !--END-CPU--
     ####################################################################################################################
@@ -165,8 +164,7 @@ def _train_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_e
 
     if i < vectors.shape[0]:
 
-        #_train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], penalty_dist, cur_epoch, mn)
-        pass
+        _train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], penalty_dist, cur_epoch, mn)
 
     # !--END-GPU--
 
@@ -224,19 +222,19 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
     # UPDATE WEIGHTS                                                                                                   #
     ####################################################################################################################
 
-    numerator[min_index1] += vector
-    denominator[min_index1] += 1.000
+    #numerator[min_index1] += vector
+    #denominator[min_index1] += 1.000
 
     ####################################################################################################################
     # UPDATE ERRORS                                                                                                    #
     ####################################################################################################################
 
-    if np.sum((bmu1 - bmu2) ** 2) > penalty_dist:
+    #if np.sum((bmu1 - bmu2) ** 2) > penalty_dist:
 
-        quantization_errors[err_bin] += math.sqrt(min_distance1)
-        topographic_errors[err_bin] += 1.0000000000000000000000
+        #quantization_errors[err_bin] += math.sqrt(min_distance1)
+        #topographic_errors[err_bin] += 1.0000000000000000000000
 
-    quantization_errors[err_bin] += math.sqrt(min_distance1)
-    topographic_errors[err_bin] += 0.0000000000000000000000
+    #quantization_errors[err_bin] += math.sqrt(min_distance1)
+    #topographic_errors[err_bin] += 0.0000000000000000000000
 
 ########################################################################################################################

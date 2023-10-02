@@ -217,10 +217,10 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
 
     if square_distance_xpu(bmu1, bmu2) > penalty_dist:
 
-        jit.atomic.add(quantization_errors, err_bin, math.sqrt(min_distance1))
-        jit.atomic.add(topographic_errors, err_bin, 1.0000000000000000000000)
+        jit.atomic_add(quantization_errors, err_bin, math.sqrt(min_distance1))
+        jit.atomic_add(topographic_errors, err_bin, 1.0000000000000000000000)
 
-    jit.atomic.add(quantization_errors, err_bin, math.sqrt(min_distance1))
-    jit.atomic.add(topographic_errors, err_bin, 0.0000000000000000000000)
+    jit.atomic_add(quantization_errors, err_bin, math.sqrt(min_distance1))
+    jit.atomic_add(topographic_errors, err_bin, 0.0000000000000000000000)
 
 ########################################################################################################################

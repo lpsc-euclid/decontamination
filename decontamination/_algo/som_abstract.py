@@ -582,7 +582,7 @@ def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndar
 
         #result[_find_bmu_xpu(weights, vectors[i], mn)] += 1
 
-        jit.atomic.add(result, _find_bmu_xpu(weights, vectors[i], mn), 1)
+        jit.atomic_add(result, _find_bmu_xpu(weights, vectors[i], mn), 1)
 
     # !--END-CPU--
     ####################################################################################################################
@@ -592,7 +592,7 @@ def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndar
 
     if i < vectors.shape[0]:
 
-        jit.atomic.add(result, _find_bmu_xpu(weights, vectors[i], mn), 1)
+        jit.atomic_add(result, _find_bmu_xpu(weights, vectors[i], mn), 1)
 
     # !--END-GPU--
 

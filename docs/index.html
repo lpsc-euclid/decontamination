@@ -474,7 +474,8 @@ print(result.copy_to_host())
     local_empty = None
     shared_empty = None
     syncthreads = None
-    atomic = None
+    atomic_add = None
+    atomic_sub = None
 
     ####################################################################################################################
 
@@ -572,8 +573,8 @@ print(result.copy_to_host())
             .replace(&#39;jit.local_empty&#39;, &#39;np.empty&#39;)
             .replace(&#39;jit.shared_empty&#39;, &#39;np.empty&#39;)
             .replace(&#39;jit.syncthreads&#39;, &#39;##############&#39;)
-            .replace(&#39;jit.atomic.add&#39;, &#39;jit_module.atomic.add&#39;)
-            .replace(&#39;jit.atomic.sub&#39;, &#39;jit_module.atomic.sub&#39;)
+            .replace(&#39;jit.atomic_add&#39;, &#39;jit_module.atomic.add&#39;)
+            .replace(&#39;jit.atomic_sub&#39;, &#39;jit_module.atomic.sub&#39;)
         )
 
     ####################################################################################################################
@@ -589,8 +590,8 @@ print(result.copy_to_host())
             .replace(&#39;jit.local_empty&#39;, &#39;cuda_module.local.array&#39;)
             .replace(&#39;jit.shared_empty&#39;, &#39;cuda_module.shared.array&#39;)
             .replace(&#39;jit.syncthreads&#39;, &#39;cuda_module.syncthreads&#39;)
-            .replace(&#39;jit.atomic.add&#39;, &#39;cuda_module.atomic.add&#39;)
-            .replace(&#39;jit.atomic.sub&#39;, &#39;cuda_module.atomic.sub&#39;)
+            .replace(&#39;jit.atomic_add&#39;, &#39;cuda_module.atomic.add&#39;)
+            .replace(&#39;jit.atomic_sub&#39;, &#39;cuda_module.atomic.sub&#39;)
         )
 
     ####################################################################################################################
@@ -695,7 +696,11 @@ print(result.copy_to_host())
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="decontamination.jit.atomic"><code class="name">var <span class="ident">atomic</span></code></dt>
+<dt id="decontamination.jit.atomic_add"><code class="name">var <span class="ident">atomic_add</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="decontamination.jit.atomic_sub"><code class="name">var <span class="ident">atomic_sub</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -3296,12 +3301,13 @@ def average(vectors: np.ndarray, cluster_ids: np.ndarray) -&gt; np.ndarray:
 <ul>
 <li>
 <h4><code><a title="decontamination.jit" href="#decontamination.jit">jit</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="decontamination.jit.grid" href="#decontamination.jit.grid">grid</a></code></li>
 <li><code><a title="decontamination.jit.local_empty" href="#decontamination.jit.local_empty">local_empty</a></code></li>
 <li><code><a title="decontamination.jit.shared_empty" href="#decontamination.jit.shared_empty">shared_empty</a></code></li>
 <li><code><a title="decontamination.jit.syncthreads" href="#decontamination.jit.syncthreads">syncthreads</a></code></li>
-<li><code><a title="decontamination.jit.atomic" href="#decontamination.jit.atomic">atomic</a></code></li>
+<li><code><a title="decontamination.jit.atomic_add" href="#decontamination.jit.atomic_add">atomic_add</a></code></li>
+<li><code><a title="decontamination.jit.atomic_sub" href="#decontamination.jit.atomic_sub">atomic_sub</a></code></li>
 </ul>
 </li>
 <li>

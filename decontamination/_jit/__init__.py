@@ -11,6 +11,8 @@ import numpy as np
 import numba as nb
 import numba.cuda as cu
 
+from . import atomic
+
 ########################################################################################################################
 
 __pdoc__ = {}
@@ -343,7 +345,8 @@ class jit(object):
     local_empty = None
     shared_empty = None
     syncthreads = None
-    atomic = None
+    atomic_add = None
+    atomic_sub = None
 
     ####################################################################################################################
 
@@ -441,8 +444,8 @@ class jit(object):
             .replace('jit.local_empty', 'np.empty')
             .replace('jit.shared_empty', 'np.empty')
             .replace('jit.syncthreads', '##############')
-            .replace('jit.atomic.add', 'jit_module.atomic.add')
-            .replace('jit.atomic.sub', 'jit_module.atomic.sub')
+            .replace('jit.atomic_add', 'jit_module.atomic.add')
+            .replace('jit.atomic_sub', 'jit_module.atomic.sub')
         )
 
     ####################################################################################################################
@@ -458,8 +461,8 @@ class jit(object):
             .replace('jit.local_empty', 'cuda_module.local.array')
             .replace('jit.shared_empty', 'cuda_module.shared.array')
             .replace('jit.syncthreads', 'cuda_module.syncthreads')
-            .replace('jit.atomic.add', 'cuda_module.atomic.add')
-            .replace('jit.atomic.sub', 'cuda_module.atomic.sub')
+            .replace('jit.atomic_add', 'cuda_module.atomic.add')
+            .replace('jit.atomic_sub', 'cuda_module.atomic.sub')
         )
 
     ####################################################################################################################

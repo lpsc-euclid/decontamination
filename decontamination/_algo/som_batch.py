@@ -134,7 +134,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
-            self._weights = numerator.copy_to_host() / denominator.copy_to_host()
+            self._weights = numerator.copy_to_host() / np.expand_dims(denominator.copy_to_host(), -1)
 
         ################################################################################################################
 

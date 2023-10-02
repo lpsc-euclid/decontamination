@@ -296,7 +296,7 @@ def _train_step2(quantization_errors: np.ndarray, topographic_errors: np.ndarray
     # UPDATE WEIGHTS                                                                                                   #
     ####################################################################################################################
 
-    weights += np.expand_dims(learning_op, axis = -1) * (vector - weights)
+    weights += np.expand_dims(learning_op, -1) * (vector - weights)
 
     ####################################################################################################################
     # UPDATE ERRORS                                                                                                    #

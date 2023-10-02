@@ -103,19 +103,13 @@ def declare_atomic_array_op(iop: str, uop: str, fop: str):
 
             ############################################################################################################
 
-            op = None
-
-            if isinstance(aryty.dtype, types.Integer) and aryty.dtype.signed:
+            if isinstance(aryty.dtype, types.Float):
+                op = fop
+            elif isinstance(aryty.dtype, types.Integer) and aryty.dtype.signed:
                 op = iop
             elif isinstance(aryty.dtype, types.Integer) and not aryty.dtype.signed:
                 op = uop
-            elif isinstance(aryty.dtype, types.Float):
-                op = fop
-
-            ############################################################################################################
-
-            if op is None:
-
+            else:
                 raise TypeError(f'Atomic operation not supported on {aryty}')
 
             ############################################################################################################

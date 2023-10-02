@@ -343,7 +343,7 @@ class jit(object):
 
     ####################################################################################################################
 
-    _CALL_RE = re.compile('(\w+)_xpu\s*\(')
+    _CALL_RE = re.compile('(\\w+)_xpu\\s*\\(')
 
     _METHOD_RE = re.compile('def[^(]+(\\(.*)', flags = re.DOTALL)
 

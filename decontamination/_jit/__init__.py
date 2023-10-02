@@ -39,25 +39,6 @@ def nb_to_device(ndarray):
 
 ########################################################################################################################
 
-local_empty_cpu = np.empty
-shared_empty_cpu = np.empty
-atomic_add_cpu = nb_atomic.add
-atomic_sub_cpu = nb_atomic.sub
-
-#
-
-local_empty_gpu = cu.local.array
-shared_empty_gpu = cu.shared.array
-atomic_add_gpu = cu.atomic.add
-atomic_sub_gpu = cu.atomic.sub
-
-#
-
-grid_gpu = cu.grid
-syncthreads_gpu = cu.syncthreads
-
-########################################################################################################################
-
 def device_array_from(array: np.ndarray):
 
     """
@@ -452,12 +433,12 @@ class jit(object):
 
         return (
             code_cpu
-            .replace('jit.grid', '######')
-            .replace('jit.local_empty', 'jit_module.local_empty_cpu')
-            .replace('jit.shared_empty', 'jit_module.shared_empty_cpu')
-            .replace('jit.syncthreads', '######')
-            .replace('jit.atomic.add', 'jit_module.atomic_add_cpu')
-            .replace('jit.atomic.sub', 'jit_module.atomic_sub_cpu')
+            .replace('jit.grid', '#######')
+            .replace('jit.local_empty', 'np.empty')
+            .replace('jit.shared_empty', 'np.empty')
+            .replace('jit.syncthreads', '##############')
+            .replace('jit.atomic.add', 'jit_module.atomic.add')
+            .replace('jit.atomic.sub', 'jit_module.atomic.sub')
         )
 
     ####################################################################################################################
@@ -469,12 +450,12 @@ class jit(object):
 
         return (
             code_gpu
-            .replace('jit.grid', 'jit_module.grid_gpu')
-            .replace('jit.local_empty', 'jit_module.local_empty_gpu')
-            .replace('jit.shared_empty', 'jit_module.shared_empty_gpu')
-            .replace('jit.syncthreads', 'jit_module.syncthreads_gpu')
-            .replace('jit.atomic.add', 'jit_module.atomic_add_gpu')
-            .replace('jit.atomic.sub', 'jit_module.atomic_sub_gpu')
+            .replace('jit.grid', 'cu_module.grid')
+            .replace('jit.local_empty', 'cu_module.local.array')
+            .replace('jit.shared_empty', 'cu_module.shared.array')
+            .replace('jit.syncthreads', 'cu_module.syncthreads')
+            .replace('jit.atomic.add', 'cu_module.atomic.add')
+            .replace('jit.atomic.sub', 'cu_module.atomic.sub')
         )
 
     ####################################################################################################################
@@ -503,7 +484,11 @@ class jit(object):
         # FRAME                                                                                                        #
         ################################################################################################################
 
-        funct.__globals__['jit_module'] = sys.modules[__name__]
+        me = sys.modules[__name__]
+
+        funct.__globals__['jit_module'] = me
+
+        funct.__globals__['cuda_module'] = cu
 
         ################################################################################################################
         # SOURCE CODE                                                                                                  #

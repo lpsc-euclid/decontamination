@@ -109,7 +109,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             numerator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
 
-            denominator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
+            denominator = device_array_zeros(shape = (self._m * self._n, ), dtype = self._dtype)
 
             ############################################################################################################
 

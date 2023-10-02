@@ -222,8 +222,8 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
     # UPDATE WEIGHTS                                                                                                   #
     ####################################################################################################################
 
-    numerator[min_index1] += vector
-    #denominator[min_index1] += 1.000
+    #numerator[min_index1] += vector
+    denominator[min_index1] += 1.000
 
     ####################################################################################################################
     # UPDATE ERRORS                                                                                                    #

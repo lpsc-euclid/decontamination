@@ -154,7 +154,8 @@ def _train_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_e
 
     for i in nb.prange(vectors.shape[0]):
 
-        _train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], penalty_dist, cur_epoch, mn)
+        #_train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], penalty_dist, cur_epoch, mn)
+        pass
 
     # !--END-CPU--
     ####################################################################################################################
@@ -164,7 +165,8 @@ def _train_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_e
 
     if i < vectors.shape[0]:
 
-        _train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], penalty_dist, cur_epoch, mn)
+        #_train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], penalty_dist, cur_epoch, mn)
+        pass
 
     # !--END-GPU--
 

@@ -14,8 +14,6 @@ import decontamination
 
 import numpy as np
 
-import numba.cuda as cu
-
 ########################################################################################################################
 
 A = np.random.randn(100_000).astype(np.float32)
@@ -45,7 +43,7 @@ def foo_kernel(result, a, b):
     ####################################################################################################################
     # !--BEGIN-GPU--
 
-    i = cu.grid(1)
+    i = jit.grid(1)
     if i < result.shape[0]:
 
         result[i] = foo_xpu(a[i], b[i])

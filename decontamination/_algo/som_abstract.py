@@ -5,7 +5,6 @@ import typing
 
 import numpy as np
 import numba as nb
-import numba.cuda as cu
 
 from .. import jit, device_array_empty, device_array_zeros
 
@@ -573,7 +572,7 @@ class SOM_Abstract(object):
 
 ########################################################################################################################
 
-@jit(kernel = True, parallel = False)
+@jit(kernel = True, parallel = True)
 def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, mn: int) -> None:
 
     ####################################################################################################################
@@ -581,18 +580,19 @@ def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndar
 
     for i in nb.prange(vectors.shape[0]):
 
-        result[_find_bmu_xpu(weights, vectors[i], mn)] += 1
+        #result[_find_bmu_xpu(weights, vectors[i], mn)] += 1
+
+        jit.atomic.add(result, _find_bmu_xpu(weights, vectors[i], mn), 1)
 
     # !--END-CPU--
     ####################################################################################################################
     # !--BEGIN-GPU--
 
-    i = cu.grid(1)
+    i = jit.grid(1)
 
     if i < vectors.shape[0]:
 
-        # noinspection PyArgumentList
-        cu.atomic.add(result, _find_bmu_xpu(weights, vectors[i], mn), 1)
+        jit.atomic.add(result, _find_bmu_xpu(weights, vectors[i], mn), 1)
 
     # !--END-GPU--
 
@@ -612,7 +612,7 @@ def _find_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndarr
     ####################################################################################################################
     # !--BEGIN-GPU--
 
-    i = cu.grid(1)
+    i = jit.grid(1)
 
     if i < vectors.shape[0]:
 

@@ -13,6 +13,10 @@ import numba.cuda as cu
 
 ########################################################################################################################
 
+from . import atomic as nb_atomic
+
+########################################################################################################################
+
 __pdoc__ = {}
 
 ########################################################################################################################
@@ -32,6 +36,25 @@ def nb_to_device(ndarray):
     # for future needs
 
     return ndarray
+
+########################################################################################################################
+
+local_empty_cpu = np.empty
+shared_empty_cpu = np.empty
+atomic_add_cpu = nb_atomic.add
+atomic_sub_cpu = nb_atomic.sub
+
+#
+
+local_empty_gpu = cu.local.array
+shared_empty_gpu = cu.shared.array
+atomic_add_gpu = cu.atomic.add
+atomic_sub_gpu = cu.atomic.sub
+
+#
+
+grid_gpu = cu.grid
+syncthreads_gpu = cu.syncthreads
 
 ########################################################################################################################
 
@@ -382,7 +405,7 @@ class jit(object):
                 ########################################################################
                 # !--BEGIN-GPU--
 
-                i = cu.grid(1)
+                i = jit.grid(1)
                 if i < result.shape[0]:
 
                     result[i] = foo_xpu(a[i], b[i])
@@ -429,9 +452,12 @@ class jit(object):
 
         return (
             code_cpu
-            .replace('xpu.local_empty', 'np.empty')
-            .replace('xpu.shared_empty', 'np.empty')
-            .replace('xpu.syncthreads', '#######')
+            .replace('jit.grid', '######')
+            .replace('jit.local_empty', 'jit_module.local_empty_cpu')
+            .replace('jit.shared_empty', 'jit_module.shared_empty_cpu')
+            .replace('jit.syncthreads', '######')
+            .replace('jit.atomic.add', 'jit_module.atomic_add_cpu')
+            .replace('jit.atomic.sub', 'jit_module.atomic_sub_cpu')
         )
 
     ####################################################################################################################
@@ -443,9 +469,12 @@ class jit(object):
 
         return (
             code_gpu
-            .replace('xpu.local_empty', 'cu.local.array')
-            .replace('xpu.shared_empty', 'cu.shared.array')
-            .replace('xpu.syncthreads', 'cu.syncthreads')
+            .replace('jit.grid', 'jit_module.grid_gpu')
+            .replace('jit.local_empty', 'jit_module.local_empty_gpu')
+            .replace('jit.shared_empty', 'jit_module.shared_empty_gpu')
+            .replace('jit.syncthreads', 'jit_module.syncthreads_gpu')
+            .replace('jit.atomic.add', 'jit_module.atomic_add_gpu')
+            .replace('jit.atomic.sub', 'jit_module.atomic_sub_gpu')
         )
 
     ####################################################################################################################

@@ -7,7 +7,6 @@ import typing
 
 import numpy as np
 import numba as nb
-import numba.cuda as cu
 
 from .. import jit, device_array_empty, device_array_zeros
 
@@ -137,7 +136,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             self._weights = np.divide(
                 numerator.copy_to_host(),
                 denominator.copy_to_host(),
-                out = np.zeros_like(numerator),
+                out = np.zeros(numerator.shape, dtype = np.float32),
                 where = denominator != 0.0
             )
 
@@ -165,7 +164,7 @@ def _train_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_e
     ####################################################################################################################
     # !--BEGIN-GPU--
 
-    i = cu.grid(1)
+    i = jit.grid(1)
 
     if i < vectors.shape[0]:
 
@@ -216,28 +215,12 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
     # UPDATE ERRORS                                                                                                    #
     ####################################################################################################################
 
-    # !--BEGIN-CPU--
-
     if square_distance_xpu(bmu1, bmu2) > penalty_dist:
 
-        quantization_errors[err_bin] += math.sqrt(min_distance1)
-        topographic_errors[err_bin] += 1.0000000000000000000000
+        jit.atomic.add(quantization_errors, err_bin, math.sqrt(min_distance1))
+        jit.atomic.add(topographic_errors, err_bin, 1.0000000000000000000000)
 
-    quantization_errors[err_bin] += math.sqrt(min_distance1)
-    topographic_errors[err_bin] += 0.0000000000000000000000
-
-    # !--END-CPU--
-    ####################################################################################################################
-    # !--BEGIN-GPU--
-
-    if square_distance_xpu(bmu1, bmu2) > penalty_dist:
-
-        cu.atomic.add(quantization_errors, err_bin, math.sqrt(min_distance1))
-        cu.atomic.add(topographic_errors, err_bin, 1.0000000000000000000000)
-
-    cu.atomic.add(quantization_errors, err_bin, math.sqrt(min_distance1))
-    cu.atomic.add(topographic_errors, err_bin, 0.0000000000000000000000)
-
-    # !--END-GPU--
+    jit.atomic.add(quantization_errors, err_bin, math.sqrt(min_distance1))
+    jit.atomic.add(topographic_errors, err_bin, 0.0000000000000000000000)
 
 ########################################################################################################################

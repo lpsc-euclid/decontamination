@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
-import math
 import tqdm
 import typing
 
@@ -109,7 +108,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             numerator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
 
-            denominator = device_array_zeros(shape = (self._m * self._n, ), dtype = self._dtype)
+            denominator = device_array_zeros(shape = (self._m * self._n, 1), dtype = self._dtype)
 
             ############################################################################################################
 
@@ -134,7 +133,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
-            self._weights = numerator.copy_to_host() / np.expand_dims(denominator.copy_to_host(), -1)
+            self._weights = numerator.copy_to_host() / denominator.copy_to_host()
 
         ################################################################################################################
 
@@ -204,8 +203,8 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
     # UPDATE WEIGHTS                                                                                                   #
     ####################################################################################################################
 
-    add_scalar_xpu(numerator[min_index1], vector)
-    add_vector_xpu(denominator[min_index1], 1.000)
+    add_vector_xpu(numerator[min_index1], vector)
+    add_scalar_xpu(denominator[min_index1], 1.000)
 
     ####################################################################################################################
     # UPDATE ERRORS                                                                                                    #

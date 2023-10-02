@@ -185,7 +185,25 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
 
     for min_index0 in range(mn):
 
+        ################################################################################################################
+        # !--BEGIN-CPU--
+
         min_distance0 = np.sum((weights[min_index0] - vector) ** 2)
+
+        # !--END-CPU--
+        ################################################################################################################
+        # !--BEGIN-GPU--
+
+        min_distance0 = 0.0
+
+        weight = weights[min_index0]
+
+        for i in range(vector.shape[0]):
+
+            min_distance0 += (weight[i] - vector[i]) ** 2
+
+        # !--END-GPU--
+        ################################################################################################################
 
         if min_distance1 > min_distance0:
 

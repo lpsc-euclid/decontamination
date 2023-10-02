@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
+import math
 import tqdm
 import typing
 
@@ -210,12 +211,12 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
     # UPDATE ERRORS                                                                                                    #
     ####################################################################################################################
 
-    #if np.sum((bmu1 - bmu2) ** 2) > penalty_dist:
+    if square_distance_xpu(bmu1, bmu2) > penalty_dist:
 
-        #quantization_errors[err_bin] += math.sqrt(min_distance1)
-        #topographic_errors[err_bin] += 1.0000000000000000000000
+        quantization_errors[err_bin] += math.sqrt(min_distance1)
+        topographic_errors[err_bin] += 1.0000000000000000000000
 
-    #quantization_errors[err_bin] += math.sqrt(min_distance1)
-    #topographic_errors[err_bin] += 0.0000000000000000000000
+    quantization_errors[err_bin] += math.sqrt(min_distance1)
+    topographic_errors[err_bin] += 0.0000000000000000000000
 
 ########################################################################################################################

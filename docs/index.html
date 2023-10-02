@@ -438,7 +438,7 @@ def foo_kernel(result, a, b):
     ########################################################################
     # !--BEGIN-GPU--
 
-    i = cu.grid(1)
+    i = jit.grid(1)
     if i &lt; result.shape[0]:
 
         result[i] = foo_xpu(a[i], b[i])
@@ -469,6 +469,16 @@ print(result.copy_to_host())
     &#34;&#34;&#34;
 
     ####################################################################################################################
+
+    grid = None
+    local_empty = None
+    shared_empty = None
+    syncthreads = None
+    atomic = None
+
+    ####################################################################################################################
+
+    _CALL_RE = re.compile(&#39;(\\w+)_xpu\\s*\\(&#39;)
 
     _METHOD_RE = re.compile(&#39;def[^(]+(\\(.*)&#39;, flags = re.DOTALL)
 
@@ -511,7 +521,7 @@ print(result.copy_to_host())
                 ########################################################################
                 # !--BEGIN-GPU--
 
-                i = cu.grid(1)
+                i = jit.grid(1)
                 if i &lt; result.shape[0]:
 
                     result[i] = foo_xpu(a[i], b[i])
@@ -551,43 +561,51 @@ print(result.copy_to_host())
 
     ####################################################################################################################
 
-    @staticmethod
-    def _patch_cpu_code(code: str) -&gt; str:
+    @classmethod
+    def _patch_cpu_code(cls, code: str) -&gt; str:
+
+        code_cpu = cls._CALL_RE.sub(lambda m: f&#39;jit_module.{m.group(1)}_cpu(&#39;, cls._GPU_CODE_RE.sub(&#39;&#39;, code))
 
         return (
-            jit._GPU_CODE_RE.sub(&#39;&#39;, code)
-            .replace(&#39;_xpu&#39;, &#39;_cpu&#39;)
-            .replace(&#39;xpu.local_empty&#39;, &#39;np.empty&#39;)
-            .replace(&#39;xpu.shared_empty&#39;, &#39;np.empty&#39;)
-            .replace(&#39;xpu.syncthreads&#39;, &#39;#######&#39;)
+            code_cpu
+            .replace(&#39;jit.grid&#39;, &#39;#######&#39;)
+            .replace(&#39;jit.local_empty&#39;, &#39;np.empty&#39;)
+            .replace(&#39;jit.shared_empty&#39;, &#39;np.empty&#39;)
+            .replace(&#39;jit.syncthreads&#39;, &#39;##############&#39;)
+            .replace(&#39;jit.atomic.add&#39;, &#39;jit_module.atomic.add&#39;)
+            .replace(&#39;jit.atomic.sub&#39;, &#39;jit_module.atomic.sub&#39;)
         )
 
     ####################################################################################################################
 
-    @staticmethod
-    def _patch_gpu_code(code: str) -&gt; str:
+    @classmethod
+    def _patch_gpu_code(cls, code: str) -&gt; str:
+
+        code_gpu = cls._CALL_RE.sub(lambda m: f&#39;jit_module.{m.group(1)}_gpu(&#39;, cls._CPU_CODE_RE.sub(&#39;&#39;, code))
 
         return (
-            jit._CPU_CODE_RE.sub(&#39;&#39;, code)
-            .replace(&#39;_xpu&#39;, &#39;_gpu&#39;)
-            .replace(&#39;xpu.local_empty&#39;, &#39;cu.local.array&#39;)
-            .replace(&#39;xpu.shared_empty&#39;, &#39;cu.shared.array&#39;)
-            .replace(&#39;xpu.syncthreads&#39;, &#39;cu.syncthreads&#39;)
+            code_gpu
+            .replace(&#39;jit.grid&#39;, &#39;cuda_module.grid&#39;)
+            .replace(&#39;jit.local_empty&#39;, &#39;cuda_module.local.array&#39;)
+            .replace(&#39;jit.shared_empty&#39;, &#39;cuda_module.shared.array&#39;)
+            .replace(&#39;jit.syncthreads&#39;, &#39;cuda_module.syncthreads&#39;)
+            .replace(&#39;jit.atomic.add&#39;, &#39;cuda_module.atomic.add&#39;)
+            .replace(&#39;jit.atomic.sub&#39;, &#39;cuda_module.atomic.sub&#39;)
         )
 
     ####################################################################################################################
 
-    @staticmethod
-    def _inject_cpu_funct(orig_funct: Callable, new_funct: Callable) -&gt; None:
+    @classmethod
+    def _inject_cpu_funct(cls, orig_funct: Callable, new_funct: Callable) -&gt; None:
 
-        orig_funct.__globals__[orig_funct.__name__.replace(&#39;_xpu&#39;, &#39;_cpu&#39;)] = new_funct
+        globals()[orig_funct.__name__.replace(&#39;_xpu&#39;, &#39;_cpu&#39;)] = new_funct
 
     ####################################################################################################################
 
-    @staticmethod
-    def _inject_gpu_funct(orig_funct: Callable, new_funct: Callable) -&gt; None:
+    @classmethod
+    def _inject_gpu_funct(cls, orig_funct: Callable, new_funct: Callable) -&gt; None:
 
-        orig_funct.__globals__[orig_funct.__name__.replace(&#39;_xpu&#39;, &#39;_gpu&#39;)] = new_funct
+        globals()[orig_funct.__name__.replace(&#39;_xpu&#39;, &#39;_gpu&#39;)] = new_funct
 
     ####################################################################################################################
 
@@ -596,6 +614,16 @@ print(result.copy_to_host())
         if not self._kernel and not funct.__name__.endswith(&#39;_xpu&#39;):
 
             raise Exception(f&#39;Function `{funct.__name__}` name must ends with `_xpu`&#39;)
+
+        ################################################################################################################
+        # FRAME                                                                                                        #
+        ################################################################################################################
+
+        me = sys.modules[__name__]
+
+        funct.__globals__[&#39;jit_module&#39;] = me
+
+        funct.__globals__[&#39;cuda_module&#39;] = cu
 
         ################################################################################################################
         # SOURCE CODE                                                                                                  #
@@ -649,6 +677,29 @@ print(result.copy_to_host())
 
         return funct</code></pre>
 </details>
+<h3>Class variables</h3>
+<dl>
+<dt id="decontamination.jit.grid"><code class="name">var <span class="ident">grid</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="decontamination.jit.local_empty"><code class="name">var <span class="ident">local_empty</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="decontamination.jit.shared_empty"><code class="name">var <span class="ident">shared_empty</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="decontamination.jit.syncthreads"><code class="name">var <span class="ident">syncthreads</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="decontamination.jit.atomic"><code class="name">var <span class="ident">atomic</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 </dd>
 <dt id="decontamination.DeviceArray"><code class="flex name class">
 <span>class <span class="ident">DeviceArray</span></span>
@@ -732,7 +783,7 @@ to instantiate a device array.</p>
 
         if self._instance is not None:
 
-            raise Exception(&#39;Device array already instanced&#39;)
+            return self._instance
 
         ################################################################################################################
 
@@ -2373,13 +2424,19 @@ def topology(self) -&gt; str:
 
         ################################################################################################################
 
+        cur_vector = 0
+
+        self._n_epochs = n_epochs
+
+        penalty_dist = 2.0 if self._topology == &#39;square&#39; else 1.0
+
+        ################################################################################################################
+        # TRAINING BY NUMBER OF EPOCHS                                                                                 #
+        ################################################################################################################
+
         quantization_errors = device_array_empty(n_epochs, dtype = np.float32)
 
         topographic_errors = device_array_empty(n_epochs, dtype = np.float32)
-
-        ################################################################################################################
-
-        self._n_epochs = n_epochs
 
         ################################################################################################################
 
@@ -2387,17 +2444,17 @@ def topology(self) -&gt; str:
 
             ############################################################################################################
 
+            numerator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
+
+            denominator = device_array_zeros(shape = (self._m * self._n, 1), dtype = self._dtype)
+
+            ############################################################################################################
+
             generator = generator_builder()
 
-            ############################################################################################################
-
-            numerator = device_array_zeros(shape = (self._m * self._n,), dtype = self._dtype)
-
-            denominator = device_array_zeros(shape = (self._m * self._n,), dtype = self._dtype)
-
-            ############################################################################################################
-
             for data in generator():
+
+                cur_vector += data.shape[0]
 
                 _train_kernel[enable_gpu, threads_per_blocks, data.shape[0]](
                     numerator,
@@ -2405,19 +2462,29 @@ def topology(self) -&gt; str:
                     quantization_errors,
                     topographic_errors,
                     self._weights,
+                    self._topography,
                     data,
-                    cur_epoch
+                    penalty_dist,
+                    cur_epoch,
+                    self._m * self._n
                 )
 
             ############################################################################################################
 
-            self._weights = numerator.copy_to_host() / denominator.copy_to_host()
+            self._weights = np.divide(
+                numerator.copy_to_host(),
+                denominator.copy_to_host(),
+                out = np.zeros(numerator.shape, dtype = np.float32),
+                where = denominator != 0.0
+            )
 
         ################################################################################################################
 
-        self._quantization_errors = quantization_errors.copy_to_host()
+        if cur_vector &gt; 0:
 
-        self._topographic_errors = topographic_errors.copy_to_host()</code></pre>
+            self._quantization_errors = quantization_errors.copy_to_host() * n_epochs / cur_vector
+
+            self._topographic_errors = topographic_errors.copy_to_host() * n_epochs / cur_vector</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -2472,13 +2539,19 @@ def topology(self) -&gt; str:
 
     ################################################################################################################
 
+    cur_vector = 0
+
+    self._n_epochs = n_epochs
+
+    penalty_dist = 2.0 if self._topology == &#39;square&#39; else 1.0
+
+    ################################################################################################################
+    # TRAINING BY NUMBER OF EPOCHS                                                                                 #
+    ################################################################################################################
+
     quantization_errors = device_array_empty(n_epochs, dtype = np.float32)
 
     topographic_errors = device_array_empty(n_epochs, dtype = np.float32)
-
-    ################################################################################################################
-
-    self._n_epochs = n_epochs
 
     ################################################################################################################
 
@@ -2486,17 +2559,17 @@ def topology(self) -&gt; str:
 
         ############################################################################################################
 
+        numerator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
+
+        denominator = device_array_zeros(shape = (self._m * self._n, 1), dtype = self._dtype)
+
+        ############################################################################################################
+
         generator = generator_builder()
 
-        ############################################################################################################
-
-        numerator = device_array_zeros(shape = (self._m * self._n,), dtype = self._dtype)
-
-        denominator = device_array_zeros(shape = (self._m * self._n,), dtype = self._dtype)
-
-        ############################################################################################################
-
         for data in generator():
+
+            cur_vector += data.shape[0]
 
             _train_kernel[enable_gpu, threads_per_blocks, data.shape[0]](
                 numerator,
@@ -2504,19 +2577,29 @@ def topology(self) -&gt; str:
                 quantization_errors,
                 topographic_errors,
                 self._weights,
+                self._topography,
                 data,
-                cur_epoch
+                penalty_dist,
+                cur_epoch,
+                self._m * self._n
             )
 
         ############################################################################################################
 
-        self._weights = numerator.copy_to_host() / denominator.copy_to_host()
+        self._weights = np.divide(
+            numerator.copy_to_host(),
+            denominator.copy_to_host(),
+            out = np.zeros(numerator.shape, dtype = np.float32),
+            where = denominator != 0.0
+        )
 
     ################################################################################################################
 
-    self._quantization_errors = quantization_errors.copy_to_host()
+    if cur_vector &gt; 0:
 
-    self._topographic_errors = topographic_errors.copy_to_host()</code></pre>
+        self._quantization_errors = quantization_errors.copy_to_host() * n_epochs / cur_vector
+
+        self._topographic_errors = topographic_errors.copy_to_host() * n_epochs / cur_vector</code></pre>
 </details>
 </dd>
 </dl>
@@ -2616,7 +2699,7 @@ def topology(self) -&gt; str:
 
         ################################################################################################################
 
-        decay_function = asymptotic_decay(cur_epoch, n_epochs)
+        decay_function = _asymptotic_decay(cur_epoch, n_epochs)
 
         alpha = alpha0 * decay_function
 
@@ -2626,10 +2709,7 @@ def topology(self) -&gt; str:
 
         for i in range(data.shape[0]):
 
-            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, penalty_dist, mn)
-
-            quantization_errors[cur_epoch] += quantization_error
-            topographic_errors[cur_epoch] += topographic_error
+            _train_step2(quantization_errors, topographic_errors, weights, topography, data[i], alpha, sigma, penalty_dist, cur_epoch, mn)
 
     ####################################################################################################################
 
@@ -2641,7 +2721,11 @@ def topology(self) -&gt; str:
 
             ############################################################################################################
 
-            decay_function = asymptotic_decay(cur_vector + i, n_vectors)
+            cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
+
+            ############################################################################################################
+
+            decay_function = _asymptotic_decay(cur_vector + i, n_vectors)
 
             alpha = alpha0 * decay_function
 
@@ -2649,12 +2733,7 @@ def topology(self) -&gt; str:
 
             ############################################################################################################
 
-            quantization_error, topographic_error = _train_step2(weights, topography, data[i], alpha, sigma, penalty_dist, mn)
-
-            cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
-
-            quantization_errors[cur_err_bin] += quantization_error
-            topographic_errors[cur_err_bin] += topographic_error
+            _train_step2(quantization_errors, topographic_errors, weights, topography, data[i], alpha, sigma, penalty_dist, cur_err_bin, mn)
 
     ####################################################################################################################
 
@@ -3217,6 +3296,13 @@ def average(vectors: np.ndarray, cluster_ids: np.ndarray) -&gt; np.ndarray:
 <ul>
 <li>
 <h4><code><a title="decontamination.jit" href="#decontamination.jit">jit</a></code></h4>
+<ul class="">
+<li><code><a title="decontamination.jit.grid" href="#decontamination.jit.grid">grid</a></code></li>
+<li><code><a title="decontamination.jit.local_empty" href="#decontamination.jit.local_empty">local_empty</a></code></li>
+<li><code><a title="decontamination.jit.shared_empty" href="#decontamination.jit.shared_empty">shared_empty</a></code></li>
+<li><code><a title="decontamination.jit.syncthreads" href="#decontamination.jit.syncthreads">syncthreads</a></code></li>
+<li><code><a title="decontamination.jit.atomic" href="#decontamination.jit.atomic">atomic</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code></h4>

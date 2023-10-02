@@ -340,6 +340,8 @@ class jit(object):
 
     ####################################################################################################################
 
+    _CALL_RE = re.compile('(\w+)_xpu\s*\(')
+
     _METHOD_RE = re.compile('def[^(]+(\\(.*)', flags = re.DOTALL)
 
     _CPU_CODE_RE = re.compile(re.escape('!--BEGIN-CPU--') + '.*?' + re.escape('!--END-CPU--'), re.DOTALL)
@@ -421,12 +423,15 @@ class jit(object):
 
     ####################################################################################################################
 
-    @staticmethod
-    def _patch_cpu_code(code: str) -> str:
+    @classmethod
+    def _patch_cpu_code(cls, code: str) -> str:
+
+        code_cpu = cls._CALL_RE.sub(lambda m: f'jit_module.{m.group(1)}_cpu(', cls._GPU_CODE_RE.sub('', code))
+
+        print(code_cpu)
 
         return (
-            jit._GPU_CODE_RE.sub('', code)
-            .replace('_xpu', '_cpu')
+            code_cpu
             .replace('xpu.local_empty', 'np.empty')
             .replace('xpu.shared_empty', 'np.empty')
             .replace('xpu.syncthreads', '#######')
@@ -434,12 +439,13 @@ class jit(object):
 
     ####################################################################################################################
 
-    @staticmethod
-    def _patch_gpu_code(code: str) -> str:
+    @classmethod
+    def _patch_gpu_code(cls, code: str) -> str:
+
+        code_gpu = cls._CALL_RE.sub(lambda m: f'jit_module.{m.group(1)}_gpu(', cls._CPU_CODE_RE.sub('', code))
 
         return (
-            jit._CPU_CODE_RE.sub('', code)
-            .replace('_xpu', '_gpu')
+            code_gpu
             .replace('xpu.local_empty', 'cu.local.array')
             .replace('xpu.shared_empty', 'cu.shared.array')
             .replace('xpu.syncthreads', 'cu.syncthreads')
@@ -447,17 +453,17 @@ class jit(object):
 
     ####################################################################################################################
 
-    @staticmethod
-    def _inject_cpu_funct(orig_funct: typing.Callable, new_funct: typing.Callable) -> None:
+    @classmethod
+    def _inject_cpu_funct(cls, orig_funct: typing.Callable, new_funct: typing.Callable) -> None:
 
-        orig_funct.__globals__[orig_funct.__name__.replace('_xpu', '_cpu')] = new_funct
+        globals()[orig_funct.__name__.replace('_xpu', '_cpu')] = new_funct
 
     ####################################################################################################################
 
-    @staticmethod
-    def _inject_gpu_funct(orig_funct: typing.Callable, new_funct: typing.Callable) -> None:
+    @classmethod
+    def _inject_gpu_funct(cls, orig_funct: typing.Callable, new_funct: typing.Callable) -> None:
 
-        orig_funct.__globals__[orig_funct.__name__.replace('_xpu', '_gpu')] = new_funct
+        globals()[orig_funct.__name__.replace('_xpu', '_gpu')] = new_funct
 
     ####################################################################################################################
 
@@ -466,6 +472,12 @@ class jit(object):
         if not self._kernel and not funct.__name__.endswith('_xpu'):
 
             raise Exception(f'Function `{funct.__name__}` name must ends with `_xpu`')
+
+        ################################################################################################################
+        # FRAME                                                                                                        #
+        ################################################################################################################
+
+        funct.__globals__['jit_module'] = sys.modules[__name__]
 
         ################################################################################################################
         # SOURCE CODE                                                                                                  #

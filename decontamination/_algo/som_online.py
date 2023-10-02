@@ -8,7 +8,7 @@ import typing
 import numpy as np
 import numba as nb
 
-from . import som_abstract, asymptotic_decay, dataset_to_generator_builder
+from . import som_abstract, dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -80,7 +80,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        decay_function = asymptotic_decay(cur_epoch, n_epochs)
+        decay_function = _asymptotic_decay(cur_epoch, n_epochs)
 
         alpha = alpha0 * decay_function
 
@@ -106,7 +106,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
-            decay_function = asymptotic_decay(cur_vector + i, n_vectors)
+            decay_function = _asymptotic_decay(cur_vector + i, n_vectors)
 
             alpha = alpha0 * decay_function
 
@@ -251,6 +251,13 @@ class SOM_Online(som_abstract.SOM_Abstract):
         else:
 
             raise Exception('Invalid training method, specify either `n_epochs` or `n_vectors`.')
+
+########################################################################################################################
+
+@nb.njit(parallel = False)
+def _asymptotic_decay(epoch: int, epochs: int) -> float:
+
+    return 1.0 / (1.0 + 2.0 * epoch / epochs)
 
 ########################################################################################################################
 

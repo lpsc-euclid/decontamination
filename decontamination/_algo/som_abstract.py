@@ -9,7 +9,7 @@ import numba.cuda as cu
 
 from .. import jit, device_array_empty, device_array_zeros
 
-from . import dataset_to_generator_builder
+from . import square_distance_xpu, dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -630,32 +630,12 @@ def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 
     for index in range(mn):
 
-        ################################################################################################################
-        # !--BEGIN-CPU--
-
-        distance = np.sum((weights[index] - vector) ** 2)
-
-        # !--END-CPU--
-        ################################################################################################################
-        # !--BEGIN-GPU--
-
-        distance = 0.0
-
-        weight = weights[index]
-
-        for i in range(vector.shape[0]):
-
-            distance += (weight[i] - vector[i]) ** 2
-
-        # !--END-GPU--
-        ################################################################################################################
+        distance = square_distance_xpu(weights[index], vector)
 
         if min_distance > distance:
 
             min_distance = distance
             min_index = index
-
-        ################################################################################################################
 
     return min_index
 

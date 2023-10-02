@@ -11,7 +11,7 @@ import numba.cuda as cu
 
 from .. import jit, device_array_empty, device_array_zeros
 
-from . import som_abstract, dataset_to_generator_builder
+from . import add_xpu, som_abstract, square_distance_xpu, dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -185,25 +185,7 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
 
     for min_index0 in range(mn):
 
-        ################################################################################################################
-        # !--BEGIN-CPU--
-
-        min_distance0 = np.sum((weights[min_index0] - vector) ** 2)
-
-        # !--END-CPU--
-        ################################################################################################################
-        # !--BEGIN-GPU--
-
-        min_distance0 = 0.0
-
-        weight = weights[min_index0]
-
-        for i in range(vector.shape[0]):
-
-            min_distance0 += (weight[i] - vector[i]) ** 2
-
-        # !--END-GPU--
-        ################################################################################################################
+        min_distance0 = square_distance_xpu(weights[min_index0], vector)
 
         if min_distance1 > min_distance0:
 
@@ -221,22 +203,8 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
     ####################################################################################################################
     # UPDATE WEIGHTS                                                                                                   #
     ####################################################################################################################
-    # !--BEGIN-CPU--
 
-    numerator[min_index1] += vector
-
-    # !--END-CPU--
-    ################################################################################################################
-    # !--BEGIN-GPU--
-
-    weight = numerator[min_index1]
-
-    for i in range(vector.shape[0]):
-
-        weight[i] += vector[i]
-
-    # !--END-GPU--
-    ####################################################################################################################
+    add_xpu(numerator[min_index1], vector)
 
     denominator[min_index1] += 1.000
 

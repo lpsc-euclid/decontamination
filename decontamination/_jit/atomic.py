@@ -44,17 +44,15 @@ def declare_atomic_array_op(iop: str, uop: str, fop: str):
 
             ############################################################################################################
 
-            def typer(ary, idx, val):
+            def typer(array, index, value):
 
-                out = get_array_index_type(ary, idx)
+                out = get_array_index_type(array, index)
 
                 if out is not None:
 
-                    result = out.result
+                    if context.can_convert(value, out.result):
 
-                    if context.can_convert(val, result):
-
-                        return result
+                        return out.result
 
                 return None
 
@@ -69,27 +67,22 @@ def declare_atomic_array_op(iop: str, uop: str, fop: str):
 
             ############################################################################################################
 
-            aryty, idxty, valty = signature.args
-
-            ary, idx, val = args
-
-            ############################################################################################################
-
-            assert aryty.aligned
+            array_type, index_type, value_type = signature.args
+            array     , index     , value      =           args
 
             ############################################################################################################
 
-            index_types = (idxty, )
+            index_types = (index_type, )
 
-            indices = (idx, )
+            indices = (index, )
 
             ############################################################################################################
 
-            ary = make_array(aryty)(context, builder, ary)
+            array = make_array(array_type)(context, builder, array)
 
             index_types, indices = normalize_indices(context, builder, index_types, indices)
 
-            ptr, shapes, _ = basic_indexing(context, builder, aryty, ary, index_types, indices, boundscheck = (context.enable_boundscheck, ))
+            ptr, shapes, _ = basic_indexing(context, builder, array_type, array, index_types, indices, boundscheck = (context.enable_boundscheck, ))
 
             ############################################################################################################
 
@@ -99,22 +92,22 @@ def declare_atomic_array_op(iop: str, uop: str, fop: str):
 
             ############################################################################################################
 
-            val = context.cast(builder, val, valty, aryty.dtype)
+            value = context.cast(builder, value, value_type, array_type.dtype)
 
             ############################################################################################################
 
-            if isinstance(aryty.dtype, types.Float):
+            if isinstance(array_type.dtype, types.Float):
                 op = fop
-            elif isinstance(aryty.dtype, types.Integer) and aryty.dtype.signed:
+            elif isinstance(array_type.dtype, types.Integer) and array_type.dtype.signed:
                 op = iop
-            elif isinstance(aryty.dtype, types.Integer) and not aryty.dtype.signed:
+            elif isinstance(array_type.dtype, types.Integer) and not array_type.dtype.signed:
                 op = uop
             else:
-                raise TypeError(f'Atomic operation not supported on {aryty}')
+                raise TypeError(f'Atomic operation not supported on {array_type}')
 
             ############################################################################################################
 
-            return builder.atomic_rmw(op, ptr, context.get_value_as_data(builder, aryty.dtype, val), 'monotonic')
+            return builder.atomic_rmw(op, ptr, context.get_value_as_data(builder, array_type.dtype, value), 'monotonic')
 
         ################################################################################################################
 
@@ -127,19 +120,19 @@ def declare_atomic_array_op(iop: str, uop: str, fop: str):
 ########################################################################################################################
 
 @declare_atomic_array_op('add', 'add', 'fadd')
-def add(ary, i, v):
+def add(array, i, v):
 
-    orig = ary[i]
-    ary[i] += v
+    orig = array[i]
+    array[i] += v
     return orig
 
 ########################################################################################################################
 
 @declare_atomic_array_op('sub', 'sub', 'fsub')
-def sub(ary, i, v):
+def sub(array, i, v):
 
-    orig = ary[i]
-    ary[i] -= v
+    orig = array[i]
+    array[i] -= v
     return orig
 
 ########################################################################################################################

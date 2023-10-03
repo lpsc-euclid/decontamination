@@ -50,7 +50,7 @@ def device_array_from(array: np.ndarray):
 def device_array_empty(shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32):
 
     """
-    New device array (see `DeviceArray`), not initialized.
+    New device array (see `DeviceArray`), not initialized. Similar to `numpy.empty()`.
 
     Parameters
     ----------
@@ -67,7 +67,7 @@ def device_array_empty(shape: typing.Union[tuple, int], dtype: typing.Type[np.si
 def device_array_zeros(shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32):
 
     """
-    New device array (see `DeviceArray`), filled with **0**.
+    New device array (see `DeviceArray`), filled with **0**. Similar to `numpy.zeros()`.
 
     Parameters
     ----------
@@ -84,7 +84,7 @@ def device_array_zeros(shape: typing.Union[tuple, int], dtype: typing.Type[np.si
 def device_array_full(shape: typing.Union[tuple, int], value: typing.Union[int, float], dtype: typing.Type[np.single] = np.float32):
 
     """
-    New device array (see `DeviceArray`), filled with **value**.
+    New device array (see `DeviceArray`), filled with **value**. Similar to `numpy.full()`.
 
     Parameters
     ----------
@@ -341,12 +341,106 @@ class jit(object):
 
     ####################################################################################################################
 
-    grid = None
-    local_empty = None
-    shared_empty = None
-    syncthreads = None
-    atomic_add = None
-    atomic_sub = None
+    @staticmethod
+    def grid(ndim: int) -> None:
+
+        """
+        Return the absolute position of the current thread in the entire grid of blocks.
+
+        Parameters
+        ----------
+        ndim : int
+            Number of dimensions.
+        """
+
+        pass
+
+    ####################################################################################################################
+
+    @staticmethod
+    def local_empty(shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32) -> np.ndarray:
+
+        """
+        Allocate an empty device ndarray in the local memory. Similar to `numpy.empty()`.
+
+        Parameters
+        ----------
+        shape : typing.Union[tuple, int]
+            Desired shape for the new array.
+        dtype : typing.Type[np.single]
+            Desired data-type for the new array.
+        """
+
+        pass
+
+    ####################################################################################################################
+
+    @staticmethod
+    def shared_empty(shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32) -> np.ndarray:
+
+        """
+        Allocate an empty device ndarray in the shared memory. Similar to `numpy.empty()`.
+
+        Parameters
+        ----------
+        shape : typing.Union[tuple, int]
+            Desired shape for the new array.
+        dtype : typing.Type[np.single]
+            Desired data-type for the new array.
+        """
+
+        pass
+
+    ####################################################################################################################
+
+    @staticmethod
+    def syncthreads() -> None:
+
+        """
+        Synchronize all threads in the same thread block.
+        """
+
+        pass
+
+    ####################################################################################################################
+
+    @staticmethod
+    def atomic_add(array: np.ndarray, idx: int, val: typing.Union[np.int32, np.float32, np.float64]) -> typing.Union[np.int32, np.float32, np.float64]:
+
+        """
+        Performs atomic array[idx] += val and returns the old value. Supported on int32, float32, and float64 operands only.
+
+        Parameters
+        ----------
+        array : np.ndarray
+            Array to be modified.
+        idx : int
+            Index in the array.
+        val : typing.Union[np.int32, np.float32, np.float64]
+            New value.
+        """
+
+        pass
+
+    ####################################################################################################################
+
+    @staticmethod
+    def atomic_sub(array: np.ndarray, idx: int, val: typing.Union[np.int32, np.float32, np.float64]) -> typing.Union[np.int32, np.float32, np.float64]:
+
+        """
+        Performs atomic array[idx] -= val and returns the old value. Supported on int32, float32, and float64 operands only.
+
+        Parameters
+        ----------
+        array : np.ndarray
+            Array to be modified.
+        idx : int
+            Index in the array.
+        val : typing.Union[np.int32, np.float32, np.float64]
+            New value.
+        """
+
+        pass
 
     ####################################################################################################################
 

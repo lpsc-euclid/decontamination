@@ -146,7 +146,7 @@ __all__ = [
 <span>def <span class="ident">device_array_empty</span></span>(<span>shape: Union[tuple, int], dtype: Type[np.float32] = np.float32)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>New device array (see <code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code>), not initialized.</p>
+<div class="desc"><p>New device array (see <code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code>), not initialized. Similar to <code>np.empty()</code>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>shape</code></strong> :&ensp;<code>Union[tuple, int]</code></dt>
@@ -161,7 +161,7 @@ __all__ = [
 <pre><code class="python">def device_array_empty(shape: Union[tuple, int], dtype: Type[np.single] = np.float32):
 
     &#34;&#34;&#34;
-    New device array (see `DeviceArray`), not initialized.
+    New device array (see `DeviceArray`), not initialized. Similar to `np.empty()`.
 
     Parameters
     ----------
@@ -178,7 +178,7 @@ __all__ = [
 <span>def <span class="ident">device_array_zeros</span></span>(<span>shape: Union[tuple, int], dtype: Type[np.float32] = np.float32)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>New device array (see <code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code>), filled with <strong>0</strong>.</p>
+<div class="desc"><p>New device array (see <code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code>), filled with <strong>0</strong>. Similar to <code>np.zeros()</code>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>shape</code></strong> :&ensp;<code>Union[tuple, int]</code></dt>
@@ -193,7 +193,7 @@ __all__ = [
 <pre><code class="python">def device_array_zeros(shape: Union[tuple, int], dtype: Type[np.single] = np.float32):
 
     &#34;&#34;&#34;
-    New device array (see `DeviceArray`), filled with **0**.
+    New device array (see `DeviceArray`), filled with **0**. Similar to `np.zeros()`.
 
     Parameters
     ----------
@@ -210,7 +210,7 @@ __all__ = [
 <span>def <span class="ident">device_array_full</span></span>(<span>shape: Union[tuple, int], value: Union[int, float], dtype: Type[np.float32] = np.float32)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>New device array (see <code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code>), filled with <strong>value</strong>.</p>
+<div class="desc"><p>New device array (see <code><a title="decontamination.DeviceArray" href="#decontamination.DeviceArray">DeviceArray</a></code>), filled with <strong>value</strong>. Similar to <code>np.full()</code>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>shape</code></strong> :&ensp;<code>Union[tuple, int]</code></dt>
@@ -227,7 +227,7 @@ __all__ = [
 <pre><code class="python">def device_array_full(shape: Union[tuple, int], value: Union[int, float], dtype: Type[np.single] = np.float32):
 
     &#34;&#34;&#34;
-    New device array (see `DeviceArray`), filled with **value**.
+    New device array (see `DeviceArray`), filled with **value**. Similar to `np.full()`.
 
     Parameters
     ----------
@@ -470,12 +470,106 @@ print(result.copy_to_host())
 
     ####################################################################################################################
 
-    grid = None
-    local_empty = None
-    shared_empty = None
-    syncthreads = None
-    atomic_add = None
-    atomic_sub = None
+    @staticmethod
+    def grid(ndim: int) -&gt; None:
+
+        &#34;&#34;&#34;
+        Return the absolute position of the current thread in the entire grid of blocks.
+
+        Parameters
+        ----------
+        ndim : int
+            Number of dimensions.
+        &#34;&#34;&#34;
+
+        pass
+
+    ####################################################################################################################
+
+    @staticmethod
+    def local_empty(shape: Union[tuple, int], dtype: Type[np.single] = np.float32) -&gt; np.ndarray:
+
+        &#34;&#34;&#34;
+        Allocate an empty device ndarray in the local memory. Similar to `np.empty()`.
+
+        Parameters
+        ----------
+        shape : Union[tuple, int]
+            Desired shape for the new array.
+        dtype : Type[np.single]
+            Desired data-type for the new array.
+        &#34;&#34;&#34;
+
+        pass
+
+    ####################################################################################################################
+
+    @staticmethod
+    def shared_empty(shape: Union[tuple, int], dtype: Type[np.single] = np.float32) -&gt; np.ndarray:
+
+        &#34;&#34;&#34;
+        Allocate an empty device ndarray in the shared memory. Similar to `np.empty()`.
+
+        Parameters
+        ----------
+        shape : Union[tuple, int]
+            Desired shape for the new array.
+        dtype : Type[np.single]
+            Desired data-type for the new array.
+        &#34;&#34;&#34;
+
+        pass
+
+    ####################################################################################################################
+
+    @staticmethod
+    def syncthreads() -&gt; None:
+
+        &#34;&#34;&#34;
+        Synchronize all threads in the same thread block.
+        &#34;&#34;&#34;
+
+        pass
+
+    ####################################################################################################################
+
+    @staticmethod
+    def atomic_add(array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.float64]) -&gt; Union[np.int32, np.float32, np.float64]:
+
+        &#34;&#34;&#34;
+        Performs atomic array[idx] += val and returns the old value. Supported on int32, float32, and float64 operands only.
+
+        Parameters
+        ----------
+        array : np.ndarray
+            Array to be modified.
+        idx : int
+            Index in the array.
+        val : Union[np.int32, np.float32, np.float64]
+            New value.
+        &#34;&#34;&#34;
+
+        pass
+
+    ####################################################################################################################
+
+    @staticmethod
+    def atomic_sub(array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.float64]) -&gt; Union[np.int32, np.float32, np.float64]:
+
+        &#34;&#34;&#34;
+        Performs atomic array[idx] -= val and returns the old value. Supported on int32, float32, and float64 operands only.
+
+        Parameters
+        ----------
+        array : np.ndarray
+            Array to be modified.
+        idx : int
+            Index in the array.
+        val : Union[np.int32, np.float32, np.float64]
+            New value.
+        &#34;&#34;&#34;
+
+        pass
 
     ####################################################################################################################
 
@@ -678,31 +772,195 @@ print(result.copy_to_host())
 
         return funct</code></pre>
 </details>
-<h3>Class variables</h3>
+<h3>Static methods</h3>
 <dl>
-<dt id="decontamination.jit.grid"><code class="name">var <span class="ident">grid</span></code></dt>
+<dt id="decontamination.jit.grid"><code class="name flex">
+<span>def <span class="ident">grid</span></span>(<span>ndim: int) ‑> None</span>
+</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Return the absolute position of the current thread in the entire grid of blocks.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ndim</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of dimensions.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def grid(ndim: int) -&gt; None:
+
+    &#34;&#34;&#34;
+    Return the absolute position of the current thread in the entire grid of blocks.
+
+    Parameters
+    ----------
+    ndim : int
+        Number of dimensions.
+    &#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
 </dd>
-<dt id="decontamination.jit.local_empty"><code class="name">var <span class="ident">local_empty</span></code></dt>
+<dt id="decontamination.jit.local_empty"><code class="name flex">
+<span>def <span class="ident">local_empty</span></span>(<span>shape: Union[tuple, int], dtype: Type[np.float32] = np.float32) ‑> np.ndarray</span>
+</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Allocate an empty device ndarray in the local memory. Similar to <code>np.empty()</code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>shape</code></strong> :&ensp;<code>Union[tuple, int]</code></dt>
+<dd>Desired shape for the new array.</dd>
+<dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
+<dd>Desired data-type for the new array.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def local_empty(shape: Union[tuple, int], dtype: Type[np.single] = np.float32) -&gt; np.ndarray:
+
+    &#34;&#34;&#34;
+    Allocate an empty device ndarray in the local memory. Similar to `np.empty()`.
+
+    Parameters
+    ----------
+    shape : Union[tuple, int]
+        Desired shape for the new array.
+    dtype : Type[np.single]
+        Desired data-type for the new array.
+    &#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
 </dd>
-<dt id="decontamination.jit.shared_empty"><code class="name">var <span class="ident">shared_empty</span></code></dt>
+<dt id="decontamination.jit.shared_empty"><code class="name flex">
+<span>def <span class="ident">shared_empty</span></span>(<span>shape: Union[tuple, int], dtype: Type[np.float32] = np.float32) ‑> np.ndarray</span>
+</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Allocate an empty device ndarray in the shared memory. Similar to <code>np.empty()</code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>shape</code></strong> :&ensp;<code>Union[tuple, int]</code></dt>
+<dd>Desired shape for the new array.</dd>
+<dt><strong><code>dtype</code></strong> :&ensp;<code>Type[np.single]</code></dt>
+<dd>Desired data-type for the new array.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def shared_empty(shape: Union[tuple, int], dtype: Type[np.single] = np.float32) -&gt; np.ndarray:
+
+    &#34;&#34;&#34;
+    Allocate an empty device ndarray in the shared memory. Similar to `np.empty()`.
+
+    Parameters
+    ----------
+    shape : Union[tuple, int]
+        Desired shape for the new array.
+    dtype : Type[np.single]
+        Desired data-type for the new array.
+    &#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
 </dd>
-<dt id="decontamination.jit.syncthreads"><code class="name">var <span class="ident">syncthreads</span></code></dt>
+<dt id="decontamination.jit.syncthreads"><code class="name flex">
+<span>def <span class="ident">syncthreads</span></span>(<span>) ‑> None</span>
+</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Synchronize all threads in the same thread block.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def syncthreads() -&gt; None:
+
+    &#34;&#34;&#34;
+    Synchronize all threads in the same thread block.
+    &#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
 </dd>
-<dt id="decontamination.jit.atomic_add"><code class="name">var <span class="ident">atomic_add</span></code></dt>
+<dt id="decontamination.jit.atomic_add"><code class="name flex">
+<span>def <span class="ident">atomic_add</span></span>(<span>array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.float64]) ‑> Union[np.int32, np.float32, np.float64]</span>
+</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Performs atomic array[idx] += val and returns the old value. Supported on int32, float32, and float64 operands only.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>array</code></strong> :&ensp;<code>np.ndarray</code></dt>
+<dd>Array to be modified.</dd>
+<dt><strong><code>idx</code></strong> :&ensp;<code>int</code></dt>
+<dd>Index in the array.</dd>
+<dt><strong><code>val</code></strong> :&ensp;<code>Union[np.int32, np.float32, np.float64]</code></dt>
+<dd>New value.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def atomic_add(array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.float64]) -&gt; Union[np.int32, np.float32, np.float64]:
+
+    &#34;&#34;&#34;
+    Performs atomic array[idx] += val and returns the old value. Supported on int32, float32, and float64 operands only.
+
+    Parameters
+    ----------
+    array : np.ndarray
+        Array to be modified.
+    idx : int
+        Index in the array.
+    val : Union[np.int32, np.float32, np.float64]
+        New value.
+    &#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
 </dd>
-<dt id="decontamination.jit.atomic_sub"><code class="name">var <span class="ident">atomic_sub</span></code></dt>
+<dt id="decontamination.jit.atomic_sub"><code class="name flex">
+<span>def <span class="ident">atomic_sub</span></span>(<span>array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.float64]) ‑> Union[np.int32, np.float32, np.float64]</span>
+</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Performs atomic array[idx] -= val and returns the old value. Supported on int32, float32, and float64 operands only.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>array</code></strong> :&ensp;<code>np.ndarray</code></dt>
+<dd>Array to be modified.</dd>
+<dt><strong><code>idx</code></strong> :&ensp;<code>int</code></dt>
+<dd>Index in the array.</dd>
+<dt><strong><code>val</code></strong> :&ensp;<code>Union[np.int32, np.float32, np.float64]</code></dt>
+<dd>New value.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def atomic_sub(array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.float64]) -&gt; Union[np.int32, np.float32, np.float64]:
+
+    &#34;&#34;&#34;
+    Performs atomic array[idx] -= val and returns the old value. Supported on int32, float32, and float64 operands only.
+
+    Parameters
+    ----------
+    array : np.ndarray
+        Array to be modified.
+    idx : int
+        Index in the array.
+    val : Union[np.int32, np.float32, np.float64]
+        New value.
+    &#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
 </dd>
 </dl>
 </dd>

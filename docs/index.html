@@ -243,7 +243,7 @@ __all__ = [
 </details>
 </dd>
 <dt id="decontamination.display_latent_space"><code class="name flex">
-<span>def <span class="ident">display_latent_space</span></span>(<span>weights: np.ndarray, topology: Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = 'viridis', log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100, cluster_ids: Optional[np.ndarray] = None) ‑> Tuple[plt.Figure, plt.Axes]</span>
+<span>def <span class="ident">display_latent_space</span></span>(<span>weights: np.ndarray, topology: Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = 'viridis', log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_hist_bins: int = 100, cluster_ids: Optional[np.ndarray] = None) ‑> Tuple[plt.Figure, plt.Axes]</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="parameters">Parameters</h2>
@@ -268,8 +268,8 @@ __all__ = [
 <dd>Specifies whether to display the colorbar (default: <strong>True</strong>).</dd>
 <dt><strong><code>show_histogram</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Specifies whether to display the histogram (default: <strong>True</strong>).</dd>
-<dt><strong><code>n_histogram_bins</code></strong> :&ensp;<code>int</code></dt>
-<dd>Number of histogram bins (default: <strong>100</strong>).</dd>
+<dt><strong><code>n_hist_bins</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of histogram bins in the colorbar (default: <strong>100</strong>).</dd>
 <dt><strong><code>cluster_ids</code></strong> :&ensp;<code>Optional[np.ndarray]</code></dt>
 <dd>Array of cluster identifiers (see <code><a title="decontamination.Clustering" href="#decontamination.Clustering">Clustering</a></code>, default: <strong>None</strong>).</dd>
 </dl></div>
@@ -277,7 +277,7 @@ __all__ = [
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def display_latent_space(weights: np.ndarray, topology: Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = &#39;viridis&#39;, log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100, cluster_ids: Optional[np.ndarray] = None) -&gt; Tuple[plt.Figure, plt.Axes]:
+<pre><code class="python">def display_latent_space(weights: np.ndarray, topology: Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = &#39;viridis&#39;, log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_hist_bins: int = 100, cluster_ids: Optional[np.ndarray] = None) -&gt; Tuple[plt.Figure, plt.Axes]:
 
     &#34;&#34;&#34;
     Parameters
@@ -302,8 +302,8 @@ __all__ = [
         Specifies whether to display the colorbar (default: **True**).
     show_histogram : bool
         Specifies whether to display the histogram (default: **True**).
-    n_histogram_bins : int
-        Number of histogram bins (default: **100**).
+    n_hist_bins : int
+        Number of histogram bins in the colorbar (default: **100**).
     cluster_ids : Optional[np.ndarray]
         Array of cluster identifiers (see `Clustering`, default: **None**).
     &#34;&#34;&#34;
@@ -338,7 +338,7 @@ __all__ = [
 
     if show_colorbar:
 
-        _build_colorbar(ax, weights, v_min, v_max, cmap, norm, log_scale, show_histogram, n_histogram_bins)
+        _build_colorbar(ax, weights, v_min, v_max, cmap, norm, log_scale, show_histogram, n_hist_bins)
 
     ####################################################################################################################
 

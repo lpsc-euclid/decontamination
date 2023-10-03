@@ -94,7 +94,7 @@ def _init_plot(weights: np.ndarray, v_min: float, v_max: float, cmap: str, log_s
 
 ########################################################################################################################
 
-def _build_colorbar(ax: plt.Axes, weights: np.ndarray, v_min: float, v_max: float, cmap: colors.Colormap, norm: colors.Normalize, log_scale: bool, show_histogram: bool, n_histogram_bins: int) -> None:
+def _build_colorbar(ax: plt.Axes, weights: np.ndarray, v_min: float, v_max: float, cmap: colors.Colormap, norm: colors.Normalize, log_scale: bool, show_histogram: bool, n_hist_bins: int) -> None:
 
     ####################################################################################################################
 
@@ -109,7 +109,7 @@ def _build_colorbar(ax: plt.Axes, weights: np.ndarray, v_min: float, v_max: floa
 
     if show_histogram:
 
-        hist, bins = np.histogram(weights[np.isfinite(weights)], bins = np.logspace(np.log10(v_min), np.log10(v_max), n_histogram_bins) if log_scale else n_histogram_bins)
+        hist, bins = np.histogram(weights[np.isfinite(weights)], bins = np.logspace(np.log10(v_min), np.log10(v_max), n_hist_bins) if log_scale else n_hist_bins)
 
         colorbar.ax.plot(hist.astype(float) / hist.max(), bins[: -1], linewidth = 0.75, color = 'k')
 
@@ -177,7 +177,7 @@ def _display_latent_space_hexagonal(ax: plt.Axes, weights: np.ndarray, cmap: col
 
 ########################################################################################################################
 
-def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = 'viridis', log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_histogram_bins: int = 100, cluster_ids: typing.Optional[np.ndarray] = None) -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = 'viridis', log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_hist_bins: int = 100, cluster_ids: typing.Optional[np.ndarray] = None) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Parameters
@@ -202,8 +202,8 @@ def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = N
         Specifies whether to display the colorbar (default: **True**).
     show_histogram : bool
         Specifies whether to display the histogram (default: **True**).
-    n_histogram_bins : int
-        Number of histogram bins (default: **100**).
+    n_hist_bins : int
+        Number of histogram bins in the colorbar (default: **100**).
     cluster_ids : typing.Optional[np.ndarray]
         Array of cluster identifiers (see `Clustering`, default: **None**).
     """
@@ -238,7 +238,7 @@ def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = N
 
     if show_colorbar:
 
-        _build_colorbar(ax, weights, v_min, v_max, cmap, norm, log_scale, show_histogram, n_histogram_bins)
+        _build_colorbar(ax, weights, v_min, v_max, cmap, norm, log_scale, show_histogram, n_hist_bins)
 
     ####################################################################################################################
 

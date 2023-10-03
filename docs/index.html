@@ -663,10 +663,10 @@ print(result.copy_to_host())
 
         return (
             code_cpu
-            .replace(&#39;jit.grid&#39;, &#39;#######&#39;)
+            .replace(&#39;jit.grid&#39;, &#39;# jit.grid&#39;)
             .replace(&#39;jit.local_empty&#39;, &#39;np.empty&#39;)
             .replace(&#39;jit.shared_empty&#39;, &#39;np.empty&#39;)
-            .replace(&#39;jit.syncthreads&#39;, &#39;##############&#39;)
+            .replace(&#39;jit.syncthreads&#39;, &#39;# jit.syncthreads&#39;)
             .replace(&#39;jit.atomic_add&#39;, &#39;jit_module.atomic.add&#39;)
             .replace(&#39;jit.atomic_sub&#39;, &#39;jit_module.atomic.sub&#39;)
         )

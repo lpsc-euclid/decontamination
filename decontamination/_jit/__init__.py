@@ -534,10 +534,10 @@ class jit(object):
 
         return (
             code_cpu
-            .replace('jit.grid', '#######')
+            .replace('jit.grid', '# jit.grid')
             .replace('jit.local_empty', 'np.empty')
             .replace('jit.shared_empty', 'np.empty')
-            .replace('jit.syncthreads', '##############')
+            .replace('jit.syncthreads', '# jit.syncthreads')
             .replace('jit.atomic_add', 'jit_module.atomic.add')
             .replace('jit.atomic_sub', 'jit_module.atomic.sub')
         )

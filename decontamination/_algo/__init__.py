@@ -5,6 +5,7 @@ import typing
 
 import numpy as np
 import numba as nb
+import numba.cuda as cu
 
 from .. import jit
 
@@ -41,8 +42,15 @@ def batch_iterator(vectors: np.ndarray, n_chunks: int) -> typing.Iterator[np.nda
 
 ########################################################################################################################
 
-@nb.njit(parallel = False)
+@nb.njit(inline = 'always')
 def asymptotic_decay(epoch: int, epochs: int) -> float:
+
+    return 1.0 / (1.0 + 2.0 * epoch / epochs)
+
+########################################################################################################################
+
+@jit(parallel = False)
+def asymptotic_decay_xpu(epoch: int, epochs: int) -> float:
 
     return 1.0 / (1.0 + 2.0 * epoch / epochs)
 
@@ -51,16 +59,7 @@ def asymptotic_decay(epoch: int, epochs: int) -> float:
 ########################################################################################################################
 
 @jit(parallel = False)
-def atomic_add_scalar2vector_xpu(dest: np.ndarray, src: typing.Union[np.single, float]) -> None:
-
-    for i in range(dest.shape[0]):
-
-        jit.atomic_add(dest, i, src)
-
-########################################################################################################################
-
-@jit(parallel = False)
-def atomic_add_vector2vector_xpu(dest: np.ndarray, src: np.ndarray) -> None:
+def atomic_add_vector_xpu(dest: np.ndarray, src: np.ndarray) -> None:
 
     for i in range(dest.shape[0]):
 

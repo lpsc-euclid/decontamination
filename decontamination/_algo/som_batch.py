@@ -10,7 +10,7 @@ import numba as nb
 
 from .. import jit, device_array_empty, device_array_zeros
 
-from . import som_abstract, asymptotic_decay, square_distance_xpu, dataset_to_generator_builder, atomic_add_vector2vector_xpu
+from . import som_abstract, asymptotic_decay, square_distance_xpu, dataset_to_generator_builder, atomic_add_vector_xpu
 
 ########################################################################################################################
 
@@ -58,17 +58,75 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         self._n_epochs = None
 
+        self._n_vectors = None
+
         ################################################################################################################
 
         self._header_extra = {
             'mode': '__MODE__',
             'sigma': '_sigma',
             'n_epochs': '_n_epochs',
+            'n_vectors': '_n_vectors',
         }
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: int, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    @staticmethod
+    @jit(kernel = True, parallel = True)
+    def _train_step1_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, penalty_dist: float, mn: int) -> None:
+
+        ################################################################################################################
+        # !--BEGIN-CPU--
+
+        sigma = sigma0 * asymptotic_decay(cur_epoch, n_epochs)
+
+        for i in nb.prange(vectors.shape[0]):
+
+            _train_step2_xpu(
+                numerator,
+                denominator,
+                quantization_errors,
+                topographic_errors,
+                weights,
+                topography,
+                vectors[i],
+                sigma,
+                penalty_dist,
+                cur_epoch,
+                mn
+            )
+
+            jit.syncthreads()
+
+        # !--END-CPU--
+        ####################################################################################################################
+        # !--BEGIN-GPU--
+
+        i = jit.grid(1)
+
+        if i < vectors.shape[0]:
+
+            _train_step2_xpu(
+                numerator,
+                denominator,
+                quantization_errors,
+                topographic_errors,
+                weights,
+                topography,
+                vectors[i],
+                sigma,
+                penalty_dist,
+                cur_epoch,
+                mn
+            )
+
+            jit.syncthreads()
+
+        # !--END-GPU--
+
+    ####################################################################################################################
+
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: int, n_vectors: typing.Optional[int] = None, n_error_bins: typing.Optional[int] = 10, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the "*number of vectors*" training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(w,e)\\equiv\\delta_{j,c_i(w,e)}\\equiv\\left\\{\\begin{array}{ll}1&j=c_i(w,e)\\\\0&\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}} $$ where \\( j=0\\dots m\\times n-1 \\).
@@ -79,6 +137,10 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             Training dataset array or generator builder.
         n_epochs : int
             Number of epochs to train for.
+        n_vectors : typing.Optional[int]
+            Number of vectors to train for (default: **None**).
+        n_error_bins : int
+            Number of quantization and topographic error bins (default: **10**).
         show_progress_bar : bool
             Specifies whether to display a progress bar (default: **False**).
         enable_gpu : bool
@@ -97,107 +159,96 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         self._n_epochs = n_epochs
 
+        self._n_vectors = n_vectors
+
         penalty_dist = 2.0 if self._topology == 'square' else 1.0
 
-        ################################################################################################################
-        # TRAINING BY NUMBER OF EPOCHS                                                                                 #
-        ################################################################################################################
+        if not (n_epochs is None) and (n_vectors is None):
 
-        quantization_errors = device_array_empty(n_epochs, dtype = np.float32)
+            ############################################################################################################
+            # TRAINING BY NUMBER OF EPOCHS                                                                             #
+            ############################################################################################################
 
-        topographic_errors = device_array_empty(n_epochs, dtype = np.float32)
+            quantization_errors = device_array_empty(n_epochs, dtype = np.float32)
 
-        ################################################################################################################
-
-        for cur_epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
+            topographic_errors = device_array_empty(n_epochs, dtype = np.float32)
 
             ############################################################################################################
 
-            numerator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
+            for cur_epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
 
-            denominator = device_array_zeros(shape = (self._m * self._n, ), dtype = self._dtype)
+                ########################################################################################################
 
-            ############################################################################################################
+                numerator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
 
-            sigma = self._sigma * asymptotic_decay(cur_epoch, n_epochs)
+                denominator = device_array_zeros(shape = (self._m * self._n, ), dtype = self._dtype)
 
-            ############################################################################################################
+                ########################################################################################################
 
-            generator = generator_builder()
+                generator = generator_builder()
 
-            for data in generator():
+                for data in generator():
 
-                cur_vector += data.shape[0]
+                    cur_vector += data.shape[0]
 
-                _train_kernel[enable_gpu, threads_per_blocks, data.shape[0]](
-                    numerator,
-                    denominator,
-                    quantization_errors,
-                    topographic_errors,
-                    self._weights,
-                    self._topography,
-                    data,
-                    sigma,
-                    penalty_dist,
-                    cur_epoch,
-                    self._m * self._n
+                    SOM_Batch._train_step1_kernel[enable_gpu, threads_per_blocks, data.shape[0]](
+                        numerator,
+                        denominator,
+                        quantization_errors,
+                        topographic_errors,
+                        self._weights,
+                        self._topography,
+                        data,
+                        cur_epoch,
+                        n_epochs,
+                        self._sigma,
+                        penalty_dist,
+                        self._m * self._n
+                    )
+
+                ########################################################################################################
+
+                numerator_host = numerator.copy_to_host()
+
+                denominator_temp = denominator.copy_to_host()
+
+                denominator_host = np.expand_dims(denominator_temp, axis = -1)
+
+                ########################################################################################################
+
+                self._weights = np.divide(
+                    numerator_host,
+                    denominator_host,
+                    out = np.zeros_like(numerator_host),
+                    where = denominator_host != 0.0
                 )
 
             ############################################################################################################
 
-            numerator_host = numerator.copy_to_host()
+            if cur_vector > 0:
 
-            denominator_temp = denominator.copy_to_host()
+                self._quantization_errors = quantization_errors.copy_to_host() * n_epochs / cur_vector
 
-            denominator_host = np.expand_dims(denominator_temp, axis = -1)
+                self._topographic_errors = topographic_errors.copy_to_host() * n_epochs / cur_vector
 
             ############################################################################################################
 
-            self._weights = np.divide(
-                numerator_host,
-                denominator_host,
-                out = np.zeros_like(numerator_host),
-                where = denominator_host != 0.0
-            )
+        elif (n_epochs is None) and not (n_vectors is None):
 
-        ################################################################################################################
+            ############################################################################################################
 
-        if cur_vector > 0:
+            pass
 
-            self._quantization_errors = quantization_errors.copy_to_host() * n_epochs / cur_vector
+            ############################################################################################################
 
-            self._topographic_errors = topographic_errors.copy_to_host() * n_epochs / cur_vector
+        else:
 
-########################################################################################################################
-
-@jit(kernel = True, parallel = True)
-def _train_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, sigma: float, penalty_dist: float, err_bin: int, mn: int) -> None:
-
-    ####################################################################################################################
-    # !--BEGIN-CPU--
-
-    for i in nb.prange(vectors.shape[0]):
-
-        _train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], sigma, penalty_dist, err_bin, mn)
-
-    # !--END-CPU--
-    ####################################################################################################################
-    # !--BEGIN-GPU--
-
-    i = jit.grid(1)
-
-    if i < vectors.shape[0]:
-
-        _train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], sigma, penalty_dist, err_bin, mn)
-
-        jit.syncthreads()
-
-    # !--END-GPU--
+            raise Exception('Invalid training method, specify either `n_epochs` or `n_vectors`.')
 
 ########################################################################################################################
 
 @jit(parallel = False)
-def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, sigma: float, penalty_dist: float, err_bin: int, mn: int) -> None:
+def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, sigma: float, penalty_dist: float, err_bin: int, mn: int) -> None:
 
     ####################################################################################################################
     # BMUS CALCULATION                                                                                                 #
@@ -256,7 +307,7 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
         # DIRAC NEIGHBORHOOD                                                                                           #
         ################################################################################################################
 
-        atomic_add_vector2vector_xpu(numerator[min_index1], vector)
+        atomic_add_vector_xpu(numerator[min_index1], vector)
 
         jit.atomic_add(denominator, min_index1, 1.0000)
 

@@ -471,7 +471,7 @@ print(result.copy_to_host())
     ####################################################################################################################
 
     @staticmethod
-    def grid(ndim: int) -&gt; None:
+    def grid(ndim: int) -&gt; Union[tuple, int]:
 
         &#34;&#34;&#34;
         Return the absolute position of the current thread in the entire grid of blocks.
@@ -534,7 +534,7 @@ print(result.copy_to_host())
     ####################################################################################################################
 
     @staticmethod
-    def atomic_add(array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.float64]) -&gt; Union[np.int32, np.float32, np.float64]:
+    def atomic_add(array: np.ndarray, idx: int, val: Union[np.single, float, int]) -&gt; Union[np.single, float, int]:
 
         &#34;&#34;&#34;
         Performs atomic array[idx] += val and returns the old value. Supported on int32, float32, and float64 operands only.
@@ -545,7 +545,7 @@ print(result.copy_to_host())
             Array to be modified.
         idx : int
             Index in the array.
-        val : Union[np.int32, np.float32, np.float64]
+        val : Union[np.single, float, int]
             New value.
         &#34;&#34;&#34;
 
@@ -554,7 +554,7 @@ print(result.copy_to_host())
     ####################################################################################################################
 
     @staticmethod
-    def atomic_sub(array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.float64]) -&gt; Union[np.int32, np.float32, np.float64]:
+    def atomic_sub(array: np.ndarray, idx: int, val: Union[np.single, float, int]) -&gt; Union[np.single, float, int]:
 
         &#34;&#34;&#34;
         Performs atomic array[idx] -= val and returns the old value. Supported on int32, float32, and float64 operands only.
@@ -565,7 +565,7 @@ print(result.copy_to_host())
             Array to be modified.
         idx : int
             Index in the array.
-        val : Union[np.int32, np.float32, np.float64]
+        val : Union[np.single, float, int]
             New value.
         &#34;&#34;&#34;
 
@@ -775,7 +775,7 @@ print(result.copy_to_host())
 <h3>Static methods</h3>
 <dl>
 <dt id="decontamination.jit.grid"><code class="name flex">
-<span>def <span class="ident">grid</span></span>(<span>ndim: int) ‑> None</span>
+<span>def <span class="ident">grid</span></span>(<span>ndim: int) ‑> Union[tuple, int]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Return the absolute position of the current thread in the entire grid of blocks.</p>
@@ -789,7 +789,7 @@ print(result.copy_to_host())
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def grid(ndim: int) -&gt; None:
+def grid(ndim: int) -&gt; Union[tuple, int]:
 
     &#34;&#34;&#34;
     Return the absolute position of the current thread in the entire grid of blocks.
@@ -889,7 +889,7 @@ def syncthreads() -&gt; None:
 </details>
 </dd>
 <dt id="decontamination.jit.atomic_add"><code class="name flex">
-<span>def <span class="ident">atomic_add</span></span>(<span>array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.float64]) ‑> Union[np.int32, np.float32, np.float64]</span>
+<span>def <span class="ident">atomic_add</span></span>(<span>array: np.ndarray, idx: int, val: Union[np.float32, float, int]) ‑> Union[np.float32, float, int]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Performs atomic array[idx] += val and returns the old value. Supported on int32, float32, and float64 operands only.</p>
@@ -899,7 +899,7 @@ def syncthreads() -&gt; None:
 <dd>Array to be modified.</dd>
 <dt><strong><code>idx</code></strong> :&ensp;<code>int</code></dt>
 <dd>Index in the array.</dd>
-<dt><strong><code>val</code></strong> :&ensp;<code>Union[np.int32, np.float32, np.float64]</code></dt>
+<dt><strong><code>val</code></strong> :&ensp;<code>Union[np.single, float, int]</code></dt>
 <dd>New value.</dd>
 </dl></div>
 <details class="source">
@@ -907,7 +907,7 @@ def syncthreads() -&gt; None:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def atomic_add(array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.float64]) -&gt; Union[np.int32, np.float32, np.float64]:
+def atomic_add(array: np.ndarray, idx: int, val: Union[np.single, float, int]) -&gt; Union[np.single, float, int]:
 
     &#34;&#34;&#34;
     Performs atomic array[idx] += val and returns the old value. Supported on int32, float32, and float64 operands only.
@@ -918,7 +918,7 @@ def atomic_add(array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.
         Array to be modified.
     idx : int
         Index in the array.
-    val : Union[np.int32, np.float32, np.float64]
+    val : Union[np.single, float, int]
         New value.
     &#34;&#34;&#34;
 
@@ -926,7 +926,7 @@ def atomic_add(array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.
 </details>
 </dd>
 <dt id="decontamination.jit.atomic_sub"><code class="name flex">
-<span>def <span class="ident">atomic_sub</span></span>(<span>array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.float64]) ‑> Union[np.int32, np.float32, np.float64]</span>
+<span>def <span class="ident">atomic_sub</span></span>(<span>array: np.ndarray, idx: int, val: Union[np.float32, float, int]) ‑> Union[np.float32, float, int]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Performs atomic array[idx] -= val and returns the old value. Supported on int32, float32, and float64 operands only.</p>
@@ -936,7 +936,7 @@ def atomic_add(array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.
 <dd>Array to be modified.</dd>
 <dt><strong><code>idx</code></strong> :&ensp;<code>int</code></dt>
 <dd>Index in the array.</dd>
-<dt><strong><code>val</code></strong> :&ensp;<code>Union[np.int32, np.float32, np.float64]</code></dt>
+<dt><strong><code>val</code></strong> :&ensp;<code>Union[np.single, float, int]</code></dt>
 <dd>New value.</dd>
 </dl></div>
 <details class="source">
@@ -944,7 +944,7 @@ def atomic_add(array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def atomic_sub(array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.float64]) -&gt; Union[np.int32, np.float32, np.float64]:
+def atomic_sub(array: np.ndarray, idx: int, val: Union[np.single, float, int]) -&gt; Union[np.single, float, int]:
 
     &#34;&#34;&#34;
     Performs atomic array[idx] -= val and returns the old value. Supported on int32, float32, and float64 operands only.
@@ -955,7 +955,7 @@ def atomic_sub(array: np.ndarray, idx: int, val: Union[np.int32, np.float32, np.
         Array to be modified.
     idx : int
         Index in the array.
-    val : Union[np.int32, np.float32, np.float64]
+    val : Union[np.single, float, int]
         New value.
     &#34;&#34;&#34;
 
@@ -1302,11 +1302,11 @@ def dtype(self):
 
         if self._topology == &#39;square&#39;:
 
-            self._topography = np.array(list(SOM_Abstract._neuron_locations_square(self._m, self._n)), dtype = np.float32)
+            self._topography = np.array(list(SOM_Abstract._neuron_locations_square(self._m, self._n)), dtype = self._dtype)
 
         else:
 
-            self._topography = np.array(list(SOM_Abstract._neuron_locations_hexagonal(self._m, self._n)), dtype = np.float32)
+            self._topography = np.array(list(SOM_Abstract._neuron_locations_hexagonal(self._m, self._n)), dtype = self._dtype)
 
     ####################################################################################################################
 
@@ -2594,7 +2594,7 @@ def topology(self) -&gt; str:
 </dd>
 <dt id="decontamination.SOM_Batch"><code class="flex name class">
 <span>class <span class="ident">SOM_Batch</span></span>
-<span>(</span><span>m: int, n: int, dim: int, dtype: Type[np.float32] = np.float32, topology: Optional[str] = None)</span>
+<span>(</span><span>m: int, n: int, dim: int, dtype: Type[np.float32] = np.float32, topology: Optional[str] = None, sigma: float = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Self Organizing Maps (standard batch implementation).</p>
@@ -2611,6 +2611,8 @@ def topology(self) -&gt; str:
 <dd>Neural network data type (default: <strong>np.float32</strong>).</dd>
 <dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
 <dd>Topology of the model, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>None</strong>, uses: <strong>'hexagonal'</strong>).</dd>
+<dt><strong><code>sigma</code></strong> :&ensp;<code>float</code></dt>
+<dd>Starting value of the neighborhood radius (default: <strong>None</strong>, uses: <span><span class="MathJax_Preview"> \mathrm{max}(m,n)/2 </span><script type="math/tex"> \mathrm{max}(m,n)/2 </script></span>).</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -2626,7 +2628,7 @@ def topology(self) -&gt; str:
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: Type[np.single] = np.float32, topology: Optional[str] = None):
+    def __init__(self, m: int, n: int, dim: int, dtype: Type[np.single] = np.float32, topology: Optional[str] = None, sigma: float = None):
 
         &#34;&#34;&#34;
         A rule of thumb to set the size of the grid for a dimensionality reduction task is that it should contain \\( 5\\sqrt{N} \\) neurons where N is the number of samples in the dataset to analyze.
@@ -2643,11 +2645,17 @@ def topology(self) -&gt; str:
             Neural network data type (default: **np.float32**).
         topology : Optional[str]
             Topology of the model, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **None**, uses: **&#39;hexagonal&#39;**).
+        sigma : float
+            Starting value of the neighborhood radius (default: **None**, uses: \\( \\mathrm{max}(m,n)/2 \\)).
         &#34;&#34;&#34;
 
         ################################################################################################################
 
         super().__init__(m, n, dim, dtype, topology)
+
+        ################################################################################################################
+
+        self._sigma = max(m, n) / 2.0 if sigma is None else float(sigma)
 
         ################################################################################################################
 
@@ -2657,6 +2665,7 @@ def topology(self) -&gt; str:
 
         self._header_extra = {
             &#39;mode&#39;: &#39;__MODE__&#39;,
+            &#39;sigma&#39;: &#39;_sigma&#39;,
             &#39;n_epochs&#39;: &#39;_n_epochs&#39;,
         }
 
@@ -2709,7 +2718,11 @@ def topology(self) -&gt; str:
 
             numerator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
 
-            denominator = device_array_zeros(shape = (self._m * self._n, 1), dtype = self._dtype)
+            denominator = device_array_zeros(shape = (self._m * self._n, ), dtype = self._dtype)
+
+            ############################################################################################################
+
+            sigma = self._sigma * asymptotic_decay(cur_epoch, n_epochs)
 
             ############################################################################################################
 
@@ -2727,6 +2740,7 @@ def topology(self) -&gt; str:
                     self._weights,
                     self._topography,
                     data,
+                    sigma,
                     penalty_dist,
                     cur_epoch,
                     self._m * self._n
@@ -2734,11 +2748,19 @@ def topology(self) -&gt; str:
 
             ############################################################################################################
 
+            numerator_host = numerator.copy_to_host()
+
+            denominator_temp = denominator.copy_to_host()
+
+            denominator_host = np.expand_dims(denominator_temp, axis = -1)
+
+            ############################################################################################################
+
             self._weights = np.divide(
-                numerator.copy_to_host(),
-                denominator.copy_to_host(),
-                out = np.zeros(numerator.shape, dtype = np.float32),
-                where = denominator != 0.0
+                numerator_host,
+                denominator_host,
+                out = np.zeros_like(numerator_host),
+                where = denominator_host != 0.0
             )
 
         ################################################################################################################
@@ -2824,7 +2846,11 @@ def topology(self) -&gt; str:
 
         numerator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
 
-        denominator = device_array_zeros(shape = (self._m * self._n, 1), dtype = self._dtype)
+        denominator = device_array_zeros(shape = (self._m * self._n, ), dtype = self._dtype)
+
+        ############################################################################################################
+
+        sigma = self._sigma * asymptotic_decay(cur_epoch, n_epochs)
 
         ############################################################################################################
 
@@ -2842,6 +2868,7 @@ def topology(self) -&gt; str:
                 self._weights,
                 self._topography,
                 data,
+                sigma,
                 penalty_dist,
                 cur_epoch,
                 self._m * self._n
@@ -2849,11 +2876,19 @@ def topology(self) -&gt; str:
 
         ############################################################################################################
 
+        numerator_host = numerator.copy_to_host()
+
+        denominator_temp = denominator.copy_to_host()
+
+        denominator_host = np.expand_dims(denominator_temp, axis = -1)
+
+        ############################################################################################################
+
         self._weights = np.divide(
-            numerator.copy_to_host(),
-            denominator.copy_to_host(),
-            out = np.zeros(numerator.shape, dtype = np.float32),
-            where = denominator != 0.0
+            numerator_host,
+            denominator_host,
+            out = np.zeros_like(numerator_host),
+            where = denominator_host != 0.0
         )
 
     ################################################################################################################
@@ -2962,7 +2997,7 @@ def topology(self) -&gt; str:
 
         ################################################################################################################
 
-        decay_function = _asymptotic_decay(cur_epoch, n_epochs)
+        decay_function = asymptotic_decay(cur_epoch, n_epochs)
 
         alpha = alpha0 * decay_function
 
@@ -2988,7 +3023,7 @@ def topology(self) -&gt; str:
 
             ############################################################################################################
 
-            decay_function = _asymptotic_decay(cur_vector + i, n_vectors)
+            decay_function = asymptotic_decay(cur_vector + i, n_vectors)
 
             alpha = alpha0 * decay_function
 

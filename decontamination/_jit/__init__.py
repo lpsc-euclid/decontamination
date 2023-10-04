@@ -403,7 +403,7 @@ class jit(object):
     def syncthreads() -> None:
 
         """
-        Synchronize all threads in the same thread block.
+        Synchronize all threads in the same thread block. Ignored on CPU.
         """
 
         pass

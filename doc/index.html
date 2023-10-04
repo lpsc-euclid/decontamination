@@ -526,7 +526,7 @@ print(result.copy_to_host())
     def syncthreads() -&gt; None:
 
         &#34;&#34;&#34;
-        Synchronize all threads in the same thread block.
+        Synchronize all threads in the same thread block. Ignored on CPU.
         &#34;&#34;&#34;
 
         pass
@@ -873,7 +873,7 @@ def shared_empty(shape: Union[tuple, int], dtype: Type[np.single] = np.float32) 
 <span>def <span class="ident">syncthreads</span></span>(<span>) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Synchronize all threads in the same thread block.</p></div>
+<div class="desc"><p>Synchronize all threads in the same thread block. Ignored on CPU.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -882,7 +882,7 @@ def shared_empty(shape: Union[tuple, int], dtype: Type[np.single] = np.float32) 
 def syncthreads() -&gt; None:
 
     &#34;&#34;&#34;
-    Synchronize all threads in the same thread block.
+    Synchronize all threads in the same thread block. Ignored on CPU.
     &#34;&#34;&#34;
 
     pass</code></pre>

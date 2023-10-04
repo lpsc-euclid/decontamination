@@ -348,7 +348,7 @@ class jit(object):
     ####################################################################################################################
 
     @staticmethod
-    def grid(ndim: int) -> None:
+    def grid(ndim: int) -> typing.Union[tuple, int]:
 
         """
         Return the absolute position of the current thread in the entire grid of blocks.

@@ -232,7 +232,7 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
 
         numerator_i = numerator[i]
 
-        neighborhood_i = math.exp(-square_distance_xpu(topography[i] - bmu1) / (2.0 * sigma ** 2))
+        neighborhood_i = math.exp(-square_distance_xpu(topography[i], bmu1) / (2.0 * sigma ** 2))
 
         for k in range(vector.shape[0]):
 

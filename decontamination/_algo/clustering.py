@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
+
 import math
 import typing
 
@@ -91,14 +92,14 @@ class Clustering(object):
         distances = Clustering._init_distances(vectors, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
         ################################################################################################################
-        # FIND CLUSTERS                                                                                                #
+        # COMPUTE CLUSTERS                                                                                             #
         ################################################################################################################
 
         result = np.arange(vectors.shape[0])
 
         nan_mask = np.any(np.isnan(vectors), axis = -1)
 
-        for _ in range(vectors.shape[0] - n_clusters - nan_mask.sum()):
+        for _ in range(vectors.shape[0] - nan_mask.sum() - n_clusters):
 
             Clustering._update_clusters(distances, result)
 
@@ -107,7 +108,7 @@ class Clustering(object):
         result[nan_mask] = -1
 
         ################################################################################################################
-        # RE-INDEX                                                                                                     #
+        # REINDEX CLUSTERS                                                                                             #
         ################################################################################################################
 
         cnt = 0
@@ -119,13 +120,11 @@ class Clustering(object):
             if not nan_mask[i]:
 
                 if cluster_id in cluster_dict:
-                    new_cluster_id = cluster_dict[cluster_id] # cnt
+                    result[i] = cluster_dict[cluster_id] # cnt
                 else:
-                    new_cluster_id = cluster_dict[cluster_id] = cnt
+                    result[i] = cluster_dict[cluster_id] = cnt
 
                     cnt += 1
-
-                result[i] = new_cluster_id
 
         ################################################################################################################
 

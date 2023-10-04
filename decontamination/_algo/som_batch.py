@@ -73,7 +73,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     @staticmethod
     @jit(kernel = True, parallel = True)
-    def _train_step1_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, penalty_dist: float, mn: int) -> None:
+    def _train_step1_epoch_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, penalty_dist: float, mn: int) -> None:
 
         ################################################################################################################
         # !--BEGIN-CPU--
@@ -96,8 +96,6 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 mn
             )
 
-            jit.syncthreads()
-
         # !--END-CPU--
         ####################################################################################################################
         # !--BEGIN-GPU--
@@ -105,6 +103,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         i = jit.grid(1)
 
         if i < vectors.shape[0]:
+
+            sigma = sigma0 * asymptotic_decay(cur_epoch, n_epochs)
 
             _train_step2_xpu(
                 numerator,
@@ -120,7 +120,66 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 mn
             )
 
-            jit.syncthreads()
+        jit.syncthreads()
+
+        # !--END-GPU--
+
+    ####################################################################################################################
+
+    @staticmethod
+    @jit(kernel = True, parallel = True)
+    def _train_step1_iter_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, sigma0: float, penalty_dist: float, mn: int) -> None:
+
+        ################################################################################################################
+        # !--BEGIN-CPU--
+
+        for i in nb.prange(vectors.shape[0]):
+
+            cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
+
+            sigma = sigma0 * asymptotic_decay(cur_vector + i, n_vectors)
+
+            _train_step2_xpu(
+                numerator,
+                denominator,
+                quantization_errors,
+                topographic_errors,
+                weights,
+                topography,
+                vectors[i],
+                sigma,
+                penalty_dist,
+                cur_err_bin,
+                mn
+            )
+
+        # !--END-CPU--
+        ####################################################################################################################
+        # !--BEGIN-GPU--
+
+        i = jit.grid(1)
+
+        if i < vectors.shape[0]:
+
+            cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
+
+            sigma = sigma0 * asymptotic_decay(cur_vector + i, n_vectors)
+
+            _train_step2_xpu(
+                numerator,
+                denominator,
+                quantization_errors,
+                topographic_errors,
+                weights,
+                topography,
+                vectors[i],
+                sigma,
+                penalty_dist,
+                cur_err_bin,
+                mn
+            )
+
+        jit.syncthreads()
 
         # !--END-GPU--
 
@@ -129,7 +188,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
     def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: int, n_vectors: typing.Optional[int] = None, n_error_bins: typing.Optional[int] = 10, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
-        Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the "*number of vectors*" training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ if \\( \\sigma>0 \\): $$ \\Theta_{ji}(w,e)\\equiv\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert}{2\\sigma^2(e)}\\right) $$ if \\( \\sigma=0 \\): $$ \\Theta_{ji}(w,e)\\equiv\\delta_{j,c_i(w,e)}\\equiv\\left\\{\\begin{array}{ll}1&j=c_i(w,e)\\\\0&\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}} $$ where \\( j=0\\dots m\\times n-1 \\), at epoch \\( e \\), \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
+        Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the "*number of vectors*" training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ if \\( \\sigma>0 \\): $$ \\Theta_{ji}(w,e)\\equiv\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert^2}{2\\sigma^2(e)}\\right) $$ if \\( \\sigma=0 \\): $$ \\Theta_{ji}(w,e)\\equiv\\delta_{j,c_i(w,e)}\\equiv\\left\\{\\begin{array}{ll}1&j=c_i(w,e)\\\\0&\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}} $$ where \\( j=0\\dots m\\times n-1 \\), at epoch \\( e \\), \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
 
         Parameters
         ----------
@@ -187,18 +246,18 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                 generator = generator_builder()
 
-                for data in generator():
+                for vectors in generator():
 
-                    cur_vector += data.shape[0]
+                    cur_vector += vectors.shape[0]
 
-                    SOM_Batch._train_step1_kernel[enable_gpu, threads_per_blocks, data.shape[0]](
+                    SOM_Batch._train_step1_epoch_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
                         numerator,
                         denominator,
                         quantization_errors,
                         topographic_errors,
                         self._weights,
                         self._topography,
-                        data,
+                        vectors,
                         cur_epoch,
                         n_epochs,
                         self._sigma,
@@ -236,8 +295,77 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         elif (n_epochs is None) and not (n_vectors is None):
 
             ############################################################################################################
+            # TRAINING BY NUMBER OF VECTORS                                                                            #
+            ############################################################################################################
 
-            pass
+            quantization_errors = device_array_empty(n_error_bins, dtype = np.float32)
+
+            topographic_errors = device_array_empty(n_error_bins, dtype = np.float32)
+
+            ############################################################################################################
+
+            numerator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
+
+            denominator = device_array_zeros(shape = (self._m * self._n, ), dtype = self._dtype)
+
+            ########################################################################################################
+
+            progress_bar = tqdm.tqdm(total = n_vectors, disable = not show_progress_bar)
+
+            generator = generator_builder()
+
+            for vectors in generator():
+
+                count = min(vectors.shape[0], n_vectors - cur_vector)
+
+                SOM_Batch._train_step1_iter_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
+                    numerator,
+                    denominator,
+                    quantization_errors,
+                    topographic_errors,
+                    self._weights,
+                    self._topography,
+                    vectors[0: count],
+                    cur_vector,
+                    n_vectors,
+                    n_error_bins,
+                    self._sigma,
+                    penalty_dist,
+                    self._m * self._n
+                )
+
+                cur_vector += count
+
+                progress_bar.update(count)
+
+                if cur_vector >= n_vectors:
+
+                    break
+
+            ############################################################################################################
+
+            numerator_host = numerator.copy_to_host()
+
+            denominator_temp = denominator.copy_to_host()
+
+            denominator_host = np.expand_dims(denominator_temp, axis = -1)
+
+            ############################################################################################################
+
+            self._weights = np.divide(
+                numerator_host,
+                denominator_host,
+                out = np.zeros_like(numerator_host),
+                where = denominator_host != 0.0
+            )
+
+            ############################################################################################################
+
+            if cur_vector > 0:
+
+                self._quantization_errors = quantization_errors.copy_to_host() * n_error_bins / cur_vector
+
+                self._topographic_errors = topographic_errors.copy_to_host() * n_error_bins / cur_vector
 
             ############################################################################################################
 

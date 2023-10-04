@@ -76,7 +76,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
+    def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
 
         ################################################################################################################
 
@@ -88,17 +88,28 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        for i in range(data.shape[0]):
+        for i in range(vectors.shape[0]):
 
-            _train_step2(quantization_errors, topographic_errors, weights, topography, data[i], alpha, sigma, penalty_dist, cur_epoch, mn)
+            _train_step2(
+                quantization_errors,
+                topographic_errors,
+                weights,
+                topography,
+                vectors[i],
+                alpha,
+                sigma,
+                penalty_dist,
+                cur_epoch,
+                mn
+            )
 
     ####################################################################################################################
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
+    def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
 
-        for i in range(data.shape[0]):
+        for i in range(vectors.shape[0]):
 
             ############################################################################################################
 
@@ -114,14 +125,25 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
-            _train_step2(quantization_errors, topographic_errors, weights, topography, data[i], alpha, sigma, penalty_dist, cur_err_bin, mn)
+            _train_step2(
+                quantization_errors,
+                topographic_errors,
+                weights,
+                topography,
+                vectors[i],
+                alpha,
+                sigma,
+                penalty_dist,
+                cur_err_bin,
+                mn
+            )
 
     ####################################################################################################################
 
     def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, n_error_bins: typing.Optional[int] = 10, show_progress_bar: bool = False) -> None:
 
         """
-        Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the "*number of vectors*" training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(w,e)\\equiv\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N-1\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(w,e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n-1 \\) and, at epoch \\( e \\), \\( \\alpha(e)\\equiv\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
+        Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the "*number of vectors*" training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(w,e)\\equiv\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert^2}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N-1\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(w,e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n-1 \\) and, at epoch \\( e \\), \\( \\alpha(e)\\equiv\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
 
         Parameters
         ----------
@@ -167,16 +189,16 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
                 generator = generator_builder()
 
-                for data in generator():
+                for vectors in generator():
 
-                    cur_vector += data.shape[0]
+                    cur_vector += vectors.shape[0]
 
                     SOM_Online._train_step1_epoch(
                         self._weights,
                         self._quantization_errors,
                         self._topographic_errors,
                         self._topography,
-                        data,
+                        vectors,
                         cur_epoch,
                         n_epochs,
                         self._alpha,
@@ -211,16 +233,16 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
             generator = generator_builder()
 
-            for data in generator():
+            for vectors in generator():
 
-                count = min(data.shape[0], n_vectors - cur_vector)
+                count = min(vectors.shape[0], n_vectors - cur_vector)
 
                 SOM_Online._train_step1_iter(
                     self._weights,
                     self._quantization_errors,
                     self._topographic_errors,
                     self._topography,
-                    data[0: count],
+                    vectors[0: count],
                     cur_vector,
                     n_vectors,
                     n_error_bins,

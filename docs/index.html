@@ -2676,7 +2676,7 @@ def topology(self) -&gt; str:
 
     @staticmethod
     @jit(kernel = True, parallel = True)
-    def _train_step1_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, penalty_dist: float, mn: int) -&gt; None:
+    def _train_step1_epoch_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, penalty_dist: float, mn: int) -&gt; None:
 
         ################################################################################################################
         # !--BEGIN-CPU--
@@ -2699,8 +2699,6 @@ def topology(self) -&gt; str:
                 mn
             )
 
-            jit.syncthreads()
-
         # !--END-CPU--
         ####################################################################################################################
         # !--BEGIN-GPU--
@@ -2708,6 +2706,8 @@ def topology(self) -&gt; str:
         i = jit.grid(1)
 
         if i &lt; vectors.shape[0]:
+
+            sigma = sigma0 * asymptotic_decay(cur_epoch, n_epochs)
 
             _train_step2_xpu(
                 numerator,
@@ -2723,7 +2723,66 @@ def topology(self) -&gt; str:
                 mn
             )
 
-            jit.syncthreads()
+        jit.syncthreads()
+
+        # !--END-GPU--
+
+    ####################################################################################################################
+
+    @staticmethod
+    @jit(kernel = True, parallel = True)
+    def _train_step1_iter_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, sigma0: float, penalty_dist: float, mn: int) -&gt; None:
+
+        ################################################################################################################
+        # !--BEGIN-CPU--
+
+        for i in nb.prange(vectors.shape[0]):
+
+            cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
+
+            sigma = sigma0 * asymptotic_decay(cur_vector + i, n_vectors)
+
+            _train_step2_xpu(
+                numerator,
+                denominator,
+                quantization_errors,
+                topographic_errors,
+                weights,
+                topography,
+                vectors[i],
+                sigma,
+                penalty_dist,
+                cur_err_bin,
+                mn
+            )
+
+        # !--END-CPU--
+        ####################################################################################################################
+        # !--BEGIN-GPU--
+
+        i = jit.grid(1)
+
+        if i &lt; vectors.shape[0]:
+
+            cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
+
+            sigma = sigma0 * asymptotic_decay(cur_vector + i, n_vectors)
+
+            _train_step2_xpu(
+                numerator,
+                denominator,
+                quantization_errors,
+                topographic_errors,
+                weights,
+                topography,
+                vectors[i],
+                sigma,
+                penalty_dist,
+                cur_err_bin,
+                mn
+            )
+
+        jit.syncthreads()
 
         # !--END-GPU--
 
@@ -2732,7 +2791,7 @@ def topology(self) -&gt; str:
     def train(self, dataset: Union[np.ndarray, Callable], n_epochs: int, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -&gt; None:
 
         &#34;&#34;&#34;
-        Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ if \\( \\sigma&gt;0 \\): $$ \\Theta_{ji}(w,e)\\equiv\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert}{2\\sigma^2(e)}\\right) $$ if \\( \\sigma=0 \\): $$ \\Theta_{ji}(w,e)\\equiv\\delta_{j,c_i(w,e)}\\equiv\\left\\{\\begin{array}{ll}1&amp;j=c_i(w,e)\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}} $$ where \\( j=0\\dots m\\times n-1 \\), at epoch \\( e \\), \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
+        Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ if \\( \\sigma&gt;0 \\): $$ \\Theta_{ji}(w,e)\\equiv\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert^2}{2\\sigma^2(e)}\\right) $$ if \\( \\sigma=0 \\): $$ \\Theta_{ji}(w,e)\\equiv\\delta_{j,c_i(w,e)}\\equiv\\left\\{\\begin{array}{ll}1&amp;j=c_i(w,e)\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}} $$ where \\( j=0\\dots m\\times n-1 \\), at epoch \\( e \\), \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
 
         Parameters
         ----------
@@ -2790,18 +2849,18 @@ def topology(self) -&gt; str:
 
                 generator = generator_builder()
 
-                for data in generator():
+                for vectors in generator():
 
-                    cur_vector += data.shape[0]
+                    cur_vector += vectors.shape[0]
 
-                    SOM_Batch._train_step1_kernel[enable_gpu, threads_per_blocks, data.shape[0]](
+                    SOM_Batch._train_step1_epoch_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
                         numerator,
                         denominator,
                         quantization_errors,
                         topographic_errors,
                         self._weights,
                         self._topography,
-                        data,
+                        vectors,
                         cur_epoch,
                         n_epochs,
                         self._sigma,
@@ -2839,8 +2898,77 @@ def topology(self) -&gt; str:
         elif (n_epochs is None) and not (n_vectors is None):
 
             ############################################################################################################
+            # TRAINING BY NUMBER OF VECTORS                                                                            #
+            ############################################################################################################
 
-            pass
+            quantization_errors = device_array_empty(n_error_bins, dtype = np.float32)
+
+            topographic_errors = device_array_empty(n_error_bins, dtype = np.float32)
+
+            ############################################################################################################
+
+            numerator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
+
+            denominator = device_array_zeros(shape = (self._m * self._n, ), dtype = self._dtype)
+
+            ########################################################################################################
+
+            progress_bar = tqdm.tqdm(total = n_vectors, disable = not show_progress_bar)
+
+            generator = generator_builder()
+
+            for vectors in generator():
+
+                count = min(vectors.shape[0], n_vectors - cur_vector)
+
+                SOM_Batch._train_step1_iter_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
+                    numerator,
+                    denominator,
+                    quantization_errors,
+                    topographic_errors,
+                    self._weights,
+                    self._topography,
+                    vectors[0: count],
+                    cur_vector,
+                    n_vectors,
+                    n_error_bins,
+                    self._sigma,
+                    penalty_dist,
+                    self._m * self._n
+                )
+
+                cur_vector += count
+
+                progress_bar.update(count)
+
+                if cur_vector &gt;= n_vectors:
+
+                    break
+
+            ############################################################################################################
+
+            numerator_host = numerator.copy_to_host()
+
+            denominator_temp = denominator.copy_to_host()
+
+            denominator_host = np.expand_dims(denominator_temp, axis = -1)
+
+            ############################################################################################################
+
+            self._weights = np.divide(
+                numerator_host,
+                denominator_host,
+                out = np.zeros_like(numerator_host),
+                where = denominator_host != 0.0
+            )
+
+            ############################################################################################################
+
+            if cur_vector &gt; 0:
+
+                self._quantization_errors = quantization_errors.copy_to_host() * n_error_bins / cur_vector
+
+                self._topographic_errors = topographic_errors.copy_to_host() * n_error_bins / cur_vector
 
             ############################################################################################################
 
@@ -2858,7 +2986,7 @@ def topology(self) -&gt; str:
 <span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable], n_epochs: int, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Trains the neural network. Use either the "<em>number of epochs</em>" training method by specifying <code>n_epochs</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </script></span>) or the "<em>number of vectors</em>" training method by specifying <code>n_vectors</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </script></span>). A batch formulation of updating weights is implemented: <span><span class="MathJax_Preview"> c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </span><script type="math/tex; mode=display"> c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </script></span> if <span><span class="MathJax_Preview"> \sigma&gt;0 </span><script type="math/tex"> \sigma>0 </script></span>: <span><span class="MathJax_Preview"> \Theta_{ji}(w,e)\equiv\exp\left(-\frac{\lVert j-c_i(w,e)\rVert}{2\sigma^2(e)}\right) </span><script type="math/tex; mode=display"> \Theta_{ji}(w,e)\equiv\exp\left(-\frac{\lVert j-c_i(w,e)\rVert}{2\sigma^2(e)}\right) </script></span> if <span><span class="MathJax_Preview"> \sigma=0 </span><script type="math/tex"> \sigma=0 </script></span>: <span><span class="MathJax_Preview"> \Theta_{ji}(w,e)\equiv\delta_{j,c_i(w,e)}\equiv\left\{\begin{array}{ll}1&amp;j=c_i(w,e)\\0&amp;\mathrm{otherwise}\end{array}\right. </span><script type="math/tex; mode=display"> \Theta_{ji}(w,e)\equiv\delta_{j,c_i(w,e)}\equiv\left\{\begin{array}{ll}1&j=c_i(w,e)\\0&\mathrm{otherwise}\end{array}\right. </script></span> <span><span class="MathJax_Preview"> \boxed{w_j(e+1)=\frac{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)x_i}{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)}} </span><script type="math/tex; mode=display"> \boxed{w_j(e+1)=\frac{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)x_i}{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)}} </script></span> where <span><span class="MathJax_Preview"> j=0\dots m\times n-1 </span><script type="math/tex"> j=0\dots m\times n-1 </script></span>, at epoch <span><span class="MathJax_Preview"> e </span><script type="math/tex"> e </script></span>, <span><span class="MathJax_Preview"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the neighborhood radius.</p>
+<div class="desc"><p>Trains the neural network. Use either the "<em>number of epochs</em>" training method by specifying <code>n_epochs</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </script></span>) or the "<em>number of vectors</em>" training method by specifying <code>n_vectors</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </script></span>). A batch formulation of updating weights is implemented: <span><span class="MathJax_Preview"> c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </span><script type="math/tex; mode=display"> c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </script></span> if <span><span class="MathJax_Preview"> \sigma&gt;0 </span><script type="math/tex"> \sigma>0 </script></span>: <span><span class="MathJax_Preview"> \Theta_{ji}(w,e)\equiv\exp\left(-\frac{\lVert j-c_i(w,e)\rVert^2}{2\sigma^2(e)}\right) </span><script type="math/tex; mode=display"> \Theta_{ji}(w,e)\equiv\exp\left(-\frac{\lVert j-c_i(w,e)\rVert^2}{2\sigma^2(e)}\right) </script></span> if <span><span class="MathJax_Preview"> \sigma=0 </span><script type="math/tex"> \sigma=0 </script></span>: <span><span class="MathJax_Preview"> \Theta_{ji}(w,e)\equiv\delta_{j,c_i(w,e)}\equiv\left\{\begin{array}{ll}1&amp;j=c_i(w,e)\\0&amp;\mathrm{otherwise}\end{array}\right. </span><script type="math/tex; mode=display"> \Theta_{ji}(w,e)\equiv\delta_{j,c_i(w,e)}\equiv\left\{\begin{array}{ll}1&j=c_i(w,e)\\0&\mathrm{otherwise}\end{array}\right. </script></span> <span><span class="MathJax_Preview"> \boxed{w_j(e+1)=\frac{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)x_i}{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)}} </span><script type="math/tex; mode=display"> \boxed{w_j(e+1)=\frac{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)x_i}{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)}} </script></span> where <span><span class="MathJax_Preview"> j=0\dots m\times n-1 </span><script type="math/tex"> j=0\dots m\times n-1 </script></span>, at epoch <span><span class="MathJax_Preview"> e </span><script type="math/tex"> e </script></span>, <span><span class="MathJax_Preview"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the neighborhood radius.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
@@ -2883,7 +3011,7 @@ def topology(self) -&gt; str:
 <pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable], n_epochs: int, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -&gt; None:
 
     &#34;&#34;&#34;
-    Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ if \\( \\sigma&gt;0 \\): $$ \\Theta_{ji}(w,e)\\equiv\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert}{2\\sigma^2(e)}\\right) $$ if \\( \\sigma=0 \\): $$ \\Theta_{ji}(w,e)\\equiv\\delta_{j,c_i(w,e)}\\equiv\\left\\{\\begin{array}{ll}1&amp;j=c_i(w,e)\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}} $$ where \\( j=0\\dots m\\times n-1 \\), at epoch \\( e \\), \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
+    Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). A batch formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ if \\( \\sigma&gt;0 \\): $$ \\Theta_{ji}(w,e)\\equiv\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert^2}{2\\sigma^2(e)}\\right) $$ if \\( \\sigma=0 \\): $$ \\Theta_{ji}(w,e)\\equiv\\delta_{j,c_i(w,e)}\\equiv\\left\\{\\begin{array}{ll}1&amp;j=c_i(w,e)\\\\0&amp;\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}} $$ where \\( j=0\\dots m\\times n-1 \\), at epoch \\( e \\), \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
 
     Parameters
     ----------
@@ -2941,18 +3069,18 @@ def topology(self) -&gt; str:
 
             generator = generator_builder()
 
-            for data in generator():
+            for vectors in generator():
 
-                cur_vector += data.shape[0]
+                cur_vector += vectors.shape[0]
 
-                SOM_Batch._train_step1_kernel[enable_gpu, threads_per_blocks, data.shape[0]](
+                SOM_Batch._train_step1_epoch_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
                     numerator,
                     denominator,
                     quantization_errors,
                     topographic_errors,
                     self._weights,
                     self._topography,
-                    data,
+                    vectors,
                     cur_epoch,
                     n_epochs,
                     self._sigma,
@@ -2990,8 +3118,77 @@ def topology(self) -&gt; str:
     elif (n_epochs is None) and not (n_vectors is None):
 
         ############################################################################################################
+        # TRAINING BY NUMBER OF VECTORS                                                                            #
+        ############################################################################################################
 
-        pass
+        quantization_errors = device_array_empty(n_error_bins, dtype = np.float32)
+
+        topographic_errors = device_array_empty(n_error_bins, dtype = np.float32)
+
+        ############################################################################################################
+
+        numerator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
+
+        denominator = device_array_zeros(shape = (self._m * self._n, ), dtype = self._dtype)
+
+        ########################################################################################################
+
+        progress_bar = tqdm.tqdm(total = n_vectors, disable = not show_progress_bar)
+
+        generator = generator_builder()
+
+        for vectors in generator():
+
+            count = min(vectors.shape[0], n_vectors - cur_vector)
+
+            SOM_Batch._train_step1_iter_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
+                numerator,
+                denominator,
+                quantization_errors,
+                topographic_errors,
+                self._weights,
+                self._topography,
+                vectors[0: count],
+                cur_vector,
+                n_vectors,
+                n_error_bins,
+                self._sigma,
+                penalty_dist,
+                self._m * self._n
+            )
+
+            cur_vector += count
+
+            progress_bar.update(count)
+
+            if cur_vector &gt;= n_vectors:
+
+                break
+
+        ############################################################################################################
+
+        numerator_host = numerator.copy_to_host()
+
+        denominator_temp = denominator.copy_to_host()
+
+        denominator_host = np.expand_dims(denominator_temp, axis = -1)
+
+        ############################################################################################################
+
+        self._weights = np.divide(
+            numerator_host,
+            denominator_host,
+            out = np.zeros_like(numerator_host),
+            where = denominator_host != 0.0
+        )
+
+        ############################################################################################################
+
+        if cur_vector &gt; 0:
+
+            self._quantization_errors = quantization_errors.copy_to_host() * n_error_bins / cur_vector
+
+            self._topographic_errors = topographic_errors.copy_to_host() * n_error_bins / cur_vector
 
         ############################################################################################################
 
@@ -3093,7 +3290,7 @@ def topology(self) -&gt; str:
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
+    def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
 
         ################################################################################################################
 
@@ -3105,17 +3302,28 @@ def topology(self) -&gt; str:
 
         ################################################################################################################
 
-        for i in range(data.shape[0]):
+        for i in range(vectors.shape[0]):
 
-            _train_step2(quantization_errors, topographic_errors, weights, topography, data[i], alpha, sigma, penalty_dist, cur_epoch, mn)
+            _train_step2(
+                quantization_errors,
+                topographic_errors,
+                weights,
+                topography,
+                vectors[i],
+                alpha,
+                sigma,
+                penalty_dist,
+                cur_epoch,
+                mn
+            )
 
     ####################################################################################################################
 
     @staticmethod
     @nb.njit(parallel = False)
-    def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, data: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
+    def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
 
-        for i in range(data.shape[0]):
+        for i in range(vectors.shape[0]):
 
             ############################################################################################################
 
@@ -3131,14 +3339,25 @@ def topology(self) -&gt; str:
 
             ############################################################################################################
 
-            _train_step2(quantization_errors, topographic_errors, weights, topography, data[i], alpha, sigma, penalty_dist, cur_err_bin, mn)
+            _train_step2(
+                quantization_errors,
+                topographic_errors,
+                weights,
+                topography,
+                vectors[i],
+                alpha,
+                sigma,
+                penalty_dist,
+                cur_err_bin,
+                mn
+            )
 
     ####################################################################################################################
 
     def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
 
         &#34;&#34;&#34;
-        Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(w,e)\\equiv\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N-1\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(w,e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n-1 \\) and, at epoch \\( e \\), \\( \\alpha(e)\\equiv\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
+        Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(w,e)\\equiv\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert^2}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N-1\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(w,e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n-1 \\) and, at epoch \\( e \\), \\( \\alpha(e)\\equiv\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
 
         Parameters
         ----------
@@ -3184,16 +3403,16 @@ def topology(self) -&gt; str:
 
                 generator = generator_builder()
 
-                for data in generator():
+                for vectors in generator():
 
-                    cur_vector += data.shape[0]
+                    cur_vector += vectors.shape[0]
 
                     SOM_Online._train_step1_epoch(
                         self._weights,
                         self._quantization_errors,
                         self._topographic_errors,
                         self._topography,
-                        data,
+                        vectors,
                         cur_epoch,
                         n_epochs,
                         self._alpha,
@@ -3228,16 +3447,16 @@ def topology(self) -&gt; str:
 
             generator = generator_builder()
 
-            for data in generator():
+            for vectors in generator():
 
-                count = min(data.shape[0], n_vectors - cur_vector)
+                count = min(vectors.shape[0], n_vectors - cur_vector)
 
                 SOM_Online._train_step1_iter(
                     self._weights,
                     self._quantization_errors,
                     self._topographic_errors,
                     self._topography,
-                    data[0: count],
+                    vectors[0: count],
                     cur_vector,
                     n_vectors,
                     n_error_bins,
@@ -3279,7 +3498,7 @@ def topology(self) -&gt; str:
 <span>def <span class="ident">train</span></span>(<span>self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Trains the neural network. Use either the "<em>number of epochs</em>" training method by specifying <code>n_epochs</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </script></span>) or the "<em>number of vectors</em>" training method by specifying <code>n_vectors</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </script></span>). An online formulation of updating weights is implemented: <span><span class="MathJax_Preview"> c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </span><script type="math/tex; mode=display"> c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </script></span> <span><span class="MathJax_Preview"> \Theta_{ji}(w,e)\equiv\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i(w,e)\rVert}{2\sigma^2(e)}\right) </span><script type="math/tex; mode=display"> \Theta_{ji}(w,e)\equiv\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i(w,e)\rVert}{2\sigma^2(e)}\right) </script></span> <span><span class="MathJax_Preview"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N-1\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(w,e)[x_i-w_j(e)]} </span><script type="math/tex; mode=display"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N-1\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(w,e)[x_i-w_j(e)]} </script></span> where <span><span class="MathJax_Preview"> j=0\dots m\times n-1 </span><script type="math/tex"> j=0\dots m\times n-1 </script></span> and, at epoch <span><span class="MathJax_Preview"> e </span><script type="math/tex"> e </script></span>, <span><span class="MathJax_Preview"> \alpha(e)\equiv\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \alpha(e)\equiv\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the learning rate and <span><span class="MathJax_Preview"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the neighborhood radius.</p>
+<div class="desc"><p>Trains the neural network. Use either the "<em>number of epochs</em>" training method by specifying <code>n_epochs</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1 </script></span>) or the "<em>number of vectors</em>" training method by specifying <code>n_vectors</code> (then <span><span class="MathJax_Preview"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </span><script type="math/tex"> e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1 </script></span>). An online formulation of updating weights is implemented: <span><span class="MathJax_Preview"> c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </span><script type="math/tex; mode=display"> c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert </script></span> <span><span class="MathJax_Preview"> \Theta_{ji}(w,e)\equiv\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i(w,e)\rVert^2}{2\sigma^2(e)}\right) </span><script type="math/tex; mode=display"> \Theta_{ji}(w,e)\equiv\alpha(e)\cdot\exp\left(-\frac{\lVert j-c_i(w,e)\rVert^2}{2\sigma^2(e)}\right) </script></span> <span><span class="MathJax_Preview"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N-1\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(w,e)[x_i-w_j(e)]} </span><script type="math/tex; mode=display"> \boxed{\mathrm{iteratively\,for}\,i=0\dots N-1\,\mathrm{:}\,w_j(e+1)=w_j(e)+\Theta_{ji}(w,e)[x_i-w_j(e)]} </script></span> where <span><span class="MathJax_Preview"> j=0\dots m\times n-1 </span><script type="math/tex"> j=0\dots m\times n-1 </script></span> and, at epoch <span><span class="MathJax_Preview"> e </span><script type="math/tex"> e </script></span>, <span><span class="MathJax_Preview"> \alpha(e)\equiv\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \alpha(e)\equiv\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the learning rate and <span><span class="MathJax_Preview"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </span><script type="math/tex"> \sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}} </script></span> is the neighborhood radius.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>dataset</code></strong> :&ensp;<code>Union[np.ndarray, Callable]</code></dt>
@@ -3300,7 +3519,7 @@ def topology(self) -&gt; str:
 <pre><code class="python">def train(self, dataset: Union[np.ndarray, Callable], n_epochs: Optional[int] = None, n_vectors: Optional[int] = None, n_error_bins: Optional[int] = 10, show_progress_bar: bool = False) -&gt; None:
 
     &#34;&#34;&#34;
-    Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(w,e)\\equiv\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N-1\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(w,e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n-1 \\) and, at epoch \\( e \\), \\( \\alpha(e)\\equiv\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
+    Trains the neural network. Use either the &#34;*number of epochs*&#34; training method by specifying `n_epochs` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1 \\)) or the &#34;*number of vectors*&#34; training method by specifying `n_vectors` (then \\( e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1 \\)). An online formulation of updating weights is implemented: $$ c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert $$ $$ \\Theta_{ji}(w,e)\\equiv\\alpha(e)\\cdot\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert^2}{2\\sigma^2(e)}\\right) $$ $$ \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N-1\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\Theta_{ji}(w,e)[x_i-w_j(e)]} $$ where \\( j=0\\dots m\\times n-1 \\) and, at epoch \\( e \\), \\( \\alpha(e)\\equiv\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the learning rate and \\( \\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}} \\) is the neighborhood radius.
 
     Parameters
     ----------
@@ -3346,16 +3565,16 @@ def topology(self) -&gt; str:
 
             generator = generator_builder()
 
-            for data in generator():
+            for vectors in generator():
 
-                cur_vector += data.shape[0]
+                cur_vector += vectors.shape[0]
 
                 SOM_Online._train_step1_epoch(
                     self._weights,
                     self._quantization_errors,
                     self._topographic_errors,
                     self._topography,
-                    data,
+                    vectors,
                     cur_epoch,
                     n_epochs,
                     self._alpha,
@@ -3390,16 +3609,16 @@ def topology(self) -&gt; str:
 
         generator = generator_builder()
 
-        for data in generator():
+        for vectors in generator():
 
-            count = min(data.shape[0], n_vectors - cur_vector)
+            count = min(vectors.shape[0], n_vectors - cur_vector)
 
             SOM_Online._train_step1_iter(
                 self._weights,
                 self._quantization_errors,
                 self._topographic_errors,
                 self._topography,
-                data[0: count],
+                vectors[0: count],
                 cur_vector,
                 n_vectors,
                 n_error_bins,

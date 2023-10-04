@@ -2,7 +2,7 @@
 ########################################################################################################################
 
 """
-.. include:: ../docs/header.md
+.. include:: ../doc/header.md
 
 A toolbox for performing systematics decontamination in cosmology analyses.
 """

@@ -27,9 +27,9 @@ som = decontamination.SOM_Online(0, 0, 0)
 
 som.load('random_model.hdf5')
 
-som._weights[5:10] = np.nan
+som._weights[5: 10] = np.nan
 
-som._weights[34:40] = np.nan
+som._weights[30: 40] = np.nan
 
 ########################################################################################################################
 

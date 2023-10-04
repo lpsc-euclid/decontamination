@@ -8,7 +8,7 @@ import typing
 import numpy as np
 import numba as nb
 
-from . import som_abstract, dataset_to_generator_builder, asymptotic_decay
+from . import som_abstract, asymptotic_decay, dataset_to_generator_builder
 
 ########################################################################################################################
 

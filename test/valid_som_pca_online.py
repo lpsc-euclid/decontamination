@@ -8,8 +8,8 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 ########################################################################################################################
-import timeit
 
+import timeit
 import minisom
 import decontamination
 
@@ -70,10 +70,12 @@ for i in range(2):
 
 ########################################################################################################################
 
-start = timeit.default_timer()
+start1 = timeit.default_timer()
 #som_ref.train(data, 3, use_epochs = True)
 som_ref.train(data, data.shape[0], use_epochs = False)
-print('minisom training time: ', (timeit.default_timer() - start))
+start2 = timeit.default_timer()
+
+print('minisom training time: ', (start2 - start1))
 
 ########################################################################################################################
 
@@ -81,17 +83,12 @@ som_next = decontamination.SOM_Online(M, N, 4, alpha = 0.3, sigma = max(M, N) / 
 
 som_next.init_from(som_new)
 
-start = timeit.default_timer()
+start1 = timeit.default_timer()
 #som_next.train(data, n_epochs = 3)
 som_next.train(data, n_vectors = data.shape[0])
-print('som online training time: ', (timeit.default_timer() - start))
+start2 = timeit.default_timer()
 
-print(np.sqrt(som_ref._xx ** 2 + som_ref._yy ** 2) - np.linalg.norm(som_next._topography, axis = -1).reshape(M, N).T)
-
-# print(np.linalg.norm(som_next._topography, axis = -1).reshape(M, N))
-
-som_next.save('random_model.hdf5')
-som_next.load('random_model.hdf5')
+print('new implementation training time: ', (start2 - start1))
 
 ########################################################################################################################
 
@@ -115,14 +112,6 @@ for i in range(2):
         img = axs[i + 2, j + 2].imshow(weights_diff, cmap = 'viridis', vmin = -max_diff, vmax = +max_diff)
         fig.colorbar(img, ax = axs[i + 2, j + 2])
         axs[i + 2, j + 2].set_ylabel(f'ref/new w_{dimension + 1} online')
-
-########################################################################################################################
-
-print(som_ref.quantization_error(data))
-# print(som_ref.topographic_error(data))
-
-print(som_next.get_quantization_errors())
-print(som_next.get_topographic_errors())
 
 ########################################################################################################################
 

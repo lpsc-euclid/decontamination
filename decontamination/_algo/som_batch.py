@@ -10,7 +10,7 @@ import numba as nb
 
 from .. import jit, device_array_empty, device_array_zeros
 
-from . import som_abstract, square_distance_xpu, dataset_to_generator_builder, asymptotic_decay
+from . import som_abstract, asymptotic_decay, square_distance_xpu, dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -113,13 +113,13 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
-            sigma = self._sigma * asymptotic_decay(cur_epoch, n_epochs)
-
-            ############################################################################################################
-
             numerator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
 
             denominator = device_array_zeros(shape = (self._m * self._n, ), dtype = self._dtype)
+
+            ############################################################################################################
+
+            sigma = self._sigma * asymptotic_decay(cur_epoch, n_epochs)
 
             ############################################################################################################
 
@@ -146,7 +146,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             ############################################################################################################
 
             numerator_host = numerator.copy_to_host()
-            denominator_host = np.expand_dims(denominator.copy_to_host(), axis = -1)
+
+            denominator_temp = denominator.copy_to_host()
+
+            denominator_host = np.expand_dims(denominator_temp, axis = -1)
+
+            ############################################################################################################
 
             self._weights = np.divide(
                 numerator_host,
@@ -227,7 +232,7 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
 
         numerator_i = numerator[i]
 
-        neighborhood_i = math.exp(-square_distance_xpu(bmu1, topography[i]) / (2.0 * sigma ** 2))
+        neighborhood_i = math.exp(-square_distance_xpu(topography[i] - bmu1) / (2.0 * sigma ** 2))
 
         for k in range(vector.shape[0]):
 

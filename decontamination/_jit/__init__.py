@@ -351,7 +351,7 @@ class jit(object):
     def grid(ndim: int) -> typing.Union[tuple, int]:
 
         """
-        Return the absolute position of the current thread in the entire grid of blocks.
+        Return the absolute position of the current thread in the entire grid of blocks. Use on GPU only.
 
         Parameters
         ----------
@@ -367,7 +367,7 @@ class jit(object):
     def local_empty(shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32) -> np.ndarray:
 
         """
-        Allocate an empty device ndarray in the local memory. Similar to `numpy.empty()`.
+        Allocate an empty device ndarray in the local memory. Similar to `numpy.empty()` on CPU.
 
         Parameters
         ----------
@@ -385,7 +385,7 @@ class jit(object):
     def shared_empty(shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32) -> np.ndarray:
 
         """
-        Allocate an empty device ndarray in the shared memory. Similar to `numpy.empty()`.
+        Allocate an empty device ndarray in the shared memory. Similar to `numpy.empty()` on CPU.
 
         Parameters
         ----------

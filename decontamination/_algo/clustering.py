@@ -158,13 +158,6 @@ class Clustering(object):
 
 ########################################################################################################################
 
-@jit()
-def _nan2inf_xpu(value: typing.Union[np.ndarray, float]) -> typing.Union[np.ndarray, float]:
-
-    return np.inf if math.isnan(value) else value
-
-########################################################################################################################
-
 @jit(kernel = True, parallel = True)
 def _init_distances_kernel(result: np.ndarray, weights: np.ndarray) -> None:
 
@@ -181,7 +174,12 @@ def _init_distances_kernel(result: np.ndarray, weights: np.ndarray) -> None:
 
             weight_j = weights[j]
 
-            row[j] = _nan2inf_xpu(np.sum((weight_i - weight_j) ** 2))
+            dist = np.sum((weight_i - weight_j) ** 2)
+
+            if math.isnan(dist):
+                row[j] = np.inf
+            else:
+                row[j] = dist
 
     # !--END-CPU--
     ####################################################################################################################
@@ -200,7 +198,10 @@ def _init_distances_kernel(result: np.ndarray, weights: np.ndarray) -> None:
 
             dist += (weight_i[k] - weight_j[k]) ** 2
 
-        result[i, j] = _nan2inf_xpu(dist)
+        if math.isnan(dist):
+            result[i, j] = np.inf
+        else:
+            result[i, j] = dist
 
     # !--END-GPU--
 

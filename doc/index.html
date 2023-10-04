@@ -474,7 +474,7 @@ print(result.copy_to_host())
     def grid(ndim: int) -&gt; Union[tuple, int]:
 
         &#34;&#34;&#34;
-        Return the absolute position of the current thread in the entire grid of blocks.
+        Return the absolute position of the current thread in the entire grid of blocks. Use on GPU only.
 
         Parameters
         ----------
@@ -490,7 +490,7 @@ print(result.copy_to_host())
     def local_empty(shape: Union[tuple, int], dtype: Type[np.single] = np.float32) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
-        Allocate an empty device ndarray in the local memory. Similar to `np.empty()`.
+        Allocate an empty device ndarray in the local memory. Similar to `np.empty()` on CPU.
 
         Parameters
         ----------
@@ -508,7 +508,7 @@ print(result.copy_to_host())
     def shared_empty(shape: Union[tuple, int], dtype: Type[np.single] = np.float32) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
-        Allocate an empty device ndarray in the shared memory. Similar to `np.empty()`.
+        Allocate an empty device ndarray in the shared memory. Similar to `np.empty()` on CPU.
 
         Parameters
         ----------
@@ -778,7 +778,7 @@ print(result.copy_to_host())
 <span>def <span class="ident">grid</span></span>(<span>ndim: int) ‑> Union[tuple, int]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return the absolute position of the current thread in the entire grid of blocks.</p>
+<div class="desc"><p>Return the absolute position of the current thread in the entire grid of blocks. Use on GPU only.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>ndim</code></strong> :&ensp;<code>int</code></dt>
@@ -792,7 +792,7 @@ print(result.copy_to_host())
 def grid(ndim: int) -&gt; Union[tuple, int]:
 
     &#34;&#34;&#34;
-    Return the absolute position of the current thread in the entire grid of blocks.
+    Return the absolute position of the current thread in the entire grid of blocks. Use on GPU only.
 
     Parameters
     ----------
@@ -807,7 +807,7 @@ def grid(ndim: int) -&gt; Union[tuple, int]:
 <span>def <span class="ident">local_empty</span></span>(<span>shape: Union[tuple, int], dtype: Type[np.float32] = np.float32) ‑> np.ndarray</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Allocate an empty device ndarray in the local memory. Similar to <code>np.empty()</code>.</p>
+<div class="desc"><p>Allocate an empty device ndarray in the local memory. Similar to <code>np.empty()</code> on CPU.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>shape</code></strong> :&ensp;<code>Union[tuple, int]</code></dt>
@@ -823,7 +823,7 @@ def grid(ndim: int) -&gt; Union[tuple, int]:
 def local_empty(shape: Union[tuple, int], dtype: Type[np.single] = np.float32) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
-    Allocate an empty device ndarray in the local memory. Similar to `np.empty()`.
+    Allocate an empty device ndarray in the local memory. Similar to `np.empty()` on CPU.
 
     Parameters
     ----------
@@ -840,7 +840,7 @@ def local_empty(shape: Union[tuple, int], dtype: Type[np.single] = np.float32) -
 <span>def <span class="ident">shared_empty</span></span>(<span>shape: Union[tuple, int], dtype: Type[np.float32] = np.float32) ‑> np.ndarray</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Allocate an empty device ndarray in the shared memory. Similar to <code>np.empty()</code>.</p>
+<div class="desc"><p>Allocate an empty device ndarray in the shared memory. Similar to <code>np.empty()</code> on CPU.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>shape</code></strong> :&ensp;<code>Union[tuple, int]</code></dt>
@@ -856,7 +856,7 @@ def local_empty(shape: Union[tuple, int], dtype: Type[np.single] = np.float32) -
 def shared_empty(shape: Union[tuple, int], dtype: Type[np.single] = np.float32) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
-    Allocate an empty device ndarray in the shared memory. Similar to `np.empty()`.
+    Allocate an empty device ndarray in the shared memory. Similar to `np.empty()` on CPU.
 
     Parameters
     ----------

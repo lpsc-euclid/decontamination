@@ -97,11 +97,11 @@ class SOM_Abstract(object):
 
         if self._topology == 'square':
 
-            self._topography = np.array(list(SOM_Abstract._neuron_locations_square(self._m, self._n)), dtype = np.float32)
+            self._topography = np.array(list(SOM_Abstract._neuron_locations_square(self._m, self._n)), dtype = self._dtype)
 
         else:
 
-            self._topography = np.array(list(SOM_Abstract._neuron_locations_hexagonal(self._m, self._n)), dtype = np.float32)
+            self._topography = np.array(list(SOM_Abstract._neuron_locations_hexagonal(self._m, self._n)), dtype = self._dtype)
 
     ####################################################################################################################
 

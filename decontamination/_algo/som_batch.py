@@ -10,7 +10,7 @@ import numba as nb
 
 from .. import jit, device_array_empty, device_array_zeros
 
-from . import som_abstract, add_scalar_xpu, add_vector_xpu, square_distance_xpu, dataset_to_generator_builder
+from . import som_abstract, square_distance_xpu, dataset_to_generator_builder, asymptotic_decay
 
 ########################################################################################################################
 
@@ -25,7 +25,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None):
+    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None, sigma: float = None):
 
         """
         A rule of thumb to set the size of the grid for a dimensionality reduction task is that it should contain \\( 5\\sqrt{N} \\) neurons where N is the number of samples in the dataset to analyze.
@@ -42,11 +42,17 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             Neural network data type (default: **np.float32**).
         topology : typing.Optional[str]
             Topology of the model, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
+        sigma : float
+            Starting value of the neighborhood radius (default: **None**, uses: \\( \\mathrm{max}(m,n)/2 \\)).
         """
 
         ################################################################################################################
 
         super().__init__(m, n, dim, dtype, topology)
+
+        ################################################################################################################
+
+        self._sigma = max(m, n) / 2.0 if sigma is None else float(sigma)
 
         ################################################################################################################
 
@@ -56,6 +62,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         self._header_extra = {
             'mode': '__MODE__',
+            'sigma': '_sigma',
             'n_epochs': '_n_epochs',
         }
 
@@ -106,9 +113,13 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
+            sigma = self._sigma * asymptotic_decay(cur_epoch, n_epochs)
+
+            ############################################################################################################
+
             numerator = device_array_zeros(shape = (self._m * self._n, self._dim), dtype = self._dtype)
 
-            denominator = device_array_zeros(shape = (self._m * self._n, 1), dtype = self._dtype)
+            denominator = device_array_zeros(shape = (self._m * self._n, ), dtype = self._dtype)
 
             ############################################################################################################
 
@@ -126,6 +137,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                     self._weights,
                     self._topography,
                     data,
+                    sigma,
                     penalty_dist,
                     cur_epoch,
                     self._m * self._n
@@ -133,11 +145,14 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
+            numerator_host = numerator.copy_to_host()
+            denominator_host = np.expand_dims(denominator.copy_to_host(), axis = -1)
+
             self._weights = np.divide(
-                numerator.copy_to_host(),
-                denominator.copy_to_host(),
-                out = np.zeros(numerator.shape, dtype = np.float32),
-                where = denominator != 0.0
+                numerator_host,
+                denominator_host,
+                out = np.zeros_like(numerator_host),
+                where = denominator_host != 0.0
             )
 
         ################################################################################################################
@@ -150,15 +165,15 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
 ########################################################################################################################
 
-@jit(kernel = True, parallel = False)
-def _train_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, penalty_dist: float, cur_epoch: int, mn: int) -> None:
+@jit(kernel = True, parallel = True)
+def _train_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, sigma: float, penalty_dist: float, err_bin: int, mn: int) -> None:
 
     ####################################################################################################################
     # !--BEGIN-CPU--
 
     for i in nb.prange(vectors.shape[0]):
 
-        _train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], penalty_dist, cur_epoch, mn)
+        _train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], sigma, penalty_dist, err_bin, mn)
 
     # !--END-CPU--
     ####################################################################################################################
@@ -168,14 +183,14 @@ def _train_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_e
 
     if i < vectors.shape[0]:
 
-        _train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], penalty_dist, cur_epoch, mn)
+        _train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], sigma, penalty_dist, err_bin, mn)
 
     # !--END-GPU--
 
 ########################################################################################################################
 
 @jit(parallel = False)
-def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, penalty_dist: float, err_bin: int, mn: int) -> None:
+def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, sigma: float, penalty_dist: float, err_bin: int, mn: int) -> None:
 
     ####################################################################################################################
     # BMUS CALCULATION                                                                                                 #
@@ -208,8 +223,17 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
     # UPDATE WEIGHTS                                                                                                   #
     ####################################################################################################################
 
-    add_vector_xpu(numerator[min_index1], vector)
-    add_scalar_xpu(denominator[min_index1], 1.0000)
+    for i in range(mn):
+
+        numerator_i = numerator[i]
+
+        neighborhood_i = math.exp(-square_distance_xpu(bmu1, topography[i]) / (2.0 * sigma ** 2))
+
+        for k in range(vector.shape[0]):
+
+            jit.atomic_add(numerator_i, k, neighborhood_i * vector[k])
+
+        jit.atomic_add(denominator, i, neighborhood_i)
 
     ####################################################################################################################
     # UPDATE ERRORS                                                                                                    #

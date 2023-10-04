@@ -4,7 +4,7 @@
 import typing
 
 import numpy as np
-import numba.cuda as cu
+import numba as nb
 
 from .. import jit
 
@@ -40,46 +40,31 @@ def batch_iterator(vectors: np.ndarray, n_chunks: int) -> typing.Iterator[np.nda
         yield vectors[n_chunks * chunk_size:]
 
 ########################################################################################################################
-# CPU & GPU> UTILITIES                                                                                                 #
+
+@nb.njit(parallel = False)
+def asymptotic_decay(epoch: int, epochs: int) -> float:
+
+    return 1.0 / (1.0 + 2.0 * epoch / epochs)
+
+########################################################################################################################
+# CPU & GPU UTILITIES                                                                                                  #
 ########################################################################################################################
 
 @jit(parallel = False)
-def add_scalar_xpu(dest: np.ndarray, src: float) -> None:
-
-    ####################################################################################################################
-    # !--BEGIN-CPU--
-
-    dest += src
-
-    # !--END-CPU--
-    ####################################################################################################################
-    # !--BEGIN-GPU--
+def atomic_add_scalar2vector_xpu(dest: np.ndarray, src: typing.Union[np.single, float]) -> None:
 
     for i in range(dest.shape[0]):
 
-        cu.atomic.add(dest, i, src)
-
-    # !--END-GPU--
+        jit.atomic_add(dest, i, src)
 
 ########################################################################################################################
 
 @jit(parallel = False)
-def add_vector_xpu(dest: np.ndarray, src: np.ndarray) -> None:
-
-    ####################################################################################################################
-    # !--BEGIN-CPU--
-
-    dest += src
-
-    # !--END-CPU--
-    ####################################################################################################################
-    # !--BEGIN-GPU--
+def atomic_add_vector2vector_xpu(dest: np.ndarray, src: np.ndarray) -> None:
 
     for i in range(dest.shape[0]):
 
-        cu.atomic.add(dest, i, src[i])
-
-    # !--END-GPU--
+        jit.atomic_add(dest, i, src[i])
 
 ########################################################################################################################
 
@@ -89,7 +74,7 @@ def square_distance_xpu(vector1: np.ndarray, vector2: np.ndarray) -> float:
     ####################################################################################################################
     # !--BEGIN-CPU--
 
-    return np.sum((vector1 - vector2) ** 2)
+    return np.sum((vector1 - vector2) ** 2, axis = -1)
 
     # !--END-CPU--
     ####################################################################################################################

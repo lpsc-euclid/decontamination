@@ -1,8 +1,10 @@
 ########################################################################################################################
 
+import typing
 import functools
 import threading
 
+import numpy as np
 ########################################################################################################################
 
 from numba import types
@@ -120,7 +122,7 @@ def declare_atomic_array_op(iop: str, uop: str, fop: str):
 ########################################################################################################################
 
 @declare_atomic_array_op('add', 'add', 'fadd')
-def add(array, i, v):
+def add(array: np.ndarray, i: int, v: typing.Union[np.single, float, int]) -> typing.Union[np.single, float, int]:
 
     orig = array[i]
     array[i] += v
@@ -129,7 +131,7 @@ def add(array, i, v):
 ########################################################################################################################
 
 @declare_atomic_array_op('sub', 'sub', 'fsub')
-def sub(array, i, v):
+def sub(array: np.ndarray, i: int, v: typing.Union[np.single, float, int]) -> typing.Union[np.single, float, int]:
 
     orig = array[i]
     array[i] -= v

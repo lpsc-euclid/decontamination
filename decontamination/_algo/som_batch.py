@@ -10,7 +10,7 @@ import numba as nb
 
 from .. import jit, device_array_empty, device_array_zeros
 
-from . import som_abstract, asymptotic_decay, square_distance_xpu, dataset_to_generator_builder
+from . import som_abstract, asymptotic_decay, square_distance_xpu, dataset_to_generator_builder, atomic_add_vector2vector_xpu
 
 ########################################################################################################################
 
@@ -190,6 +190,8 @@ def _train_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_e
 
         _train_xpu(numerator, denominator, quantization_errors, topographic_errors, weights, topography, vectors[i], sigma, penalty_dist, err_bin, mn)
 
+        jit.syncthreads()
+
     # !--END-GPU--
 
 ########################################################################################################################
@@ -228,17 +230,35 @@ def _train_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_erro
     # UPDATE WEIGHTS                                                                                                   #
     ####################################################################################################################
 
-    for i in range(mn):
+    if sigma > 0.0:
 
-        numerator_i = numerator[i]
+        ################################################################################################################
+        # GAUSSIAN NEIGHBORHOOD                                                                                        #
+        ################################################################################################################
 
-        neighborhood_i = math.exp(-square_distance_xpu(topography[i], bmu1) / (2.0 * sigma ** 2))
+        for i in range(mn):
 
-        for k in range(vector.shape[0]):
+            numerator_i = numerator[i]
 
-            jit.atomic_add(numerator_i, k, neighborhood_i * vector[k])
+            neighborhood_i = math.exp(-square_distance_xpu(topography[i], bmu1) / (2.0 * sigma ** 2))
 
-        jit.atomic_add(denominator, i, neighborhood_i)
+            for k in range(vector.shape[0]):
+
+                jit.atomic_add(numerator_i, k, neighborhood_i * vector[k])
+
+            jit.atomic_add(denominator, i, neighborhood_i * 1.0000000)
+
+        ################################################################################################################
+
+    else:
+
+        ################################################################################################################
+        # DIRAC NEIGHBORHOOD                                                                                           #
+        ################################################################################################################
+
+        atomic_add_vector2vector_xpu(numerator[min_index1], vector)
+
+        jit.atomic_add(denominator, min_index1, 1.0000)
 
     ####################################################################################################################
     # UPDATE ERRORS                                                                                                    #

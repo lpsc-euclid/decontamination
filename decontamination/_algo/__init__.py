@@ -51,7 +51,7 @@ def asymptotic_decay_cpu(epoch: int, epochs: int) -> float:
 
 ########################################################################################################################
 
-@cu.jit(inline = 'always')
+@cu.jit(inline = True)
 def asymptotic_decay_gpu(epoch: int, epochs: int) -> float:
 
     return 1.0 / (1.0 + 2.0 * epoch / epochs)
@@ -60,7 +60,7 @@ def asymptotic_decay_gpu(epoch: int, epochs: int) -> float:
 # CPU & GPU UTILITIES                                                                                                  #
 ########################################################################################################################
 
-@jit(parallel = False)
+@jit(inline = True)
 def atomic_add_vector_xpu(dest: np.ndarray, src: np.ndarray) -> None:
 
     for i in range(dest.shape[0]):
@@ -69,7 +69,7 @@ def atomic_add_vector_xpu(dest: np.ndarray, src: np.ndarray) -> None:
 
 ########################################################################################################################
 
-@jit(parallel = False)
+@jit(inline = True)
 def square_distance_xpu(vector1: np.ndarray, vector2: np.ndarray) -> float:
 
     ####################################################################################################################

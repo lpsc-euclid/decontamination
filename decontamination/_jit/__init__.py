@@ -460,13 +460,15 @@ class jit(object):
 
     ####################################################################################################################
 
-    def __init__(self, kernel: bool = False, fastmath: bool = False, parallel: bool = False):
+    def __init__(self, kernel: bool = False, inline: bool = False, fastmath: bool = False, parallel: bool = False):
 
         """
         Parameters
         ----------
         kernel : bool
             Indicates whether this function is a CPU/GPU kernel (default: **False**).
+        inline : bool
+            Indicates whether this function must be inlined  (default: **False**).
         fastmath : bool
             Enables fast-math optimizations when running on CPU (default: **False**).
         parallel : bool
@@ -515,6 +517,7 @@ class jit(object):
         """
 
         self._kernel = kernel
+        self._inline = inline
         self._fastmath = fastmath
         self._parallel = parallel
 
@@ -619,7 +622,7 @@ class jit(object):
 
         if not self._kernel:
 
-            jit._inject_cpu_funct(funct, nb.njit(funct_cpu, fastmath = self._fastmath, parallel = self._parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu)
+            jit._inject_cpu_funct(funct, nb.njit(funct_cpu, inline = 'always' if self._inline else 'never', fastmath = self._fastmath, parallel = self._parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu)
 
         ################################################################################################################
         # NUMBA ON CPU                                                                                                 #
@@ -637,7 +640,7 @@ class jit(object):
 
         if not self._kernel:
 
-            jit._inject_gpu_funct(funct, cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else dont_call)
+            jit._inject_gpu_funct(funct, cu.jit(funct_gpu, inline = self._inline, device = True) if GPU_OPTIMIZATION_AVAILABLE else dont_call)
 
         ################################################################################################################
         # KERNEL                                                                                                       #

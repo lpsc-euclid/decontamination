@@ -137,7 +137,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         total_nb = 0
 
         total_sum = np.zeros((self._dim, ), dtype = np.float64)
-        total_prods = np.zeros((self._dim, self._dim), dtype = np.float64)
+        total_prods = np.zeros((self._dim, self._dim, ), dtype = np.float64)
 
         ################################################################################################################
 

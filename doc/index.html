@@ -405,7 +405,7 @@ __all__ = [
 <dl>
 <dt id="decontamination.jit"><code class="flex name class">
 <span>class <span class="ident">jit</span></span>
-<span>(</span><span>kernel: bool = False, fastmath: bool = False, parallel: bool = False)</span>
+<span>(</span><span>kernel: bool = False, inline: bool = False, fastmath: bool = False, parallel: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Decorator to recompile Python functions into native CPU/GPU ones.</p>
@@ -413,6 +413,9 @@ __all__ = [
 <dl>
 <dt><strong><code>kernel</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Indicates whether this function is a CPU/GPU kernel (default: <strong>False</strong>).</dd>
+<dt><strong><code>inline</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Indicates whether this function must be inlined
+(default: <strong>False</strong>).</dd>
 <dt><strong><code>fastmath</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Enables fast-math optimizations when running on CPU (default: <strong>False</strong>).</dd>
 <dt><strong><code>parallel</code></strong> :&ensp;<code>bool</code></dt>
@@ -583,13 +586,15 @@ print(result.copy_to_host())
 
     ####################################################################################################################
 
-    def __init__(self, kernel: bool = False, fastmath: bool = False, parallel: bool = False):
+    def __init__(self, kernel: bool = False, inline: bool = False, fastmath: bool = False, parallel: bool = False):
 
         &#34;&#34;&#34;
         Parameters
         ----------
         kernel : bool
             Indicates whether this function is a CPU/GPU kernel (default: **False**).
+        inline : bool
+            Indicates whether this function must be inlined  (default: **False**).
         fastmath : bool
             Enables fast-math optimizations when running on CPU (default: **False**).
         parallel : bool
@@ -638,6 +643,7 @@ print(result.copy_to_host())
         &#34;&#34;&#34;
 
         self._kernel = kernel
+        self._inline = inline
         self._fastmath = fastmath
         self._parallel = parallel
 
@@ -742,7 +748,7 @@ print(result.copy_to_host())
 
         if not self._kernel:
 
-            jit._inject_cpu_funct(funct, nb.njit(funct_cpu, fastmath = self._fastmath, parallel = self._parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu)
+            jit._inject_cpu_funct(funct, nb.njit(funct_cpu, inline = &#39;always&#39; if self._inline else &#39;never&#39;, fastmath = self._fastmath, parallel = self._parallel) if CPU_OPTIMIZATION_AVAILABLE else funct_cpu)
 
         ################################################################################################################
         # NUMBA ON CPU                                                                                                 #
@@ -760,7 +766,7 @@ print(result.copy_to_host())
 
         if not self._kernel:
 
-            jit._inject_gpu_funct(funct, cu.jit(funct_gpu, device = True) if GPU_OPTIMIZATION_AVAILABLE else dont_call)
+            jit._inject_gpu_funct(funct, cu.jit(funct_gpu, inline = self._inline, device = True) if GPU_OPTIMIZATION_AVAILABLE else dont_call)
 
         ################################################################################################################
         # KERNEL                                                                                                       #
@@ -2493,7 +2499,7 @@ def topology(self) -&gt; str:
         total_nb = 0
 
         total_sum = np.zeros((self._dim, ), dtype = np.float64)
-        total_prods = np.zeros((self._dim, self._dim), dtype = np.float64)
+        total_prods = np.zeros((self._dim, self._dim, ), dtype = np.float64)
 
         ################################################################################################################
 
@@ -2566,7 +2572,7 @@ def topology(self) -&gt; str:
     total_nb = 0
 
     total_sum = np.zeros((self._dim, ), dtype = np.float64)
-    total_prods = np.zeros((self._dim, self._dim), dtype = np.float64)
+    total_prods = np.zeros((self._dim, self._dim, ), dtype = np.float64)
 
     ################################################################################################################
 

@@ -3358,7 +3358,7 @@ def topology(self) -&gt; str:
     def clusterize(vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 32) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
-        Clusterizes the input array using Lance-Williams hierarchical clustering with complete-linkage.
+        Clusters the input array using Lance-Williams hierarchical clustering with complete-linkage.
 
         Parameters
         ----------
@@ -3382,16 +3382,45 @@ def topology(self) -&gt; str:
         &#34;&#34;&#34;
 
         ################################################################################################################
+        # COMPUTE DISTANCES                                                                                            #
+        ################################################################################################################
 
         distances = Clustering._init_distances(vectors, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
         ################################################################################################################
+        # COMPUTE CLUSTERS                                                                                             #
+        ################################################################################################################
 
         result = np.arange(vectors.shape[0])
 
-        for _ in range(vectors.shape[0] - n_clusters):
+        nan_mask = np.any(np.isnan(vectors), axis = -1)
+
+        for _ in range(vectors.shape[0] - nan_mask.sum() - n_clusters):
 
             Clustering._update_clusters(distances, result)
+
+        ################################################################################################################
+
+        result[nan_mask] = -1
+
+        ################################################################################################################
+        # REINDEX CLUSTERS                                                                                             #
+        ################################################################################################################
+
+        cnt = 0
+
+        cluster_dict = {}
+
+        for i, cluster_id in enumerate(result):
+
+            if not nan_mask[i]:
+
+                if cluster_id in cluster_dict:
+                    result[i] = cluster_dict[cluster_id] # cnt
+                else:
+                    result[i] = cluster_dict[cluster_id] = cnt
+
+                    cnt += 1
 
         ################################################################################################################
 
@@ -3419,7 +3448,7 @@ def topology(self) -&gt; str:
 
             cluster_indices = np.where(cluster_ids == cluster_id)[0]
 
-            result[cluster_indices] = np.nanmean(vectors[cluster_indices], axis = 0)
+            result[cluster_indices] = np.mean(vectors[cluster_indices], axis = 0)
 
         return result</code></pre>
 </details>
@@ -3429,7 +3458,7 @@ def topology(self) -&gt; str:
 <span>def <span class="ident">clusterize</span></span>(<span>vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 32) ‑> np.ndarray</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Clusterizes the input array using Lance-Williams hierarchical clustering with complete-linkage.</p>
+<div class="desc"><p>Clusters the input array using Lance-Williams hierarchical clustering with complete-linkage.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>vectors</code></strong> :&ensp;<code>np.ndarray</code></dt>
@@ -3453,7 +3482,7 @@ def topology(self) -&gt; str:
 def clusterize(vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 32) -&gt; np.ndarray:
 
     &#34;&#34;&#34;
-    Clusterizes the input array using Lance-Williams hierarchical clustering with complete-linkage.
+    Clusters the input array using Lance-Williams hierarchical clustering with complete-linkage.
 
     Parameters
     ----------
@@ -3477,16 +3506,45 @@ def clusterize(vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, th
     &#34;&#34;&#34;
 
     ################################################################################################################
+    # COMPUTE DISTANCES                                                                                            #
+    ################################################################################################################
 
     distances = Clustering._init_distances(vectors, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
     ################################################################################################################
+    # COMPUTE CLUSTERS                                                                                             #
+    ################################################################################################################
 
     result = np.arange(vectors.shape[0])
 
-    for _ in range(vectors.shape[0] - n_clusters):
+    nan_mask = np.any(np.isnan(vectors), axis = -1)
+
+    for _ in range(vectors.shape[0] - nan_mask.sum() - n_clusters):
 
         Clustering._update_clusters(distances, result)
+
+    ################################################################################################################
+
+    result[nan_mask] = -1
+
+    ################################################################################################################
+    # REINDEX CLUSTERS                                                                                             #
+    ################################################################################################################
+
+    cnt = 0
+
+    cluster_dict = {}
+
+    for i, cluster_id in enumerate(result):
+
+        if not nan_mask[i]:
+
+            if cluster_id in cluster_dict:
+                result[i] = cluster_dict[cluster_id] # cnt
+            else:
+                result[i] = cluster_dict[cluster_id] = cnt
+
+                cnt += 1
 
     ################################################################################################################
 
@@ -3529,7 +3587,7 @@ def average(vectors: np.ndarray, cluster_ids: np.ndarray) -&gt; np.ndarray:
 
         cluster_indices = np.where(cluster_ids == cluster_id)[0]
 
-        result[cluster_indices] = np.nanmean(vectors[cluster_indices], axis = 0)
+        result[cluster_indices] = np.mean(vectors[cluster_indices], axis = 0)
 
     return result</code></pre>
 </details>

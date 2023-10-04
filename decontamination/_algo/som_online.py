@@ -8,7 +8,7 @@ import typing
 import numpy as np
 import numba as nb
 
-from . import som_abstract, asymptotic_decay, dataset_to_generator_builder
+from . import som_abstract, asymptotic_decay_cpu, dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -80,7 +80,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        decay_function = asymptotic_decay(cur_epoch, n_epochs)
+        decay_function = asymptotic_decay_cpu(cur_epoch, n_epochs)
 
         alpha = alpha0 * decay_function
 
@@ -117,7 +117,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
-            decay_function = asymptotic_decay(cur_vector + i, n_vectors)
+            decay_function = asymptotic_decay_cpu(cur_vector + i, n_vectors)
 
             alpha = alpha0 * decay_function
 

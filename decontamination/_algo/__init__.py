@@ -41,16 +41,18 @@ def batch_iterator(vectors: np.ndarray, n_chunks: int) -> typing.Iterator[np.nda
         yield vectors[n_chunks * chunk_size:]
 
 ########################################################################################################################
+# ASYMPTOTIC DECAY                                                                                                     #
+########################################################################################################################
 
 @nb.njit(inline = 'always')
-def asymptotic_decay(epoch: int, epochs: int) -> float:
+def asymptotic_decay_cpu(epoch: int, epochs: int) -> float:
 
     return 1.0 / (1.0 + 2.0 * epoch / epochs)
 
 ########################################################################################################################
 
-@jit(parallel = False)
-def asymptotic_decay_xpu(epoch: int, epochs: int) -> float:
+@cu.jit(inline = 'always')
+def asymptotic_decay_gpu(epoch: int, epochs: int) -> float:
 
     return 1.0 / (1.0 + 2.0 * epoch / epochs)
 

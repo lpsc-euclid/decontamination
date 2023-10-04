@@ -10,7 +10,7 @@ import numba as nb
 
 from .. import jit, device_array_empty, device_array_zeros
 
-from . import som_abstract, asymptotic_decay, square_distance_xpu, dataset_to_generator_builder, atomic_add_vector_xpu
+from . import som_abstract, square_distance_xpu, atomic_add_vector_xpu, asymptotic_decay_cpu, asymptotic_decay_gpu, dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -78,7 +78,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         ################################################################################################################
         # !--BEGIN-CPU--
 
-        sigma = sigma0 * asymptotic_decay(cur_epoch, n_epochs)
+        sigma = sigma0 * asymptotic_decay_cpu(cur_epoch, n_epochs)
 
         for i in nb.prange(vectors.shape[0]):
 
@@ -104,7 +104,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         if i < vectors.shape[0]:
 
-            sigma = sigma0 * asymptotic_decay(cur_epoch, n_epochs)
+            sigma = sigma0 * asymptotic_decay_gpu(cur_epoch, n_epochs)
 
             _train_step2_xpu(
                 numerator,
@@ -139,7 +139,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
 
-            sigma = sigma0 * asymptotic_decay(cur_vector + i, n_vectors)
+            sigma = sigma0 * asymptotic_decay_cpu(cur_vector + i, n_vectors)
 
             _train_step2_xpu(
                 numerator,
@@ -165,7 +165,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
 
-            sigma = sigma0 * asymptotic_decay(cur_vector + i, n_vectors)
+            sigma = sigma0 * asymptotic_decay_gpu(cur_vector + i, n_vectors)
 
             _train_step2_xpu(
                 numerator,

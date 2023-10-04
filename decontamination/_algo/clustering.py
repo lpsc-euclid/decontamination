@@ -85,9 +85,13 @@ class Clustering(object):
         """
 
         ################################################################################################################
+        # COMPUTE DISTANCES                                                                                            #
+        ################################################################################################################
 
         distances = Clustering._init_distances(vectors, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
+        ################################################################################################################
+        # FIND CLUSTERS                                                                                                #
         ################################################################################################################
 
         result = np.arange(vectors.shape[0])
@@ -103,6 +107,8 @@ class Clustering(object):
         result[nan_mask] = -1
 
         ################################################################################################################
+        # RE-INDEX                                                                                                     #
+        ################################################################################################################
 
         cnt = 0
 
@@ -113,7 +119,7 @@ class Clustering(object):
             if not nan_mask[i]:
 
                 if cluster_id in cluster_dict:
-                    new_cluster_id = cluster_dict[cluster_id]
+                    new_cluster_id = cluster_dict[cluster_id] # cnt
                 else:
                     new_cluster_id = cluster_dict[cluster_id] = cnt
 

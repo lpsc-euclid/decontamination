@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
+import math
+import typing
 
 import numpy as np
 import numba as nb
@@ -90,9 +92,34 @@ class Clustering(object):
 
         result = np.arange(vectors.shape[0])
 
-        for _ in range(vectors.shape[0] - n_clusters):
+        nan_mask = np.any(np.isnan(vectors), axis = -1)
+
+        for _ in range(vectors.shape[0] - n_clusters - nan_mask.sum()):
 
             Clustering._update_clusters(distances, result)
+
+        ################################################################################################################
+
+        result[nan_mask] = -1
+
+        ################################################################################################################
+
+        cnt = 0
+
+        cluster_dict = {}
+
+        for i, cluster_id in enumerate(result):
+
+            if not nan_mask[i]:
+
+                if cluster_id in cluster_dict:
+                    new_cluster_id = cluster_dict[cluster_id]
+                else:
+                    new_cluster_id = cluster_dict[cluster_id] = cnt
+
+                    cnt += 1
+
+                result[i] = new_cluster_id
 
         ################################################################################################################
 
@@ -120,9 +147,16 @@ class Clustering(object):
 
             cluster_indices = np.where(cluster_ids == cluster_id)[0]
 
-            result[cluster_indices] = np.nanmean(vectors[cluster_indices], axis = 0)
+            result[cluster_indices] = np.mean(vectors[cluster_indices], axis = 0)
 
         return result
+
+########################################################################################################################
+
+@jit()
+def _nan2inf_xpu(value: typing.Union[np.ndarray, float]) -> typing.Union[np.ndarray, float]:
+
+    return np.inf if math.isnan(value) else value
 
 ########################################################################################################################
 
@@ -142,7 +176,7 @@ def _init_distances_kernel(result: np.ndarray, weights: np.ndarray) -> None:
 
             weight_j = weights[j]
 
-            row[j] = np.sum((weight_i - weight_j) ** 2)
+            row[j] = _nan2inf_xpu(np.sum((weight_i - weight_j) ** 2))
 
     # !--END-CPU--
     ####################################################################################################################
@@ -161,7 +195,7 @@ def _init_distances_kernel(result: np.ndarray, weights: np.ndarray) -> None:
 
             dist += (weight_i[k] - weight_j[k]) ** 2
 
-        result[i, j] = dist
+        result[i, j] = _nan2inf_xpu(dist)
 
     # !--END-GPU--
 

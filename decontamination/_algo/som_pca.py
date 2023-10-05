@@ -53,7 +53,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(parallel = False)
+    @nb.njit()
     def _update_cov_matrix(result_sum: np.ndarray, result_prods: np.ndarray, data: np.ndarray) -> None:
 
         ################################################################################################################
@@ -80,7 +80,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(parallel = False)
+    @nb.njit()
     def _diag_cov_matrix(weights: np.ndarray, cov_matrix: np.ndarray, min_weight: float, max_weight: float, m: int, n: int) -> None:
 
         ################################################################################################################

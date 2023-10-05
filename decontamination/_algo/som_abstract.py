@@ -439,7 +439,7 @@ class SOM_Abstract(object):
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(parallel = False)
+    @nb.njit()
     def _distance_map(result, centroids: np.ndarray, x_stencil: np.ndarray, y_stencil: np.ndarray, m: int, n: int, l: int) -> None:
 
         for x in range(m):

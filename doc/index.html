@@ -422,7 +422,7 @@ __all__ = [
 <dd>Enables automatic parallelization when running on CPU (default: <strong>False</strong>).</dd>
 </dl>
 <h2 id="example">Example</h2>
-<pre><code>@jit(parallel = False)
+<pre><code>@jit()
 def foo_xpu(a, b):
 
     return a + b
@@ -602,7 +602,7 @@ print(result.copy_to_host())
 
         Example
         -------
-            @jit(parallel = False)
+            @jit()
             def foo_xpu(a, b):
 
                 return a + b
@@ -1650,7 +1650,7 @@ def dtype(self):
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(parallel = False)
+    @nb.njit()
     def _distance_map(result, centroids: np.ndarray, x_stencil: np.ndarray, y_stencil: np.ndarray, m: int, n: int, l: int) -&gt; None:
 
         for x in range(m):
@@ -2415,7 +2415,7 @@ def topology(self) -&gt; str:
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(parallel = False)
+    @nb.njit()
     def _update_cov_matrix(result_sum: np.ndarray, result_prods: np.ndarray, data: np.ndarray) -&gt; None:
 
         ################################################################################################################
@@ -2442,7 +2442,7 @@ def topology(self) -&gt; str:
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(parallel = False)
+    @nb.njit()
     def _diag_cov_matrix(weights: np.ndarray, cov_matrix: np.ndarray, min_weight: float, max_weight: float, m: int, n: int) -&gt; None:
 
         ################################################################################################################
@@ -3297,7 +3297,7 @@ def topology(self) -&gt; str:
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(parallel = False)
+    @nb.njit()
     def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
 
         ################################################################################################################
@@ -3328,7 +3328,7 @@ def topology(self) -&gt; str:
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(parallel = False)
+    @nb.njit()
     def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
 
         for i in range(vectors.shape[0]):
@@ -3689,7 +3689,7 @@ def topology(self) -&gt; str:
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(parallel = False)
+    @nb.njit()
     def _update_clusters(dist: np.ndarray, clusters: np.ndarray) -&gt; None:
 
         ################################################################################################################

@@ -476,7 +476,7 @@ class jit(object):
 
         Example
         -------
-            @jit(parallel = False)
+            @jit()
             def foo_xpu(a, b):
 
                 return a + b

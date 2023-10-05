@@ -75,7 +75,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(parallel = False)
+    @nb.njit()
     def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
 
         ################################################################################################################
@@ -106,7 +106,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(parallel = False)
+    @nb.njit()
     def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
 
         for i in range(vectors.shape[0]):

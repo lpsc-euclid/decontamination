@@ -377,7 +377,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
 ########################################################################################################################
 
-@jit(parallel = False)
+@jit(fastmath = True)
 def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, sigma: float, penalty_dist: float, err_bin: int, mn: int) -> None:
 
     ####################################################################################################################

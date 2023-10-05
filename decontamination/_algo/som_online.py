@@ -276,7 +276,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
 ########################################################################################################################
 
-@nb.njit(parallel = False, fastmath = True)
+@nb.njit(fastmath = True)
 def _train_step2(quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, alpha: float, sigma: float, penalty_dist: float, err_bin: int, mn: int) -> None:
 
     ####################################################################################################################

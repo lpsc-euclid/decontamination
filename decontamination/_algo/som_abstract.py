@@ -580,8 +580,6 @@ def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndar
 
     for i in nb.prange(vectors.shape[0]):
 
-        #result[_find_bmu_xpu(weights, vectors[i], mn)] += 1
-
         jit.atomic_add(result, _find_bmu_xpu(weights, vectors[i], mn), 1)
 
     # !--END-CPU--
@@ -622,7 +620,7 @@ def _find_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndarr
 
 ########################################################################################################################
 
-@jit(parallel = False)
+@jit(fastmath = True)
 def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 
     min_distance = 1.0e99

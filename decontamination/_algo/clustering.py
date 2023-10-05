@@ -2,7 +2,6 @@
 ########################################################################################################################
 
 import math
-import typing
 
 import numpy as np
 import numba as nb
@@ -78,7 +77,7 @@ class Clustering(object):
         Note
         ----
 
-        Number of iterations: weights.shape[0] - n_clusters.
+        Number of iterations: `weights.shape[0] - n_clusters`.
 
         Return
         ------

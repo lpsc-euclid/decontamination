@@ -280,7 +280,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 def _train_step2(quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, alpha: float, sigma: float, penalty_dist: float, err_bin: int, mn: int) -> None:
 
     ####################################################################################################################
-    # BMUS CALCULATION                                                                                                 #
+    # DO BMUS CALCULATION                                                                                              #
     ####################################################################################################################
 
     ###_distance2 = 1.0e99
@@ -307,18 +307,16 @@ def _train_step2(quantization_errors: np.ndarray, topographic_errors: np.ndarray
     bmu1 = topography[min_index1]
 
     ####################################################################################################################
-    # LEARNING OPERATOR CALCULATION                                                                                    #
+    # DO NEIGHBORHOOD OPERATOR CALCULATION                                                                             #
     ####################################################################################################################
 
-    distance_matrix = np.sum((topography - bmu1) ** 2, axis = -1)
-
-    learning_op = alpha * np.exp(-distance_matrix / (2.0 * sigma ** 2))
+    neighborhood_op = np.exp(-np.sum((topography - bmu1) ** 2, axis = -1) / (2.0 * sigma ** 2))
 
     ####################################################################################################################
     # UPDATE WEIGHTS                                                                                                   #
     ####################################################################################################################
 
-    weights += np.expand_dims(learning_op, -1) * (vector - weights)
+    weights += alpha * np.expand_dims(neighborhood_op, -1) * (vector - weights)
 
     ####################################################################################################################
     # UPDATE ERRORS                                                                                                    #

@@ -381,7 +381,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, sigma: float, penalty_dist: float, err_bin: int, mn: int) -> None:
 
     ####################################################################################################################
-    # BMUS CALCULATION                                                                                                 #
+    # DO BMUS CALCULATION                                                                                              #
     ####################################################################################################################
 
     ###_distance2 = 1.0e99
@@ -414,7 +414,7 @@ def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, quantizatio
     if sigma > 0.0:
 
         ################################################################################################################
-        # GAUSSIAN NEIGHBORHOOD                                                                                        #
+        # ... WITH GAUSSIAN NEIGHBORHOOD OPERATOR                                                                      #
         ################################################################################################################
 
         for i in range(mn):
@@ -438,7 +438,7 @@ def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, quantizatio
     else:
 
         ################################################################################################################
-        # DIRAC NEIGHBORHOOD                                                                                           #
+        # ... WITH DIRAC NEIGHBORHOOD OPERATOR                                                                         #
         ################################################################################################################
 
         atomic_add_vector_xpu(numerator[min_index1], vector)

@@ -3736,7 +3736,7 @@ def topology(self) -&gt; str:
         Note
         ----
 
-        Number of iterations: weights.shape[0] - n_clusters.
+        Number of iterations: `weights.shape[0] - n_clusters`.
 
         Return
         ------
@@ -3833,7 +3833,7 @@ def topology(self) -&gt; str:
 <dd>Number of GPU threads per blocks (default: <strong>32</strong>).</dd>
 </dl>
 <h2 id="note">Note</h2>
-<p>Number of iterations: weights.shape[0] - n_clusters.</p>
+<p>Number of iterations: <code>weights.shape[0] - n_clusters</code>.</p>
 <h2 id="return">Return</h2>
 <p>Array giving a cluster identifier for each input vector.</p></div>
 <details class="source">
@@ -3860,7 +3860,7 @@ def clusterize(vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, th
     Note
     ----
 
-    Number of iterations: weights.shape[0] - n_clusters.
+    Number of iterations: `weights.shape[0] - n_clusters`.
 
     Return
     ------

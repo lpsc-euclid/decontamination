@@ -47,7 +47,7 @@ def test_activation_map(enable_gpu):
 
     data = np.random.default_rng(seed = 0).random((25_000, 4), np.float32)
 
-    assert np.allclose(som.get_activation_map(data, enable_gpu = enable_gpu, threads_per_blocks = 16), expected)
+    assert np.allclose(som.get_activation_map(data, enable_gpu = enable_gpu, threads_per_blocks = 8), expected)
 
 ########################################################################################################################
 
@@ -61,7 +61,7 @@ def test_winners(enable_gpu):
 
     data = np.random.default_rng(seed = 0).random((8, 4), np.float32)
 
-    assert np.allclose(som.get_winners(data, enable_gpu = enable_gpu, threads_per_blocks = 16), expected)
+    assert np.allclose(som.get_winners(data, enable_gpu = enable_gpu, threads_per_blocks = 8), expected)
 
 ########################################################################################################################
 

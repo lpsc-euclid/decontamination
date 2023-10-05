@@ -121,7 +121,6 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             )
 
         # !--END-GPU--
-
         ################################################################################################################
 
         jit.syncthreads()
@@ -182,7 +181,6 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             )
 
         # !--END-GPU--
-
         ################################################################################################################
 
         jit.syncthreads()
@@ -421,9 +419,13 @@ def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, quantizatio
 
         for i in range(mn):
 
-            numerator_i = numerator[i]
+            ############################################################################################################
 
             neighborhood_i = math.exp(-square_distance_xpu(topography[i], bmu1) / (2.0 * sigma ** 2))
+
+            ############################################################################################################
+
+            numerator_i = numerator[i]
 
             for k in range(vector.shape[0]):
 

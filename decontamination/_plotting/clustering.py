@@ -137,8 +137,8 @@ def _display_cluster_labels(ax: pyplot.Axes, cluster_ids: np.ndarray, is_hexagon
 
             j, i = np.where(cluster_ids == cluster)
 
-            j_center = np.median(j)
-            i_center = np.median(i)
+            j_center = np.mean(j)
+            i_center = np.mean(i)
 
             y = j_center * V_LENGTH
             x = i_center * H_LENGTH

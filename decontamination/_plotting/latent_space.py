@@ -94,7 +94,7 @@ def _init_plot(weights: np.ndarray, v_min: float, v_max: float, cmap: str, log_s
 
 ########################################################################################################################
 
-def _build_colorbar(ax: plt.Axes, weights: np.ndarray, v_min: float, v_max: float, cmap: colors.Colormap, norm: colors.Normalize, log_scale: bool, show_histogram: bool, n_hist_bins: int) -> None:
+def _build_colorbar(ax: plt.Axes, weights: np.ndarray, v_min: float, v_max: float, cmap: colors.Colormap, norm: colors.Normalize, log_scale: bool, n_hist_bins: int, show_histogram: bool) -> None:
 
     ####################################################################################################################
 
@@ -177,7 +177,7 @@ def _display_latent_space_hexagonal(ax: plt.Axes, weights: np.ndarray, cmap: col
 
 ########################################################################################################################
 
-def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = 'viridis', log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_hist_bins: int = 100, cluster_ids: typing.Optional[np.ndarray] = None) -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = 'viridis', n_hist_bins: int = 100, cluster_ids: typing.Optional[np.ndarray] = None, log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, show_cluster_labels: bool = False) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Parameters
@@ -186,12 +186,16 @@ def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = N
         Weights of the map.
     topology : typing.Optional[str]
         Topology of the map, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
-    cmap : str
-        Color map (default: **'viridis'**).
     v_min : float
         Minimum color scale (default: **None**, uses: min(data)).
     v_max : float
         Maximum color scale (default: **None**, uses: max(data)).
+    cmap : str
+        Color map (default: **'viridis'**).
+    n_hist_bins : int
+        Number of histogram bins in the colorbar (default: **100**).
+    cluster_ids : typing.Optional[np.ndarray]
+        Array of cluster identifiers (see `Clustering`, default: **None**).
     log_scale : bool
         Specifies whether to enable the logarithm scaling (default: **False**).
     antialiased : bool
@@ -202,10 +206,8 @@ def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = N
         Specifies whether to display the colorbar (default: **True**).
     show_histogram : bool
         Specifies whether to display the histogram (default: **True**).
-    n_hist_bins : int
-        Number of histogram bins in the colorbar (default: **100**).
-    cluster_ids : typing.Optional[np.ndarray]
-        Array of cluster identifiers (see `Clustering`, default: **None**).
+    show_cluster_labels : bool
+        Specifies whether to display the cluster labels (default: **False**).
     """
 
     ####################################################################################################################
@@ -238,13 +240,13 @@ def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = N
 
     if show_colorbar:
 
-        _build_colorbar(ax, weights, v_min, v_max, cmap, norm, log_scale, show_histogram, n_hist_bins)
+        _build_colorbar(ax, weights, v_min, v_max, cmap, norm, log_scale, n_hist_bins, show_histogram)
 
     ####################################################################################################################
 
     if cluster_ids is not None:
 
-        clustering.display_clusters(ax, cluster_ids.reshape(weights.shape[0], weights.shape[1]), topology = topology)
+        clustering.display_clusters(ax, cluster_ids.reshape(weights.shape[0], weights.shape[1]), topology = topology, show_cluster_labels = show_cluster_labels)
 
     ####################################################################################################################
 

@@ -37,7 +37,7 @@ cluster_ids = decontamination.Clustering.clusterize(som.get_weights(), N_CLUSTER
 
 clustered_weights = decontamination.Clustering.average(som.get_weights(), cluster_ids)
 
-fig, ax = decontamination.display_latent_space(clustered_weights[:, 0].reshape(som.m, som.n), topology = TOPOLOGY, n_hist_bins = 2 * N_CLUSTERS, cluster_ids = cluster_ids)
+fig, ax = decontamination.display_latent_space(clustered_weights[:, 0].reshape(som.m, som.n), topology = TOPOLOGY, n_hist_bins = 2 * N_CLUSTERS, cluster_ids = cluster_ids, show_cluster_labels = True)
 
 ########################################################################################################################
 

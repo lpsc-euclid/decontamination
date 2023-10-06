@@ -17,7 +17,7 @@ V_LENGTH = np.sqrt(3.0)  # 1.732
 
 ########################################################################################################################
 
-def display_clusters_square(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None:
+def _display_clusters_square(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None:
 
     ####################################################################################################################
 
@@ -61,7 +61,7 @@ def display_clusters_square(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None:
 
 ########################################################################################################################
 
-def display_clusters_hexagonal(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None:
+def _display_clusters_hexagonal(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None:
 
     ####################################################################################################################
 
@@ -129,7 +129,29 @@ def display_clusters_hexagonal(ax: pyplot.Axes, cluster_ids: np.ndarray) -> None
 
 ########################################################################################################################
 
-def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: typing.Optional[str] = None) -> None:
+def _display_cluster_labels(ax: pyplot.Axes, cluster_ids: np.ndarray, is_hexagonal: bool) -> None:
+
+    for cluster in np.unique(cluster_ids):
+
+        if cluster >= 0:
+
+            j, i = np.where(cluster_ids == cluster)
+
+            j_center = np.median(j)
+            i_center = np.median(i)
+
+            y = j_center * V_LENGTH
+            x = i_center * H_LENGTH
+
+            if is_hexagonal and (round(j_center) % 2) == 1:
+
+                y += 0.5 * V_LENGTH
+
+            ax.text(x, y, str(cluster), ha = 'center', va = 'center', fontsize = 8)
+
+########################################################################################################################
+
+def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: typing.Optional[str] = None, show_cluster_labels: bool = False) -> None:
 
     """
     Parameters
@@ -140,14 +162,30 @@ def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: typing.
         Array of cluster identifiers.
     topology : typing.Optional[str]
         Topology of the map, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
+    show_cluster_labels : bool
+        Specifies whether to display the cluster labels (default: **False**).
     """
 
     if max(cluster_ids.shape[0], cluster_ids.shape[1]) > 200 or topology == 'square':
 
-        display_clusters_square(ax, cluster_ids)
+        ################################################################################################################
+
+        _display_clusters_square(ax, cluster_ids)
+
+        if show_cluster_labels:
+
+            _display_cluster_labels(ax, cluster_ids, False)
+
+        ################################################################################################################
 
     else:
 
-        display_clusters_hexagonal(ax, cluster_ids)
+        ################################################################################################################
+
+        _display_clusters_hexagonal(ax, cluster_ids)
+
+        if show_cluster_labels:
+
+            _display_cluster_labels(ax, cluster_ids, True)
 
 ########################################################################################################################

@@ -8,6 +8,8 @@ import numpy as np
 import matplotlib.lines as lines
 import matplotlib.pyplot as pyplot
 
+from .._algo.union_find import compute_cluster_centroids
+
 ########################################################################################################################
 
 # For a hexagon with a radius of 1:
@@ -129,25 +131,18 @@ def _display_clusters_hexagonal(ax: pyplot.Axes, cluster_ids: np.ndarray) -> Non
 
 ########################################################################################################################
 
-def _display_cluster_labels(ax: pyplot.Axes, cluster_ids: np.ndarray, is_hexagonal: bool) -> None:
+def _display_cluster_labels(ax, cluster_ids, is_hexagonal):
 
-    for cluster in np.unique(cluster_ids):
+    for (cluster_id, i, j) in compute_cluster_centroids(cluster_ids):
 
-        if cluster >= 0:
+        y = i * V_LENGTH
+        x = j * H_LENGTH
 
-            j, i = np.where(cluster_ids == cluster)
+        if is_hexagonal and int(i) % 2 == 1:
 
-            j_center = np.mean(j)
-            i_center = np.mean(i)
+            y += 0.5 * V_LENGTH
 
-            y = j_center * V_LENGTH
-            x = i_center * H_LENGTH
-
-            if is_hexagonal and (round(j_center) % 2) == 1:
-
-                y += 0.5 * V_LENGTH
-
-            ax.text(x, y, str(cluster), ha = 'center', va = 'center', fontsize = 8)
+        ax.text(x, y, str(cluster_id), ha = 'center', va = 'center', fontsize = 8)
 
 ########################################################################################################################
 

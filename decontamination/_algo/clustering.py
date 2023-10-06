@@ -175,10 +175,7 @@ def _init_distances_kernel(result: np.ndarray, weights: np.ndarray) -> None:
 
             dist = np.sum((weight_i - weight_j) ** 2)
 
-            if math.isnan(dist):
-                row[j] = np.inf
-            else:
-                row[j] = dist
+            row[j] = np.inf if math.isnan(dist) else dist
 
     # !--END-CPU--
     ####################################################################################################################
@@ -197,10 +194,7 @@ def _init_distances_kernel(result: np.ndarray, weights: np.ndarray) -> None:
 
             dist += (weight_i[k] - weight_j[k]) ** 2
 
-        if math.isnan(dist):
-            result[i, j] = np.inf
-        else:
-            result[i, j] = dist
+        result[i, j] = np.inf if math.isnan(dist) else dist
 
     # !--END-GPU--
 

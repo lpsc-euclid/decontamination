@@ -163,13 +163,13 @@ class Clustering(object):
 
         ################################################################################################################
 
-        nan_mask = np.any(np.isnan(vectors), axis = -1)
+        not_nan_mask = ~np.any(np.isnan(vectors), axis = -1)
 
         ################################################################################################################
         # COMPUTE DISTANCES                                                                                            #
         ################################################################################################################
 
-        distances = distance.pdist(vectors[~nan_mask])
+        distances = distance.pdist(vectors[not_nan_mask])
 
         ################################################################################################################
         # COMPUTE CLUSTERS                                                                                             #
@@ -194,7 +194,7 @@ class Clustering(object):
 
         for i in range(vectors.shape[0]):
 
-            if not nan_mask[i]:
+            if not_nan_mask[i]:
 
                 cluster_id = cluster_ids[j]
 

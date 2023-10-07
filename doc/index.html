@@ -243,7 +243,7 @@ __all__ = [
 </details>
 </dd>
 <dt id="decontamination.display_latent_space"><code class="name flex">
-<span>def <span class="ident">display_latent_space</span></span>(<span>weights: np.ndarray, topology: Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = 'viridis', log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_hist_bins: int = 100, cluster_ids: Optional[np.ndarray] = None) ‑> Tuple[plt.Figure, plt.Axes]</span>
+<span>def <span class="ident">display_latent_space</span></span>(<span>weights: np.ndarray, topology: Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = 'viridis', n_hist_bins: int = 100, cluster_ids: Optional[np.ndarray] = None, log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, show_cluster_labels: bool = False) ‑> Tuple[plt.Figure, plt.Axes]</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="parameters">Parameters</h2>
@@ -252,12 +252,16 @@ __all__ = [
 <dd>Weights of the map.</dd>
 <dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
 <dd>Topology of the map, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>None</strong>, uses: <strong>'hexagonal'</strong>).</dd>
-<dt><strong><code>cmap</code></strong> :&ensp;<code>str</code></dt>
-<dd>Color map (default: <strong>'viridis'</strong>).</dd>
 <dt><strong><code>v_min</code></strong> :&ensp;<code>float</code></dt>
 <dd>Minimum color scale (default: <strong>None</strong>, uses: min(data)).</dd>
 <dt><strong><code>v_max</code></strong> :&ensp;<code>float</code></dt>
 <dd>Maximum color scale (default: <strong>None</strong>, uses: max(data)).</dd>
+<dt><strong><code>cmap</code></strong> :&ensp;<code>str</code></dt>
+<dd>Color map (default: <strong>'viridis'</strong>).</dd>
+<dt><strong><code>n_hist_bins</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of histogram bins in the colorbar (default: <strong>100</strong>).</dd>
+<dt><strong><code>cluster_ids</code></strong> :&ensp;<code>Optional[np.ndarray]</code></dt>
+<dd>Array of cluster identifiers (see <code><a title="decontamination.Clustering" href="#decontamination.Clustering">Clustering</a></code>, default: <strong>None</strong>).</dd>
 <dt><strong><code>log_scale</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Specifies whether to enable the logarithm scaling (default: <strong>False</strong>).</dd>
 <dt><strong><code>antialiased</code></strong> :&ensp;<code>bool</code></dt>
@@ -268,16 +272,14 @@ __all__ = [
 <dd>Specifies whether to display the colorbar (default: <strong>True</strong>).</dd>
 <dt><strong><code>show_histogram</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Specifies whether to display the histogram (default: <strong>True</strong>).</dd>
-<dt><strong><code>n_hist_bins</code></strong> :&ensp;<code>int</code></dt>
-<dd>Number of histogram bins in the colorbar (default: <strong>100</strong>).</dd>
-<dt><strong><code>cluster_ids</code></strong> :&ensp;<code>Optional[np.ndarray]</code></dt>
-<dd>Array of cluster identifiers (see <code><a title="decontamination.Clustering" href="#decontamination.Clustering">Clustering</a></code>, default: <strong>None</strong>).</dd>
+<dt><strong><code>show_cluster_labels</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Specifies whether to display the cluster labels (default: <strong>False</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def display_latent_space(weights: np.ndarray, topology: Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = &#39;viridis&#39;, log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, n_hist_bins: int = 100, cluster_ids: Optional[np.ndarray] = None) -&gt; Tuple[plt.Figure, plt.Axes]:
+<pre><code class="python">def display_latent_space(weights: np.ndarray, topology: Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = &#39;viridis&#39;, n_hist_bins: int = 100, cluster_ids: Optional[np.ndarray] = None, log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, show_cluster_labels: bool = False) -&gt; Tuple[plt.Figure, plt.Axes]:
 
     &#34;&#34;&#34;
     Parameters
@@ -286,12 +288,16 @@ __all__ = [
         Weights of the map.
     topology : Optional[str]
         Topology of the map, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **None**, uses: **&#39;hexagonal&#39;**).
-    cmap : str
-        Color map (default: **&#39;viridis&#39;**).
     v_min : float
         Minimum color scale (default: **None**, uses: min(data)).
     v_max : float
         Maximum color scale (default: **None**, uses: max(data)).
+    cmap : str
+        Color map (default: **&#39;viridis&#39;**).
+    n_hist_bins : int
+        Number of histogram bins in the colorbar (default: **100**).
+    cluster_ids : Optional[np.ndarray]
+        Array of cluster identifiers (see `Clustering`, default: **None**).
     log_scale : bool
         Specifies whether to enable the logarithm scaling (default: **False**).
     antialiased : bool
@@ -302,10 +308,8 @@ __all__ = [
         Specifies whether to display the colorbar (default: **True**).
     show_histogram : bool
         Specifies whether to display the histogram (default: **True**).
-    n_hist_bins : int
-        Number of histogram bins in the colorbar (default: **100**).
-    cluster_ids : Optional[np.ndarray]
-        Array of cluster identifiers (see `Clustering`, default: **None**).
+    show_cluster_labels : bool
+        Specifies whether to display the cluster labels (default: **False**).
     &#34;&#34;&#34;
 
     ####################################################################################################################
@@ -338,13 +342,13 @@ __all__ = [
 
     if show_colorbar:
 
-        _build_colorbar(ax, weights, v_min, v_max, cmap, norm, log_scale, show_histogram, n_hist_bins)
+        _build_colorbar(ax, weights, v_min, v_max, cmap, norm, log_scale, n_hist_bins, show_histogram)
 
     ####################################################################################################################
 
     if cluster_ids is not None:
 
-        clustering.display_clusters(ax, cluster_ids.reshape(weights.shape[0], weights.shape[1]), topology = topology)
+        clustering.display_clusters(ax, cluster_ids.reshape(weights.shape[0], weights.shape[1]), topology = topology, show_cluster_labels = show_cluster_labels)
 
     ####################################################################################################################
 
@@ -360,7 +364,7 @@ __all__ = [
 </details>
 </dd>
 <dt id="decontamination.display_clusters"><code class="name flex">
-<span>def <span class="ident">display_clusters</span></span>(<span>ax: plt.Axes, cluster_ids: np.ndarray, topology: Optional[str] = None) ‑> None</span>
+<span>def <span class="ident">display_clusters</span></span>(<span>ax: plt.Axes, cluster_ids: np.ndarray, topology: Optional[str] = None, show_cluster_labels: bool = False) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="parameters">Parameters</h2>
@@ -371,12 +375,14 @@ __all__ = [
 <dd>Array of cluster identifiers.</dd>
 <dt><strong><code>topology</code></strong> :&ensp;<code>Optional[str]</code></dt>
 <dd>Topology of the map, either <strong>'square'</strong> or <strong>'hexagonal'</strong> (default: <strong>None</strong>, uses: <strong>'hexagonal'</strong>).</dd>
+<dt><strong><code>show_cluster_labels</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Specifies whether to display the cluster labels (default: <strong>False</strong>).</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: Optional[str] = None) -&gt; None:
+<pre><code class="python">def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: Optional[str] = None, show_cluster_labels: bool = False) -&gt; None:
 
     &#34;&#34;&#34;
     Parameters
@@ -387,15 +393,31 @@ __all__ = [
         Array of cluster identifiers.
     topology : Optional[str]
         Topology of the map, either **&#39;square&#39;** or **&#39;hexagonal&#39;** (default: **None**, uses: **&#39;hexagonal&#39;**).
+    show_cluster_labels : bool
+        Specifies whether to display the cluster labels (default: **False**).
     &#34;&#34;&#34;
 
     if max(cluster_ids.shape[0], cluster_ids.shape[1]) &gt; 200 or topology == &#39;square&#39;:
 
-        display_clusters_square(ax, cluster_ids)
+        ################################################################################################################
+
+        _display_clusters_square(ax, cluster_ids)
+
+        if show_cluster_labels:
+
+            _display_cluster_labels(ax, cluster_ids, False)
+
+        ################################################################################################################
 
     else:
 
-        display_clusters_hexagonal(ax, cluster_ids)</code></pre>
+        ################################################################################################################
+
+        _display_clusters_hexagonal(ax, cluster_ids)
+
+        if show_cluster_labels:
+
+            _display_cluster_labels(ax, cluster_ids, True)</code></pre>
 </details>
 </dd>
 </dl>
@@ -3717,7 +3739,7 @@ def topology(self) -&gt; str:
     ####################################################################################################################
 
     @staticmethod
-    def clusterize(vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 32) -&gt; np.ndarray:
+    def _clusterize(vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 32) -&gt; np.ndarray:
 
         &#34;&#34;&#34;
         Clusters the input array using the Lance-Williams hierarchical clustering with complete-linkage algorithm.
@@ -3747,7 +3769,9 @@ def topology(self) -&gt; str:
         # COMPUTE DISTANCES                                                                                            #
         ################################################################################################################
 
+        time1 = timeit.default_timer()
         distances = Clustering._init_distances(vectors, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+        time2 = timeit.default_timer()
 
         ################################################################################################################
         # COMPUTE CLUSTERS                                                                                             #
@@ -3764,6 +3788,10 @@ def topology(self) -&gt; str:
         ################################################################################################################
 
         result[nan_mask] = -1
+
+        time3 = timeit.default_timer()
+
+        print(time2 - time1, time3 - time2)
 
         ################################################################################################################
         # REINDEX CLUSTERS                                                                                             #
@@ -3785,6 +3813,81 @@ def topology(self) -&gt; str:
                     cnt += 1
 
         ################################################################################################################
+
+        return result
+
+    ####################################################################################################################
+
+    @staticmethod
+    def clusterize(vectors: np.ndarray, n_clusters: int) -&gt; np.ndarray:
+        &#34;&#34;&#34;
+        Clusters the input array using the Lance-Williams hierarchical clustering with complete-linkage algorithm.
+
+        Parameters
+        ----------
+        vectors : np.ndarray
+            Flat input array to be clustered.
+        n_clusters : int
+            Desired number of clusters.
+
+        Return
+        ------
+        Array giving a cluster identifier for each input vector.
+        &#34;&#34;&#34;
+
+        time1 = timeit.default_timer()
+
+        ################################################################################################################
+
+        not_nan_mask = ~np.any(np.isnan(vectors), axis = -1)
+
+        ################################################################################################################
+        # COMPUTE DISTANCES                                                                                            #
+        ################################################################################################################
+
+        distances = distance.pdist(vectors[not_nan_mask])
+
+        ################################################################################################################
+        # COMPUTE CLUSTERS                                                                                             #
+        ################################################################################################################
+
+        z = hierarchy.linkage(distances, method = &#39;complete&#39;)
+
+        cluster_ids = hierarchy.fcluster(z, n_clusters, criterion = &#39;maxclust&#39;)
+
+        ################################################################################################################
+        # REINDEX CLUSTERS                                                                                             #
+        ################################################################################################################
+
+        j = 0
+        k = 0
+
+        cluster_dict = {}
+
+        result = np.full(vectors.shape[0], -1, dtype = int)
+
+        ################################################################################################################
+
+        for i in range(vectors.shape[0]):
+
+            if not_nan_mask[i]:
+
+                cluster_id = cluster_ids[j]
+
+                if cluster_id in cluster_dict:
+                    result[i] = cluster_dict[cluster_id] # k
+                else:
+                    result[i] = cluster_dict[cluster_id] = k
+
+                    k += 1
+
+                j += 1
+
+        ################################################################################################################
+
+        time2 = timeit.default_timer()
+
+        print(time2 - time1)
 
         return result
 
@@ -3817,7 +3920,7 @@ def topology(self) -&gt; str:
 <h3>Static methods</h3>
 <dl>
 <dt id="decontamination.Clustering.clusterize"><code class="name flex">
-<span>def <span class="ident">clusterize</span></span>(<span>vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 32) ‑> np.ndarray</span>
+<span>def <span class="ident">clusterize</span></span>(<span>vectors: np.ndarray, n_clusters: int) ‑> np.ndarray</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Clusters the input array using the Lance-Williams hierarchical clustering with complete-linkage algorithm.</p>
@@ -3827,13 +3930,7 @@ def topology(self) -&gt; str:
 <dd>Flat input array to be clustered.</dd>
 <dt><strong><code>n_clusters</code></strong> :&ensp;<code>int</code></dt>
 <dd>Desired number of clusters.</dd>
-<dt><strong><code>enable_gpu</code></strong> :&ensp;<code>bool</code></dt>
-<dd>If available, run on GPU rather than CPU (default: <strong>True</strong>).</dd>
-<dt><strong><code>threads_per_blocks</code></strong> :&ensp;<code>int</code></dt>
-<dd>Number of GPU threads per blocks (default: <strong>32</strong>).</dd>
 </dl>
-<h2 id="note">Note</h2>
-<p>Number of iterations: <code>weights.shape[0] - n_clusters</code>.</p>
 <h2 id="return">Return</h2>
 <p>Array giving a cluster identifier for each input vector.</p></div>
 <details class="source">
@@ -3841,8 +3938,7 @@ def topology(self) -&gt; str:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def clusterize(vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 32) -&gt; np.ndarray:
-
+def clusterize(vectors: np.ndarray, n_clusters: int) -&gt; np.ndarray:
     &#34;&#34;&#34;
     Clusters the input array using the Lance-Williams hierarchical clustering with complete-linkage algorithm.
 
@@ -3852,63 +3948,65 @@ def clusterize(vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, th
         Flat input array to be clustered.
     n_clusters : int
         Desired number of clusters.
-    enable_gpu : bool
-        If available, run on GPU rather than CPU (default: **True**).
-    threads_per_blocks : int
-        Number of GPU threads per blocks (default: **32**).
-
-    Note
-    ----
-
-    Number of iterations: `weights.shape[0] - n_clusters`.
 
     Return
     ------
     Array giving a cluster identifier for each input vector.
     &#34;&#34;&#34;
 
+    time1 = timeit.default_timer()
+
+    ################################################################################################################
+
+    not_nan_mask = ~np.any(np.isnan(vectors), axis = -1)
+
     ################################################################################################################
     # COMPUTE DISTANCES                                                                                            #
     ################################################################################################################
 
-    distances = Clustering._init_distances(vectors, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+    distances = distance.pdist(vectors[not_nan_mask])
 
     ################################################################################################################
     # COMPUTE CLUSTERS                                                                                             #
     ################################################################################################################
 
-    result = np.arange(vectors.shape[0])
+    z = hierarchy.linkage(distances, method = &#39;complete&#39;)
 
-    nan_mask = np.any(np.isnan(vectors), axis = -1)
-
-    for _ in range(vectors.shape[0] - nan_mask.sum() - n_clusters):
-
-        Clustering._update_clusters(distances, result)
-
-    ################################################################################################################
-
-    result[nan_mask] = -1
+    cluster_ids = hierarchy.fcluster(z, n_clusters, criterion = &#39;maxclust&#39;)
 
     ################################################################################################################
     # REINDEX CLUSTERS                                                                                             #
     ################################################################################################################
 
-    cnt = 0
+    j = 0
+    k = 0
 
     cluster_dict = {}
 
-    for i, cluster_id in enumerate(result):
-
-        if not nan_mask[i]:
-
-            if cluster_id in cluster_dict:
-                result[i] = cluster_dict[cluster_id] # cnt
-            else:
-                result[i] = cluster_dict[cluster_id] = cnt
-
-                cnt += 1
+    result = np.full(vectors.shape[0], -1, dtype = int)
 
     ################################################################################################################
+
+    for i in range(vectors.shape[0]):
+
+        if not_nan_mask[i]:
+
+            cluster_id = cluster_ids[j]
+
+            if cluster_id in cluster_dict:
+                result[i] = cluster_dict[cluster_id] # k
+            else:
+                result[i] = cluster_dict[cluster_id] = k
+
+                k += 1
+
+            j += 1
+
+    ################################################################################################################
+
+    time2 = timeit.default_timer()
+
+    print(time2 - time1)
 
     return result</code></pre>
 </details>

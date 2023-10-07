@@ -63,7 +63,7 @@ class Clustering(object):
     ####################################################################################################################
 
     @staticmethod
-    def clusterize2(vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 32) -> np.ndarray:
+    def _clusterize(vectors: np.ndarray, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 32) -> np.ndarray:
 
         """
         Clusters the input array using the Lance-Williams hierarchical clustering with complete-linkage algorithm.

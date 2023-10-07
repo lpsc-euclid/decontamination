@@ -5,10 +5,10 @@ import typing
 
 import numpy as np
 
+from scipy import ndimage
+
 import matplotlib.lines as lines
 import matplotlib.pyplot as pyplot
-
-from .._algo.union_find import compute_cluster_centroids
 
 ########################################################################################################################
 
@@ -131,18 +131,29 @@ def _display_clusters_hexagonal(ax: pyplot.Axes, cluster_ids: np.ndarray) -> Non
 
 ########################################################################################################################
 
-def _display_cluster_labels(ax, cluster_ids, is_hexagonal):
+def _display_cluster_labels(ax: pyplot.Axes, cluster_ids: np.ndarray, is_hexagonal: bool) -> None:
 
-    for (cluster_id, i, j) in compute_cluster_centroids(cluster_ids):
+    for cluster_id in np.unique(cluster_ids):
 
-        y = i * V_LENGTH
-        x = j * H_LENGTH
+        if cluster_id >= 0:
 
-        if is_hexagonal and int(i) % 2 == 1:
+            labels, n = ndimage.label(cluster_ids == cluster_id)
 
-            y += 0.5 * V_LENGTH
+            for label in range(1, n + 1):
 
-        ax.text(x, y, str(cluster_id), ha = 'center', va = 'center', fontsize = 8)
+                coords = np.where(labels == label)
+
+                j = np.mean(coords[0])
+                i = np.mean(coords[1])
+
+                y = j * V_LENGTH
+                x = i * H_LENGTH
+
+                if is_hexagonal and (round(j) % 2) == 1:
+
+                    y += 0.5 * V_LENGTH
+
+                ax.text(x, y, str(cluster_id), ha = 'center', va = 'center', fontsize = 8)
 
 ########################################################################################################################
 

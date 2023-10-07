@@ -32,7 +32,7 @@ if __name__ == '__main__':
                 packages = ['decontamination', 'decontamination._jit', 'decontamination._algo', 'decontamination._plotting'],
                 data_files = [('decontamination', ['decontamination/metadata.json'])],
                 include_package_data = True,
-                install_requires = ['h5py', 'tqdm', 'numpy', 'numba', 'healpy', 'matplotlib'],
+                install_requires = ['h5py', 'tqdm', 'numpy', 'numba', 'scipy', 'healpy', 'matplotlib'],
                 extras_require = {
                     'pytest': ['pytest'],
                     'astropy': ['astropy'],

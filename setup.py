@@ -19,7 +19,7 @@ if __name__ == '__main__':
             metadata = json.load(f2)
 
             setup(
-                name = 'decontamination',
+                name = metadata['name'],
                 version = metadata['version'],
                 author = ', '.join(metadata['author_names']),
                 author_email = ', '.join(metadata['author_emails']),

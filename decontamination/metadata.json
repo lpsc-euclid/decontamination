@@ -1,6 +1,7 @@
 {
-    "credits": "CNRS/LPSC, CNRS/IJCLab",
+    "name": "decontamination",
     "version": "0.0.1",
+    "credits": "CNRS/LPSC, CNRS/IJCLab",
     "author_names": [
         "Gaël ALGUERO",
         "Juan MACIAS-PEREZ",

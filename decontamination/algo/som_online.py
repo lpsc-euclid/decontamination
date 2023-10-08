@@ -43,7 +43,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
         alpha : float
             Starting value of the learning rate (default: **None**, uses: **0.3**).
         sigma : float
-            Starting value of the neighborhood radius (default: **None**, uses: \\( \\mathrm{max}(m,n)/2 \\)).
+            Starting value of the neighborhood radius (default: **None**, uses: :math:`\\mathrm{max}(m,n)/2`).
         """
 
         ################################################################################################################

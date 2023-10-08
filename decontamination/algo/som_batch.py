@@ -43,7 +43,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         topology : typing.Optional[str]
             Topology of the model, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
         sigma : float
-            Starting value of the neighborhood radius (default: **None**, uses: \\( \\mathrm{max}(m,n)/2 \\)).
+            Starting value of the neighborhood radius (default: **None**, uses: :math:`\\mathrm{max}(m,n)/2`).
         """
 
         ################################################################################################################
@@ -206,7 +206,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             \\Theta_{ji}(w,e)\\equiv\\delta_{j,c_i(w,e)}\\equiv\\left\\{\\begin{array}{ll}1&j=c_i(w,e)\\\\0&\\mathrm{otherwise}\\end{array}\\right.
 
         .. math::
-            \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}}
+            \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)\\cdot x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}}
 
         where :math:`j=0\\dots m\\times n-1`, at epoch :math:`e`, :math:`\\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}}` is the neighborhood radius.
 

@@ -377,7 +377,7 @@ class SOM_Abstract(object):
     def get_weights(self) -> np.ndarray:
 
         """
-        Returns the neural network weights with the shape [m * n, dim].
+        Returns the neural network weights with the shape `[m * n, dim]`.
         """
 
         return self._weights.reshape((self._m * self._n, self._dim))
@@ -387,7 +387,7 @@ class SOM_Abstract(object):
     def get_centroids(self) -> np.ndarray:
 
         """
-        Returns the neural network weights with the shape [m, n, dim].
+        Returns the neural network weights with the shape `[m, n, dim]`.
         """
 
         return self._weights.reshape((self._m, self._n, self._dim))
@@ -397,7 +397,14 @@ class SOM_Abstract(object):
     def get_quantization_errors(self) -> np.ndarray:
 
         """
-        Returns the quantization error. $$ c_i^1\\equiv\\mathrm{1^\\mathrm{st}\\,bmu}\\equiv\\underset{j}{\\mathrm{arg\\,min}_1}\\lVert x_i-w_j\\rVert $$ $$ \\boxed{e_Q\\equiv\\frac{1}{N}\\sum_{i=1}^N\\lVert x_i-w_{c_i^1}\\rVert} $$
+        Returns the quantization error.
+
+        .. math::
+            c_i^1\\equiv\\mathrm{1^\\mathrm{st}\\,bmu}\\equiv\\underset{j}{\\mathrm{arg\\,min}_1}\\lVert x_i-w_j\\rVert
+
+        .. math::
+            \\boxed{e_Q\\equiv\\frac{1}{N}\\sum_{i=1}^N\\lVert x_i-w_{c_i^1}\\rVert}
+
         """
 
         return self._quantization_errors
@@ -407,7 +414,19 @@ class SOM_Abstract(object):
     def get_topographic_errors(self) -> np.ndarray:
 
         """
-        Returns the topographic errors. $$ c_i^n\\equiv\\mathrm{n^\\mathrm{th}\\,bmu}\\equiv\\underset{j}{\\mathrm{arg\\,min}_n}\\lVert x_i-w_j\\rVert $$ $$ r\\equiv\\left\\{\\begin{array}{ll}\\sqrt{1}&\\mathrm{topology=hexagon}\\\\\\sqrt{2}&\\mathrm{topology=square}\\end{array}\\right. $$ $$ t(x_i)\\equiv\\left\\{\\begin{array}{ll}1&\\lVert c_i^1-c_i^2\\rVert>r\\\\0&\\mathrm{otherwise}\\end{array}\\right. $$ $$ \\boxed{e_t\\equiv\\frac{1}{N}\\sum_{i=0}^Nt(x_i)} $$
+        Returns the topographic errors.
+
+        .. math::
+            c_i^n\\equiv\\mathrm{n^\\mathrm{th}\\,bmu}\\equiv\\underset{j}{\\mathrm{arg\\,min}_n}\\lVert x_i-w_j\\rVert
+
+        .. math::
+            r\\equiv\\left\\{\\begin{array}{ll}\\sqrt{1}&\\mathrm{topology=hexagon}\\\\\\sqrt{2}&\\mathrm{topology=square}\\end{array}\\right.
+
+        .. math::
+            t(x_i)\\equiv\\left\\{\\begin{array}{ll}1&\\lVert c_i^1-c_i^2\\rVert>r\\\\0&\\mathrm{otherwise}\\end{array}\\right.
+
+        .. math::
+            \\boxed{e_t\\equiv\\frac{1}{N}\\sum_{i=0}^Nt(x_i)}
         """
 
         return self._topographic_errors

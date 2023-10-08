@@ -29,7 +29,7 @@ if __name__ == '__main__':
                 keywords = ['cosmology', 'systematics', 'decontamination'],
                 url = 'https://gitlab.in2p3.fr/lpsc-euclid/decontamination/',
                 license = 'CeCILL-C',
-                packages = ['decontamination', 'decontamination._jit', 'decontamination._algo', 'decontamination._plotting'],
+                packages = ['decontamination', 'decontamination.jit', 'decontamination.algo', 'decontamination.plotting'],
                 data_files = [('decontamination', ['decontamination/metadata.json'])],
                 include_package_data = True,
                 install_requires = ['h5py', 'tqdm', 'numpy', 'numba', 'scipy', 'healpy', 'matplotlib'],

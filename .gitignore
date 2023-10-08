@@ -4,5 +4,6 @@ __pycache__
 
 /build/
 /*.egg-info/
+/doc/_build/
 
 *.hdf5

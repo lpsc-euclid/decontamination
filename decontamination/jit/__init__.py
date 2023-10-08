@@ -414,7 +414,7 @@ class jit(object):
     def atomic_add(array: np.ndarray, idx: int, val: typing.Union[np.single, float, int]) -> typing.Union[np.single, float, int]:
 
         """
-        Performs atomic array[idx] += val and returns the old value. Supported on int32, float32, and float64 operands only.
+        Performs atomic `array[idx] += val` and returns the old value. Supported on int32, float32, and float64 operands only.
 
         Parameters
         ----------
@@ -434,7 +434,7 @@ class jit(object):
     def atomic_sub(array: np.ndarray, idx: int, val: typing.Union[np.single, float, int]) -> typing.Union[np.single, float, int]:
 
         """
-        Performs atomic array[idx] -= val and returns the old value. Supported on int32, float32, and float64 operands only.
+        Performs atomic `array[idx] -= val` and returns the old value. Supported on int32, float32, and float64 operands only.
 
         Parameters
         ----------

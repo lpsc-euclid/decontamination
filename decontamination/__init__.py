@@ -15,30 +15,30 @@ import numpy as np
 # JIT                                                                                                                  #
 ########################################################################################################################
 
-from ._jit import CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE, jit
+from .jit import CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE, jit
 
-from ._jit import DeviceArray, device_array_from, device_array_empty, device_array_zeros, device_array_full
+from .jit import DeviceArray, device_array_from, device_array_empty, device_array_zeros, device_array_full
 
 ########################################################################################################################
 # ALGO                                                                                                                 #
 ########################################################################################################################
 
-from ._algo.som_abstract import SOM_Abstract
+from .algo.som_abstract import SOM_Abstract
 
-from ._algo.som_pca import SOM_PCA
+from .algo.som_pca import SOM_PCA
 
-from ._algo.som_batch import SOM_Batch
+from .algo.som_batch import SOM_Batch
 
-from ._algo.som_online import SOM_Online
+from .algo.som_online import SOM_Online
 
-from ._algo.clustering import Clustering
+from .algo.clustering import Clustering
 
 ########################################################################################################################
 # PLOTTING                                                                                                             #
 ########################################################################################################################
 
-from ._plotting.latent_space import display_latent_space
-from ._plotting.clustering import display_clusters
+from .plotting.latent_space import display_latent_space
+from .plotting.clustering import display_clusters
 
 ########################################################################################################################
 # UTILITIES                                                                                                            #

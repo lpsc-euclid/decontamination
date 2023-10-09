@@ -46,7 +46,7 @@ def nb_to_device(ndarray):
 def device_array_from(array: np.ndarray):
 
     """
-    New device array (see `DeviceArray`), initialized from a Numpy ndarray.
+    New device array (see :class:`DeviceArray`), initialized from a Numpy ndarray.
     """
 
     return DeviceArray(array.shape, array.dtype, content = array)
@@ -56,7 +56,7 @@ def device_array_from(array: np.ndarray):
 def device_array_empty(shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32):
 
     """
-    New device array (see `DeviceArray`), not initialized. Similar to `numpy.empty()`.
+    New device array (see :class:`DeviceArray`), not initialized. Similar to `numpy.empty()`.
 
     Parameters
     ----------
@@ -73,7 +73,7 @@ def device_array_empty(shape: typing.Union[tuple, int], dtype: typing.Type[np.si
 def device_array_zeros(shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32):
 
     """
-    New device array (see `DeviceArray`), filled with **0**. Similar to `numpy.zeros()`.
+    New device array (see :class:`DeviceArray`), filled with **0**. Similar to `numpy.zeros()`.
 
     Parameters
     ----------
@@ -90,7 +90,7 @@ def device_array_zeros(shape: typing.Union[tuple, int], dtype: typing.Type[np.si
 def device_array_full(shape: typing.Union[tuple, int], value: typing.Union[int, float], dtype: typing.Type[np.single] = np.float32):
 
     """
-    New device array (see `DeviceArray`), filled with **value**. Similar to `numpy.full()`.
+    New device array (see :class:`DeviceArray`), filled with **value**. Similar to `numpy.full()`.
 
     Parameters
     ----------
@@ -111,8 +111,7 @@ class DeviceArray(object):
     """
     Device array to be used when calling a CPU/GPU kernel.
 
-    Prefer using primitives `device_array_from`, `device_array_empty`, `device_array_zeros`, `device_array_full`
-    to instantiate a device array.
+    Prefer using primitives :class:`device_array_from`, :class:`device_array_empty`, :class:`device_array_zeros`, :class:`device_array_full` to instantiate a device array.
     """
 
     ####################################################################################################################

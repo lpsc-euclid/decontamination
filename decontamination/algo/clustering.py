@@ -1,17 +1,10 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
-import math
-import timeit
-
 import numpy as np
-import numba as nb
-import numba.cuda as cu
 
 from scipy.spatial import distance
 from scipy.cluster import hierarchy
-
-from .. import jit, device_array_full
 
 ########################################################################################################################
 
@@ -39,8 +32,6 @@ class Clustering(object):
         ------
         Array giving a cluster identifier for each input vector.
         """
-
-        time1 = timeit.default_timer()
 
         ################################################################################################################
 
@@ -89,10 +80,6 @@ class Clustering(object):
                 j += 1
 
         ################################################################################################################
-
-        time2 = timeit.default_timer()
-
-        print(time2 - time1)
 
         return result
 

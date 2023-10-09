@@ -1,8 +1,3 @@
-.. Decontamination documentation master file, created by
-   sphinx-quickstart on Sun Oct  8 15:47:37 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 .. container:: logo-container
 
    .. image:: _static/logo_lpsc.svg
@@ -25,6 +20,8 @@
       :height: 72
       :target: http://www.univ-grenoble-alpes.fr/
 
+|License img| |MainRepo img|
+
 Decontamination
 ===============
 
@@ -44,3 +41,12 @@ Indices and tables
 
 * :ref:`genindex`
 * :ref:`search`
+
+.. |License img| image:: https://img.shields.io/badge/license-CeCILL--C-blue.svg
+   :target: http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.txt
+
+.. |MainRepo img| image:: https://img.shields.io/badge/Main%20Repo-gitlab.in2p3.fr-success
+   :target: https://gitlab.in2p3.fr/lpsc-euclid/decontamination
+
+.. |AltRepo img| image:: https://img.shields.io/badge/Alt%20Repo-github.com-success
+   :target: https://github.com/odier-xyz/decontamination

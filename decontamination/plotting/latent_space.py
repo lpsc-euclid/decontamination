@@ -195,7 +195,7 @@ def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = N
     n_hist_bins : int
         Number of histogram bins in the colorbar (default: **100**).
     cluster_ids : typing.Optional[np.ndarray]
-        Array of cluster identifiers (see `Clustering`, default: **None**).
+        Array of cluster identifiers (see :class:`Clustering <decontamination.algo.clustering.Clustering>`, default: **None**).
     log_scale : bool
         Specifies whether to enable the logarithm scaling (default: **False**).
     antialiased : bool

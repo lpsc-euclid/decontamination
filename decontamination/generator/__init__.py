@@ -46,11 +46,6 @@ def thetaphi2xy(θ: np.ndarray, ϕ: np.ndarray) -> typing.Tuple[np.ndarray, np.n
 
     See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8).
 
-    .. image:: _static/healpix_cartesian_plan.svg
-        :alt: HEALPix cartesian plan
-        :width: 50%
-        :align: center
-
     Parameters
     ----------
     θ : np.ndarray
@@ -108,11 +103,6 @@ def xy2thetaphi(x: np.ndarray, y: np.ndarray) -> typing.Tuple[np.ndarray, np.nda
     Performs HEALPix spherical projection from the cartesian plane (x, y) to the sphere (θ, ϕ).
 
     See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8).
-
-    .. image:: _static/healpix_cartesian_plan.svg
-        :alt: HEALPix cartesian plan
-        :width: 50%
-        :align: center
 
     Parameters
     ----------

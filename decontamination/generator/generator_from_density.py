@@ -41,11 +41,15 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
             Seed for random generator (default: **None**).
         """
 
+        ################################################################################################################
+
         if self._x_diamonds.size != density_map.size\
            or                                       \
            self._y_diamonds.size != density_map.size:
 
             raise Exception('Inconsistent number of pixels and weights')
+
+        ################################################################################################################
 
         return Generator_FromDensity._generate(
             self._nside,
@@ -59,16 +63,16 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(fastmath = True)
+    @nb.njit(fastmath = True, parallel = True)
     def _generate(nside: int, x_diamonds: np.ndarray, y_diamonds: np.ndarray, density_map: np.ndarray, mult_factor: float, seed: typing.Optional[int]) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
-        rng = np.random.default_rng(seed = seed)
+        np.random.seed(seed)
 
         ################################################################################################################
 
-        n_galaxies_per_pixels = rng.poisson(mult_factor * density_map)
+        n_galaxies_per_pixels = np.random.poisson(mult_factor * density_map)
 
         n_total_galaxies = np.sum(n_galaxies_per_pixels)
 
@@ -88,11 +92,13 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
         x_galaxies = np.empty(n_total_galaxies, dtype = np.float32)
         y_galaxies = np.empty(n_total_galaxies, dtype = np.float32)
 
-        for i, n_galaxies in enumerate(n_galaxies_per_pixels):
+        for i in nb.prange(n_galaxies_per_pixels.shape[0]):
 
-            end_idx = start_idx + n_galaxies
+            np.random.seed(seed + i)
 
-            dx, dy = rng.uniform(-0.5, +0.5, size = (n_galaxies, 2))
+            end_idx = start_idx + n_galaxies_per_pixels[i]
+
+            dx, dy = np.random.uniform(-0.5, +0.5, size = (n_galaxies_per_pixels[i], 2))
 
             x_galaxies[start_idx: end_idx] = x_center[i] + dx * cell_size
             y_galaxies[start_idx: end_idx] = y_center[i] + dy * cell_size
@@ -101,7 +107,7 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        # squares to HEALPix diamonds -> -45° rotation.
+        # Squares to HEALPix diamonds -> -45° rotation.
 
         x_galaxies2 = (+x_galaxies + y_galaxies) / math.sqrt(2)
         y_galaxies2 = (-x_galaxies + y_galaxies) / math.sqrt(2)

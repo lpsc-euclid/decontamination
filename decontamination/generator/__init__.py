@@ -10,6 +10,17 @@ import numba as nb
 
 def get_cell_size(nside: int) -> float:
 
+    """
+    In the cartesian plane, returns the side length of the HEALPix diamonds.
+
+    See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8).
+
+    Parameters
+    ----------
+    nside : int
+        The HEALPix nside parameter.
+    """
+
     full_sky = (12.0 / 16.0) * (2.0 * np.pi * np.pi)
 
     n_pixels = 12 * nside * nside
@@ -22,9 +33,9 @@ def get_cell_size(nside: int) -> float:
 def thetaphi2xy(θ: np.ndarray, ϕ: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray]:
 
     """
-    Performs HEALPix spherical projection from the sphere (θ, ϕ) to the plane (x, y).
+    Performs HEALPix spherical projection from the sphere (θ, ϕ) to the cartesian plane (x, y).
 
-    See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8)
+    See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8).
 
     Parameters
     ----------
@@ -80,9 +91,9 @@ def thetaphi2xy(θ: np.ndarray, ϕ: np.ndarray) -> typing.Tuple[np.ndarray, np.n
 def xy2thetaphi(x: np.ndarray, y: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray]:
 
     """
-    Performs HEALPix spherical projection from the plane (x, y) to the sphere (θ, ϕ).
+    Performs HEALPix spherical projection from the cartesian plane (x, y) to the sphere (θ, ϕ).
 
-    See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8)
+    See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8).
 
     Parameters
     ----------

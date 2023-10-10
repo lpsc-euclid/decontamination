@@ -108,8 +108,8 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
             end_idx = start_idx + n_galaxies_per_pixels[i]
 
-            dx = np.random.uniform(-0.5, +0.5, size = n_galaxies_per_pixels[i])
-            dy = np.random.uniform(-0.5, +0.5, size = n_galaxies_per_pixels[i])
+            dx = np.random.uniform(-0.5, +0.5, size = (n_galaxies_per_pixels[i], ))
+            dy = np.random.uniform(-0.5, +0.5, size = (n_galaxies_per_pixels[i], ))
 
             x_galaxies[start_idx: end_idx] = x_center[i] + dx * cell_size
             y_galaxies[start_idx: end_idx] = y_center[i] + dy * cell_size

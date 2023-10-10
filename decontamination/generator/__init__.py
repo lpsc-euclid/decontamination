@@ -18,7 +18,7 @@ def get_cell_size(nside: int) -> float:
     .. math::
         \\left(\\frac{12}{16}2\\pi^2\\right)/\\left(12\\cdot\\mathrm{nside}^2\\right)
 
-    .. image:: _static/healpix_cartesian_plan.png
+    .. image:: _static/healpix_cartesian_plan.svg
         :alt: HEALPix cartesian plan
         :width: 50%
         :align: center
@@ -45,7 +45,7 @@ def thetaphi2xy(θ: np.ndarray, ϕ: np.ndarray) -> typing.Tuple[np.ndarray, np.n
 
     See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8).
 
-    .. image:: _static/healpix_cartesian_plan.png
+    .. image:: _static/healpix_cartesian_plan.svg
         :alt: HEALPix cartesian plan
         :width: 50%
         :align: center
@@ -108,7 +108,7 @@ def xy2thetaphi(x: np.ndarray, y: np.ndarray) -> typing.Tuple[np.ndarray, np.nda
 
     See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8).
 
-    .. image:: _static/healpix_cartesian_plan.png
+    .. image:: _static/healpix_cartesian_plan.svg
         :alt: HEALPix cartesian plan
         :width: 50%
         :align: center

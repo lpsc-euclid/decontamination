@@ -18,6 +18,11 @@ def get_cell_size(nside: int) -> float:
     .. math::
         \\left(\\frac{12}{16}2\\pi^2\\right)/\\left(12\\cdot\\mathrm{nside}^2\\right)
 
+    .. image:: _static/healpix_cartesian_plan.png
+        :alt: HEALPix cartesian plan
+        :width: 50%
+        :align: center
+
     Parameters
     ----------
     nside : int

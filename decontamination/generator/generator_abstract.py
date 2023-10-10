@@ -10,13 +10,19 @@ from . import thetaphi2xy
 ########################################################################################################################
 
 # noinspection PyPep8Naming
-class Generator_abstract(object):
+class Generator_Abstract(object):
+
+    """
+    Abstract galaxy generator.
+    """
 
     ####################################################################################################################
 
     def __init__(self, nside: int, footprint: np.ndarray, nest: bool = True):
 
         """
+        ???
+
         Parameters
         ----------
         nside : int

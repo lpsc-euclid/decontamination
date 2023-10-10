@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
@@ -6,14 +7,16 @@ import typing
 
 import numpy as np
 
-from . import generator_abstract
-
-from . import xy2thetaphi, get_cell_size
+from . import xy2thetaphi, get_cell_size, generator_abstract
 
 ########################################################################################################################
 
 # noinspection PyPep8Naming
-class Generator_gndc(generator_abstract.Generator_abstract):
+class Generator_FromDensity(generator_abstract.Generator_Abstract):
+
+    """
+    Galaxy generator from a galaxy density map.
+    """
 
     ####################################################################################################################
 
@@ -50,7 +53,7 @@ class Generator_gndc(generator_abstract.Generator_abstract):
 
         ################################################################################################################
 
-        n_galaxies_per_pixels = mult_factor * rng.poisson(density_map)
+        n_galaxies_per_pixels = rng.poisson(mult_factor * density_map)
 
         n_total_galaxies = np.sum(n_galaxies_per_pixels)
 

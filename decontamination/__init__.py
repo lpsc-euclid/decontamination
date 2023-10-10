@@ -12,7 +12,7 @@ from .jit import CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE, jit
 from .jit import DeviceArray, device_array_from, device_array_empty, device_array_zeros, device_array_full
 
 ########################################################################################################################
-# ALGO                                                                                                                 #
+# ALGOS                                                                                                                #
 ########################################################################################################################
 
 from .algo.som_abstract import SOM_Abstract
@@ -34,6 +34,14 @@ from .plotting.latent_space import display_latent_space
 from .plotting.clustering import display_clusters
 
 ########################################################################################################################
+# GENERATORS                                                                                                           #
+########################################################################################################################
+
+from .generator.generator_abstract import Generator_Abstract
+
+from .generator.generator_from_density import Generator_FromDensity
+
+########################################################################################################################
 # UTILITIES                                                                                                            #
 ########################################################################################################################
 
@@ -52,7 +60,8 @@ __all__ = [
     'DeviceArray', 'device_array_from', 'device_array_empty', 'device_array_zeros', 'device_array_full',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
     'Clustering',
-    'display_latent_space', 'display_clusters'
+    'display_latent_space', 'display_clusters',
+    'Generator_Abstract', 'Generator_FromDensity',
 ]
 
 ########################################################################################################################

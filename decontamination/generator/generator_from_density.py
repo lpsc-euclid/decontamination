@@ -72,9 +72,21 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        n_galaxies_per_pixels = np.random.poisson(mult_factor * density_map)
+        n_total_galaxies = 0
 
-        n_total_galaxies = np.sum(n_galaxies_per_pixels)
+        n_galaxies_per_pixels = np.empty_like(density_map, dtype = np.float32)
+
+        for i in range(density_map.shape[0]):
+
+            n_galaxies = np.random.poisson(mult_factor * density_map[i])
+
+            n_galaxies_per_pixels[i] = n_galaxies
+
+            n_total_galaxies += n_galaxies
+
+        #n_galaxies_per_pixels = np.random.poisson(mult_factor * density_map)
+
+        #n_total_galaxies = np.sum(n_galaxies_per_pixels)
 
         ################################################################################################################
 

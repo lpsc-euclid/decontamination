@@ -41,9 +41,9 @@ class Generator_Abstract(object):
 
         theta, phi = hp.pix2ang(nside, footprint, nest = nest)
 
-        diamond_x_center, diamond_y_center = thetaphi2xy(theta, phi)
+        x_diamonds, y_diamonds = thetaphi2xy(theta, phi)
 
-        self._x_center_diamond = diamond_x_center
-        self._y_center_diamond = diamond_y_center
+        self._x_diamonds = x_diamonds
+        self._y_diamonds = y_diamonds
 
 ########################################################################################################################

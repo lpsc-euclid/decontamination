@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
@@ -42,16 +41,16 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
             Seed for random generator (default: **None**).
         """
 
-        if self._x_center_diamond.size != density_map.size\
-           or                                             \
-           self._y_center_diamond.size != density_map.size:
+        if self._x_diamonds.size != density_map.size\
+           or                                       \
+           self._y_diamonds.size != density_map.size:
 
             raise Exception('Inconsistent number of pixels and weights')
 
         return Generator_FromDensity._generate(
             self._nside,
-            self._x_center_diamond,
-            self._y_center_diamond,
+            self._x_diamonds,
+            self._y_diamonds,
             density_map,
             mult_factor,
             seed
@@ -61,7 +60,7 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
     @staticmethod
     @nb.njit(fastmath = True)
-    def _generate(nside: int, x_center_diamond: np.ndarray, y_center_diamond: np.ndarray, density_map: np.ndarray, mult_factor: float, seed: typing.Optional[int]) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def _generate(nside: int, x_diamonds: np.ndarray, y_diamonds: np.ndarray, density_map: np.ndarray, mult_factor: float, seed: typing.Optional[int]) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
@@ -77,8 +76,8 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
         # HEALPix diamonds to squares -> +45° rotation.
 
-        x_center = (x_center_diamond - y_center_diamond) / math.sqrt(2)
-        y_center = (x_center_diamond + y_center_diamond) / math.sqrt(2)
+        x_center = (x_diamonds - y_diamonds) / math.sqrt(2)
+        y_center = (x_diamonds + y_diamonds) / math.sqrt(2)
 
         ################################################################################################################
 
@@ -104,12 +103,12 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
         # squares to HEALPix diamonds -> -45° rotation.
 
-        x_galaxies_diamonds = (+x_galaxies + y_galaxies) / math.sqrt(2)
-        y_galaxies_diamonds = (-x_galaxies + y_galaxies) / math.sqrt(2)
+        x_galaxies2 = (+x_galaxies + y_galaxies) / math.sqrt(2)
+        y_galaxies2 = (-x_galaxies + y_galaxies) / math.sqrt(2)
 
         ################################################################################################################
 
-        theta, phi, = xy2thetaphi(x_galaxies_diamonds, y_galaxies_diamonds)
+        theta, phi, = xy2thetaphi(x_galaxies2, y_galaxies2)
 
         lon = 00.0 + 180.0 * phi / np.pi
         lat = 90.0 - 180.0 * theta / np.pi

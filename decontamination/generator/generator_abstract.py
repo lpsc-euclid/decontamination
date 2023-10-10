@@ -27,11 +27,17 @@ class Generator_abstract(object):
             ???
         """
 
+        ################################################################################################################
+
+        self._nside = nside
+
+        ################################################################################################################
+
         theta, phi = hp.pix2ang(nside, footprint, nest = nest)
 
-        x_center, y_center = thetaphi2xy(theta, phi)
+        diamond_x_center, diamond_y_center = thetaphi2xy(theta, phi)
 
-        self._x_center = x_center
-        self._y_center = y_center
+        self._x_center_diamond = diamond_x_center
+        self._y_center_diamond = diamond_y_center
 
 ########################################################################################################################

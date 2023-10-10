@@ -8,21 +8,31 @@ import numba as nb
 
 ########################################################################################################################
 
+def get_cell_size(nside: int) -> float:
+
+    full_sky = (12.0 / 16.0) * (2.0 * np.pi * np.pi)
+
+    n_pixels = 12 * nside * nside
+
+    return full_sky / n_pixels
+
+########################################################################################################################
+
 @nb.njit(fastmath = True)
 def thetaphi2xy(θ: np.ndarray, ϕ: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray]:
 
     """
-    Projects θ, ϕ to x, y on the Healpix plane.
+    Performs HEALPix spherical projection from the sphere (θ, ϕ) to the plane (x, y).
 
-    See page 8: https://iopscience.iop.org/article/10.1086/427976/pdf
+    See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8)
 
     Parameters
     ----------
     θ : np.ndarray
-        Polar angle (radians :math:`[0,\\pi]`)
+        Polar angle (radians :math:`[0,\\pi]`).
 
     ϕ : np.ndarray
-        Longitude angle (radians :math:`[0,2\\pi]`)
+        Longitude angle (radians :math:`[0,2\\pi]`).
 
     Returns
     -------
@@ -70,9 +80,9 @@ def thetaphi2xy(θ: np.ndarray, ϕ: np.ndarray) -> typing.Tuple[np.ndarray, np.n
 def xy2thetaphi(x: np.ndarray, y: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray]:
 
     """
-    Projects x, y on the Healpix plane to θ, ϕ.
+    Performs HEALPix spherical projection from the plane (x, y) to the sphere (θ, ϕ).
 
-    See page 8: https://iopscience.iop.org/article/10.1086/427976/pdf
+    See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8)
 
     Parameters
     ----------

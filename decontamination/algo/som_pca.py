@@ -54,9 +54,11 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit()
-    def _update_cov_matrix(result_sum: np.ndarray, result_prods: np.ndarray, data: np.ndarray) -> None:
+    def _update_cov_matrix(result_sum: np.ndarray, result_prods: np.ndarray, data: np.ndarray) -> int:
 
         ################################################################################################################
+
+        n = 0
 
         data_dim = data.shape[0]
         syst_dim = data.shape[1]
@@ -65,17 +67,25 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         for i in range(data_dim):
 
-            value = data[i].astype(np.float64)
+            vector = data[i].astype(np.float64)
 
-            for j in range(syst_dim):
+            if not np.any(np.isnan(vector)):
 
-                value_j = value[j]
-                result_sum[j] += value_j
+                n += 1
 
-                for k in range(syst_dim):
+                for j in range(syst_dim):
 
-                    value_jk = value_j * value[k]
-                    result_prods[j][k] += value_jk
+                    vector_j = vector[j]
+                    result_sum[j] += vector_j
+
+                    for k in range(syst_dim):
+
+                        vector_jk = vector_j * vector[k]
+                        result_prods[j][k] += vector_jk
+
+        ################################################################################################################
+
+        return n
 
     ####################################################################################################################
 
@@ -143,9 +153,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         for data in generator():
 
-            total_nb += data.shape[0]
-
-            SOM_PCA._update_cov_matrix(total_sum, total_prods, data)
+            total_nb += SOM_PCA._update_cov_matrix(total_sum, total_prods, data)
 
         ################################################################################################################
 

@@ -15,7 +15,7 @@ from . import xy2thetaphi, get_cell_size, generator_abstract
 class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
     """
-    Galaxy generator from a galaxy density map.
+    Galaxy catalog generator from a galaxy density map.
     """
 
     ####################################################################################################################

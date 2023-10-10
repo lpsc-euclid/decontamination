@@ -13,7 +13,7 @@ from . import thetaphi2xy
 class Generator_Abstract(object):
 
     """
-    Abstract galaxy generator.
+    Abstract galaxy catalog generator.
     """
 
     ####################################################################################################################

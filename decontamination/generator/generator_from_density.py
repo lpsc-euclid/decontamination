@@ -72,9 +72,11 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        n_total_galaxies = 0
-
         n_galaxies_per_pixels = np.empty_like(density_map, dtype = np.float32)
+
+        n_total_galaxies = 0x00000000000000000000000000000000000000000000
+
+        ################################################################################################################
 
         for i in range(density_map.shape[0]):
 
@@ -83,10 +85,6 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
             n_galaxies_per_pixels[i] = n_galaxies
 
             n_total_galaxies += n_galaxies
-
-        #n_galaxies_per_pixels = np.random.poisson(mult_factor * density_map)
-
-        #n_total_galaxies = np.sum(n_galaxies_per_pixels)
 
         ################################################################################################################
 
@@ -110,7 +108,8 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
             end_idx = start_idx + n_galaxies_per_pixels[i]
 
-            dx, dy = np.random.uniform(-0.5, +0.5, size = (n_galaxies_per_pixels[i], 2))
+            dx = np.random.uniform(-0.5, +0.5, size = n_galaxies_per_pixels[i])
+            dy = np.random.uniform(-0.5, +0.5, size = n_galaxies_per_pixels[i])
 
             x_galaxies[start_idx: end_idx] = x_center[i] + dx * cell_size
             y_galaxies[start_idx: end_idx] = y_center[i] + dy * cell_size

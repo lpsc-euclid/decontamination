@@ -6,6 +6,7 @@ import math
 import typing
 
 import numpy as np
+import numba as nb
 
 from . import xy2thetaphi, get_cell_size, generator_abstract
 
@@ -41,15 +42,30 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
             Seed for random generator (default: **None**).
         """
 
-        ################################################################################################################
-
-        rng = np.random.default_rng(seed = seed)
-
         if self._x_center_diamond.size != density_map.size\
            or                                             \
            self._y_center_diamond.size != density_map.size:
 
             raise Exception('Inconsistent number of pixels and weights')
+
+        return Generator_FromDensity._generate(
+            self._nside,
+            self._x_center_diamond,
+            self._y_center_diamond,
+            density_map,
+            mult_factor,
+            seed
+        )
+
+    ####################################################################################################################
+
+    @staticmethod
+    @nb.njit(fastmath = True)
+    def _generate(nside: int, x_center_diamond: np.ndarray, y_center_diamond: np.ndarray, density_map: np.ndarray, mult_factor: float, seed: typing.Optional[int]) -> typing.Tuple[np.ndarray, np.ndarray]:
+
+        ################################################################################################################
+
+        rng = np.random.default_rng(seed = seed)
 
         ################################################################################################################
 
@@ -61,14 +77,14 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
         # HEALPix diamonds to squares -> +45° rotation.
 
-        x_center = (self._x_center_diamond - self._y_center_diamond) / math.sqrt(2)
-        y_center = (self._x_center_diamond + self._y_center_diamond) / math.sqrt(2)
+        x_center = (x_center_diamond - y_center_diamond) / math.sqrt(2)
+        y_center = (x_center_diamond + y_center_diamond) / math.sqrt(2)
 
         ################################################################################################################
 
         start_idx = 0
 
-        cell_size = get_cell_size(self._nside)
+        cell_size = get_cell_size(nside)
 
         x_galaxies = np.empty(n_total_galaxies, dtype = np.float32)
         y_galaxies = np.empty(n_total_galaxies, dtype = np.float32)

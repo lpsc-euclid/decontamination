@@ -42,7 +42,7 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
         Parameters
         ----------
         density_map : np.ndarray
-            Number of galaxies per HEALPix pixel.
+            Number of galaxies per HEALPix pixels.
         mult_factor : float
             Statistics nultiplication factor (default: **10.0**).
         seed : typing.Optional[int]

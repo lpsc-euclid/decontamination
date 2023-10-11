@@ -17,6 +17,19 @@ class SOM_Abstract(object):
 
     """
     Self Organizing Maps (abstract class).
+
+    Parameters
+    ----------
+    m : int
+        Number of neuron rows.
+    n : int
+        Number of neuron columns.
+    dim : int
+        Dimensionality of the input data.
+    dtype : typing.Type[np.single]
+        Neural network data type (default: **np.float32**).
+    topology : typing.Optional[str]
+        Topology of the model, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
     """
 
     __MODE__ = 'abstract'
@@ -24,21 +37,6 @@ class SOM_Abstract(object):
     ####################################################################################################################
 
     def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None):
-
-        """
-        Parameters
-        ----------
-        m : int
-            Number of neuron rows.
-        n : int
-            Number of neuron columns.
-        dim : int
-            Dimensionality of the input data.
-        dtype : typing.Type[np.single]
-            Neural network data type (default: **np.float32**).
-        topology : typing.Optional[str]
-            Topology of the model, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
-        """
 
         ################################################################################################################
 

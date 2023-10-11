@@ -15,6 +15,15 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
     """
     Galaxy catalog generator from a galaxy density map.
+
+    Parameters
+    ----------
+    nside : int
+        ???
+    footprint : np.ndarray
+        ???
+    nest : bool
+        ???
     """
 
     ####################################################################################################################

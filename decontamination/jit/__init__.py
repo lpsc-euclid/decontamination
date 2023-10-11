@@ -112,22 +112,20 @@ class DeviceArray(object):
     Device array to be used when calling a CPU/GPU kernel.
 
     Prefer using primitives :class:`device_array_from`, :class:`device_array_empty`, :class:`device_array_zeros`, :class:`device_array_full` to instantiate a device array.
+
+    Parameters
+    ----------
+    shape : typing.Union[tuple, int]
+        Desired shape for the new array.
+    dtype : typing.Type[np.single]
+        Desired data-type for the new array.
+    content : typing.Optional[typing.Union[int, float, np.ndarray]]
+        Optional content, integer, floating ot Numpy ndarray.
     """
 
     ####################################################################################################################
 
     def __init__(self, shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32, content: typing.Optional[typing.Union[int, float, np.ndarray]] = None):
-
-        """
-        Parameters
-        ----------
-        shape : typing.Union[tuple, int]
-            Desired shape for the new array.
-        dtype : typing.Type[np.single]
-            Desired data-type for the new array.
-        content : typing.Optional[typing.Union[int, float, np.ndarray]]
-            Optional content, integer, floating ot Numpy ndarray.
-        """
 
         self._shape = shape
         self._dtype = dtype

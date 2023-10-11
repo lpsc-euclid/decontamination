@@ -29,7 +29,13 @@ extensions = [
     'sphinx.ext.mathjax',
 ]
 
-autodoc_member_order = 'bysource'
+autodoc_default_options = {
+    'docstring': 'class',
+    'undoc-members': False,
+    'private-members': False,
+    'show-inheritance': True,
+    'member-order': 'bysource',
+}
 
 mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js'
 

@@ -44,7 +44,7 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
         density_map : np.ndarray
             Number of galaxies per HEALPix pixels.
         mult_factor : float
-            Statistics nultiplication factor (default: **10.0**).
+            Statistics multiplication factor (default: **10.0**).
         seed : typing.Optional[int]
             Seed for *poisson* and *uniform* generators (default: **None**).
 
@@ -83,7 +83,7 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
     def _generate(rng: np.random.Generator, nside: int, x_diamonds: np.ndarray, y_diamonds: np.ndarray, density_map: np.ndarray, mult_factor: float) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         ################################################################################################################
-        #                                                                                                              #
+        # GENERATE GALAXIES                                                                                            #                                                                                                             #
         ################################################################################################################
 
         n_galaxies_per_pixels = np.empty_like(density_map, dtype = np.int32)
@@ -101,7 +101,7 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
             n_total_galaxies += n_galaxies
 
         ################################################################################################################
-        #                                                                                                              #
+        # GENERATE POSITIONS                                                                                           #                                                                                                             #
         ################################################################################################################
 
         # HEALPix diamonds to squares -> +45° rotation.
@@ -137,7 +137,7 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
         y_galaxies2 = (-x_galaxies + y_galaxies) / math.sqrt(2)
 
         ################################################################################################################
-        #                                                                                                              #
+        # X, Y TO LON, LAT PROJECTION                                                                                  #
         ################################################################################################################
 
         theta, phi, = xy2thetaphi(x_galaxies2, y_galaxies2)

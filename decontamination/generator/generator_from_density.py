@@ -44,9 +44,14 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
         density_map : np.ndarray
             Number of galaxies per HEALPix pixel.
         mult_factor : float
-            Statistics nultiplication factor (default: **10.0**)
+            Statistics nultiplication factor (default: **10.0**).
         seed : typing.Optional[int]
             Seed for *poisson* and *uniform* generators (default: **None**).
+
+        Returns
+        -------
+        typing.Tuple[np.ndarray, np.ndarray]
+            Longitudes and latitudes.
         """
 
         ################################################################################################################

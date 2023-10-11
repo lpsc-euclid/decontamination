@@ -14,24 +14,20 @@ class Generator_Abstract(object):
 
     """
     Abstract galaxy catalog generator.
+
+    Parameters
+    ----------
+    nside : int
+        ???
+    footprint : np.ndarray
+        ???
+    nest : bool
+        ???
     """
 
     ####################################################################################################################
 
     def __init__(self, nside: int, footprint: np.ndarray, nest: bool = True):
-
-        """
-        ???
-
-        Parameters
-        ----------
-        nside : int
-            ???
-        footprint : np.ndarray
-            ???
-        nest : bool
-            ???
-        """
 
         ################################################################################################################
 

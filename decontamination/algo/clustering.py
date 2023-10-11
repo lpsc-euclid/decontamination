@@ -18,6 +18,7 @@ class Clustering(object):
 
     @staticmethod
     def clusterize(vectors: np.ndarray, n_clusters: int) -> np.ndarray:
+
         """
         Clusters the input array using the Lance-Williams hierarchical clustering with complete-linkage algorithm.
 

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
+import math
 import typing
 
 import numpy as np
@@ -16,7 +17,7 @@ def get_cell_size(nside: int) -> float:
     See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8).
 
     .. math::
-        \\underbrace{\\left(\\frac{12}{16}\\cdot2\\pi^2\\right)}_{\\mathrm{white\\ region}}/\\underbrace{\\left(12\\cdot\\mathrm{nside}^2\\right)}_{\\mathrm{number\\ of\\ pixels}}
+        \\mathrm{cell\\ size}=\\sqrt{\\underbrace{\\left(\\frac{12}{16}\\cdot2\\pi^2\\right)}_{\\mathrm{white\\ region}}/\\underbrace{\\left(12\\cdot\\mathrm{nside}^2\\right)}_{\\mathrm{number\\ of\\ pixels}}}=\\frac{\\pi}{2\\sqrt{2}\\cdot\\mathrm{nside}}
 
     .. image:: _static/healpix_cartesian_plan.svg
         :alt: HEALPix cartesian plan
@@ -29,11 +30,7 @@ def get_cell_size(nside: int) -> float:
         The HEALPix nside parameter.
     """
 
-    full_sky = (12.0 / 16.0) * (2.0 * np.pi * np.pi)
-
-    n_pixels = 12 * nside * nside
-
-    return full_sky / n_pixels
+    return np.pi / (2.0 * math.sqrt(2.0) * nside)
 
 ########################################################################################################################
 

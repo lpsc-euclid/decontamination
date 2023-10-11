@@ -17,6 +17,25 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
     """
     Self Organizing Maps (standard online implementation).
+
+    A rule of thumb to set the size of the grid for a dimensionality reduction task is that it should contain :math:`5\\sqrt{N}` neurons where N is the number of samples in the dataset to analyze.
+
+    Parameters
+    ----------
+    m : int
+        Number of neuron rows.
+    n : int
+        Number of neuron columns.
+    dim : int
+        Dimensionality of the input data.
+    dtype : typing.Type[np.single]
+        Neural network data type (default: **np.float32**).
+    topology : typing.Optional[str]
+        Topology of the model, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
+    alpha : float
+        Starting value of the learning rate (default: **None**, uses: **0.3**).
+    sigma : float
+        Starting value of the neighborhood radius (default: **None**, uses: :math:`\\mathrm{max}(m,n)/2`).
     """
 
     __MODE__ = 'online'
@@ -24,27 +43,6 @@ class SOM_Online(som_abstract.SOM_Abstract):
     ####################################################################################################################
 
     def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None, alpha: float = None, sigma: float = None):
-
-        """
-        A rule of thumb to set the size of the grid for a dimensionality reduction task is that it should contain :math:`5\\sqrt{N}` neurons where N is the number of samples in the dataset to analyze.
-
-        Parameters
-        ----------
-        m : int
-            Number of neuron rows.
-        n : int
-            Number of neuron columns.
-        dim : int
-            Dimensionality of the input data.
-        dtype : typing.Type[np.single]
-            Neural network data type (default: **np.float32**).
-        topology : typing.Optional[str]
-            Topology of the model, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
-        alpha : float
-            Starting value of the learning rate (default: **None**, uses: **0.3**).
-        sigma : float
-            Starting value of the neighborhood radius (default: **None**, uses: :math:`\\mathrm{max}(m,n)/2`).
-        """
 
         ################################################################################################################
 

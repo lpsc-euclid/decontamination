@@ -87,7 +87,7 @@ class SOM_Abstract(object):
         for i in range(m):
             for j in range(n):
 
-                i_offset = (j & 1) * (-0.5)
+                i_offset = (j & 1) * 0.5
 
                 yield [i + i_offset, j * 0.8660254037844386]  # √3/2 = 0.8660254037844386
 

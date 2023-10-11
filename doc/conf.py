@@ -47,7 +47,6 @@ exclude_patterns = ['_build', '.DS_Store', 'Thumbs.db']
 
 html_theme = 'cloud'
 
-html_logo = '_static/logo.png'
 html_css_files = ['custom.css']
 html_static_path = ['_static']
 html_use_modindex = False

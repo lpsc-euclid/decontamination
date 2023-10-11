@@ -12,7 +12,7 @@ import numba as nb
 def get_cell_size(nside: int) -> float:
 
     """
-    In the cartesian plane, returns the side length of the HEALPix diamonds.
+    In the cartesian plane, returns the HEALPix diamond side length.
 
     See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8).
 

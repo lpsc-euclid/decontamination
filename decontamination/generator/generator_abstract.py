@@ -18,11 +18,11 @@ class Generator_Abstract(object):
     Parameters
     ----------
     nside : int
-        ???
+        The HEALPix nside parameter.
     footprint : np.ndarray
-        ???
+        HEALPix pixel indices of the footprint.
     nest : bool
-        ???
+        Tf True, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: **True**).
     """
 
     ####################################################################################################################

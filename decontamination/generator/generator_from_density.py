@@ -19,11 +19,11 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
     Parameters
     ----------
     nside : int
-        ???
+        The HEALPix nside parameter.
     footprint : np.ndarray
-        ???
+        HEALPix pixel indices of the footprint.
     nest : bool
-        ???
+        Tf True, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: **True**).
     """
 
     ####################################################################################################################
@@ -36,17 +36,17 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
     ####################################################################################################################
 
-    def generate(self, density_map: np.ndarray, mult_factor: float = 1.0, seed: typing.Optional[int] = None) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def generate(self, density_map: np.ndarray, mult_factor: float = 10.0, seed: typing.Optional[int] = None) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         """
         Parameters
         ----------
         density_map : np.ndarray
-            ???
+            Number of galaxies per HEALPix pixel.
         mult_factor : float
-            ??? (default: **1.0**)
+            Statistics nultiplication factor (default: **10.0**)
         seed : typing.Optional[int]
-            Seed for random generator (default: **None**).
+            Seed for *poisson* and *uniform* generators (default: **None**).
         """
 
         ################################################################################################################

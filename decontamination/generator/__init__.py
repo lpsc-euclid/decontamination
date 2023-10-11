@@ -17,7 +17,7 @@ def get_cell_size(nside: int) -> float:
     See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8).
 
     .. math::
-        \\mathrm{cell\\ size}=\\sqrt{\\underbrace{\\left(\\frac{12}{16}\\cdot2\\pi^2\\right)}_{\\mathrm{white\\ region}}/\\underbrace{\\left(12\\cdot\\mathrm{nside}^2\\right)}_{\\mathrm{number\\ of\\ pixels}}}=\\frac{\\pi}{2\\sqrt{2}\\cdot\\mathrm{nside}}
+        \\mathrm{cell\\ size}=\\sqrt{\\underbrace{\\left(\\frac{12}{16}\\cdot2\\pi^2\\right)}_{\\mathrm{white\\ area}}/\\underbrace{\\left(12\\cdot\\mathrm{nside}^2\\right)}_{\\mathrm{number\\ of\\ pixels}}}=\\frac{\\pi}{2\\sqrt{2}\\cdot\\mathrm{nside}}
 
     .. image:: _static/healpix_cartesian_plan.svg
         :alt: HEALPix cartesian plan

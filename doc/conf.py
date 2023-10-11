@@ -41,8 +41,7 @@ mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js'
 
 ########################################################################################################################
 
-templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['_build', '.DS_Store', 'Thumbs.db']
 
 ########################################################################################################################
 
@@ -51,5 +50,6 @@ html_theme = 'cloud'
 html_logo = '_static/logo.png'
 html_css_files = ['custom.css']
 html_static_path = ['_static']
+html_use_modindex = False
 
 ########################################################################################################################

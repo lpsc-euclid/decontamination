@@ -51,7 +51,7 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
         Returns
         -------
         typing.Tuple[np.ndarray, np.ndarray]
-            Longitudes and latitudes.
+            Galaxy catalog (longitudes and latitudes).
         """
 
         ################################################################################################################

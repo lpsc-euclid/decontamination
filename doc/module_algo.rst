@@ -1,6 +1,9 @@
 Module decontamination.algo
 ===========================
 
+Self Organizing Maps
+--------------------
+
 .. automodule:: decontamination.algo.som_abstract
    :members:
 
@@ -12,6 +15,9 @@ Module decontamination.algo
 
 .. automodule:: decontamination.algo.som_batch
    :members:
+
+Clustering
+----------
 
 .. automodule:: decontamination.algo.clustering
    :members:

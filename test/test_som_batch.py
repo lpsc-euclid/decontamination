@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3 -m pytest
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
@@ -87,11 +87,5 @@ def test_centroids_iter(enable_gpu):
     som.train(data, n_vectors = data.shape[0], enable_gpu = enable_gpu, threads_per_blocks = 64)
 
     assert np.allclose(som.get_centroids(), expected, rtol = 1e-4)
-
-########################################################################################################################
-
-if __name__ == '__main__':
-
-    pytest.main([__file__])
 
 ########################################################################################################################

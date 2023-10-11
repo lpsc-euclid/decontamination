@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 
 ########################################################################################################################
 
-TOPOLOGY = 'square2'
+TOPOLOGY = 'square'
 
 N_CLUSTERS = 20
 

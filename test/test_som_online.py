@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3 -m pytest
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
@@ -9,7 +9,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 ########################################################################################################################
 
-import pytest
 import decontamination
 
 import numpy as np
@@ -87,11 +86,5 @@ def test_centroids_iter():
     print(decontamination.array_to_string(som.get_centroids()))
 
     assert np.allclose(som.get_centroids(), expected)
-
-########################################################################################################################
-
-if __name__ == '__main__':
-
-    pytest.main([__file__])
 
 ########################################################################################################################

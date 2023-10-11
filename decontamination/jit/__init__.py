@@ -340,6 +340,58 @@ class jit(object):
 
     """
     Decorator to recompile Python functions into native CPU/GPU ones.
+
+    Parameters
+    ----------
+    kernel : bool
+        Indicates whether this function is a CPU/GPU kernel (default: **False**).
+    inline : bool
+        Indicates whether this function must be inlined  (default: **False**).
+    fastmath : bool
+        Enables fast-math optimizations when running on CPU (default: **False**).
+    parallel : bool
+        Enables automatic parallelization when running on CPU (default: **False**).
+
+    Example
+    -------
+        @jit()
+        def foo_xpu(a, b):
+
+            return a + b
+
+        @jit(kernel = True)
+        def foo_kernel(result, a, b):
+
+            ########################################################################
+            # !--BEGIN-CPU--
+
+            for i in range(result.shape[0]):
+
+                result[i] = foo_xpu(a[i], b[i])
+
+            # !--END-CPU--
+            ########################################################################
+            # !--BEGIN-GPU--
+
+            i = jit.grid(1)
+            if i < result.shape[0]:
+
+                result[i] = foo_xpu(a[i], b[i])
+
+            # !--END-GPU--
+            ########################################################################
+
+        use_gpu = True
+        threads_per_block = 32
+
+        A = np.random.randn(100_000).astype(np.float32)
+        B = np.random.randn(100_000).astype(np.float32)
+
+        result = device_array_empty(100_000, dtype = np.float32)
+
+        foo_kernel[use_gpu, threads_per_block, result.shape[0]](result, A, B)
+
+        print(result.copy_to_host())
     """
 
     ####################################################################################################################
@@ -451,6 +503,8 @@ class jit(object):
 
     _METHOD_RE = re.compile('def[^(]+(\\(.*)', flags = re.DOTALL)
 
+    _JIT_CALL_RE = re.compile('([a-zA-Z_][a-zA-Z0-9_]*\\.)?jit\\.', flags = re.DOTALL)
+
     _CPU_CODE_RE = re.compile(re.escape('!--BEGIN-CPU--') + '.*?' + re.escape('!--END-CPU--'), re.DOTALL)
 
     _GPU_CODE_RE = re.compile(re.escape('!--BEGIN-GPU--') + '.*?' + re.escape('!--END-GPU--'), re.DOTALL)
@@ -458,60 +512,6 @@ class jit(object):
     ####################################################################################################################
 
     def __init__(self, kernel: bool = False, inline: bool = False, fastmath: bool = False, parallel: bool = False):
-
-        """
-        Parameters
-        ----------
-        kernel : bool
-            Indicates whether this function is a CPU/GPU kernel (default: **False**).
-        inline : bool
-            Indicates whether this function must be inlined  (default: **False**).
-        fastmath : bool
-            Enables fast-math optimizations when running on CPU (default: **False**).
-        parallel : bool
-            Enables automatic parallelization when running on CPU (default: **False**).
-
-        Example
-        -------
-            @jit()
-            def foo_xpu(a, b):
-
-                return a + b
-
-            @jit(kernel = True)
-            def foo_kernel(result, a, b):
-
-                ########################################################################
-                # !--BEGIN-CPU--
-
-                for i in range(result.shape[0]):
-
-                    result[i] = foo_xpu(a[i], b[i])
-
-                # !--END-CPU--
-                ########################################################################
-                # !--BEGIN-GPU--
-
-                i = jit.grid(1)
-                if i < result.shape[0]:
-
-                    result[i] = foo_xpu(a[i], b[i])
-
-                # !--END-GPU--
-                ########################################################################
-
-            use_gpu = True
-            threads_per_block = 32
-
-            A = np.random.randn(100_000).astype(np.float32)
-            B = np.random.randn(100_000).astype(np.float32)
-
-            result = device_array_empty(100_000, dtype = np.float32)
-
-            foo_kernel[use_gpu, threads_per_block, result.shape[0]](result, A, B)
-
-            print(result.copy_to_host())
-        """
 
         self._kernel = kernel
         self._inline = inline
@@ -536,7 +536,7 @@ class jit(object):
     @classmethod
     def _patch_cpu_code(cls, code: str) -> str:
 
-        code_cpu = cls._CALL_RE.sub(lambda m: f'jit_module.{m.group(1)}_cpu(', cls._GPU_CODE_RE.sub('', code))
+        code_cpu = cls._CALL_RE.sub(lambda m: f'jit_module.{m.group(1)}_cpu(', cls._JIT_CALL_RE.sub('jit.', cls._GPU_CODE_RE.sub('', code)))
 
         return (
             code_cpu
@@ -553,7 +553,7 @@ class jit(object):
     @classmethod
     def _patch_gpu_code(cls, code: str) -> str:
 
-        code_gpu = cls._CALL_RE.sub(lambda m: f'jit_module.{m.group(1)}_gpu(', cls._CPU_CODE_RE.sub('', code))
+        code_gpu = cls._CALL_RE.sub(lambda m: f'jit_module.{m.group(1)}_gpu(', cls._JIT_CALL_RE.sub('jit.', cls._CPU_CODE_RE.sub('', code)))
 
         return (
             code_gpu
@@ -570,14 +570,26 @@ class jit(object):
     @classmethod
     def _inject_cpu_funct(cls, orig_funct: typing.Callable, new_funct: typing.Callable) -> None:
 
-        globals()[orig_funct.__name__.replace('_xpu', '_cpu')] = new_funct
+        name = orig_funct.__name__.replace('_xpu', '_cpu')
+
+        if name in globals():
+
+            raise Exception(f'Function {name} already declared')
+
+        globals()[name] = new_funct
 
     ####################################################################################################################
 
     @classmethod
     def _inject_gpu_funct(cls, orig_funct: typing.Callable, new_funct: typing.Callable) -> None:
 
-        globals()[orig_funct.__name__.replace('_xpu', '_gpu')] = new_funct
+        name = orig_funct.__name__.replace('_xpu', '_gpu')
+
+        if name in globals():
+
+            raise Exception(f'Function {name} already declared')
+
+        globals()[name] = new_funct
 
     ####################################################################################################################
 

@@ -1,8 +1,10 @@
 Module decontamination.algo
 ===========================
 
-Self Organizing Maps
+Self-Organizing Maps
 --------------------
+
+Self Organizing Maps (SOMs) are neural networks that transform high-dimensional data into spatially organized low-dimensional clusters.
 
 .. image:: _static/som.png
     :alt: Self Organizing Maps

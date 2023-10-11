@@ -1,8 +1,8 @@
 Module decontamination.generator
 ================================
 
-Generators
-----------
+Galaxy generators
+-----------------
 
 .. automodule:: decontamination.generator.generator_abstract
    :members:

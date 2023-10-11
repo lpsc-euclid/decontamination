@@ -4,6 +4,11 @@ Module decontamination.algo
 Self Organizing Maps
 --------------------
 
+.. image:: _static/som.png
+    :alt: Self Organizing Maps
+    :width: 50%
+    :align: center
+
 .. automodule:: decontamination.algo.som_abstract
    :members:
 

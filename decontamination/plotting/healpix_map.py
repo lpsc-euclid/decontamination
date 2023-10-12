@@ -96,6 +96,14 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
         title : str
     """
 
+    ####################################################################################################################
+
+    if footprint.shape != weights.shape:
+
+        raise ValueError('Invalid shapes')
+
+    ####################################################################################################################
+
     sky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
 
     sky[footprint] = weights
@@ -141,6 +149,16 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
             Maximum color scale (default: **None**, uses: max(data)).
         title : str
     """
+
+    ####################################################################################################################
+
+    if footprint.shape != lon.shape\
+       or                          \
+       footprint.shape != lat.shape:
+
+        raise ValueError('Invalid shapes')
+
+    ####################################################################################################################
 
     sky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
 

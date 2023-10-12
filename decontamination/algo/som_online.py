@@ -28,7 +28,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
         Number of neuron columns.
     dim : int
         Dimensionality of the input data.
-    dtype : typing.Type[np.single]
+    dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
         Neural network data type (default: **np.float32**).
     topology : typing.Optional[str]
         Topology of the model, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
@@ -42,7 +42,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None, alpha: float = None, sigma: float = None):
+    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, topology: typing.Optional[str] = None, alpha: float = None, sigma: float = None):
 
         ################################################################################################################
 

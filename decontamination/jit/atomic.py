@@ -122,7 +122,7 @@ def declare_atomic_array_op(iop: str, uop: str, fop: str):
 ########################################################################################################################
 
 @declare_atomic_array_op('add', 'add', 'fadd')
-def add(array: np.ndarray, i: int, v: typing.Union[np.single, float, int]) -> typing.Union[np.single, float, int]:
+def add(array: np.ndarray, i: int, v: typing.Union[np.float64, np.float32, float, np.int64, np.int32, int]) -> typing.Union[np.float64, np.float32, float, np.int64, np.int32, int]:
 
     orig = array[i]
     array[i] += v
@@ -131,7 +131,7 @@ def add(array: np.ndarray, i: int, v: typing.Union[np.single, float, int]) -> ty
 ########################################################################################################################
 
 @declare_atomic_array_op('sub', 'sub', 'fsub')
-def sub(array: np.ndarray, i: int, v: typing.Union[np.single, float, int]) -> typing.Union[np.single, float, int]:
+def sub(array: np.ndarray, i: int, v: typing.Union[np.float64, np.float32, float, np.int64, np.int32, int]) -> typing.Union[np.float64, np.float32, float, np.int64, np.int32, int]:
 
     orig = array[i]
     array[i] -= v

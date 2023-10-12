@@ -31,8 +31,6 @@ extensions = [
 
 autodoc_default_options = {
     'docstring': 'class',
-    'undoc-members': False,
-    'private-members': False,
     'show-inheritance': True,
     'member-order': 'bysource',
 }
@@ -50,5 +48,58 @@ html_theme = 'cloud'
 html_css_files = ['custom.css']
 html_static_path = ['_static']
 html_use_modindex = False
+
+########################################################################################################################
+
+# noinspection PyUnusedLocal
+def skip_undocumented_classes_and_functions(app, what, name, obj, skip, options):
+
+    if not name.startswith('_') and getattr(obj, '__doc__', ''):
+
+        return False
+
+    return True
+
+########################################################################################################################
+
+# noinspection PyUnusedLocal
+def process_signature(app, what, name, obj, options, signature, return_annotation):
+
+    numeric_type = '~Type[~np.float32 | ~np.float64 | float | ~np.int32 | ~np.int64 | int]'
+
+    numeric_value = '~np.float32 | ~np.float64 | float | ~np.int32 | ~np.int64 | int'
+
+    if signature:
+
+        signature = signature.replace('typing.', '').replace('numpy.', 'np.').replace(numeric_type, '<numeric type>').replace(numeric_value, '<numeric value>')
+
+    if return_annotation:
+
+        return_annotation = return_annotation.replace('typing.', '').replace('numpy.', 'np.').replace(numeric_type, '<numeric type>').replace(numeric_value, '<numeric value>')
+
+    return signature, return_annotation
+
+########################################################################################################################
+
+# noinspection PyUnusedLocal
+def process_docstring(app, what, name, obj, options, lines):
+
+    numeric_type = 'Type[Union[np.float32, np.float64, float, np.int32, np.int64, int]]'
+
+    numeric_value = 'Union[np.float32, np.float64, float, np.int32, np.int64, int]'
+
+    for index, line in enumerate(lines):
+
+        lines[index] = line.replace('typing.', '').replace('numpy.', 'np.').replace(numeric_type, '<numeric type>').replace(numeric_value, '<numeric value>')
+
+########################################################################################################################
+
+def setup(app):
+
+    app.connect('autodoc-skip-member', skip_undocumented_classes_and_functions)
+
+    app.connect("autodoc-process-signature", process_signature)
+
+    app.connect("autodoc-process-docstring", process_docstring)
 
 ########################################################################################################################

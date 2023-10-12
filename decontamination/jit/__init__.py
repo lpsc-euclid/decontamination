@@ -53,7 +53,7 @@ def device_array_from(array: np.ndarray):
 
 ########################################################################################################################
 
-def device_array_empty(shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32):
+def device_array_empty(shape: typing.Union[tuple, int], dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32):
 
     """
     New device array (see :class:`DeviceArray`), not initialized. Similar to `numpy.empty()`.
@@ -62,7 +62,7 @@ def device_array_empty(shape: typing.Union[tuple, int], dtype: typing.Type[np.si
     ----------
     shape : typing.Union[tuple, int]
         Desired shape for the new array.
-    dtype : typing.Type[np.single]
+    dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
         Desired data-type for the new array.
     """
 
@@ -70,7 +70,7 @@ def device_array_empty(shape: typing.Union[tuple, int], dtype: typing.Type[np.si
 
 ########################################################################################################################
 
-def device_array_zeros(shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32):
+def device_array_zeros(shape: typing.Union[tuple, int], dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32):
 
     """
     New device array (see :class:`DeviceArray`), filled with **0**. Similar to `numpy.zeros()`.
@@ -79,7 +79,7 @@ def device_array_zeros(shape: typing.Union[tuple, int], dtype: typing.Type[np.si
     ----------
     shape : typing.Union[tuple, int]
         Desired shape for the new array.
-    dtype : typing.Type[np.single]
+    dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
         Desired data-type for the new array.
     """
 
@@ -87,7 +87,7 @@ def device_array_zeros(shape: typing.Union[tuple, int], dtype: typing.Type[np.si
 
 ########################################################################################################################
 
-def device_array_full(shape: typing.Union[tuple, int], value: typing.Union[int, float], dtype: typing.Type[np.single] = np.float32):
+def device_array_full(shape: typing.Union[tuple, int], value: typing.Union[int, float], dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32):
 
     """
     New device array (see :class:`DeviceArray`), filled with **value**. Similar to `numpy.full()`.
@@ -98,7 +98,7 @@ def device_array_full(shape: typing.Union[tuple, int], value: typing.Union[int, 
         Desired shape for the new array.
     value : typing.Union[int, float]
         Desired value for the new array.
-    dtype : typing.Type[np.single]
+    dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
         Desired data-type for the new array.
     """
 
@@ -117,7 +117,7 @@ class DeviceArray(object):
     ----------
     shape : typing.Union[tuple, int]
         Desired shape for the new array.
-    dtype : typing.Type[np.single]
+    dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
         Desired data-type for the new array.
     content : typing.Optional[typing.Union[int, float, np.ndarray]]
         Optional content, integer, floating ot Numpy ndarray.
@@ -125,7 +125,7 @@ class DeviceArray(object):
 
     ####################################################################################################################
 
-    def __init__(self, shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32, content: typing.Optional[typing.Union[int, float, np.ndarray]] = None):
+    def __init__(self, shape: typing.Union[tuple, int], dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, content: typing.Optional[typing.Union[int, float, np.ndarray]] = None):
 
         self._shape = shape
         self._dtype = dtype
@@ -413,7 +413,7 @@ class jit(object):
     ####################################################################################################################
 
     @staticmethod
-    def local_empty(shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32) -> np.ndarray:
+    def local_empty(shape: typing.Union[tuple, int], dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32) -> np.ndarray:
 
         """
         Allocate an empty device ndarray in the local memory. Similar to `numpy.empty()` on CPU.
@@ -422,7 +422,7 @@ class jit(object):
         ----------
         shape : typing.Union[tuple, int]
             Desired shape for the new array.
-        dtype : typing.Type[np.single]
+        dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
             Desired data-type for the new array.
         """
 
@@ -431,7 +431,7 @@ class jit(object):
     ####################################################################################################################
 
     @staticmethod
-    def shared_empty(shape: typing.Union[tuple, int], dtype: typing.Type[np.single] = np.float32) -> np.ndarray:
+    def shared_empty(shape: typing.Union[tuple, int], dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32) -> np.ndarray:
 
         """
         Allocate an empty device ndarray in the shared memory. Similar to `numpy.empty()` on CPU.
@@ -440,7 +440,7 @@ class jit(object):
         ----------
         shape : typing.Union[tuple, int]
             Desired shape for the new array.
-        dtype : typing.Type[np.single]
+        dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
             Desired data-type for the new array.
         """
 
@@ -460,10 +460,10 @@ class jit(object):
     ####################################################################################################################
 
     @staticmethod
-    def atomic_add(array: np.ndarray, idx: int, val: typing.Union[np.single, float, int]) -> typing.Union[np.single, float, int]:
+    def atomic_add(array: np.ndarray, idx: int, val: typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]) -> typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]:
 
         """
-        Performs atomic `array[idx] += val` and returns the old value. Supported on int32, float32, and float64 operands only.
+        Performs atomic `array[idx] += val` and returns the old value. Supported on int32/64 and float32/64 operands only.
 
         Parameters
         ----------
@@ -471,7 +471,7 @@ class jit(object):
             Array to be modified.
         idx : int
             Index in the array.
-        val : typing.Union[np.single, float, int]
+        val : typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]
             New value.
         """
 
@@ -480,10 +480,10 @@ class jit(object):
     ####################################################################################################################
 
     @staticmethod
-    def atomic_sub(array: np.ndarray, idx: int, val: typing.Union[np.single, float, int]) -> typing.Union[np.single, float, int]:
+    def atomic_sub(array: np.ndarray, idx: int, val: typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]) -> typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]:
 
         """
-        Performs atomic `array[idx] -= val` and returns the old value. Supported on int32, float32, and float64 operands only.
+        Performs atomic `array[idx] -= val` and returns the old value. Supported on int32/64 and float32/64 operands only.
 
         Parameters
         ----------
@@ -491,7 +491,7 @@ class jit(object):
             Array to be modified.
         idx : int
             Index in the array.
-        val : typing.Union[np.single, float, int]
+        val : typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]
             New value.
         """
 

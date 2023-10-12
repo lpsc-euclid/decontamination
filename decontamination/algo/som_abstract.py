@@ -26,7 +26,7 @@ class SOM_Abstract(object):
         Number of neuron columns.
     dim : int
         Dimensionality of the input data.
-    dtype : typing.Type[np.single]
+    dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
         Neural network data type (default: **np.float32**).
     topology : typing.Optional[str]
         Topology of the model, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
@@ -36,7 +36,7 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[np.single] = np.float32, topology: typing.Optional[str] = None):
+    def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, topology: typing.Optional[str] = None):
 
         ################################################################################################################
 
@@ -345,7 +345,7 @@ class SOM_Abstract(object):
     ####################################################################################################################
 
     @property
-    def dtype(self) -> typing.Type[np.single]:
+    def dtype(self) -> typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]:
 
         """
         Returns the neural network data type.

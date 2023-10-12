@@ -23,7 +23,7 @@ def _catalog_to_density(nside: int, footprint: np.ndarray, sky: np.ndarray, lon:
 
 ########################################################################################################################
 
-def display_cart(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None, title = '') -> np.ndarray:
+def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None, title ='') -> np.ndarray:
 
     ####################################################################################################################
 
@@ -94,6 +94,7 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
         v_max : float
             Maximum color scale (default: **None**, uses: max(data)).
         title : str
+            ???
     """
 
     ####################################################################################################################
@@ -108,7 +109,7 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
 
     sky[footprint] = weights
 
-    return display_cart(
+    return _display(
         nside,
         footprint,
         sky,
@@ -148,6 +149,7 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
         v_max : float
             Maximum color scale (default: **None**, uses: max(data)).
         title : str
+            ???
     """
 
     ####################################################################################################################
@@ -162,7 +164,7 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
 
     _catalog_to_density(nside, footprint, sky, lon, lat, nest)
 
-    return display_cart(
+    return _display(
         nside,
         footprint,
         sky,

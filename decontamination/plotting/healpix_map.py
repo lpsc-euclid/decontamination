@@ -70,7 +70,7 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool = Tr
 
 ########################################################################################################################
 
-def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None, title: str = '') -> np.ndarray:
+def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None, title: str = '') -> np.ndarray:
 
     """
     Displays a HEALPix map.
@@ -79,16 +79,16 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
     ----------
         nside : int
             The HEALPix nside parameter.
-        footprint : np.ndarray
-            ???
+        pixels : np.ndarray
+            Array of HEALPix pixels.
         weights : np.ndarray
-            ???
+            Array of HEALPix weights.
         nest : bool
-            ???
+            If **True**, ordering scheme is *NESTED* (default: **True**).
         cmap : str
             Color map (default: **'jet'**).
         norm : typing.Optional[str]
-            ??? (default: **None**).
+            Color normalization, hist = histogram equalized color mapping, log = logarithmic color mapping (default: **None**).
         v_min : float
             Minimum color scale (default: **None**, uses: min(data)).
         v_max : float
@@ -99,7 +99,7 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
 
     ####################################################################################################################
 
-    if footprint.shape != weights.shape:
+    if pixels.shape != weights.shape:
 
         raise ValueError('Invalid shapes')
 
@@ -107,11 +107,11 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
 
     sky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
 
-    sky[footprint] = weights
+    sky[pixels] = weights
 
     return _display(
         nside,
-        footprint,
+        pixels,
         sky,
         nest = nest,
         cmap = cmap,
@@ -123,7 +123,7 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
 
 ########################################################################################################################
 
-def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = 'hist', v_min: float = None, v_max: float = None, title: str = '') -> np.ndarray:
+def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = 'hist', v_min: float = None, v_max: float = None, title: str = '') -> np.ndarray:
 
     """
     Displays a catalog.
@@ -132,18 +132,18 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
     ----------
         nside : int
             The HEALPix nside parameter.
-        footprint : np.ndarray
-            ???
+        pixels : np.ndarray
+            Array of HEALPix pixels.
         lon: np.ndarray
-            ???
+            Array of longitudes.
         lat: np.ndarray
-            ???
+            Array of latitudes.
         nest : bool
-            ???
+            If **True**, ordering scheme is *NESTED* (default: **True**).
         cmap : str
             Color map (default: **'jet'**).
         norm : typing.Optional[str]
-            ??? (default: **'hist'**).
+            Color normalization, hist = histogram equalized color mapping, log = logarithmic color mapping (default: **'hist'**).
         v_min : float
             Minimum color scale (default: **None**, uses: min(data)).
         v_max : float
@@ -162,11 +162,11 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
 
     sky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
 
-    _catalog_to_density(nside, footprint, sky, lon, lat, nest)
+    _catalog_to_density(nside, pixels, sky, lon, lat, nest)
 
     return _display(
         nside,
-        footprint,
+        pixels,
         sky,
         nest = nest,
         cmap = cmap,

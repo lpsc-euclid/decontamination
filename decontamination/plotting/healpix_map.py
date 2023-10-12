@@ -9,7 +9,7 @@ import healpy as hp
 
 ########################################################################################################################
 
-def _catalog_to_density(nside: int, footprint: np.ndarray, sky: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool):
+def _catalog_to_density(nside: int, footprint: np.ndarray, sky: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool) -> None:
 
     ####################################################################################################################
 

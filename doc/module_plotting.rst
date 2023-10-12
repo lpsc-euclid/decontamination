@@ -18,4 +18,5 @@ Plotting in the latent space
 Plotting in the HEALPix space
 -----------------------------
 
-TODO
+.. automodule:: decontamination.plotting.healpix_map
+   :members:

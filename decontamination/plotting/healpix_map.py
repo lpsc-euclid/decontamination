@@ -23,7 +23,7 @@ def _catalog_to_density(nside: int, footprint: np.ndarray, sky: np.ndarray, lon:
 
 ########################################################################################################################
 
-def display_cart(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None, title = ''):
+def display_cart(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None, title = '') -> np.ndarray:
 
     ####################################################################################################################
 
@@ -70,13 +70,37 @@ def display_cart(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool 
 
 ########################################################################################################################
 
-def display_healpix(nside, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None, title: str = ''):
+def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None, title: str = '') -> np.ndarray:
+
+    """
+    Displays a HEALPix map.
+
+    Parameters
+    ----------
+        nside : int
+            The HEALPix nside parameter.
+        footprint : np.ndarray
+            ???
+        weights : np.ndarray
+            ???
+        nest : bool
+            ???
+        cmap : str
+            Color map (default: **'jet'**).
+        norm : typing.Optional[str]
+            ??? (default: **None**).
+        v_min : float
+            Minimum color scale (default: **None**, uses: min(data)).
+        v_max : float
+            Maximum color scale (default: **None**, uses: max(data)).
+        title : str
+    """
 
     sky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
 
     sky[footprint] = weights
 
-    display_cart(
+    return display_cart(
         nside,
         footprint,
         sky,
@@ -90,13 +114,39 @@ def display_healpix(nside, footprint: np.ndarray, weights: np.ndarray, nest: boo
 
 ########################################################################################################################
 
-def display_catalog(nside, footprint: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None, title: str = ''):
+def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = 'hist', v_min: float = None, v_max: float = None, title: str = '') -> np.ndarray:
+
+    """
+    Displays a catalog.
+
+    Parameters
+    ----------
+        nside : int
+            The HEALPix nside parameter.
+        footprint : np.ndarray
+            ???
+        lon: np.ndarray
+            ???
+        lat: np.ndarray
+            ???
+        nest : bool
+            ???
+        cmap : str
+            Color map (default: **'jet'**).
+        norm : typing.Optional[str]
+            ??? (default: **'hist'**).
+        v_min : float
+            Minimum color scale (default: **None**, uses: min(data)).
+        v_max : float
+            Maximum color scale (default: **None**, uses: max(data)).
+        title : str
+    """
 
     sky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
 
     _catalog_to_density(nside, footprint, sky, lon, lat, nest)
 
-    display_cart(
+    return display_cart(
         nside,
         footprint,
         sky,

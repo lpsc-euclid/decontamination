@@ -34,6 +34,10 @@ from .plotting.latent_space import display_latent_space
 from .plotting.clustering import display_clusters
 
 ########################################################################################################################
+
+from .plotting.healpix_map import display_healpix, display_catalog
+
+########################################################################################################################
 # GENERATORS                                                                                                           #
 ########################################################################################################################
 
@@ -61,6 +65,7 @@ __all__ = [
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
     'Clustering',
     'display_latent_space', 'display_clusters',
+    'display_healpix', 'display_catalog',
     'Generator_Abstract', 'Generator_FromDensity',
 ]
 

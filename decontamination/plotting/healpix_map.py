@@ -152,9 +152,7 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
 
     ####################################################################################################################
 
-    if footprint.shape != lon.shape\
-       or                          \
-       footprint.shape != lat.shape:
+    if lon.shape != lat.shape:
 
         raise ValueError('Invalid shapes')
 

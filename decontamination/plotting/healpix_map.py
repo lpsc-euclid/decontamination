@@ -62,7 +62,7 @@ def _get_bounding_box(nside: int, footprint: np.ndarray, nest: bool) -> typing.T
 
 ########################################################################################################################
 
-def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None) -> typing.Tuple[plt.Figure, plt.Axes]:
+def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cmap: str, norm: typing.Optional[str], v_min: float, v_max: float) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     ####################################################################################################################
     #                                                                                                                  #

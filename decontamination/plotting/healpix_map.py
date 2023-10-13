@@ -28,13 +28,13 @@ def _catalog_to_density(nside: int, footprint: np.ndarray, sky: np.ndarray, lon:
 def _get_bounding_box(nside: int, footprint: np.ndarray, nest: bool) -> typing.Tuple[float, float, float, float]:
 
     ####################################################################################################################
-    #                                                                                                                  #
+    # PIXELS TO ANGLES                                                                                                 #
     ####################################################################################################################
 
     lon, lat = hp.pix2ang(nside, footprint, nest, lonlat = True)
 
     ####################################################################################################################
-    #                                                                                                                  #
+    # COMPUTE BOUNDING BOX                                                                                             #
     ####################################################################################################################
 
     lon %= 360
@@ -65,13 +65,9 @@ def _get_bounding_box(nside: int, footprint: np.ndarray, nest: bool) -> typing.T
 def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cmap: str, norm: typing.Optional[str], v_min: float, v_max: float) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     ####################################################################################################################
-    #                                                                                                                  #
-    ####################################################################################################################
 
     lon_min, lon_max, lat_min, lat_max = _get_bounding_box(nside, footprint, nest)
 
-    ####################################################################################################################
-    #                                                                                                                  #
     ####################################################################################################################
 
     hp.cartview(

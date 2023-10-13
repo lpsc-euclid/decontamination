@@ -100,7 +100,7 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool = Tr
         cmap = cmap,
         vmin = v_min,
         vmax = v_max,
-        aspect = 'auto',
+        aspect = 'equal',
         origin = 'lower',
         extent = [
             lon_min, lon_max,

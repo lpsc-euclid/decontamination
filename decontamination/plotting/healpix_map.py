@@ -74,7 +74,7 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool = Tr
     #                                                                                                                  #
     ####################################################################################################################
 
-    fig, ax = plt.subplots()
+    fig = plt.figure()
 
     ####################################################################################################################
 
@@ -93,17 +93,16 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool = Tr
 
     ####################################################################################################################
 
-    x_ticks = np.linspace(lon_min, lon_max, 5)
-    y_ticks = np.linspace(lat_min, lat_max, 5)
-
-    ax.set_xticks(np.linspace(0, 1, len(x_ticks)))
-    ax.set_yticks(np.linspace(0, 1, len(y_ticks)))
-
-    ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks])
-    ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks])
+    ax = plt.gca()
 
     ax.set_xlabel('Longitude')
     ax.set_ylabel('Latitude')
+
+    ax.set_xticks(np.linspace(0, 1, 5))
+    ax.set_yticks(np.linspace(0, 1, 5))
+
+    ax.set_xticklabels([f'{tick:.2f}' for tick in np.linspace(lon_min, lon_max, 5)])
+    ax.set_yticklabels([f'{tick:.2f}' for tick in np.linspace(lat_min, lat_max, 5)])
 
     ####################################################################################################################
 

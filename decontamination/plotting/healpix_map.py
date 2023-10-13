@@ -78,97 +78,35 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool = Tr
 
     ####################################################################################################################
 
-    cmap = plt.get_cmap(cmap)
-
-    cmap.set_bad(color = '#808080')
-
-    ####################################################################################################################
-
-    projected_map = hp.cartview(
+    hp.cartview(
         sky,
         nest = nest,
+        cmap = cmap,
         norm = norm,
+        min = v_min,
+        max = v_max,
         lonra = [lon_min, lon_max],
         latra = [lat_min, lat_max],
-        return_projected_map = True
+        hold = True
     )
 
     ####################################################################################################################
 
-    image = ax.imshow(
-        projected_map,
-        cmap = cmap,
-        vmin = v_min,
-        vmax = v_max,
-        aspect = 'equal',
-        origin = 'lower',
-        extent = [
-            lon_min, lon_max,
-            lat_min, lat_max,
-        ]
-    )
+    x_ticks = np.linspace(lon_min, lon_max, 5)
+    y_ticks = np.linspace(lat_min, lat_max, 5)
 
-    ####################################################################################################################
+    ax.set_xticks(np.linspace(0, 1, len(x_ticks)))
+    ax.set_yticks(np.linspace(0, 1, len(y_ticks)))
 
-    fig.colorbar(image, ax = ax)
+    ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks])
+    ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks])
 
-    ####################################################################################################################
-
-    fig.tight_layout()
+    ax.set_xlabel('Longitude')
+    ax.set_ylabel('Latitude')
 
     ####################################################################################################################
 
     return fig, ax
-
-########################################################################################################################
-
-def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None) -> typing.Tuple[plt.Figure, plt.Axes]:
-
-    """
-    Displays a HEALPix map.
-
-    Parameters
-    ----------
-    nside : int
-        The HEALPix nside parameter.
-    pixels : np.ndarray
-        Array of HEALPix pixels.
-    weights : np.ndarray
-        Array of HEALPix weights.
-    nest : bool
-        If **True**, ordering scheme is *NESTED* (default: **True**).
-    cmap : str
-        Color map (default: **'jet'**).
-    norm : typing.Optional[str]
-        Color normalization, hist = histogram equalized color mapping, log = logarithmic color mapping (default: **None**).
-    v_min : float
-        Minimum color scale (default: **None**, uses: min(data)).
-    v_max : float
-        Maximum color scale (default: **None**, uses: max(data)).
-    """
-
-    ####################################################################################################################
-
-    if pixels.shape != weights.shape:
-
-        raise ValueError('Invalid shapes')
-
-    ####################################################################################################################
-
-    sky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
-
-    sky[pixels] = weights
-
-    return _display(
-        nside,
-        pixels,
-        sky,
-        nest = nest,
-        cmap = cmap,
-        norm = norm,
-        v_min = v_min,
-        v_max = v_max
-    )
 
 ########################################################################################################################
 

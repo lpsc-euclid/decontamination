@@ -501,13 +501,13 @@ class jit(object):
 
     _CALL_RE = re.compile('(\\w+)_xpu\\s*\\(')
 
+    _JIT_X_RE = re.compile('(?:\\w*\\.)?jit\\.')
+
     _METHOD_RE = re.compile('def[^(]+(\\(.*)', flags = re.DOTALL)
 
-    _JIT_CALL_RE = re.compile('([a-zA-Z_][a-zA-Z0-9_]*\\.)?jit\\.', flags = re.DOTALL)
+    _CPU_CODE_RE = re.compile(re.escape('!--BEGIN-CPU--') + '.*?' + re.escape('!--END-CPU--'), flags = re.DOTALL)
 
-    _CPU_CODE_RE = re.compile(re.escape('!--BEGIN-CPU--') + '.*?' + re.escape('!--END-CPU--'), re.DOTALL)
-
-    _GPU_CODE_RE = re.compile(re.escape('!--BEGIN-GPU--') + '.*?' + re.escape('!--END-GPU--'), re.DOTALL)
+    _GPU_CODE_RE = re.compile(re.escape('!--BEGIN-GPU--') + '.*?' + re.escape('!--END-GPU--'), flags = re.DOTALL)
 
     ####################################################################################################################
 
@@ -536,7 +536,7 @@ class jit(object):
     @classmethod
     def _patch_cpu_code(cls, code: str) -> str:
 
-        code_cpu = cls._CALL_RE.sub(lambda m: f'jit_module.{m.group(1)}_cpu(', cls._JIT_CALL_RE.sub('jit.', cls._GPU_CODE_RE.sub('', code)))
+        code_cpu = cls._CALL_RE.sub(lambda m: f'jit_module.{m.group(1)}_cpu(', cls._JIT_X_RE.sub('jit.', cls._GPU_CODE_RE.sub('', code)))
 
         return (
             code_cpu
@@ -553,7 +553,7 @@ class jit(object):
     @classmethod
     def _patch_gpu_code(cls, code: str) -> str:
 
-        code_gpu = cls._CALL_RE.sub(lambda m: f'jit_module.{m.group(1)}_gpu(', cls._JIT_CALL_RE.sub('jit.', cls._CPU_CODE_RE.sub('', code)))
+        code_gpu = cls._CALL_RE.sub(lambda m: f'jit_module.{m.group(1)}_gpu(', cls._JIT_X_RE.sub('jit.', cls._CPU_CODE_RE.sub('', code)))
 
         return (
             code_gpu

@@ -180,6 +180,8 @@ def _display_latent_space_hexagonal(ax: plt.Axes, weights: np.ndarray, cmap: col
 def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = None, v_min: float = None, v_max: float = None, cmap: str = 'viridis', n_hist_bins: int = 100, cluster_ids: typing.Optional[np.ndarray] = None, log_scale: bool = False, antialiased: bool = False, show_frame: bool = True, show_colorbar: bool = True, show_histogram: bool = True, show_cluster_labels: bool = False) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
+    Displays the latent space.
+
     Parameters
     ----------
     weights : np.ndarray

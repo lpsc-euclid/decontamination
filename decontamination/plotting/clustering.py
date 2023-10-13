@@ -160,6 +160,8 @@ def _display_cluster_labels(ax: pyplot.Axes, cluster_ids: np.ndarray, is_hexagon
 def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: typing.Optional[str] = None, show_cluster_labels: bool = False) -> None:
 
     """
+    Displays clusters in the latent space.
+
     Parameters
     ----------
     ax : pyplot.Axes

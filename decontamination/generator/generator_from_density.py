@@ -39,6 +39,8 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
     def generate(self, density_map: np.ndarray, mult_factor: float = 10.0, seed: typing.Optional[int] = None) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         """
+        Generates galaxy positions from a density map.
+
         Parameters
         ----------
         density_map : np.ndarray

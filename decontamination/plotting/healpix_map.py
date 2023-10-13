@@ -87,7 +87,8 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool = Tr
         max = v_max,
         lonra = [lon_min, lon_max],
         latra = [lat_min, lat_max],
-        hold = True
+        hold = True,
+        reuse_axes = True
     )
 
     ####################################################################################################################

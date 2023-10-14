@@ -4,7 +4,7 @@ Module decontamination.plotting
 Plotting in the latent space
 ----------------------------
 
-.. image:: _static/plotting.svg
+.. image:: _html_static/plotting.svg
     :alt: Plotting
     :width: 50%
     :align: center

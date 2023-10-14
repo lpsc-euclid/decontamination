@@ -6,7 +6,7 @@ Self-Organizing Maps
 
 Self Organizing Maps (SOMs) are neural networks that transform high-dimensional data into spatially organized low-dimensional clusters.
 
-.. image:: _static/som.png
+.. image:: _html_static/som.png
     :alt: Self Organizing Maps
     :width: 50%
     :align: center

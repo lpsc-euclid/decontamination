@@ -20,9 +20,9 @@ class Generator_Abstract(object):
     nside : int
         The HEALPix nside parameter.
     footprint : np.ndarray
-        HEALPix pixel indices of the footprint.
+        HEALPix indices of the region where galaxies are generated.
     nest : bool
-        Tf True, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: **True**).
+        If True, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: **True**).
     """
 
     ####################################################################################################################

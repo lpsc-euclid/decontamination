@@ -47,6 +47,11 @@ def device_array_from(array: np.ndarray):
 
     """
     New device array (see :class:`DeviceArray`), initialized from a Numpy ndarray.
+
+    Parameters
+    ----------
+    array : np.ndarray
+        The initial Numpy ndarray.
     """
 
     return DeviceArray(array.shape, array.dtype, content = array)
@@ -348,50 +353,9 @@ class jit(object):
     inline : bool
         Indicates whether this function must be inlined  (default: **False**).
     fastmath : bool
-        Enables fast-math optimizations when running on CPU (default: **False**).
+        Enables *fast math* optimizations when running on CPU (default: **False**).
     parallel : bool
-        Enables automatic parallelization when running on CPU (default: **False**).
-
-    Example
-    -------
-        @jit()
-        def foo_xpu(a, b):
-
-            return a + b
-
-        @jit(kernel = True)
-        def foo_kernel(result, a, b):
-
-            ########################################################################
-            # !--BEGIN-CPU--
-
-            for i in range(result.shape[0]):
-
-                result[i] = foo_xpu(a[i], b[i])
-
-            # !--END-CPU--
-            ########################################################################
-            # !--BEGIN-GPU--
-
-            i = jit.grid(1)
-            if i < result.shape[0]:
-
-                result[i] = foo_xpu(a[i], b[i])
-
-            # !--END-GPU--
-            ########################################################################
-
-        use_gpu = True
-        threads_per_block = 32
-
-        A = np.random.randn(100_000).astype(np.float32)
-        B = np.random.randn(100_000).astype(np.float32)
-
-        result = device_array_empty(100_000, dtype = np.float32)
-
-        foo_kernel[use_gpu, threads_per_block, result.shape[0]](result, A, B)
-
-        print(result.copy_to_host())
+        Enables parallelization when running on CPU (default: **False**).
     """
 
     ####################################################################################################################

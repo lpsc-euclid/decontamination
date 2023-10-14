@@ -34,10 +34,10 @@ Indices and tables
    :maxdepth: 1
    :caption: Contents:
 
+   module_jit
    module_algo
    module_plotting
    module_generator
-   module_jit
 
 * :ref:`genindex`
 * :ref:`search`

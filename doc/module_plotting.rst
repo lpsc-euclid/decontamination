@@ -1,6 +1,12 @@
 Module decontamination.plotting
 ===============================
 
+Plotting in the HEALPix space
+-----------------------------
+
+.. automodule:: decontamination.plotting.healpix_map
+   :members:
+
 Plotting in the latent space
 ----------------------------
 
@@ -13,10 +19,4 @@ Plotting in the latent space
    :members:
 
 .. automodule:: decontamination.plotting.clustering
-   :members:
-
-Plotting in the HEALPix space
------------------------------
-
-.. automodule:: decontamination.plotting.healpix_map
    :members:

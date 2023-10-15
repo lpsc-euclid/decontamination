@@ -13,6 +13,16 @@ p {
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
+div.sphinxsidebar a {
+    border: none !important;
+}
+
+div.sphinxsidebar a:hover {
+    background: none !important;
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
 .logo-container {
     display: flex;
     justify-content: space-around;

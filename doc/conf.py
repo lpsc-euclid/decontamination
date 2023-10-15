@@ -35,7 +35,7 @@ autodoc_default_options = {
     'member-order': 'bysource',
 }
 
-mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js'
+mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.min.js'
 
 ########################################################################################################################
 

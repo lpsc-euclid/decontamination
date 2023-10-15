@@ -2,12 +2,24 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 
-    const tocItems = document.querySelectorAll('.reference .pre');
+    /*----------------------------------------------------------------------------------------------------------------*/
 
-    tocItems.forEach((item) => {
+    document.querySelectorAll('li.right').forEach(function(item) {
+
+        if(item.querySelector('a[href="py-modindex.html"]'))
+        {
+            item.style.display = 'none';
+        }
+    });
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+
+    document.querySelectorAll('.reference .pre').forEach((item) => {
 
         item.textContent = item.textContent.split('.').pop();
     });
+
+    /*----------------------------------------------------------------------------------------------------------------*/
 });
 
 /*--------------------------------------------------------------------------------------------------------------------*/

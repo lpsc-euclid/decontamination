@@ -41,6 +41,7 @@ Dependencies
 * [tqdm](https://tqdm.github.io/)
 * [numpy](https://numpy.org/)
 * [numba](https://numba.pydata.org/)
+* [scipy](https://scipy.org/)
 * [healpy](https://healpy.readthedocs.io/)
 * [matplotlib](https://matplotlib.org/)
 

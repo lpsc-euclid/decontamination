@@ -3,6 +3,9 @@
 import os
 import sys
 import json
+import typing
+
+import numpy as np
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -80,20 +83,40 @@ def skip_undocumented_classes_and_functions(app, what, name, obj, skip, options)
 
 ########################################################################################################################
 
+def before_process_signature(app, obj, bound_method):
+
+    numeric_type = typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
+
+    numeric_value = typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]
+
+    if callable(obj):
+
+        for param, annotation in obj.__annotations__.items():
+
+            if annotation == numeric_type:
+                obj.__annotations__[param] = '<numeric type>'
+            if annotation == numeric_value:
+                obj.__annotations__[param] = '<numeric value>'
+
+        if 'return' in obj.__annotations__:
+
+            if obj.__annotations__['return'] == numeric_type:
+                obj.__annotations__['return'] = '<numeric type>'
+            if obj.__annotations__['return'] == numeric_value:
+                obj.__annotations__['return'] = '<numeric value>'
+
+########################################################################################################################
+
 # noinspection PyUnusedLocal
 def process_signature(app, what, name, obj, options, signature, return_annotation):
 
-    numeric_type = '~Type[~np.float32 | ~np.float64 | float | ~np.int32 | ~np.int64 | int]'
-
-    numeric_value = '~np.float32 | ~np.float64 | float | ~np.int32 | ~np.int64 | int'
-
     if signature:
 
-        signature = signature.replace('typing.', '').replace('numpy.', 'np.').replace(numeric_type, '<numeric type>').replace(numeric_value, '<numeric value>')
+        signature = signature.replace('typing.', '').replace('numpy.', 'np.')
 
     if return_annotation:
 
-        return_annotation = return_annotation.replace('typing.', '').replace('numpy.', 'np.').replace(numeric_type, '<numeric type>').replace(numeric_value, '<numeric value>')
+        return_annotation = return_annotation.replace('typing.', '').replace('numpy.', 'np.')
 
     return signature, return_annotation
 
@@ -126,8 +149,10 @@ def setup(app):
 
     app.connect('autodoc-skip-member', skip_undocumented_classes_and_functions)
 
-    app.connect("autodoc-process-signature", process_signature)
+    app.connect('autodoc-before-process-signature', before_process_signature)
 
-    app.connect("autodoc-process-docstring", process_docstring)
+    app.connect('autodoc-process-signature', process_signature)
+
+    app.connect('autodoc-process-docstring', process_docstring)
 
 ########################################################################################################################

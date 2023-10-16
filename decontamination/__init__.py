@@ -46,6 +46,12 @@ from .generator.generator_abstract import Generator_Abstract
 from .generator.generator_from_density import Generator_FromDensity
 
 ########################################################################################################################
+# DECONTAMINATION                                                                                                      #
+########################################################################################################################
+
+from .decontamination.decontamination_som import Decontamination_SOM
+
+########################################################################################################################
 # UTILITIES                                                                                                            #
 ########################################################################################################################
 
@@ -64,9 +70,10 @@ __all__ = [
     'DeviceArray', 'device_array_from', 'device_array_empty', 'device_array_zeros', 'device_array_full',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
     'Clustering',
-    'display_latent_space', 'display_clusters',
+    'display_latent_space',
     'display_healpix', 'display_catalog',
     'Generator_Abstract', 'Generator_FromDensity',
+    'Decontamination_SOM',
 ]
 
 ########################################################################################################################

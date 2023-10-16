@@ -30,7 +30,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
     dim : int
         Dimensionality of the input data.
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
-        Neural network data type (default: **np.float32**).
+        Neural network data type, either **np.float32** or **np.float64** (default: **np.float32**).
     topology : typing.Optional[str]
         Topology of the model, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
     alpha : float

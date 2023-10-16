@@ -38,6 +38,7 @@ Indices and tables
    module_algo
    module_plotting
    module_generator
+   module_decontamination
 
 :ref:`genindex`
 

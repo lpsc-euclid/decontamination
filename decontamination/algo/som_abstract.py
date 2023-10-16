@@ -27,7 +27,7 @@ class SOM_Abstract(object):
     dim : int
         Dimensionality of the input data.
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
-        Neural network data type (default: **np.float32**).
+        Neural network data type, either **np.float32** or **np.float64** (default: **np.float32**).
     topology : typing.Optional[str]
         Topology of the model, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
     """
@@ -314,9 +314,7 @@ class SOM_Abstract(object):
     @property
     def m(self) -> int:
 
-        """
-        Returns the number of neuron rows.
-        """
+        """Number of neuron rows."""
 
         return self._m
 
@@ -325,9 +323,7 @@ class SOM_Abstract(object):
     @property
     def n(self) -> int:
 
-        """
-        Returns the number of neuron columns.
-        """
+        """Number of neuron columns."""
 
         return self._n
 
@@ -336,9 +332,7 @@ class SOM_Abstract(object):
     @property
     def dim(self) -> int:
 
-        """
-        Returns the dimensionality of the input data.
-        """
+        """Dimensionality of the input data."""
 
         return self._dim
 
@@ -347,9 +341,7 @@ class SOM_Abstract(object):
     @property
     def dtype(self) -> typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]:
 
-        """
-        Returns the neural network data type.
-        """
+        """Neural network data type."""
 
         return self._dtype
 
@@ -358,9 +350,7 @@ class SOM_Abstract(object):
     @property
     def topology(self) -> str:
 
-        """
-        Returns the model topology, either **'square'** or **'hexagonal'**.
-        """
+        """Model topology, either **'square'** or **'hexagonal'**."""
 
         return self._topology
 
@@ -368,9 +358,7 @@ class SOM_Abstract(object):
 
     def get_weights(self) -> np.ndarray:
 
-        """
-        Returns the neural network weights with the shape `[m * n, dim]`.
-        """
+        """Neural network weights with the shape `[m * n, dim]`."""
 
         return self._weights.reshape((self._m * self._n, self._dim))
 
@@ -378,9 +366,7 @@ class SOM_Abstract(object):
 
     def get_centroids(self) -> np.ndarray:
 
-        """
-        Returns the neural network weights with the shape `[m, n, dim]`.
-        """
+        """Neural network weights with the shape `[m, n, dim]`."""
 
         return self._weights.reshape((self._m, self._n, self._dim))
 

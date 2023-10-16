@@ -102,13 +102,23 @@ def process_signature(app, what, name, obj, options, signature, return_annotatio
 # noinspection PyUnusedLocal
 def process_docstring(app, what, name, obj, options, lines):
 
-    numeric_type = 'Type[Union[np.float32, np.float64, float, np.int32, np.int64, int]]'
+    numeric_type1 = 'Type[np.float32 | np.float64 | float | np.int32 | np.int64 | int]'
+    numeric_type2 = 'Type[Union[np.float32, np.float64, float, np.int32, np.int64, int]]'
 
-    numeric_value = 'Union[np.float32, np.float64, float, np.int32, np.int64, int]'
+    numeric_value1 = 'np.float32 | np.float64 | float | np.int32 | np.int64 | int'
+    numeric_value2 = 'Union[np.float32, np.float64, float, np.int32, np.int64, int]'
 
     for index, line in enumerate(lines):
 
-        lines[index] = line.replace('typing.', '').replace('numpy.', 'np.').replace(numeric_type, '<numeric type>').replace(numeric_value, '<numeric value>')
+        lines[index] = (
+            line
+            .replace('typing.', '')
+            .replace('numpy.', 'np.')
+            .replace(numeric_type1, '<numeric type>')
+            .replace(numeric_type2, '<numeric type>')
+            .replace(numeric_value1, '<numeric value>')
+            .replace(numeric_value2, '<numeric value>')
+        )
 
 ########################################################################################################################
 

@@ -73,7 +73,7 @@ html_use_modindex = False
 ########################################################################################################################
 
 # noinspection PyUnusedLocal
-def skip_undocumented_classes_and_functions(app, what, name, obj, skip, options):
+def skip_member(app, what, name, obj, skip, options):
 
     if not name.startswith('_') and getattr(obj, '__doc__', ''):
 
@@ -147,9 +147,9 @@ def process_docstring(app, what, name, obj, options, lines):
 
 def setup(app):
 
-    app.connect('autodoc-skip-member', skip_undocumented_classes_and_functions)
-
     app.connect('autodoc-before-process-signature', before_process_signature)
+
+    app.connect('autodoc-skip-member', skip_member)
 
     app.connect('autodoc-process-signature', process_signature)
 

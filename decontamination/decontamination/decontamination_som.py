@@ -24,20 +24,20 @@ class Decontamination_SOM(object):
     dim : int
         Dimensionality of the input data.
     batch : bool
-        Specifies whether to train parallelly (**True**) or iteratively (**False**).
+        Specifies whether to train parallel (**True**) or iterative (**False**).
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
         Neural network data type, either **np.float32** or **np.float64** (default: **np.float32**).
-    topology : str
-        Topology of the model, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
+    topology : typing.Optional[str]
+        Topology of the model, either **'square'** or **'hexagonal'** (default: **None** ≡ **'hexagonal'**).
     alpha : float
-        Starting value of the learning rate (default: **None**, uses: **0.3**, iterative training only).
+        Starting value of the learning rate (default: **None** ≡ **0.3**, iterative training only).
     sigma : float
-        Starting value of the neighborhood radius (default: **None**, uses: :math:`\\mathrm{max}(m,n)/2`).
+        Starting value of the neighborhood radius (default: **None** ≡ :math:`\\mathrm{max}(m,n)/2`).
     """
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, batch: bool, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, topology: str = 'hexagonal', alpha: float = None, sigma: float = None):
+    def __init__(self, m: int, n: int, dim: int, batch: bool, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, topology: typing.Optional[str] = 'hexagonal', alpha: float = None, sigma: float = None):
 
         ################################################################################################################
         # PCA                                                                                                          #

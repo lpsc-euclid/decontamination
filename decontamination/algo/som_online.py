@@ -32,11 +32,11 @@ class SOM_Online(som_abstract.SOM_Abstract):
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
         Neural network data type, either **np.float32** or **np.float64** (default: **np.float32**).
     topology : typing.Optional[str]
-        Topology of the model, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
+        Topology of the model, either **'square'** or **'hexagonal'** (default: **None** ≡ **'hexagonal'**).
     alpha : float
-        Starting value of the learning rate (default: **None**, uses: **0.3**).
+        Starting value of the learning rate (default: **None** ≡ **0.3**).
     sigma : float
-        Starting value of the neighborhood radius (default: **None**, uses: :math:`\\mathrm{max}(m,n)/2`).
+        Starting value of the neighborhood radius (default: **None** ≡ :math:`\\mathrm{max}(m,n)/2`).
     """
 
     __MODE__ = 'online'

@@ -169,7 +169,7 @@ def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: typing.
     cluster_ids : np.ndarray
         Array of cluster identifiers.
     topology : typing.Optional[str]
-        Topology of the map, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
+        Topology of the map, either **'square'** or **'hexagonal'** (default: **None** ≡ **'hexagonal'**).
     show_cluster_labels : bool
         Specifies whether to display the cluster labels (default: **False**).
     """

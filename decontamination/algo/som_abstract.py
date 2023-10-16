@@ -29,7 +29,7 @@ class SOM_Abstract(object):
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
         Neural network data type, either **np.float32** or **np.float64** (default: **np.float32**).
     topology : typing.Optional[str]
-        Topology of the model, either **'square'** or **'hexagonal'** (default: **None**, uses: **'hexagonal'**).
+        Topology of the model, either **'square'** or **'hexagonal'** (default: **None** ≡ **'hexagonal'**).
     """
 
     __MODE__ = 'abstract'
@@ -467,7 +467,7 @@ class SOM_Abstract(object):
         Parameters
         ----------
         scaling : typing.Optional[str]
-            Normalization method, either '**sum**' or '**mean**' (default: **None**, uses: '**sum**').
+            Normalization method, either '**sum**' or '**mean**' (default: **None** ≡ '**sum**').
         """
 
         scaling = scaling or 'sum'

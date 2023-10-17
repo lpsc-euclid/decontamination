@@ -323,7 +323,7 @@ class Decontamination_SOM(object):
         self._winners = self._som.get_winners(
             footprint_systematics,
             enable_gpu = enable_gpu,
-            threads_per_blocks = 0x200
+            threads_per_blocks = threads_per_blocks
         )
 
         ################################################################################################################

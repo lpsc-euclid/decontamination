@@ -139,9 +139,18 @@ class Decontamination_SOM(object):
     ####################################################################################################################
 
     @property
+    def weights(self) -> np.ndarray:
+
+        """Weights in the latent space."""
+
+        return self._som.get_weights()
+
+    ####################################################################################################################
+
+    @property
     def winners(self) -> np.ndarray:
 
-        """Winners."""
+        """Winners for footprint."""
 
         return self._winners
 
@@ -268,7 +277,7 @@ class Decontamination_SOM(object):
         self._som.init_from(self._pca)
 
         if self._batch:
-            self._som.train(catalog_systematics, n_epochs = n_epochs, n_vectors = n_vectors, n_error_bins = n_error_bins, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+            self._som.train(catalog_systematics, n_epochs = n_epochs, n_vectors = n_vectors, n_error_bins = n_error_bins, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu)
         else:
             self._som.train(catalog_systematics, n_epochs = n_epochs, n_vectors = n_vectors, n_error_bins = n_error_bins, show_progress_bar = show_progress_bar)
 
@@ -322,8 +331,7 @@ class Decontamination_SOM(object):
 
         self._winners = self._som.get_winners(
             footprint_systematics,
-            enable_gpu = enable_gpu,
-            threads_per_blocks = threads_per_blocks
+            enable_gpu = enable_gpu
         )
 
         ################################################################################################################
@@ -355,7 +363,7 @@ class Decontamination_SOM(object):
             self._catalog_activation_map,
             self._footprint_activation_map,
             out = np.full(self._catalog_activation_map.shape, np.nan, dtype = self._som.dtype),
-            where = self._footprint_activation_map != 0.0
+            where = self._footprint_activation_map > 0.0
         )
 
         ################################################################################################################
@@ -366,7 +374,7 @@ class Decontamination_SOM(object):
             self._clustered_catalog_activation_map,
             self._clustered_footprint_activation_map,
             out = np.full(self._clustered_catalog_activation_map.shape, np.nan, dtype = self._som.dtype),
-            where = self._clustered_footprint_activation_map != 0.0
+            where = self._clustered_footprint_activation_map > 0.0
         )
 
         ################################################################################################################

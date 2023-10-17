@@ -55,8 +55,6 @@ class Generator_Uniform(generator_from_density.Generator_FromDensity):
 
         ################################################################################################################
 
-        density_map = np.ones(self._x_diamonds.shape, dtype = np.float32)
-
-        return super().generate(density_map, mult_factor = mult_factor, seed = seed)
+        return super().generate(None, mult_factor = mult_factor, seed = seed)
 
 ########################################################################################################################

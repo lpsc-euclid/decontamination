@@ -36,14 +36,14 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
     ####################################################################################################################
 
-    def generate(self, density_map: np.ndarray, mult_factor: float = 10.0, seed: typing.Optional[int] = None) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def generate(self, density_map: typing.Optional[np.ndarray], mult_factor: float = 10.0, seed: typing.Optional[int] = None) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         """
         Generates galaxy positions from a density map.
 
         Parameters
         ----------
-        density_map : np.ndarray
+        density_map : typing.Optional[np.ndarray]
             Number of galaxies per HEALPix pixels.
         mult_factor : float
             Statistics multiplication factor (default: **10.0**).
@@ -58,9 +58,11 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        if self._x_diamonds.size != density_map.size\
-           or                                       \
-           self._y_diamonds.size != density_map.size:
+        if density_map is not None and (
+            self._x_diamonds.size != density_map.size
+            or
+            self._y_diamonds.size != density_map.size
+        ):
 
             raise Exception('Inconsistent number of pixels and weights')
 
@@ -82,21 +84,21 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
     ####################################################################################################################
 
     @staticmethod
-    def _generate(rng: np.random.Generator, nside: int, x_diamonds: np.ndarray, y_diamonds: np.ndarray, density_map: np.ndarray, mult_factor: float) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def _generate(rng: np.random.Generator, nside: int, x_diamonds: np.ndarray, y_diamonds: np.ndarray, density_map: typing.Optional[np.ndarray], mult_factor: float) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         ################################################################################################################
         # GENERATE GALAXIES                                                                                            #                                                                                                             #
         ################################################################################################################
 
-        n_galaxies_per_pixels = np.empty_like(density_map, dtype = np.int32)
+        n_galaxies_per_pixels = np.empty(x_diamonds.shape[0], dtype = np.int32)
 
         ################################################################################################################
 
         n_total_galaxies = 0
 
-        for i in range(density_map.shape[0]):
+        for i in range(x_diamonds.shape[0]):
 
-            n_galaxies = rng.poisson(mult_factor * density_map[i])
+            n_galaxies = rng.poisson(mult_factor * (density_map[i] if density_map is not None else 1.0))
 
             n_galaxies_per_pixels[i] = n_galaxies
 

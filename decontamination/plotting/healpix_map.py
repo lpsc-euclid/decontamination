@@ -105,7 +105,7 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
     cmap : str
         Color map (default: **'jet'**).
     norm : typing.Optional[str]
-        Color normalization, hist = histogram equalized color mapping, log = logarithmic color mapping (default: **None**).
+        Color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping (default: **None**).
     v_min : float
         Minimum color scale (default: **None** ≡ min(data)).
     v_max : float
@@ -157,7 +157,7 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
     cmap : str
         Color map (default: **'jet'**).
     norm : typing.Optional[str]
-        Color normalization, hist = histogram equalized color mapping, log = logarithmic color mapping (default: **'hist'**).
+        Color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping (default: **'hist'**).
     v_min : float
         Minimum color scale (default: **None** ≡ min(data)).
     v_max : float

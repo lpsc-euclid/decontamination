@@ -23,7 +23,7 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
     footprint : np.ndarray
         HEALPix indices of the region where galaxies are generated.
     nest : bool
-        If True, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: **True**).
+        If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: **True**).
     """
 
     ####################################################################################################################

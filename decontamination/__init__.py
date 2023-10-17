@@ -31,8 +31,6 @@ from .algo.clustering import Clustering
 
 from .plotting.latent_space import display_latent_space
 
-from .plotting.clustering import display_clusters
-
 ########################################################################################################################
 
 from .plotting.healpix_map import display_healpix, display_catalog
@@ -42,6 +40,8 @@ from .plotting.healpix_map import display_healpix, display_catalog
 ########################################################################################################################
 
 from .generator.generator_abstract import Generator_Abstract
+
+from .generator.generator_uniform import Generator_Uniform
 
 from .generator.generator_from_density import Generator_FromDensity
 
@@ -72,7 +72,7 @@ __all__ = [
     'Clustering',
     'display_latent_space',
     'display_healpix', 'display_catalog',
-    'Generator_Abstract', 'Generator_FromDensity',
+    'Generator_Abstract', 'Generator_Uniform', 'Generator_FromDensity',
     'Decontamination_SOM',
 ]
 

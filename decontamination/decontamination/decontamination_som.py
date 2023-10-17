@@ -254,6 +254,8 @@ class Decontamination_SOM(object):
         # BATCH/ONLINE TRAINING                                                                                        #
         ################################################################################################################
 
+        self._som.init_from(self._pca)
+
         if self._batch:
             self._som.train(catalog_systematics, n_epochs = n_epochs, n_vectors = n_vectors, n_error_bins = n_error_bins, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
         else:

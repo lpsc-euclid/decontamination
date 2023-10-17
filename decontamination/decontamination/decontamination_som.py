@@ -182,14 +182,14 @@ class Decontamination_SOM(object):
 
         """Number of galaxies."""
 
-        return self.n_gal
+        return self._n_gal
 
     @property
     def n_pix(self) -> np.ndarray:
 
         """Number of pixels."""
 
-        return self.n_pix
+        return self._n_pix
 
     ####################################################################################################################
 

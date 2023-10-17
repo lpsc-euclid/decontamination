@@ -60,6 +60,8 @@ class Decontamination_SOM(object):
         # OTHER                                                                                                        #
         ################################################################################################################
 
+        self._winners = None
+
         self._cluster_ids = None
 
         ################################################################################################################
@@ -133,6 +135,15 @@ class Decontamination_SOM(object):
         """Model topology, either **'square'** or **'hexagonal'**."""
 
         return self._som.topology
+
+    ####################################################################################################################
+
+    @property
+    def winners(self) -> np.ndarray:
+
+        """Winners."""
+
+        return self._winners
 
     ####################################################################################################################
 
@@ -309,7 +320,7 @@ class Decontamination_SOM(object):
         # COMPUTE FOOTPRINT WINNERS                                                                                    #
         ################################################################################################################
 
-        winners = self._som.get_winners(
+        self._winners = self._som.get_winners(
             footprint_systematics,
             enable_gpu = enable_gpu,
             threads_per_blocks = 0x200
@@ -374,16 +385,12 @@ class Decontamination_SOM(object):
         # COMPUTE GALAXY NUMBER DENSITY MAP                                                                            #
         ################################################################################################################
 
-        self._gndm = self._gnd.reshape(m * n)[winners]
+        self._gndm = self._gnd.reshape(m * n)[self._winners]
 
         ################################################################################################################
         # COMPUTE CLUSTERED GALAXY NUMBER DENSITY MAP                                                                  #
         ################################################################################################################
 
-        self._clustered_gndm = self._clustered_gnd.reshape(m * n)[winners]
-
-    ####################################################################################################################
-
-    # TODO #
+        self._clustered_gndm = self._clustered_gnd.reshape(m * n)[self._winners]
 
 ########################################################################################################################

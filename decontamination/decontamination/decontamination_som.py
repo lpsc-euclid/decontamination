@@ -339,7 +339,7 @@ class Decontamination_SOM(object):
         ################################################################################################################
 
         self._catalog_activation_map = self._som.get_activation_map(catalog_systematics, enable_gpu = enable_gpu)
-        self._footprint_activation_map = self._som.get_activation_map(footprint_systematics, enable_gpu = enable_gpu)
+        self._footprint_activation_map = self._som.get_activation_map(footprint_systematics, enable_gpu = False)
 
         ################################################################################################################
         # COMPUTE CLUSTERED ACTIVATION MAPS                                                                            #

@@ -72,11 +72,22 @@ class Decontamination_SOM(object):
 
         ################################################################################################################
 
+        self._n_gal = None
+        self._n_pix = None
+
+        ################################################################################################################
+
         self._gnd = None
         self._clustered_gnd = None
 
+        self._gndc = None
+        self._clustered_gndc = None
+
         self._gndm = None
         self._clustered_gndm = None
+
+        self._gndcm = None
+        self._clustered_gndcm = None
 
     ####################################################################################################################
 
@@ -167,6 +178,22 @@ class Decontamination_SOM(object):
     ####################################################################################################################
 
     @property
+    def n_gal(self) -> np.ndarray:
+
+        """Number of galaxies."""
+
+        return self.n_gal
+
+    @property
+    def n_pix(self) -> np.ndarray:
+
+        """Number of pixels."""
+
+        return self.n_pix
+
+    ####################################################################################################################
+
+    @property
     def gnd(self) -> np.ndarray:
 
         """Galaxy Number Density (GND)."""
@@ -179,6 +206,22 @@ class Decontamination_SOM(object):
         """Clustered Galaxy Number Density (GND)."""
 
         return self._clustered_gnd
+
+    ####################################################################################################################
+
+    @property
+    def gndc(self) -> np.ndarray:
+
+        """Galaxy Number Density Contrast (GNDC)."""
+
+        return self._gndc
+
+    @property
+    def clustered_gndc(self) -> np.ndarray:
+
+        """Clustered Galaxy Number Density Contrast (GNDC)."""
+
+        return self._clustered_gndc
 
     ####################################################################################################################
 
@@ -285,6 +328,13 @@ class Decontamination_SOM(object):
         self._clustered_footprint_activation_map = clustering.Clustering.average(self._footprint_activation_map.reshape(m * n), self._cluster_ids).reshape(m, n)
 
         ################################################################################################################
+        # COMPUTE NUMBER OF GALAXIES & PIXELS                                                                          #
+        ################################################################################################################
+
+        self._n_gal = np.sum(self._catalog_activation_map)
+        self._n_pix = np.sum(self._footprint_activation_map)
+
+        ################################################################################################################
         # COMPUTE GALAXY NUMBER DENSITY                                                                                #
         ################################################################################################################
 
@@ -305,6 +355,18 @@ class Decontamination_SOM(object):
             out = np.full(self._clustered_catalog_activation_map.shape, np.nan, dtype = self._som.dtype),
             where = self._clustered_footprint_activation_map != 0.0
         )
+
+        ################################################################################################################
+        # COMPUTE GALAXY NUMBER DENSITY CONTRAST                                                                       #
+        ################################################################################################################
+
+        self._gndc = (self._gnd - (self._n_gal / self._n_pix)) / (self._n_gal / self._n_pix)
+
+        ################################################################################################################
+        # COMPUTE CLUSTERED GALAXY NUMBER DENSITY CONTRAST                                                             #
+        ################################################################################################################
+
+        self._clustered_gndc = (self._clustered_gnd - (self._n_gal / self._n_pix)) / (self._n_gal / self._n_pix)
 
         ################################################################################################################
         # COMPUTE GALAXY NUMBER DENSITY MAP                                                                            #

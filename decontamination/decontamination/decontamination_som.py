@@ -261,7 +261,7 @@ class Decontamination_SOM(object):
 
     ####################################################################################################################
 
-    def process(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], footprint_systematics: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, n_error_bins: int = 10, n_clusters: int = 100, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def process(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], footprint_systematics: typing.Union[np.ndarray, typing.Callable], n_clusters: int, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, n_error_bins: int = 10, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         ???
@@ -272,14 +272,14 @@ class Decontamination_SOM(object):
             Dataset array or generator builder of systematics for the catalog.
         footprint_systematics : typing.Union[np.ndarray, typing.Callable]
             Dataset array or generator builder of systematics for the footprint.
+        n_clusters : int
+            Desired number of clusters for the latent space.
         n_epochs : typing.Optional[int]
             Number of epochs to train for (default: **None**).
         n_vectors : typing.Optional[int]
             Number of vectors to train for (default: **None**).
         n_error_bins : int
             Number of quantization and topographic error bins (default: **10**).
-        n_clusters : int
-            Desired number of clusters for the latent space (default: **100**).
         show_progress_bar : bool
             Specifies whether to display a progress bar (default: **True**).
         enable_gpu : bool

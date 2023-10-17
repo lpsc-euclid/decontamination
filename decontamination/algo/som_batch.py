@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
+import gc
 import math
 import tqdm
 import typing
@@ -284,6 +285,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                         self._m * self._n
                     )
 
+                    gc.collect()
+
                 ########################################################################################################
 
                 numerator_host = numerator.copy_to_host()
@@ -352,6 +355,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                     penalty_dist,
                     self._m * self._n
                 )
+
+                gc.collect()
 
                 cur_vector += count
 

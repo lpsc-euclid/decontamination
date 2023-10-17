@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
+import gc
 import typing
 
 import numpy as np
@@ -53,20 +54,20 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit()
-    def _update_cov_matrix(result_sum: np.ndarray, result_prods: np.ndarray, data: np.ndarray) -> int:
+    def _update_cov_matrix(result_sum: np.ndarray, result_prods: np.ndarray, vectors: np.ndarray) -> int:
 
         ################################################################################################################
 
         n = 0
 
-        data_dim = data.shape[0]
-        syst_dim = data.shape[1]
+        data_dim = vectors.shape[0]
+        syst_dim = vectors.shape[1]
 
         ################################################################################################################
 
         for i in range(data_dim):
 
-            vector = data[i].astype(np.float64)
+            vector = vectors[i].astype(np.float64)
 
             if not np.any(np.isnan(vector)):
 
@@ -150,9 +151,11 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        for data in generator():
+        for vectors in generator():
 
-            total_nb += SOM_PCA._update_cov_matrix(total_sum, total_prods, data)
+            total_nb += SOM_PCA._update_cov_matrix(total_sum, total_prods, vectors)
+
+            gc.collect()
 
         ################################################################################################################
 

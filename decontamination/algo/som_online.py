@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
+import gc
 import math
 import tqdm
 import typing
@@ -217,6 +218,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
                         self._m * self._n
                     )
 
+                    gc.collect()
+
             ############################################################################################################
 
             if cur_vector > 0:
@@ -261,6 +264,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
                     penalty_dist,
                     self._m * self._n
                 )
+
+                gc.collect()
 
                 cur_vector += count
 

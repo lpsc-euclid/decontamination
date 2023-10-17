@@ -273,7 +273,7 @@ class Decontamination_SOM(object):
         footprint_systematics : typing.Union[np.ndarray, typing.Callable]
             Dataset array or generator builder of systematics for the footprint.
         n_clusters : int
-            Desired number of clusters for the latent space.
+            Desired number latent space clusters.
         n_epochs : typing.Optional[int]
             Number of epochs to train for (default: **None**).
         n_vectors : typing.Optional[int]

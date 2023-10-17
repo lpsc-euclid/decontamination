@@ -280,7 +280,7 @@ class Decontamination_SOM(object):
     ####################################################################################################################
 
     # noinspection PyArgumentList
-    def _train(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int], n_vectors: typing.Optional[int], n_error_bins: int, show_progress_bar: bool, enable_gpu: bool, threads_per_blocks: int) -> None:
+    def _train(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int], n_vectors: typing.Optional[int], n_error_bins: int, show_progress_bar: bool, enable_gpu: bool) -> None:
 
         ################################################################################################################
         # PCA TRAINING                                                                                                 #
@@ -301,7 +301,7 @@ class Decontamination_SOM(object):
 
     ####################################################################################################################
 
-    def process(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], footprint_systematics: typing.Union[np.ndarray, typing.Callable], n_clusters: int, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, n_error_bins: int = 10, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def process(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], footprint_systematics: typing.Union[np.ndarray, typing.Callable], n_clusters: int, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, n_error_bins: int = 10, show_progress_bar: bool = True, enable_gpu: bool = True) -> None:
 
         """
         ???
@@ -324,8 +324,6 @@ class Decontamination_SOM(object):
             Specifies whether to display a progress bar (default: **True**).
         enable_gpu : bool
             If available, run on GPU rather than CPU (default: **True**).
-        threads_per_blocks : int
-            Number of GPU threads per blocks (default: **1024**).
         """
 
         m = self._som.m
@@ -335,7 +333,7 @@ class Decontamination_SOM(object):
         # TRAIN LATENT SPACE                                                                                           #
         ################################################################################################################
 
-        self._train(catalog_systematics, n_epochs, n_vectors, n_error_bins, show_progress_bar, enable_gpu, threads_per_blocks)
+        self._train(catalog_systematics, n_epochs, n_vectors, n_error_bins, show_progress_bar, enable_gpu)
 
         ################################################################################################################
         # CLUSTER LATENT SPACE                                                                                         #
@@ -347,17 +345,14 @@ class Decontamination_SOM(object):
         # COMPUTE FOOTPRINT WINNERS                                                                                    #
         ################################################################################################################
 
-        self._winners = self._som.get_winners(
-            footprint_systematics,
-            enable_gpu = enable_gpu
-        )
+        self._winners = self._som.get_winners(footprint_systematics, enable_gpu = enable_gpu)
 
         ################################################################################################################
         # COMPUTE ACTIVATION MAPS                                                                                      #
         ################################################################################################################
 
         self._catalog_activation_map = self._som.get_activation_map(catalog_systematics, enable_gpu = enable_gpu)
-        self._footprint_activation_map = self._som.get_activation_map(footprint_systematics, enable_gpu = False)
+        self._footprint_activation_map = self._som.get_activation_map(footprint_systematics, enable_gpu = enable_gpu)
 
         ################################################################################################################
         # COMPUTE CLUSTERED ACTIVATION MAPS                                                                            #

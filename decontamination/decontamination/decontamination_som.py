@@ -148,6 +148,24 @@ class Decontamination_SOM(object):
     ####################################################################################################################
 
     @property
+    def quantization_errors(self) -> np.ndarray:
+
+        """Quantization errors."""
+
+        return self._som.get_quantization_errors()
+
+    ####################################################################################################################
+
+    @property
+    def topographic_errors(self) -> np.ndarray:
+
+        """Topographic errors."""
+
+        return self._som.get_topographic_errors()
+
+    ####################################################################################################################
+
+    @property
     def winners(self) -> np.ndarray:
 
         """Winners for footprint."""

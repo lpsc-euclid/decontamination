@@ -139,15 +139,6 @@ class Decontamination_SOM(object):
     ####################################################################################################################
 
     @property
-    def weights(self) -> np.ndarray:
-
-        """Weights in the latent space."""
-
-        return self._som.get_weights()
-
-    ####################################################################################################################
-
-    @property
     def quantization_errors(self) -> np.ndarray:
 
         """Quantization errors."""
@@ -162,6 +153,15 @@ class Decontamination_SOM(object):
         """Topographic errors."""
 
         return self._som.get_topographic_errors()
+
+    ####################################################################################################################
+
+    @property
+    def weights(self) -> np.ndarray:
+
+        """Weights in the latent space."""
+
+        return self._som.get_weights()
 
     ####################################################################################################################
 

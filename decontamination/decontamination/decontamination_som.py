@@ -176,9 +176,18 @@ class Decontamination_SOM(object):
     @property
     def weights(self) -> np.ndarray:
 
-        """Weights in the latent space."""
+        """Weights in the latent space with the shape `[m * n, dim]`."""
 
         return self._som.get_weights()
+
+    ####################################################################################################################
+
+    @property
+    def centroids(self) -> np.ndarray:
+
+        """Weights in the latent space with the shape `[m, n, dim]`."""
+
+        return self._som.get_centroids()
 
     ####################################################################################################################
 

@@ -74,6 +74,24 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
+    @property
+    def alpha(self) -> str:
+
+        """Starting value of the learning rate."""
+
+        return self._alpha
+
+    ####################################################################################################################
+
+    @property
+    def sigma(self) -> str:
+
+        """Starting value of the neighborhood radius."""
+
+        return self._sigma
+
+    ####################################################################################################################
+
     @staticmethod
     @nb.njit()
     def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):

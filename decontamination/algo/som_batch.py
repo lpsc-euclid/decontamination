@@ -71,6 +71,15 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
+    @property
+    def sigma(self) -> str:
+
+        """Starting value of the neighborhood radius."""
+
+        return self._sigma
+
+    ####################################################################################################################
+
     @staticmethod
     @jit(kernel = True, parallel = True)
     def _train_step1_epoch_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, penalty_dist: float, mn: int) -> None:

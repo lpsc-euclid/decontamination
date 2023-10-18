@@ -50,6 +50,8 @@ class Decontamination_SOM(object):
         ################################################################################################################
 
         self._batch = batch
+        self._catalog_systematics = None
+        self._footprint_systematics = None
 
         if batch:
             self._som = som_batch.SOM_Batch(m, n, dim, dtype = dtype, topology = topology, sigma = sigma)
@@ -87,9 +89,6 @@ class Decontamination_SOM(object):
 
         self._gndm = None
         self._clustered_gndm = None
-
-        self._gndcm = None
-        self._clustered_gndcm = None
 
     ####################################################################################################################
 
@@ -135,6 +134,24 @@ class Decontamination_SOM(object):
         """Model topology, either **'square'** or **'hexagonal'**."""
 
         return self._som.topology
+
+    ####################################################################################################################
+
+    @property
+    def alpha(self) -> str:
+
+        """Starting value of the learning rate."""
+
+        return self._som.alpha
+
+    ####################################################################################################################
+
+    @property
+    def sigma(self) -> str:
+
+        """Starting value of the neighborhood radius."""
+
+        return self._som.sigma
 
     ####################################################################################################################
 
@@ -190,6 +207,8 @@ class Decontamination_SOM(object):
 
         return self._catalog_activation_map
 
+    ####################################################################################################################
+
     @property
     def clustered_catalog_activation_map(self) -> np.ndarray:
 
@@ -205,6 +224,8 @@ class Decontamination_SOM(object):
         """Activation map for footprint."""
 
         return self._footprint_activation_map
+
+    ####################################################################################################################
 
     @property
     def clustered_footprint_activation_map(self) -> np.ndarray:
@@ -222,6 +243,8 @@ class Decontamination_SOM(object):
 
         return self._n_gal
 
+    ####################################################################################################################
+
     @property
     def n_pix(self) -> np.ndarray:
 
@@ -237,6 +260,8 @@ class Decontamination_SOM(object):
         """Galaxy Number Density (GND)."""
 
         return self._gnd
+
+    ####################################################################################################################
 
     @property
     def clustered_gnd(self) -> np.ndarray:
@@ -254,6 +279,8 @@ class Decontamination_SOM(object):
 
         return self._gndc
 
+    ####################################################################################################################
+
     @property
     def clustered_gndc(self) -> np.ndarray:
 
@@ -270,6 +297,8 @@ class Decontamination_SOM(object):
 
         return self._gndm
 
+    ####################################################################################################################
+
     @property
     def clustered_gndm(self) -> np.ndarray:
 
@@ -280,7 +309,37 @@ class Decontamination_SOM(object):
     ####################################################################################################################
 
     # noinspection PyArgumentList
-    def _train(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int], n_vectors: typing.Optional[int], n_error_bins: int, show_progress_bar: bool, enable_gpu: bool) -> None:
+    def train(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], footprint_systematics: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int], n_vectors: typing.Optional[int], n_error_bins: int = 10, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+
+        """
+        ???
+
+        Parameters
+        ----------
+        catalog_systematics : typing.Union[np.ndarray, typing.Callable]
+            Dataset array or generator builder of systematics for the catalog.
+        footprint_systematics : typing.Union[np.ndarray, typing.Callable]
+            Dataset array or generator builder of systematics for the footprint.
+        n_epochs : typing.Optional[int]
+            Number of epochs to train for (default: **None**).
+        n_vectors : typing.Optional[int]
+            Number of vectors to train for (default: **None**).
+        n_error_bins : int
+            Number of quantization and topographic error bins (default: **10**).
+        show_progress_bar : bool
+            Specifies whether to display a progress bar (default: **True**).
+        enable_gpu : bool
+            If available, run on GPU rather than CPU (default: **True**).
+        threads_per_blocks : int
+            Number of GPU threads per blocks (default: **1024**).
+        """
+
+        ################################################################################################################
+        # SET DATASETS                                                                                                 #
+        ################################################################################################################
+
+        self._catalog_systematics = catalog_systematics
+        self._footprint_systematics = footprint_systematics
 
         ################################################################################################################
         # PCA TRAINING                                                                                                 #
@@ -295,64 +354,118 @@ class Decontamination_SOM(object):
         self._som.init_from(self._pca)
 
         if self._batch:
-            self._som.train(catalog_systematics, n_epochs = n_epochs, n_vectors = n_vectors, n_error_bins = n_error_bins, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu)
+            self._som.train(catalog_systematics, n_epochs = n_epochs, n_vectors = n_vectors, n_error_bins = n_error_bins, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
         else:
             self._som.train(catalog_systematics, n_epochs = n_epochs, n_vectors = n_vectors, n_error_bins = n_error_bins, show_progress_bar = show_progress_bar)
 
+        ################################################################################################################
+        # COMPUTE FOOTPRINT WINNERS                                                                                    #
+        ################################################################################################################
+
+        self._winners = self._som.get_winners(footprint_systematics, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+
     ####################################################################################################################
 
-    def process(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], footprint_systematics: typing.Union[np.ndarray, typing.Callable], n_clusters: int, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, n_error_bins: int = 10, show_progress_bar: bool = True, enable_gpu: bool = True) -> None:
+    def _process(self, catalog_activation_map: np.ndarray, footprint_activation_map: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+
+        ################################################################################################################
+        # COMPUTE NUMBER OF GALAXIES & PIXELS                                                                          #
+        ################################################################################################################
+
+        self._n_gal = np.sum(catalog_activation_map)
+        self._n_pix = np.sum(footprint_activation_map)
+
+        ################################################################################################################
+        # COMPUTE GALAXY NUMBER DENSITY                                                                                #
+        ################################################################################################################
+
+        gnd = np.divide(
+            catalog_activation_map,
+            footprint_activation_map,
+            out = np.full(catalog_activation_map.shape, np.nan, dtype = self._som.dtype),
+            where = footprint_activation_map > 0.0
+        )
+
+        ################################################################################################################
+        # COMPUTE GALAXY NUMBER DENSITY CONTRAST                                                                       #
+        ################################################################################################################
+
+        gndc = (gnd - (self._n_gal / self._n_pix)) / (self._n_gal / self._n_pix)
+
+        ################################################################################################################
+        # COMPUTE GALAXY NUMBER DENSITY MAP                                                                            #
+        ################################################################################################################
+
+        gndm = gnd.reshape(self._som.m * self._som.n)[self._winners]
+
+        ################################################################################################################
+
+        return gnd, gndc, gndm
+
+    ####################################################################################################################
+
+    def process_flat(self, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         ???
 
         Parameters
         ----------
-        catalog_systematics : typing.Union[np.ndarray, typing.Callable]
-            Dataset array or generator builder of systematics for the catalog.
-        footprint_systematics : typing.Union[np.ndarray, typing.Callable]
-            Dataset array or generator builder of systematics for the footprint.
-        n_clusters : int
-            Desired number latent space clusters.
-        n_epochs : typing.Optional[int]
-            Number of epochs to train for (default: **None**).
-        n_vectors : typing.Optional[int]
-            Number of vectors to train for (default: **None**).
-        n_error_bins : int
-            Number of quantization and topographic error bins (default: **10**).
-        show_progress_bar : bool
-            Specifies whether to display a progress bar (default: **True**).
         enable_gpu : bool
             If available, run on GPU rather than CPU (default: **True**).
+        threads_per_blocks : int
+            Number of GPU threads per blocks (default: **1024**).
         """
 
-        m = self._som.m
-        n = self._som.n
+        if self._catalog_systematics is None\
+           or                                \
+           self._footprint_systematics is None:
 
-        ################################################################################################################
-        # TRAIN LATENT SPACE                                                                                           #
-        ################################################################################################################
-
-        self._train(catalog_systematics, n_epochs, n_vectors, n_error_bins, show_progress_bar, enable_gpu)
-
-        ################################################################################################################
-        # CLUSTER LATENT SPACE                                                                                         #
-        ################################################################################################################
-
-        self._cluster_ids = clustering.Clustering.clusterize(self._som.get_weights(), n_clusters)
-
-        ################################################################################################################
-        # COMPUTE FOOTPRINT WINNERS                                                                                    #
-        ################################################################################################################
-
-        self._winners = self._som.get_winners(footprint_systematics, enable_gpu = enable_gpu)
+            raise Exception('Bad usage')
 
         ################################################################################################################
         # COMPUTE ACTIVATION MAPS                                                                                      #
         ################################################################################################################
 
-        self._catalog_activation_map = self._som.get_activation_map(catalog_systematics, enable_gpu = enable_gpu)
-        self._footprint_activation_map = self._som.get_activation_map(footprint_systematics, enable_gpu = enable_gpu)
+        self._catalog_activation_map = self._som.get_activation_map(self._catalog_systematics, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+        self._footprint_activation_map = self._som.get_activation_map(self._footprint_systematics, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+
+        ################################################################################################################
+        # COMPUTE GALAXY NUMBER DENSITY XXX                                                                            #
+        ################################################################################################################
+
+        self._gnd, self._gndc, self._gndm = self._process(
+            self._catalog_activation_map,
+            self._footprint_activation_map
+        )
+
+    ####################################################################################################################
+
+    def process_clustered(self, n_clusters: int) -> None:
+
+        """
+        ???
+
+        Parameters
+        ----------
+        n_clusters : int
+            Desired number latent space clusters.
+        """
+
+        m = self._som.m
+        n = self._som.n
+
+        if self._catalog_activation_map is None\
+           or                                   \
+           self._footprint_activation_map is None:
+
+            raise Exception('Bad usage')
+
+        ################################################################################################################
+        # CLUSTER LATENT SPACE                                                                                         #
+        ################################################################################################################
+
+        self._cluster_ids = clustering.Clustering.clusterize(self.weights, n_clusters)
 
         ################################################################################################################
         # COMPUTE CLUSTERED ACTIVATION MAPS                                                                            #
@@ -362,56 +475,12 @@ class Decontamination_SOM(object):
         self._clustered_footprint_activation_map = clustering.Clustering.average(self._footprint_activation_map.reshape(m * n), self._cluster_ids).reshape(m, n)
 
         ################################################################################################################
-        # COMPUTE NUMBER OF GALAXIES & PIXELS                                                                          #
-        ################################################################################################################
-
-        self._n_gal = np.sum(self._catalog_activation_map)
-        self._n_pix = np.sum(self._footprint_activation_map)
-
-        ################################################################################################################
-        # COMPUTE GALAXY NUMBER DENSITY                                                                                #
-        ################################################################################################################
-
-        self._gnd = np.divide(
-            self._catalog_activation_map,
-            self._footprint_activation_map,
-            out = np.full(self._catalog_activation_map.shape, np.nan, dtype = self._som.dtype),
-            where = self._footprint_activation_map > 0.0
-        )
-
-        ################################################################################################################
         # COMPUTE CLUSTERED GALAXY NUMBER DENSITY                                                                      #
         ################################################################################################################
 
-        self._clustered_gnd = np.divide(
+        self._clustered_gnd, self._clustered_gndc, self._clustered_gndm = self._process(
             self._clustered_catalog_activation_map,
-            self._clustered_footprint_activation_map,
-            out = np.full(self._clustered_catalog_activation_map.shape, np.nan, dtype = self._som.dtype),
-            where = self._clustered_footprint_activation_map > 0.0
+            self._clustered_footprint_activation_map
         )
-
-        ################################################################################################################
-        # COMPUTE GALAXY NUMBER DENSITY CONTRAST                                                                       #
-        ################################################################################################################
-
-        self._gndc = (self._gnd - (self._n_gal / self._n_pix)) / (self._n_gal / self._n_pix)
-
-        ################################################################################################################
-        # COMPUTE CLUSTERED GALAXY NUMBER DENSITY CONTRAST                                                             #
-        ################################################################################################################
-
-        self._clustered_gndc = (self._clustered_gnd - (self._n_gal / self._n_pix)) / (self._n_gal / self._n_pix)
-
-        ################################################################################################################
-        # COMPUTE GALAXY NUMBER DENSITY MAP                                                                            #
-        ################################################################################################################
-
-        self._gndm = self._gnd.reshape(m * n)[self._winners]
-
-        ################################################################################################################
-        # COMPUTE CLUSTERED GALAXY NUMBER DENSITY MAP                                                                  #
-        ################################################################################################################
-
-        self._clustered_gndm = self._clustered_gnd.reshape(m * n)[self._winners]
 
 ########################################################################################################################

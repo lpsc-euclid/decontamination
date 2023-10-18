@@ -72,7 +72,7 @@ __all__ = [
     'Clustering',
     'display_latent_space',
     'display_healpix', 'display_catalog',
-    'Generator_Abstract', 'Generator_Uniform', 'Generator_FromDensity',
+    'Generator_Uniform', 'Generator_FromDensity',
     'Decontamination_SOM',
 ]
 

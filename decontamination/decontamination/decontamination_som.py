@@ -318,7 +318,7 @@ class Decontamination_SOM(object):
     ####################################################################################################################
 
     # noinspection PyArgumentList
-    def train(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], footprint_systematics: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int], n_vectors: typing.Optional[int], n_error_bins: int = 10, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def train(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], footprint_systematics: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, n_error_bins: int = 10, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         ???

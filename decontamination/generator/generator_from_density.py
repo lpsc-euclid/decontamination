@@ -96,13 +96,25 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
         n_total_galaxies = 0
 
-        for i in range(x_diamonds.shape[0]):
+        if density_map is not None:
 
-            n_galaxies = rng.poisson(mult_factor * (density_map[i] if density_map is not None else 1.0))
+            for i in range(x_diamonds.shape[0]):
 
-            n_galaxies_per_pixels[i] = n_galaxies
+                n_galaxies = rng.poisson(mult_factor * density_map[i])
 
-            n_total_galaxies += n_galaxies
+                n_galaxies_per_pixels[i] = n_galaxies
+
+                n_total_galaxies += n_galaxies
+
+        else:
+
+            for i in range(x_diamonds.shape[0]):
+
+                n_galaxies = rng.poisson(mult_factor * 1.000000000000)
+
+                n_galaxies_per_pixels[i] = n_galaxies
+
+                n_total_galaxies += n_galaxies
 
         ################################################################################################################
         # GENERATE POSITIONS                                                                                           #                                                                                                             #

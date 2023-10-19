@@ -263,7 +263,12 @@ class Decontamination_SOM(object):
     @property
     def gnd(self) -> np.ndarray:
 
-        """Galaxy Number Density (GND) in the latent space."""
+        """
+        Galaxy Number Density (GND) in the latent space.
+
+        .. math::
+            \\mathrm{gnd}\\equiv\\frac{\\mathrm{catalog\\ activation\\ map}}{\\mathrm{footprint\\ activation\\ map}}
+        """
 
         return self._gnd
 
@@ -272,7 +277,12 @@ class Decontamination_SOM(object):
     @property
     def clustered_gnd(self) -> np.ndarray:
 
-        """Clustered Galaxy Number Density (GND) in the latent space."""
+        """
+        Clustered Galaxy Number Density (GND) in the latent space.
+
+        .. math::
+            \\mathrm{clustered\\ gnd}\\equiv\\frac{\\mathrm{clustered\\ catalog\\ activation\\ map}}{\\mathrm{clustered\\ footprint\\ activation\\ map}}
+        """
 
         return self._clustered_gnd
 

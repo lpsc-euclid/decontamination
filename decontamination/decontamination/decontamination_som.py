@@ -469,7 +469,7 @@ class Decontamination_SOM(object):
            or                                \
            self._footprint_systematics is None:
 
-            raise Exception('Bad usage')
+            raise Exception('Underlying SOM network not trained')
 
         ################################################################################################################
         # COMPUTE ACTIVATION MAPS                                                                                      #
@@ -489,7 +489,7 @@ class Decontamination_SOM(object):
 
     ####################################################################################################################
 
-    def process_clustered(self, n_clusters: int) -> None:
+    def process_clustered(self, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         ???
@@ -498,6 +498,10 @@ class Decontamination_SOM(object):
         ----------
         n_clusters : int
             Desired number latent space clusters.
+        enable_gpu : bool
+            If available, run on GPU rather than CPU (default: **True**).
+        threads_per_blocks : int
+            Number of GPU threads per blocks (default: **1024**).
         """
 
         m = self._som.m
@@ -507,7 +511,7 @@ class Decontamination_SOM(object):
            or                                   \
            self._footprint_activation_map is None:
 
-            raise Exception('Bad usage')
+            self.process_flat(enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
         ################################################################################################################
         # CLUSTER LATENT SPACE                                                                                         #

@@ -410,7 +410,7 @@ class Decontamination_SOM(object):
 
     ####################################################################################################################
 
-    def _process(self, catalog_activation_map: np.ndarray, footprint_activation_map: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def _process(self, catalog_activation_map: np.ndarray, footprint_activation_map: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         ################################################################################################################
         # COMPUTE NUMBER OF GALAXIES & PIXELS                                                                          #

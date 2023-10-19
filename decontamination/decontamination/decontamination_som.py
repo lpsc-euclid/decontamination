@@ -28,7 +28,7 @@ class Decontamination_SOM(object):
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
         Neural network data type, either **np.float32** or **np.float64** (default: **np.float32**).
     topology : typing.Optional[str]
-        Topology of the model, either **'square'** or **'hexagonal'** (default: **None** ≡ **'hexagonal'**).
+        Neural network topology, either **'square'** or **'hexagonal'** (default: **None** ≡ **'hexagonal'**).
     alpha : float
         Starting value of the learning rate (default: **None** ≡ **0.3**, iterative training only).
     sigma : float
@@ -128,7 +128,7 @@ class Decontamination_SOM(object):
     @property
     def topology(self) -> str:
 
-        """Model topology, either **'square'** or **'hexagonal'**."""
+        """Neural network topology, either **'square'** or **'hexagonal'**."""
 
         return self._som.topology
 
@@ -137,7 +137,7 @@ class Decontamination_SOM(object):
     @property
     def alpha(self) -> str:
 
-        """Starting value of the learning rate."""
+        """Starting value of the learning rate for the underlying Self Organizing Map."""
 
         return self._som.alpha
 
@@ -146,7 +146,7 @@ class Decontamination_SOM(object):
     @property
     def sigma(self) -> str:
 
-        """Starting value of the neighborhood radius."""
+        """Starting value of the neighborhood radius for the underlying Self Organizing Map."""
 
         return self._som.sigma
 
@@ -155,7 +155,7 @@ class Decontamination_SOM(object):
     @property
     def quantization_errors(self) -> np.ndarray:
 
-        """Quantization errors."""
+        """Quantization errors for the underlying Self Organizing Map."""
 
         return self._som.get_quantization_errors()
 
@@ -164,7 +164,7 @@ class Decontamination_SOM(object):
     @property
     def topographic_errors(self) -> np.ndarray:
 
-        """Topographic errors."""
+        """Topographic errors for the underlying Self Organizing Map."""
 
         return self._som.get_topographic_errors()
 

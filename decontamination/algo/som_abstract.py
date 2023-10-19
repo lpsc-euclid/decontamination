@@ -29,7 +29,7 @@ class SOM_Abstract(object):
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
         Neural network data type, either **np.float32** or **np.float64** (default: **np.float32**).
     topology : typing.Optional[str]
-        Topology of the model, either **'square'** or **'hexagonal'** (default: **None** ≡ **'hexagonal'**).
+        Neural network topology, either **'square'** or **'hexagonal'** (default: **None** ≡ **'hexagonal'**).
     """
 
     __MODE__ = 'abstract'
@@ -350,7 +350,7 @@ class SOM_Abstract(object):
     @property
     def topology(self) -> str:
 
-        """Model topology, either **'square'** or **'hexagonal'**."""
+        """Neural network topology, either **'square'** or **'hexagonal'**."""
 
         return self._topology
 

@@ -84,9 +84,6 @@ class Decontamination_SOM(object):
         self._gnd = None
         self._clustered_gnd = None
 
-        self._gndc = None
-        self._clustered_gndc = None
-
         self._gndm = None
         self._clustered_gndm = None
 
@@ -286,7 +283,7 @@ class Decontamination_SOM(object):
 
         """Galaxy Number Density Contrast (GNDC)."""
 
-        return self._gndc
+        return (self._gnd - (self._n_gal / self._n_pix)) / (self._n_gal / self._n_pix)
 
     ####################################################################################################################
 
@@ -305,6 +302,15 @@ class Decontamination_SOM(object):
         """Galaxy Number Density Map (GNDM)."""
 
         return self._gndm
+
+    ####################################################################################################################
+
+    @property
+    def gndcm(self) -> np.ndarray:
+
+        """Galaxy Number Density Contrast Map (GNDM)."""
+
+        return (self._gndm - (self._n_gal / self._n_pix)) / (self._n_gal / self._n_pix)
 
     ####################################################################################################################
 
@@ -396,12 +402,6 @@ class Decontamination_SOM(object):
         )
 
         ################################################################################################################
-        # COMPUTE GALAXY NUMBER DENSITY CONTRAST                                                                       #
-        ################################################################################################################
-
-        gndc = (gnd - (self._n_gal / self._n_pix)) / (self._n_gal / self._n_pix)
-
-        ################################################################################################################
         # COMPUTE GALAXY NUMBER DENSITY MAP                                                                            #
         ################################################################################################################
 
@@ -409,7 +409,7 @@ class Decontamination_SOM(object):
 
         ################################################################################################################
 
-        return gnd, gndc, gndm
+        return gnd, gndm
 
     ####################################################################################################################
 
@@ -443,7 +443,7 @@ class Decontamination_SOM(object):
         # COMPUTE GALAXY NUMBER DENSITY XXX                                                                            #
         ################################################################################################################
 
-        self._gnd, self._gndc, self._gndm = self._process(
+        self._gnd, self._gndm = self._process(
             self._catalog_activation_map,
             self._footprint_activation_map
         )
@@ -487,7 +487,7 @@ class Decontamination_SOM(object):
         # COMPUTE CLUSTERED GALAXY NUMBER DENSITY                                                                      #
         ################################################################################################################
 
-        self._clustered_gnd, self._clustered_gndc, self._clustered_gndm = self._process(
+        self._clustered_gnd, self._clustered_gndm = self._process(
             self._clustered_catalog_activation_map,
             self._clustered_footprint_activation_map
         )

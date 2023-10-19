@@ -263,7 +263,7 @@ class Decontamination_SOM(object):
     @property
     def gnd(self) -> np.ndarray:
 
-        """Galaxy Number Density (GND)."""
+        """Galaxy Number Density (GND) in the latent space."""
 
         return self._gnd
 
@@ -272,7 +272,7 @@ class Decontamination_SOM(object):
     @property
     def clustered_gnd(self) -> np.ndarray:
 
-        """Clustered Galaxy Number Density (GND)."""
+        """Clustered Galaxy Number Density (GND) in the latent space."""
 
         return self._clustered_gnd
 
@@ -282,7 +282,7 @@ class Decontamination_SOM(object):
     def gndc(self) -> np.ndarray:
 
         """
-        Galaxy Number Density Contrast (GNDC).
+        Galaxy Number Density Contrast (GNDC) in the latent space.
 
         .. math::
             \\mathrm{gndc}\\equiv\\frac{\\mathrm{gnd}-\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}{\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}
@@ -296,22 +296,31 @@ class Decontamination_SOM(object):
     def clustered_gndc(self) -> np.ndarray:
 
         """
-        Clustered Galaxy Number Density Contrast (GNDC).
+        Clustered Galaxy Number Density Contrast (GNDC) in the latent space.
 
         .. math::
             \\mathrm{clustered\\ gndc}\\equiv\\frac{\\mathrm{clustered\\ gnd}-\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}{\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}
         """
 
-        return self._clustered_gndc
+        return (self._clustered_gnd - (self._n_gal / self._n_pix)) / (self._n_gal / self._n_pix)
 
     ####################################################################################################################
 
     @property
     def gndm(self) -> np.ndarray:
 
-        """Galaxy Number Density Map (GNDM)."""
+        """Galaxy Number Density Map (GNDM) in the physical space."""
 
         return self._gndm
+
+    ####################################################################################################################
+
+    @property
+    def clustered_gndm(self) -> np.ndarray:
+
+        """Clustered Galaxy Number Density Map (GNDM) in the physical space."""
+
+        return self._clustered_gndm
 
     ####################################################################################################################
 
@@ -319,7 +328,7 @@ class Decontamination_SOM(object):
     def gndcm(self) -> np.ndarray:
 
         """
-        Galaxy Number Density Contrast Map (GNDM).
+        Galaxy Number Density Contrast Map (GNDCM) in the physical space.
 
         .. math::
             \\mathrm{gndcm}\\equiv\\frac{\\mathrm{gndm}-\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}{\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}
@@ -330,16 +339,16 @@ class Decontamination_SOM(object):
     ####################################################################################################################
 
     @property
-    def clustered_gndm(self) -> np.ndarray:
+    def clustered_gndcm(self) -> np.ndarray:
 
         """
-        Clustered Galaxy Number Density Map (GNDM).
+        Clustered Galaxy Number Density Contrast Map (GNDCM) in the physical space.
 
         .. math::
             \\mathrm{clustered\\ gndcm}\\equiv\\frac{\\mathrm{clustered\\ gndm}-\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}{\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}
         """
 
-        return self._clustered_gndm
+        return (self._clustered_gndm - (self._n_gal / self._n_pix)) / (self._n_gal / self._n_pix)
 
     ####################################################################################################################
 

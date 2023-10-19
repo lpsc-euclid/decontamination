@@ -496,7 +496,7 @@ class Decontamination_SOM(object):
 
         weights = self._som.get_weights().copy()
 
-        weights[self._footprint_activation_map > 0] = np.nan
+        weights[self._footprint_activation_map.reshape(m * n) > 0] = np.nan
 
         self._cluster_ids = clustering.Clustering.clusterize(weights, n_clusters)
 

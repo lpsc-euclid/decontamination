@@ -281,7 +281,12 @@ class Decontamination_SOM(object):
     @property
     def gndc(self) -> np.ndarray:
 
-        """Galaxy Number Density Contrast (GNDC)."""
+        """
+        Galaxy Number Density Contrast (GNDC).
+
+        .. math::
+            \\mathrm{gndc}\\equiv\\frac{\\mathrm{gnd}-\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}{\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}
+        """
 
         return (self._gnd - (self._n_gal / self._n_pix)) / (self._n_gal / self._n_pix)
 
@@ -290,7 +295,12 @@ class Decontamination_SOM(object):
     @property
     def clustered_gndc(self) -> np.ndarray:
 
-        """Clustered Galaxy Number Density Contrast (GNDC)."""
+        """
+        Clustered Galaxy Number Density Contrast (GNDC).
+
+        .. math::
+            \\mathrm{clustered\\ gndc}\\equiv\\frac{\\mathrm{clustered\\ gnd}-\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}{\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}
+        """
 
         return self._clustered_gndc
 
@@ -308,7 +318,12 @@ class Decontamination_SOM(object):
     @property
     def gndcm(self) -> np.ndarray:
 
-        """Galaxy Number Density Contrast Map (GNDM)."""
+        """
+        Galaxy Number Density Contrast Map (GNDM).
+
+        .. math::
+            \\mathrm{gndcm}\\equiv\\frac{\\mathrm{gndm}-\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}{\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}
+        """
 
         return (self._gndm - (self._n_gal / self._n_pix)) / (self._n_gal / self._n_pix)
 
@@ -317,7 +332,12 @@ class Decontamination_SOM(object):
     @property
     def clustered_gndm(self) -> np.ndarray:
 
-        """Clustered Galaxy Number Density Map (GNDM)."""
+        """
+        Clustered Galaxy Number Density Map (GNDM).
+
+        .. math::
+            \\mathrm{clustered\\ gndcm}\\equiv\\frac{\\mathrm{clustered\\ gndm}-\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}{\\frac{n_\\mathrm{gal}}{n_\\mathrm{pix}}}
+        """
 
         return self._clustered_gndm
 
@@ -474,7 +494,11 @@ class Decontamination_SOM(object):
         # CLUSTER LATENT SPACE                                                                                         #
         ################################################################################################################
 
-        self._cluster_ids = clustering.Clustering.clusterize(self.weights, n_clusters)
+        weights = self._som.get_weights().copy()
+
+        weights[self._footprint_activation_map > 0] = np.nan
+
+        self._cluster_ids = clustering.Clustering.clusterize(weights, n_clusters)
 
         ################################################################################################################
         # COMPUTE CLUSTERED ACTIVATION MAPS                                                                            #

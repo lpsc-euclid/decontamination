@@ -59,7 +59,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
     @property
     def cov_matrix(self) -> np.ndarray:
 
-        """Covariance matrix."""
+        """Covariance matrix of the training dataset."""
 
         return self._cov_matrix
 

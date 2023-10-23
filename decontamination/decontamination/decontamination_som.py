@@ -191,7 +191,7 @@ class Decontamination_SOM(object):
     @property
     def winners(self) -> np.ndarray:
 
-        """Winners for footprint."""
+        """Winners (a.k.a. Best Matching Units) for footprint."""
 
         return self._winners
 

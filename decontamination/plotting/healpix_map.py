@@ -137,7 +137,7 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
 
 ########################################################################################################################
 
-def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = 'hist', v_min: float = None, v_max: float = None) -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Displays a catalog.

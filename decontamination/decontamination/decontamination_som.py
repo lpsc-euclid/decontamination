@@ -131,6 +131,15 @@ class Decontamination_SOM(object):
     ####################################################################################################################
 
     @property
+    def batch(self) -> bool:
+
+        """Parallel or iterative training."""
+
+        return self._batch
+
+    ####################################################################################################################
+
+    @property
     def dtype(self) -> typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]:
 
         """Neural network data type."""

@@ -48,6 +48,12 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         self._cov_matrix = None
 
+        self._eigenvalues = None
+
+        self._eigenvectors = None
+
+        self._orders = None
+
         ################################################################################################################
 
         self._header_extra = {
@@ -62,6 +68,33 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         """Covariance matrix of the training dataset."""
 
         return self._cov_matrix
+
+    ####################################################################################################################
+
+    @property
+    def eigenvalues(self) -> np.ndarray:
+
+        """Eigenvalues of the covariance matrix."""
+
+        return self._eigenvalues
+
+    ####################################################################################################################
+
+    @property
+    def eigenvectors(self) -> np.ndarray:
+
+        """Eigenvectors of the covariance matrix."""
+
+        return self._eigenvectors
+
+    ####################################################################################################################
+
+    @property
+    def orders(self) -> np.ndarray:
+
+        """Order of importance of the components."""
+
+        return self._orders
 
     ####################################################################################################################
 
@@ -104,7 +137,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit()
-    def _diag_cov_matrix(weights: np.ndarray, cov_matrix: np.ndarray, min_weight: float, max_weight: float, m: int, n: int) -> None:
+    def _diag_cov_matrix(weights: np.ndarray, cov_matrix: np.ndarray, min_weight: float, max_weight: float, m: int, n: int) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
@@ -131,6 +164,10 @@ class SOM_PCA(som_abstract.SOM_Abstract):
                     +
                     eigenvectors[:, order1] * c2
                 ).astype(weights.dtype)
+
+        ################################################################################################################
+
+        return eigenvalues, eigenvectors, orders
 
     ####################################################################################################################
 
@@ -181,6 +218,13 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        SOM_PCA._diag_cov_matrix(self.get_centroids(), self._cov_matrix, min_weight, max_weight, self._m, self._n)
+        self._eigenvalues, self._eigenvectors, self._orders = SOM_PCA._diag_cov_matrix(
+            self.get_centroids(),
+            self._cov_matrix,
+            min_weight,
+            max_weight,
+            self._m,
+            self._n
+        )
 
 ########################################################################################################################

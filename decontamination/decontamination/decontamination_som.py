@@ -5,7 +5,7 @@ import typing
 
 import numpy as np
 
-from ..algo import som_pca, som_batch, som_online, clustering
+from ..algo import som_pca, som_batch, som_online, som_abstract, clustering
 
 ########################################################################################################################
 
@@ -90,6 +90,20 @@ class Decontamination_SOM(object):
     ####################################################################################################################
 
     @property
+    def pca(self) -> som_pca.SOM_PCA:
+
+        return self._pca
+
+    ####################################################################################################################
+
+    @property
+    def som(self) -> som_abstract.SOM_Abstract:
+
+        return self._som
+
+    ####################################################################################################################
+
+    @property
     def m(self) -> int:
 
         """Number of neuron rows."""
@@ -135,7 +149,7 @@ class Decontamination_SOM(object):
     ####################################################################################################################
 
     @property
-    def alpha(self) -> str:
+    def alpha(self) -> float:
 
         """Starting value of the learning rate for the underlying Self Organizing Map."""
 
@@ -144,7 +158,7 @@ class Decontamination_SOM(object):
     ####################################################################################################################
 
     @property
-    def sigma(self) -> str:
+    def sigma(self) -> float:
 
         """Starting value of the neighborhood radius for the underlying Self Organizing Map."""
 
@@ -430,7 +444,7 @@ class Decontamination_SOM(object):
 
     ####################################################################################################################
 
-    def _process(self, catalog_activation_map: np.ndarray, footprint_activation_map: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def _compute_gndm(self, catalog_activation_map: np.ndarray, footprint_activation_map: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         ################################################################################################################
         # COMPUTE NUMBER OF GALAXIES & PIXELS                                                                          #
@@ -462,10 +476,10 @@ class Decontamination_SOM(object):
 
     ####################################################################################################################
 
-    def process(self, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def compute_gndm(self, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
-        ???
+        Compute the Galaxy Number Density Map from the SOM.
 
         Parameters
         ----------
@@ -492,17 +506,17 @@ class Decontamination_SOM(object):
         # COMPUTE GALAXY NUMBER DENSITY XXX                                                                            #
         ################################################################################################################
 
-        self._gnd, self._gndm = self._process(
+        self._gnd, self._gndm = self._compute_gndm(
             self._catalog_activation_map,
             self._footprint_activation_map
         )
 
     ####################################################################################################################
 
-    def process_clustered(self, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def compute_clustered_gndm(self, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
-        ???
+        Compute the clustered Galaxy Number Density Map from the SOM.
 
         Parameters
         ----------
@@ -521,7 +535,7 @@ class Decontamination_SOM(object):
            or                                   \
            self._footprint_activation_map is None:
 
-            self.process(enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+            self.compute_gndm(enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
         ################################################################################################################
         # CLUSTER LATENT SPACE                                                                                         #
@@ -544,9 +558,25 @@ class Decontamination_SOM(object):
         # COMPUTE CLUSTERED GALAXY NUMBER DENSITY                                                                      #
         ################################################################################################################
 
-        self._clustered_gnd, self._clustered_gndm = self._process(
+        self._clustered_gnd, self._clustered_gndm = self._compute_gndm(
             self._clustered_catalog_activation_map,
             self._clustered_footprint_activation_map
         )
+
+    ####################################################################################################################
+
+    def compute_histograms(self) -> None:
+
+        """TODO"""
+
+        pass
+
+    ####################################################################################################################
+
+    def compute_angular_correlations(self) -> None:
+
+        """TODO"""
+
+        pass
 
 ########################################################################################################################

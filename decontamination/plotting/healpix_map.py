@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 ########################################################################################################################
 
-def _catalog_to_density(nside: int, footprint: np.ndarray, sky: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool) -> None:
+def _catalog_to_density(nside: int, footprint: np.ndarray, sky: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool, n_sigma: float = 2.0) -> typing.Tuple[float, float]:
 
     ####################################################################################################################
 
@@ -22,6 +22,15 @@ def _catalog_to_density(nside: int, footprint: np.ndarray, sky: np.ndarray, lon:
     sky[footprint] = 0.0
 
     np.add.at(sky, pixels, 1.0)
+
+    ####################################################################################################################
+
+    mean = np.mean(sky[footprint])
+    std = np.std(sky[footprint])
+
+    ####################################################################################################################
+
+    return mean - n_sigma * std, mean + n_sigma * std
 
 ########################################################################################################################
 
@@ -159,9 +168,9 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
     norm : typing.Optional[str]
         Color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping (default: **'hist'**).
     v_min : float
-        Minimum color scale (default: **None** ≡ min(data)).
+        Minimum color scale (default: **None** ≡ µ-2σ).
     v_max : float
-        Maximum color scale (default: **None** ≡ max(data)).
+        Maximum color scale (default: **None** ≡ µ+2σ).
     """
 
     ####################################################################################################################
@@ -174,7 +183,7 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
 
     sky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
 
-    _catalog_to_density(nside, pixels, sky, lon, lat, nest)
+    default_v_min, default_v_max = _catalog_to_density(nside, pixels, sky, lon, lat, nest)
 
     return _display(
         nside,
@@ -183,8 +192,8 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
         nest = nest,
         cmap = cmap,
         norm = norm,
-        v_min = v_min,
-        v_max = v_max
+        v_min = v_min or default_v_min,
+        v_max = v_max or default_v_max
     )
 
 ########################################################################################################################

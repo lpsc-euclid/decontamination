@@ -319,7 +319,12 @@ class Decontamination_SOM(object):
     @property
     def gndm(self) -> np.ndarray:
 
-        """Galaxy Number Density Map (GNDM) in the physical space."""
+        """
+        Galaxy Number Density Map (GNDM) in the physical space.
+
+        .. math::
+            \\mathrm{gndcm}\\equiv\\mathrm{gnd}[\\mathrm{winners}]
+        """
 
         return self._gndm
 
@@ -328,7 +333,12 @@ class Decontamination_SOM(object):
     @property
     def clustered_gndm(self) -> np.ndarray:
 
-        """Clustered Galaxy Number Density Map (GNDM) in the physical space."""
+        """
+        Clustered Galaxy Number Density Map (GNDM) in the physical space.
+
+        .. math::
+            \\mathrm{clustered\\ gndm}\\equiv\\mathrm{clustered\\ gnd}[\\mathrm{winners}]
+        """
 
         return self._clustered_gndm
 
@@ -452,7 +462,7 @@ class Decontamination_SOM(object):
 
     ####################################################################################################################
 
-    def process_flat(self, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def process(self, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         ???
@@ -511,7 +521,7 @@ class Decontamination_SOM(object):
            or                                   \
            self._footprint_activation_map is None:
 
-            self.process_flat(enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+            self.process(enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
         ################################################################################################################
         # CLUSTER LATENT SPACE                                                                                         #

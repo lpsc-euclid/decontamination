@@ -317,9 +317,9 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             if cur_vector > 0:
 
-                self._quantization_errors = quantization_errors.copy_to_host() * n_epochs / cur_vector
+                self._quantization_errors[cur_epoch] *= cur_epoch / cur_vector
 
-                self._topographic_errors = topographic_errors.copy_to_host() * n_epochs / cur_vector
+                self._topographic_errors[cur_epoch] *= cur_epoch / cur_vector
 
             ############################################################################################################
 

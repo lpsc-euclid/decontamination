@@ -242,9 +242,9 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
             if cur_vector > 0:
 
-                self._quantization_errors = self._quantization_errors * n_epochs / cur_vector
+                self._quantization_errors[cur_epoch] *= cur_epoch / cur_vector
 
-                self._topographic_errors = self._topographic_errors * n_epochs / cur_vector
+                self._topographic_errors[cur_epoch] *= cur_epoch / cur_vector
 
             ############################################################################################################
 

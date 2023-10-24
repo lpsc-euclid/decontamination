@@ -72,7 +72,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
     ####################################################################################################################
 
     @property
-    def sigma(self) -> str:
+    def sigma(self) -> float:
 
         """Starting value of the neighborhood radius."""
 

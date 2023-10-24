@@ -75,7 +75,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
     ####################################################################################################################
 
     @property
-    def alpha(self) -> str:
+    def alpha(self) -> float:
 
         """Starting value of the learning rate."""
 
@@ -84,7 +84,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
     ####################################################################################################################
 
     @property
-    def sigma(self) -> str:
+    def sigma(self) -> float:
 
         """Starting value of the neighborhood radius."""
 

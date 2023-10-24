@@ -208,9 +208,9 @@ class SOM_Online(som_abstract.SOM_Abstract):
             # TRAINING BY NUMBER OF EPOCHS                                                                             #
             ############################################################################################################
 
-            self._quantization_errors = np.zeros(n_epochs, dtype = np.float32)
+            quantization_errors = np.zeros(n_epochs, dtype = np.float32)
 
-            self._topographic_errors = np.zeros(n_epochs, dtype = np.float32)
+            topographic_errors = np.zeros(n_epochs, dtype = np.float32)
 
             ############################################################################################################
 
@@ -224,8 +224,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
                     SOM_Online._train_step1_epoch(
                         self._weights,
-                        self._quantization_errors,
-                        self._topographic_errors,
+                        quantization_errors,
+                        topographic_errors,
                         self._topography,
                         vectors,
                         cur_epoch,
@@ -242,9 +242,9 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
             if cur_vector > 0:
 
-                self._quantization_errors *= n_epochs / cur_vector
+                self._quantization_errors = quantization_errors * n_epochs / cur_vector
 
-                self._topographic_errors *= n_epochs / cur_vector
+                self._topographic_errors = topographic_errors * n_epochs / cur_vector
 
             ############################################################################################################
 
@@ -254,9 +254,9 @@ class SOM_Online(som_abstract.SOM_Abstract):
             # TRAINING BY NUMBER OF VECTORS                                                                            #
             ############################################################################################################
 
-            self._quantization_errors = np.zeros(n_error_bins, dtype = np.float32)
+            quantization_errors = np.zeros(n_error_bins, dtype = np.float32)
 
-            self._topographic_errors = np.zeros(n_error_bins, dtype = np.float32)
+            topographic_errors = np.zeros(n_error_bins, dtype = np.float32)
 
             ############################################################################################################
 
@@ -270,8 +270,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
                 SOM_Online._train_step1_iter(
                     self._weights,
-                    self._quantization_errors,
-                    self._topographic_errors,
+                    quantization_errors,
+                    topographic_errors,
                     self._topography,
                     vectors[0: count],
                     cur_vector,
@@ -297,9 +297,9 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
             if cur_vector > 0:
 
-                self._quantization_errors *= n_error_bins / cur_vector
+                self._quantization_errors = quantization_errors * n_error_bins / cur_vector
 
-                self._topographic_errors *= n_error_bins / cur_vector
+                self._topographic_errors = topographic_errors * n_error_bins / cur_vector
 
             ############################################################################################################
 

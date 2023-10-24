@@ -71,8 +71,8 @@ for i in range(2):
 ########################################################################################################################
 
 start1 = timeit.default_timer()
-#som_ref.train(data, 3, use_epochs = True)
-som_ref.train(data, data.shape[0], use_epochs = False)
+som_ref.train(data, 3, use_epochs = True)
+#som_ref.train(data, data.shape[0], use_epochs = False)
 start2 = timeit.default_timer()
 
 print('minisom training time: ', (start2 - start1))
@@ -84,11 +84,16 @@ som_next = decontamination.SOM_Online(M, N, 4, alpha = 0.3, sigma = max(M, N) / 
 som_next.init_from(som_new)
 
 start1 = timeit.default_timer()
-#som_next.train(data, n_epochs = 3)
-som_next.train(data, n_vectors = data.shape[0])
+som_next.train(data, n_epochs = 3)
+#som_next.train(data, n_vectors = data.shape[0])
 start2 = timeit.default_timer()
 
 print('new implementation training time: ', (start2 - start1))
+
+########################################################################################################################
+
+print(som_next.get_quantization_errors())
+print(som_next.get_topographic_errors())
 
 ########################################################################################################################
 

@@ -117,12 +117,6 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
                 n_total_galaxies += n_galaxies
 
         ################################################################################################################
-
-        cdf = np.cumsum(n_galaxies_per_pixels)
-
-        cdf = cdf / cdf[-1]
-
-        ################################################################################################################
         # GENERATE POSITIONS                                                                                           #                                                                                                             #
         ################################################################################################################
 
@@ -133,14 +127,23 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
+        start_idx = 0
+
         cell_size = get_cell_size(nside)
 
-        pix_i = np.searchsorted(cdf, np.random.rand(n_total_galaxies))
+        x_galaxies = np.empty(n_total_galaxies, dtype = np.float32)
+        y_galaxies = np.empty(n_total_galaxies, dtype = np.float32)
 
-        x_galaxies, y_galaxies = rng.uniform(-0.5, +0.5, size = (2, n_total_galaxies)) * cell_size
+        for i, n_galaxies in enumerate(n_galaxies_per_pixels):
 
-        x_galaxies += x_center[pix_i]
-        y_galaxies += y_center[pix_i]
+            end_idx = start_idx + n_galaxies
+
+            dx, dy = rng.uniform(-0.5, +0.5, size = (2, n_galaxies))
+
+            x_galaxies[start_idx: end_idx] = x_center[i] + dx * cell_size
+            y_galaxies[start_idx: end_idx] = y_center[i] + dy * cell_size
+
+            start_idx = end_idx
 
         ################################################################################################################
 
@@ -155,8 +158,10 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
         theta, phi, = xy2thetaphi(x_galaxies2, y_galaxies2)
 
-        lon = (np.degrees(phi) + 360.0) % 360.0
+        lon = 00.0 + np.degrees(phi)
         lat = 90.0 - np.degrees(theta)
+
+        lon = (lon + 360.0) % 360.0
 
         ################################################################################################################
 

@@ -76,13 +76,13 @@ def thetaphi2xy(θ: np.ndarray, ϕ: np.ndarray) -> typing.Tuple[np.ndarray, np.n
     # POLAR CAPS                                                                                                       #
     ####################################################################################################################
 
-    σ = 2.0 - np.sqrt(3.0 * (1.0 - np.abs(z[pole])))
+    abs_σ = 2.0 - np.sqrt(3.0 * (1.0 - np.abs(z[pole])))
 
     ####################################################################################################################
 
-    x[pole] = ϕ[pole] - (np.abs(σ) - 1.0) * (ϕ[pole] % (np.pi / 2.0) - np.pi / 4.0)
+    x[pole] = ϕ[pole] - (abs_σ - 1.0) * (ϕ[pole] % (np.pi / 2.0) - np.pi / 4.0)
 
-    y[pole] = np.pi * σ / 4.0
+    y[pole] = np.pi * abs_σ / 4.0
 
     y[south] *= -1.0
 
@@ -138,11 +138,11 @@ def xy2thetaphi(x: np.ndarray, y: np.ndarray) -> typing.Tuple[np.ndarray, np.nda
     ab = np.zeros_like(a)
     ab[mask] = a[mask] / b[mask]
     if not np.all(np.isfinite(ab)):
-        raise ValueError('unexpected projection error')
+        raise ValueError('Unexpected projection error')
 
     ϕ[pole] = x[pole] - ab * (x[pole] % (np.pi / 2.0) - (np.pi / 4.0))
 
-    z[pole] = (1.0 - 1.0 / 3.0 * (2.0 - 4.0 * np.abs(y[pole]) / np.pi) ** 2) * y[pole] / np.abs(y[pole])
+    z[pole] = (1.0 - 1.0 / 3.0 * (2.0 - 4.0 * np.abs(y[pole]) / np.pi) ** 2) * np.sign(y[pole])
 
     ####################################################################################################################
 

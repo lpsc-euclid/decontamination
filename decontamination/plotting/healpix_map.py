@@ -30,7 +30,7 @@ def _catalog_to_density(nside: int, footprint: np.ndarray, sky: np.ndarray, lon:
 
     ####################################################################################################################
 
-    return mean - n_sigma * std, mean + n_sigma * std
+    return max(0.0, mean - n_sigma * std), mean + n_sigma * std
 
 ########################################################################################################################
 

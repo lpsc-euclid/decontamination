@@ -110,7 +110,7 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
             for i in range(x_diamonds.shape[0]):
 
-                n_galaxies = rng.poisson(mult_factor * 1.000000000000)
+                n_galaxies = mult_factor#rng.poisson(mult_factor * 1.000000000000)
 
                 n_galaxies_per_pixels[i] = n_galaxies
 
@@ -162,6 +162,10 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
         lat = 90.0 - 180.0 * theta / np.pi
 
         ################################################################################################################
+
+        if lon.shape[0] != n_total_galaxies:
+
+            raise Exception('Unexpected internal error.')
 
         return lon, lat
 

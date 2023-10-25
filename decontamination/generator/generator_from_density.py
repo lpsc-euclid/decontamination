@@ -155,8 +155,8 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
         theta, phi, = xy2thetaphi(x_galaxies2, y_galaxies2)
 
-        lon = 00.0 + 180.0 * phi / np.pi
-        lat = 90.0 - 180.0 * theta / np.pi
+        lon = (np.degrees(phi) + 360.0) % 360.0
+        lat = 90.0 - np.degrees(theta)
 
         ################################################################################################################
 

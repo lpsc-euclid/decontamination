@@ -19,15 +19,15 @@ def dataset_to_generator_builder(dataset: typing.Union[np.ndarray, typing.Callab
 
 ########################################################################################################################
 
-def batch_iterator(size: int, n_chunks: int) -> typing.Iterator[int, int]:
+def batch_iterator(size: int, n_max_batch: int) -> typing.Iterator[typing.Tuple[int, int]]:
 
     ####################################################################################################################
 
-    chunk_size, chunk_remaining = divmod(size, n_chunks)
+    chunk_size, chunk_remaining = divmod(size, n_max_batch)
 
     ####################################################################################################################
 
-    for i in range(n_chunks):
+    for i in range(n_max_batch):
 
         s = i * chunk_size
         e = s + chunk_size
@@ -38,7 +38,7 @@ def batch_iterator(size: int, n_chunks: int) -> typing.Iterator[int, int]:
 
     if chunk_remaining > 0:
 
-        yield n_chunks * chunk_size, size
+        yield n_max_batch * chunk_size, size
 
 ########################################################################################################################
 # ASYMPTOTIC DECAY                                                                                                     #

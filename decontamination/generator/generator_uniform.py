@@ -5,6 +5,8 @@ import typing
 
 import numpy as np
 
+from ..algo import batch_iterator
+
 from . import rand_ang, generator_abstract
 
 ########################################################################################################################
@@ -39,7 +41,7 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
     ####################################################################################################################
 
-    def generate(self, mult_factor: float = 10.0) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def generate(self, mult_factor: float = 10.0, n_max_batch: typing.Optional[int] = None) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         """
         Generates uniform galaxy positions.
@@ -48,11 +50,13 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
         ----------
         mult_factor : float
             Mean number of galaxies per HEALPix pixel (default: **10.0**).
+        n_max_batch : typing.Optional[int]
+            Maximum number of galaxy positions to yield in one batch.
 
         Returns
         -------
         typing.Tuple[np.ndarray, np.ndarray]
-            Galaxy catalog (longitudes and latitudes).
+            Galaxy position (longitudes and latitudes).
         """
 
         ################################################################################################################
@@ -61,19 +65,19 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        pixels = np.repeat(self._footprint, n_galaxies_per_pixels)
+        for s, e in batch_iterator(self._footprint.shape[0], n_max_batch or self._footprint.shape[0]):
 
-        ################################################################################################################
+            ############################################################################################################
 
-        lon, lat = rand_ang(
-            self._nside,
-            pixels,
-            lonlat = self._lonlat,
-            rng = self._random_generator
-        )
+            batched_footprint = np.repeat(self._footprint[s, e], n_galaxies_per_pixels[s, e])
 
-        ################################################################################################################
+            ############################################################################################################
 
-        return lon, lat
+            yield rand_ang(
+                self._nside,
+                batched_footprint,
+                lonlat = self._lonlat,
+                rng = self._random_generator
+            )
 
 ########################################################################################################################

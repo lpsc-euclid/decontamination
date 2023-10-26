@@ -7,7 +7,7 @@ import numpy as np
 
 from ..algo import batch_iterator
 
-from . import rand_ang, generator_abstract
+from . import healpix_rand_ang, generator_abstract
 
 ########################################################################################################################
 
@@ -79,7 +79,7 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
             ############################################################################################################
 
-            yield rand_ang(
+            yield healpix_rand_ang(
                 self._nside,
                 batched_footprint,
                 lonlat = self._lonlat,

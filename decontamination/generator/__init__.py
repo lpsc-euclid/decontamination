@@ -18,7 +18,7 @@ LOWEST_CORNER_COORDINATES = np.array([
 
 ########################################################################################################################
 
-def rand_ang(nside: int, pixels: np.ndarray, lonlat = False, rng: typing.Optional[np.random.Generator] = None, dtype: typing.Type[typing.Union[np.float32, np.float64, float]] = np.float64):
+def healpix_rand_ang(nside: int, pixels: np.ndarray, lonlat = False, rng: typing.Optional[np.random.Generator] = None, dtype: typing.Type[typing.Union[np.float32, np.float64, float]] = np.float64):
 
     """
     Samples random spherical coordinates from the given HEALPix pixels. Nested ordering only.

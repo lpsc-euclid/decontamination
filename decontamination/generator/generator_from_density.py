@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
-import math
 import typing
 
 import numpy as np
 
-from . import xy2thetaphi, get_cell_size, generator_abstract
+from . import rand_ang, generator_abstract
 
 ########################################################################################################################
 
@@ -58,117 +57,14 @@ class Generator_FromDensity(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        if density_map is not None and (
-            self._x_diamonds.size != density_map.size
-            or
-            self._y_diamonds.size != density_map.size
-        ):
-
-            raise Exception('Inconsistent number of pixels and weights')
-
-        ################################################################################################################
-
         rng = np.random.default_rng(seed = seed)
 
         ################################################################################################################
 
-        return Generator_FromDensity._generate(
-            rng,
-            self._nside,
-            self._x_diamonds,
-            self._y_diamonds,
-            density_map,
-            mult_factor
-        )
-
-    ####################################################################################################################
-
-    @staticmethod
-    def _generate(rng: np.random.Generator, nside: int, x_diamonds: np.ndarray, y_diamonds: np.ndarray, density_map: typing.Optional[np.ndarray], mult_factor: float) -> typing.Tuple[np.ndarray, np.ndarray]:
-
-        ################################################################################################################
-        # GENERATE GALAXIES                                                                                            #                                                                                                             #
-        ################################################################################################################
-
-        n_galaxies_per_pixels = np.empty(x_diamonds.shape[0], dtype = np.int32)
+        # TODO #
 
         ################################################################################################################
 
-        n_total_galaxies = 0
-
-        if density_map is not None:
-
-            for i in range(x_diamonds.shape[0]):
-
-                n_galaxies = rng.poisson(mult_factor * density_map[i])
-
-                n_galaxies_per_pixels[i] = n_galaxies
-
-                n_total_galaxies += n_galaxies
-
-        else:
-
-            for i in range(x_diamonds.shape[0]):
-
-                n_galaxies = rng.poisson(mult_factor * 1.000000000000)
-
-                n_galaxies_per_pixels[i] = n_galaxies
-
-                n_total_galaxies += n_galaxies
-
-        ################################################################################################################
-        # GENERATE POSITIONS                                                                                           #                                                                                                             #
-        ################################################################################################################
-
-        # HEALPix diamonds to squares -> +45° rotation.
-
-        x_center = (x_diamonds - y_diamonds) / math.sqrt(2)
-        y_center = (x_diamonds + y_diamonds) / math.sqrt(2)
-
-        ################################################################################################################
-
-        start_idx = 0
-
-        cell_size = get_cell_size(nside)
-
-        x_galaxies = np.empty(n_total_galaxies, dtype = np.float32)
-        y_galaxies = np.empty(n_total_galaxies, dtype = np.float32)
-
-        for i, n_galaxies in enumerate(n_galaxies_per_pixels):
-
-            end_idx = start_idx + n_galaxies
-
-            dx, dy = rng.uniform(-0.5, +0.5, size = (2, n_galaxies))
-
-            x_galaxies[start_idx: end_idx] = x_center[i] + dx * cell_size
-            y_galaxies[start_idx: end_idx] = y_center[i] + dy * cell_size
-
-            start_idx = end_idx
-
-        ################################################################################################################
-
-        # Squares to HEALPix diamonds -> -45° rotation.
-
-        x_galaxies2 = (+x_galaxies + y_galaxies) / math.sqrt(2)
-        y_galaxies2 = (-x_galaxies + y_galaxies) / math.sqrt(2)
-
-        ################################################################################################################
-        # X, Y TO LON, LAT PROJECTION                                                                                  #
-        ################################################################################################################
-
-        theta, phi, = xy2thetaphi(x_galaxies2, y_galaxies2)
-
-        lon = 00.0 + np.degrees(phi)
-        lat = 90.0 - np.degrees(theta)
-
-        lon = (lon + 360.0) % 360.0
-
-        ################################################################################################################
-
-        if lon.shape[0] != n_total_galaxies:
-
-            raise Exception('Unexpected internal error.')
-
-        return lon, lat
+        return None, None
 
 ########################################################################################################################

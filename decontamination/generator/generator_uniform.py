@@ -5,12 +5,12 @@ import typing
 
 import numpy as np
 
-from . import generator_from_density
+from . import rand_ang, generator_abstract
 
 ########################################################################################################################
 
 # noinspection PyPep8Naming
-class Generator_Uniform(generator_from_density.Generator_FromDensity):
+class Generator_Uniform(generator_abstract.Generator_Abstract):
 
     """
     Uniform galaxy catalog generator.
@@ -55,6 +55,27 @@ class Generator_Uniform(generator_from_density.Generator_FromDensity):
 
         ################################################################################################################
 
-        return super().generate(None, mult_factor = mult_factor, seed = seed)
+        rng = np.random.default_rng(seed = seed)
+
+        ################################################################################################################
+
+        n_galaxies_per_pixels = rng.poisson(lam = mult_factor, size = self._footprint.shape[0])
+
+        ################################################################################################################
+
+        pixels = np.repeat(self._footprint, n_galaxies_per_pixels)
+
+        ################################################################################################################
+
+        lon, lat = rand_ang(
+            self._nside,
+            pixels,
+            nest = self._nest,
+            lonlat = self._lonlat
+        )
+
+        ################################################################################################################
+
+        return lon, lat
 
 ########################################################################################################################

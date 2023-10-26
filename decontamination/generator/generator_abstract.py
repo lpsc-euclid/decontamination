@@ -23,23 +23,19 @@ class Generator_Abstract(object):
         HEALPix indices of the region where galaxies are generated.
     nest : bool
         If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: **True**).
+    lonlat : bool
+        If **True**, assumes ??? (default: **True**).
     """
 
     ####################################################################################################################
 
-    def __init__(self, nside: int, footprint: np.ndarray, nest: bool = True):
-
-        ################################################################################################################
+    def __init__(self, nside: int, footprint: np.ndarray, nest: bool = True, lonlat: bool = True):
 
         self._nside = nside
 
-        ################################################################################################################
+        self._footprint = footprint
 
-        theta, phi = hp.pix2ang(nside, footprint, nest = nest)
-
-        x_diamonds, y_diamonds = thetaphi2xy(theta, phi)
-
-        self._x_diamonds = x_diamonds
-        self._y_diamonds = y_diamonds
+        self._nest = nest
+        self._lonlat = lonlat
 
 ########################################################################################################################

@@ -41,14 +41,14 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
     ####################################################################################################################
 
-    def generate(self, mult_factor: float = 10.0, n_max_batch: typing.Optional[int] = None) -> typing.Iterator[typing.Tuple[np.ndarray, np.ndarray]]:
+    def generate(self, mean_density: float = 10.0, n_max_batch: typing.Optional[int] = None) -> typing.Iterator[typing.Tuple[np.ndarray, np.ndarray]]:
 
         """
         Generates uniform galaxy positions.
 
         Parameters
         ----------
-        mult_factor : float
+        mean_density : float
             Mean number of galaxies per HEALPix pixel (default: **10.0**).
         n_max_batch : typing.Optional[int]
             Maximum number of galaxy positions to yield in one batch.
@@ -61,7 +61,7 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        n_galaxies_per_pixels = self._random_generator.poisson(lam = mult_factor, size = self._footprint.shape[0])
+        n_galaxies_per_pixels = self._random_generator.poisson(lam = mean_density, size = self._footprint.shape[0])
 
         ################################################################################################################
 

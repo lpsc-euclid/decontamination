@@ -5,7 +5,6 @@ import typing
 
 import numpy as np
 import numba as nb
-import healpy as hp
 
 ########################################################################################################################
 
@@ -17,10 +16,10 @@ JPLL = np.array([
 
 ########################################################################################################################
 
-def rand_ang(nside: int, pixels: np.ndarray, nest: bool = False, lonlat = False, rng: np.random.Generator = None, dtype: typing.Type[typing.Union[np.float32, np.float64, float]] = np.float64):
+def rand_ang(nside: int, pixels: np.ndarray, lonlat = False, rng: typing.Optional[np.random.Generator] = None, dtype: typing.Type[typing.Union[np.float32, np.float64, float]] = np.float64):
 
     """
-    Samples random spherical coordinates from the given HEALPix pixels.
+    Samples random spherical coordinates from the given HEALPix pixels. Nested ordering only.
 
     See: https://iopscience.iop.org/article/10.1086/427976/pdf
 
@@ -30,33 +29,26 @@ def rand_ang(nside: int, pixels: np.ndarray, nest: bool = False, lonlat = False,
         The HEALPix nside parameter.
     pixels : np.ndarray
         ???
-    nest : bool
-        If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: **True**).
     lonlat : bool
         If **True**, assumes longitude and latitude in degree, otherwise, co-latitude and longitude in radians (default: **True**).
-    rng : np.random.Generator
+    rng : typing.Optional[np.random.Generator]
         ???
     dtype : typing.Type[typing.Union[np.float32, np.float64, float]]
         ???
     """
 
-    ####################################################################################################################
-
-    if nest:
-        x, y, f = _nest2hpd(nside, pixels)
-    else:
-        x, y, f = _ring2hpd(nside, pixels)
-
-    ####################################################################################################################
-
     if rng is None:
 
         rng = np.random.default_rng()
 
-    u = rng.random(pixels.shape, dtype = dtype)
-    v = rng.random(pixels.shape, dtype = dtype)
+    ####################################################################################################################
+
+    x, y, f = _nest2hpd(nside, pixels)
 
     ####################################################################################################################
+
+    u = rng.random(pixels.shape, dtype = dtype)
+    v = rng.random(pixels.shape, dtype = dtype)
 
     z, s, ϕ = _hpd2loc(nside, x, y, f, u, v)
 
@@ -109,16 +101,6 @@ def _nest2hpd(nside: int, pixels: np.ndarray) -> typing.Tuple[np.ndarray, np.nda
 
 ########################################################################################################################
 
-def _ring2hpd(nside: int, pixels: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
-
-    """Convert ring HEALPix pixel indices to x, y, face (HEALPix Discrete) coordinates."""
-
-    pixels = hp.ring2nest(nside, pixels)
-
-    return _nest2hpd(nside, pixels)
-
-########################################################################################################################
-
 @nb.njit(fastmath = True)
 def _hpd2loc(nside: int, x: np.ndarray, y: np.ndarray, f: np.ndarray, u: np.ndarray, v: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
@@ -145,19 +127,19 @@ def _hpd2loc(nside: int, x: np.ndarray, y: np.ndarray, f: np.ndarray, u: np.ndar
     equa = np.where(mask)[0]
     pole = np.where(~mask)[0]
 
-    tmp1_pole = m[pole]
-    tmp2_pole = 1.0 - tmp1_pole ** 2 / 3.0
+    m_pole_ = m[pole]
+    n_pole_ = 1.0 - (m_pole_ ** 2) / 3.0
 
     ####################################################################################################################
 
     z[equa] = h[equa] * 2.0 / 3.0
-    z[pole] = r[pole] * tmp2_pole
+    z[pole] = r[pole] * n_pole_
 
     s[equa] = np.sqrt(1.0 - z[equa] ** 2)
-    s[pole] = np.sqrt(1.0 - tmp2_pole ** 2)
+    s[pole] = np.sqrt(1.0 - n_pole_ ** 2)
 
-    ϕ[equa] = (JPLL[f[equa]] + (x[equa] - y[equa]) / 1.0000000) * np.pi / 4.0
-    ϕ[pole] = (JPLL[f[pole]] + (x[pole] - y[pole]) / tmp1_pole) * np.pi / 4.0
+    ϕ[equa] = (JPLL[f[equa]] + (x[equa] - y[equa]) / 1.00000) * np.pi / 4.0
+    ϕ[pole] = (JPLL[f[pole]] + (x[pole] - y[pole]) / m_pole_) * np.pi / 4.0
 
     ####################################################################################################################
 

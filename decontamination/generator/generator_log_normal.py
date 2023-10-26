@@ -68,7 +68,6 @@ class Generator_LogNormal(generator_abstract.Generator_Abstract):
         lon, lat = rand_ang(
             self._nside,
             pixels,
-            nest = self._nest,
             lonlat = self._lonlat,
             rng = self._random_generator
         )

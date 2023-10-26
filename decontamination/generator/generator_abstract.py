@@ -5,6 +5,8 @@ import typing
 
 import numpy as np
 
+import healpy as hp
+
 ########################################################################################################################
 
 # noinspection PyPep8Naming
@@ -35,13 +37,11 @@ class Generator_Abstract(object):
 
         self._nside = nside
 
-        self._footprint = footprint
+        self._lonlat = lonlat
 
         ################################################################################################################
 
-        self._nest = nest
-
-        self._lonlat = lonlat
+        self._footprint = footprint if nest else hp.ring2nest(nside, footprint)
 
         ################################################################################################################
 

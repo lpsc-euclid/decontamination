@@ -43,7 +43,7 @@ from .generator.generator_uniform import Generator_Uniform
 
 from .generator.generator_log_normal import Generator_LogNormal
 
-from .generator.generator_from_number_density import Generator_FromNumberDensity
+from .generator.generator_number_density import Generator_NumberDensity
 
 ########################################################################################################################
 # DECONTAMINATION                                                                                                      #
@@ -72,7 +72,7 @@ __all__ = [
     'Clustering',
     'display_latent_space',
     'display_healpix', 'display_catalog',
-    'Generator_Uniform', 'Generator_LogNormal', 'Generator_FromNumberDensity',
+    'Generator_Uniform', 'Generator_LogNormal', 'Generator_NumberDensity',
     'Decontamination_SOM',
 ]
 

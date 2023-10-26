@@ -10,7 +10,7 @@ from . import rand_ang, generator_abstract
 ########################################################################################################################
 
 # noinspection PyPep8Naming
-class Generator_FromNumberDensity(generator_abstract.Generator_Abstract):
+class Generator_NumberDensity(generator_abstract.Generator_Abstract):
 
     """
     Galaxy catalog generator from a density map.

@@ -58,7 +58,7 @@ def test_generator():
     pixels = np.arange(npix, dtype = np.int32)
     weight = np.arange(npix, dtype = np.float32)
 
-    generator = decontamination.Generator_FromNumberDensity(nside, pixels, nest = True)
+    generator = decontamination.Generator_NumberDensity(nside, pixels, nest = True)
 
     lon, lat = generator.generate(weight, 1, seed = 0)
 

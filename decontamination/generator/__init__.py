@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
-import math
 import typing
 
 import numpy as np
@@ -10,151 +9,20 @@ import healpy as hp
 
 ########################################################################################################################
 
-def get_cell_size(nside: int) -> float:
-
-    """
-    In the cartesian plane, returns the HEALPix diamond side length.
-
-    See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8).
-
-    .. math::
-        \\mathrm{cell\\ size}=\\sqrt{\\underbrace{\\left(\\frac{12}{16}\\cdot2\\pi^2\\right)}_{\\mathrm{white\\ area}}/\\underbrace{\\left(12\\cdot\\mathrm{nside}^2\\right)}_{\\mathrm{number\\ of\\ pixels}}}=\\frac{\\pi}{2\\sqrt{2}\\cdot\\mathrm{nside}}
-
-    .. image:: _html_static/healpix_cartesian_plan.svg
-        :alt: HEALPix cartesian plan
-        :width: 50%
-        :align: center
-
-    Parameters
-    ----------
-    nside : int
-        The HEALPix nside parameter.
-    """
-
-    return np.pi / (2.0 * math.sqrt(2.0) * nside)
-
-########################################################################################################################
-
-@nb.njit(fastmath = True)
-def thetaphi2xy(θ: np.ndarray, ϕ: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray]:
-
-    """
-    Performs HEALPix spherical projection from the sphere (θ, ϕ) to the cartesian plane (x, y).
-
-    See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8).
-
-    Parameters
-    ----------
-    θ : np.ndarray
-        Polar angle (radians :math:`[0,\\pi]`).
-
-    ϕ : np.ndarray
-        Longitude angle (radians :math:`[0,2\\pi]`).
-
-    Returns
-    -------
-    typing.Tuple[np.ndarray, np.ndarray]
-        Coordinates x, y.
-    """
-
-    x = np.zeros_like(ϕ)
-    y = np.zeros_like(ϕ)
-    z = np.cos(θ)
-
-    pole = np.abs(z) > (2.0 / 3.0)
-    equa = np.logical_not(pole)
-    south = (z < 0.0) & pole
-
-    ####################################################################################################################
-    # EQUATORIAL ZONE                                                                                                  #
-    ####################################################################################################################
-
-    x[equa] = ϕ[equa]
-
-    y[equa] = 3.0 * np.pi * z[equa] / 8.0
-
-    ####################################################################################################################
-    # POLAR CAPS                                                                                                       #
-    ####################################################################################################################
-
-    abs_σ = 2.0 - np.sqrt(3.0 * (1.0 - np.abs(z[pole])))
-
-    ####################################################################################################################
-
-    x[pole] = ϕ[pole] - (abs_σ - 1.0) * (ϕ[pole] % (np.pi / 2.0) - np.pi / 4.0)
-
-    y[pole] = np.pi * abs_σ / 4.0
-
-    y[south] *= -1.0
-
-    ####################################################################################################################
-
-    return x, y
-
-########################################################################################################################
-
-@nb.njit(fastmath = True)
-def xy2thetaphi(x: np.ndarray, y: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray]:
-
-    """
-    Performs HEALPix spherical projection from the cartesian plane (x, y) to the sphere (θ, ϕ).
-
-    See: https://iopscience.iop.org/article/10.1086/427976/pdf (page 8).
-
-    Parameters
-    ----------
-    x : np.ndarray
-        1st coordinate in the healpix plane.
-    y : np.ndarray
-        2nd coordinate in the healpix plane.
-
-    Returns
-    -------
-    typing.Tuple[np.ndarray, np.ndarray]
-        Coordinates θ, ϕ.
-    """
-
-    ϕ = np.zeros_like(x)
-    z = np.zeros_like(y)
-
-    equ = np.abs(y) < np.pi / 4.0
-    pole = np.logical_not(equ)
-
-    ####################################################################################################################
-    # EQUATORIAL ZONE                                                                                                  #
-    ####################################################################################################################
-
-    ϕ[equ] = x[equ]
-
-    z[equ] = 8.0 * y[equ] / (3.0 * np.pi)
-
-    ####################################################################################################################
-    # POLAR CAPS                                                                                                       #
-    ####################################################################################################################
-
-    a = np.abs(y[pole]) - np.pi / 4.0
-    b = np.abs(y[pole]) - np.pi / 2.0
-
-    mask = b != 0.0
-    ab = np.zeros_like(a)
-    ab[mask] = a[mask] / b[mask]
-    if not np.all(np.isfinite(ab)):
-        raise ValueError('Unexpected projection error')
-
-    ϕ[pole] = x[pole] - ab * (x[pole] % (np.pi / 2.0) - (np.pi / 4.0))
-
-    z[pole] = (1.0 - 1.0 / 3.0 * (2.0 - 4.0 * np.abs(y[pole]) / np.pi) ** 2) * np.sign(y[pole])
-
-    ####################################################################################################################
-
-    return np.arccos(z), ϕ
+JPLL = np.array([
+    1, 3, 5, 7,
+    0, 2, 4, 6,
+    1, 3, 5, 7,
+], dtype = np.int32)
 
 ########################################################################################################################
 
 def rand_ang(nside: int, pixels: np.ndarray, nest: bool = False, lonlat = False, rng: np.random.Generator = None, dtype: typing.Type[typing.Union[np.float32, np.float64, float]] = np.float64):
 
     """
-    Sample random spherical coordinates from the given HEALPix pixels.
+    Samples random spherical coordinates from the given HEALPix pixels.
+
+    See: https://iopscience.iop.org/article/10.1086/427976/pdf
 
     Parameters
     ----------
@@ -163,9 +31,9 @@ def rand_ang(nside: int, pixels: np.ndarray, nest: bool = False, lonlat = False,
     pixels : np.ndarray
         ???
     nest : bool
-        ???
+        If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: **True**).
     lonlat : bool
-        ???
+        If **True**, assumes longitude and latitude in degree, otherwise, co-latitude and longitude in radians (default: **True**).
     rng : np.random.Generator
         ???
     dtype : typing.Type[typing.Union[np.float32, np.float64, float]]
@@ -248,14 +116,6 @@ def _ring2hpd(nside: int, pixels: np.ndarray) -> typing.Tuple[np.ndarray, np.nda
     pixels = hp.ring2nest(nside, pixels)
 
     return _nest2hpd(nside, pixels)
-
-########################################################################################################################
-
-JPLL = np.array([
-    1, 3, 5, 7,
-    0, 2, 4, 6,
-    1, 3, 5, 7,
-], dtype = np.int32)
 
 ########################################################################################################################
 

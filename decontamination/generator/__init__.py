@@ -34,9 +34,9 @@ def rand_ang(nside: int, pixels: np.ndarray, lonlat = False, rng: typing.Optiona
     lonlat : bool
         If **True**, assumes longitude and latitude in degree, otherwise, co-latitude and longitude in radians (default: **True**).
     rng : typing.Optional[np.random.Generator]
-        ???
+        ??? (default: **None**).
     dtype : typing.Type[typing.Union[np.float32, np.float64, float]]
-        ???
+        ??? (default: **np.float64**).
     """
 
     if rng is None:

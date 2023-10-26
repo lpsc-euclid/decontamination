@@ -8,9 +8,9 @@ import numba as nb
 
 ########################################################################################################################
 
-# Coordinate of the lowest corner of each face.
+# For each face, coordinate of the lowest corner.
 
-JPLL = np.array([
+LOWEST_CORNER_COORDINATES = np.array([
     1, 3, 5, 7,
     0, 2, 4, 6,
     1, 3, 5, 7,
@@ -30,7 +30,7 @@ def rand_ang(nside: int, pixels: np.ndarray, lonlat = False, rng: typing.Optiona
     nside : int
         The HEALPix nside parameter.
     pixels : np.ndarray
-        ???
+        HEALPix indices of the region where coordinates are generated.
     lonlat : bool
         If **True**, assumes longitude and latitude in degree, otherwise, co-latitude and longitude in radians (default: **True**).
     rng : typing.Optional[np.random.Generator]
@@ -140,8 +140,8 @@ def _hpd2loc(nside: int, x: np.ndarray, y: np.ndarray, f: np.ndarray, u: np.ndar
     s[equa] = np.sqrt(1.0 - z[equa] ** 2)
     s[pole] = np.sqrt(1.0 - n_pole_ ** 2)
 
-    ϕ[equa] = (JPLL[f[equa]] + (x[equa] - y[equa]) / 1.00000) * np.pi / 4.0
-    ϕ[pole] = (JPLL[f[pole]] + (x[pole] - y[pole]) / m_pole_) * np.pi / 4.0
+    ϕ[equa] = (LOWEST_CORNER_COORDINATES[f[equa]] + (x[equa] - y[equa]) / 1.00000) * np.pi / 4.0
+    ϕ[pole] = (LOWEST_CORNER_COORDINATES[f[pole]] + (x[pole] - y[pole]) / m_pole_) * np.pi / 4.0
 
     ####################################################################################################################
 

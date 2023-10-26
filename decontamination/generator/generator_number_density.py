@@ -63,7 +63,7 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
 
         if self._footprint.shape != number_density_map.shape:
 
-            raise Exception('Inconsistent footprint size and number density map size')
+            raise Exception('Inconsistent footprint size and number density map size.')
 
         ################################################################################################################
 

@@ -61,9 +61,13 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
             Galaxy catalog (longitudes and latitudes).
         """
 
+        if self._footprint.shape != number_density_map.shape:
+
+            raise Exception('Inconsistent footprint size and number density map size')
+
         ################################################################################################################
 
-        n_galaxies_per_pixels = self._random_generator.poisson(lam = mult_factor, size = self._footprint.shape[0])
+        n_galaxies_per_pixels = self._random_generator.poisson(number_density_map * mult_factor)
 
         ################################################################################################################
 

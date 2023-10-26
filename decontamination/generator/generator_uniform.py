@@ -41,7 +41,7 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
     ####################################################################################################################
 
-    def generate(self, mult_factor: float = 10.0, n_max_batch: typing.Optional[int] = None) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def generate(self, mult_factor: float = 10.0, n_max_batch: typing.Optional[int] = None) -> typing.Iterator[typing.Tuple[np.ndarray, np.ndarray]]:
 
         """
         Generates uniform galaxy positions.
@@ -65,7 +65,13 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        for s, e in batch_iterator(self._footprint.shape[0], n_max_batch or self._footprint.shape[0]):
+        if n_max_batch is None:
+
+            n_max_batch = self._footprint.shape[0]
+
+        ################################################################################################################
+
+        for s, e in batch_iterator(self._footprint.shape[0], n_max_batch):
 
             ############################################################################################################
 

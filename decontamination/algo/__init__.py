@@ -23,22 +23,22 @@ def batch_iterator(size: int, n_max_batch: int) -> typing.Iterator[typing.Tuple[
 
     ####################################################################################################################
 
-    chunk_size, chunk_remaining = divmod(size, n_max_batch)
+    n_chunks, n_remaining = divmod(size, n_max_batch)
 
     ####################################################################################################################
 
-    for i in range(n_max_batch):
+    for i in range(n_chunks):
 
-        s = i * chunk_size
-        e = s + chunk_size
+        s = i * n_max_batch
+        e = s + n_max_batch
 
         yield s, e
 
     ####################################################################################################################
 
-    if chunk_remaining > 0:
+    if n_remaining > 0:
 
-        yield n_max_batch * chunk_size, size
+        yield n_max_batch * n_chunks, size
 
 ########################################################################################################################
 # ASYMPTOTIC DECAY                                                                                                     #

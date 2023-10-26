@@ -10,10 +10,10 @@ from . import rand_ang, generator_abstract
 ########################################################################################################################
 
 # noinspection PyPep8Naming
-class Generator_Uniform(generator_abstract.Generator_Abstract):
+class Generator_FromNumberDensity(generator_abstract.Generator_Abstract):
 
     """
-    Uniform galaxy catalog generator.
+    Galaxy catalog generator from a density map.
 
     Parameters
     ----------
@@ -39,15 +39,17 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
     ####################################################################################################################
 
-    def generate(self, mult_factor: float = 10.0) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def generate(self, number_density_map: typing.Optional[np.ndarray], mult_factor: float = 10.0) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         """
-        Generates uniform galaxy positions.
+        Generates galaxy positions from a density map.
 
         Parameters
         ----------
+        number_density_map : typing.Optional[np.ndarray]
+            Number of galaxies per HEALPix pixels.
         mult_factor : float
-            Mean number of galaxies per HEALPix pixel (default: **10.0**).
+            Statistics multiplication factor (default: **10.0**).
 
         Returns
         -------
@@ -57,24 +59,10 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        n_galaxies_per_pixels = self._random_generator.poisson(lam = mult_factor, size = self._footprint.shape[0])
+        # TODO #
 
         ################################################################################################################
 
-        pixels = np.repeat(self._footprint, n_galaxies_per_pixels)
-
-        ################################################################################################################
-
-        lon, lat = rand_ang(
-            self._nside,
-            pixels,
-            nest = self._nest,
-            lonlat = self._lonlat,
-            rng = self._random_generator
-        )
-
-        ################################################################################################################
-
-        return lon, lat
+        return None, None
 
 ########################################################################################################################

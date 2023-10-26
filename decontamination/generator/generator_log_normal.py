@@ -41,7 +41,7 @@ class Generator_LogNormal(generator_abstract.Generator_Abstract):
 
     ####################################################################################################################
 
-    def generate(self, mult_factor: float = 10.0, n_max_batch: typing.Optional[int] = None) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def generate(self, mult_factor: float = 10.0, n_max_batch: typing.Optional[int] = None) -> typing.Iterator[typing.Tuple[np.ndarray, np.ndarray]]:
 
         """
         Generates uniform galaxy positions.

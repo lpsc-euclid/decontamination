@@ -5,6 +5,8 @@ import typing
 
 import numpy as np
 
+from ..algo import batch_iterator
+
 from . import rand_ang, generator_abstract
 
 ########################################################################################################################
@@ -39,7 +41,7 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
 
     ####################################################################################################################
 
-    def generate(self, number_density_map: typing.Optional[np.ndarray], mult_factor: float = 10.0) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def generate(self, number_density_map: typing.Optional[np.ndarray], mult_factor: float = 10.0, n_max_batch: typing.Optional[int] = None) -> typing.Iterator[typing.Tuple[np.ndarray, np.ndarray]]:
 
         """
         Generates galaxy positions from a density map.
@@ -50,6 +52,8 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
             Number of galaxies per HEALPix pixels.
         mult_factor : float
             Statistics multiplication factor (default: **10.0**).
+        n_max_batch : typing.Optional[int]
+            Maximum number of galaxy positions to yield in one batch.
 
         Returns
         -------
@@ -59,10 +63,29 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        # TODO #
+        n_galaxies_per_pixels = self._random_generator.poisson(lam = mult_factor, size = self._footprint.shape[0])
 
         ################################################################################################################
 
-        return np.array([]), np.array([])
+        if n_max_batch is None:
 
-########################################################################################################################
+            n_max_batch = self._footprint.shape[0]
+
+        ################################################################################################################
+
+        for s, e in batch_iterator(self._footprint.shape[0], n_max_batch):
+
+            ############################################################################################################
+
+            batched_footprint = np.repeat(self._footprint[s: e], n_galaxies_per_pixels[s: e])
+
+            ############################################################################################################
+
+            yield rand_ang(
+                self._nside,
+                batched_footprint,
+                lonlat = self._lonlat,
+                rng = self._random_generator
+            )
+
+    ########################################################################################################################

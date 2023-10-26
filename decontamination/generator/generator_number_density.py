@@ -41,7 +41,7 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
 
     ####################################################################################################################
 
-    def generate(self, number_density_map: typing.Optional[np.ndarray], mult_factor: float = 10.0, n_max_per_batch: typing.Optional[int] = None) -> typing.Iterator[typing.Tuple[np.ndarray, np.ndarray]]:
+    def generate(self, number_density_map: typing.Optional[np.ndarray], mult_factor: float = 10.0, n_max_per_batch: typing.Optional[int] = None) -> typing.Generator[typing.Tuple[np.ndarray, np.ndarray], None, None]:
 
         """
         Iterator that yields galaxy positions from a density map.

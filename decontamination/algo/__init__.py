@@ -19,7 +19,7 @@ def dataset_to_generator_builder(dataset: typing.Union[np.ndarray, typing.Callab
 
 ########################################################################################################################
 
-def batch_iterator(size: int, n_max_per_batch: int) -> typing.Iterator[typing.Tuple[int, int]]:
+def batch_iterator(size: int, n_max_per_batch: int) -> typing.Generator[typing.Tuple[int, int], None, None]:
 
     ####################################################################################################################
 

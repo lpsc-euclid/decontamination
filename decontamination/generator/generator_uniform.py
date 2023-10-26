@@ -69,7 +69,7 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
             ############################################################################################################
 
-            batched_footprint = np.repeat(self._footprint[s, e], n_galaxies_per_pixels[s, e])
+            batched_footprint = np.repeat(self._footprint[s: e], n_galaxies_per_pixels[s: e])
 
             ############################################################################################################
 

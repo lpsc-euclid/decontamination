@@ -44,7 +44,7 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
     def generate(self, mean_density: float = 10.0, n_max_per_batch: typing.Optional[int] = None) -> typing.Iterator[typing.Tuple[np.ndarray, np.ndarray]]:
 
         """
-        Generates uniform galaxy positions.
+        Iterator that yields uniform galaxy positions.
 
         Parameters
         ----------

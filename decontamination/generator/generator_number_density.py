@@ -69,6 +69,8 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
 
         galaxies_per_pixels = self._random_generator.poisson(number_density_map * mult_factor)
 
+        np.clip(galaxies_per_pixels, 0.0, None, out = galaxies_per_pixels)
+
         ################################################################################################################
 
         if n_max_per_batch is None:

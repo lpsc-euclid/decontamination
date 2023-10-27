@@ -4,6 +4,7 @@
 import typing
 
 import numpy as np
+import healpy as hp
 
 from ..algo import batch_iterator
 
@@ -79,11 +80,6 @@ class Generator_LogNormal(generator_abstract.Generator_Abstract):
 
             ############################################################################################################
 
-            yield healpix_rand_ang(
-                self._nside,
-                batched_footprint,
-                lonlat = self._lonlat,
-                rng = self._random_generator
-            )
+            yield hp.pix2ang(self._nside, batched_footprint, nest = True, lonlat = True)
 
     ########################################################################################################################

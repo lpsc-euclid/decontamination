@@ -5,6 +5,8 @@ import typing
 
 import numpy as np
 
+import healpy as hp
+
 from ..algo import batch_iterator
 
 from . import healpix_rand_ang, generator_abstract
@@ -79,11 +81,13 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
             ############################################################################################################
 
-            yield healpix_rand_ang(
-                self._nside,
-                batched_footprint,
-                lonlat = self._lonlat,
-                rng = self._random_generator
-            )
+            yield hp.pix2ang(self._nside, batched_footprint, nest = True, lonlat = True)
+
+            #yield healpix_rand_ang(
+            #    self._nside,
+            #    batched_footprint,
+            #    lonlat = self._lonlat,
+            #    rng = self._random_generator
+            #)
 
 ########################################################################################################################

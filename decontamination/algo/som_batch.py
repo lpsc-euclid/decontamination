@@ -19,7 +19,7 @@ from . import som_abstract, square_distance_xpu, atomic_add_vector_xpu, asymptot
 class SOM_Batch(som_abstract.SOM_Abstract):
 
     """
-    Self Organizing Maps (standard batch implementation).
+    Self Organizing Maps (standard batch implementation). It runs with constant memory usage.
 
     .. note::
         A rule of thumb to set the size of the grid for a dimensionality reduction task is that it should contain :math:`5\\sqrt{N}` neurons where N is the number of samples in the dataset to analyze.

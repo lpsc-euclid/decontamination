@@ -574,7 +574,7 @@ class Decontamination_SOM(object):
 
     ####################################################################################################################
 
-    def compute_histograms(self) -> None:
+    def compute_histograms(self):
 
         """TODO"""
 
@@ -614,7 +614,7 @@ class Decontamination_SOM(object):
 
     ####################################################################################################################
 
-    def compute_angular_correlations(self) -> None:
+    def compute_angular_correlations(self):
 
         """TODO"""
 

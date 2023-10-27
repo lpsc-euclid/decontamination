@@ -50,6 +50,7 @@ from .generator.generator_number_density import Generator_NumberDensity
 ########################################################################################################################
 
 from .decontamination.decontamination_som import Decontamination_SOM
+from .decontamination.decontamination_isd import Decontamination_ISD
 
 ########################################################################################################################
 # UTILITIES                                                                                                            #
@@ -73,7 +74,7 @@ __all__ = [
     'display_latent_space',
     'display_healpix', 'display_catalog',
     'Generator_Uniform', 'Generator_LogNormal', 'Generator_NumberDensity',
-    'Decontamination_SOM',
+    'Decontamination_SOM', 'Decontamination_ISD',
 ]
 
 ########################################################################################################################

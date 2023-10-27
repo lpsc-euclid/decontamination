@@ -13,7 +13,7 @@ from ..algo import som_pca, som_batch, som_online, som_abstract, clustering
 class Decontamination_SOM(object):
 
     """
-    ???
+    Systematics decontamination using the *Self Organizing Map* method.
 
     Parameters
     ----------

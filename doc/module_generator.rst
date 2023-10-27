@@ -1,8 +1,8 @@
 Module decontamination.generator
 ================================
 
-Galaxy generators
------------------
+Galaxy generators - footprint
+-----------------------------
 
 .. automodule:: decontamination.generator.generator_uniform
    :members:
@@ -11,6 +11,12 @@ Galaxy generators
    :members:
 
 .. automodule:: decontamination.generator.generator_number_density
+   :members:
+
+Galaxy generators - full sky
+----------------------------
+
+.. automodule:: decontamination.generator.generator_fullsky_uniform
    :members:
 
 Utilities

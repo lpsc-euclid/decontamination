@@ -7,49 +7,35 @@ import numpy as np
 
 from ..algo import batch_iterator
 
-from . import healpix_rand_ang, generator_abstract
-
 ########################################################################################################################
 
 # noinspection PyPep8Naming
-class Generator_Uniform(generator_abstract.Generator_Abstract):
+class Generator_FullSkyUniform(object):
 
     """
-    Uniform galaxy catalog generator.
+    Uniform galaxy catalog generator over the sphere.
 
     Parameters
     ----------
-    nside : int
-        The HEALPix nside parameter.
-    footprint : np.ndarray
-        HEALPix indices of the region where galaxies are generated.
-    nest : bool
-        If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: **True**).
-    lonlat : bool
-        If **True**, assumes longitude and latitude in degree, otherwise, co-latitude and longitude in radians (default: **True**).
     seed : typing.Optional[int]
         Seed for random generators (default: **None**).
     """
 
     ####################################################################################################################
 
-    def __init__(self, nside: int, footprint: np.ndarray, nest: bool = True, lonlat: bool = True, seed: typing.Optional[int] = None):
+    def __init__(self, seed: typing.Optional[int] = None):
 
-        ################################################################################################################
-
-        super().__init__(nside, footprint, nest = nest, lonlat = lonlat, seed = seed)
+        self._random_generator = np.random.default_rng(seed = seed)
 
     ####################################################################################################################
 
-    def generate(self, mean_density: float = 10.0, n_max_per_batch: typing.Optional[int] = None) -> typing.Generator[typing.Tuple[np.ndarray, np.ndarray], None, None]:
+    def generate(self, number_density_map: typing.Union[float, np.ndarray], n_max_per_batch: typing.Optional[int] = None) -> typing.Generator[typing.Tuple[np.ndarray, np.ndarray], None, None]:
 
         """
         Iterator that yields uniform galaxy positions.
 
         Parameters
         ----------
-        mean_density : float
-            Mean number of galaxies per HEALPix pixel (default: **10.0**).
         n_max_per_batch : typing.Optional[int]
             Maximum number of galaxy positions to yield in one batch (default: **None**).
 
@@ -61,7 +47,17 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        galaxies_per_pixels = self._random_generator.poisson(lam = mean_density, size = self._footprint.shape[0])
+        shape = np.shape(number_density_map)
+
+        number_density_map = np.broadcast_to(number_density_map, shape)
+
+        if len(shape) > 1:
+
+            raise ValueError('Number density map is not a float or vector.')
+
+        ################################################################################################################
+
+        galaxies_per_pixels = self._random_generator.poisson(number_density_map)
 
         ################################################################################################################
 
@@ -69,15 +65,12 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
             ############################################################################################################
 
-            batched_footprint = np.repeat(self._footprint[s: e], galaxies_per_pixels[s: e])
+            lon = self._random_generator.uniform(-180.0, +180.0, size = galaxies_per_pixels[s: e])
+
+            lat = np.rad2deg(np.arcsin(self._random_generator.uniform(-1.0, +1.0, size = galaxies_per_pixels[s: e])))
 
             ############################################################################################################
 
-            yield healpix_rand_ang(
-                self._nside,
-                batched_footprint,
-                lonlat = self._lonlat,
-                rng = self._random_generator
-            )
+            yield lon, lat
 
 ########################################################################################################################

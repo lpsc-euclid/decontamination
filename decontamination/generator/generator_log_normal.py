@@ -52,7 +52,7 @@ class Generator_LogNormal(generator_abstract.Generator_Abstract):
         mean_density : float
             Mean number of galaxies per HEALPix pixel (default: **10.0**).
         n_max_per_batch : typing.Optional[int]
-            Maximum number of galaxy positions to yield in one batch.
+            Maximum number of galaxy positions to yield in one batch (default: **None**).
 
         Returns
         -------
@@ -66,13 +66,7 @@ class Generator_LogNormal(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        if n_max_per_batch is None:
-
-            n_max_per_batch = self._footprint.shape[0]
-
-        ################################################################################################################
-
-        for s, e in batch_iterator(self._footprint.shape[0], n_max_per_batch):
+        for s, e in batch_iterator(galaxies_per_pixels.shape[0], n_max_per_batch):
 
             ############################################################################################################
 

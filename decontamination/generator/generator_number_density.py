@@ -5,8 +5,6 @@ import typing
 
 import numpy as np
 
-from ..algo import batch_iterator
-
 from . import healpix_rand_ang, generator_abstract
 
 ########################################################################################################################
@@ -67,25 +65,23 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        galaxies_per_pixels = self._random_generator.poisson(number_density_map * mult_factor)
+        rng = np.random.default_rng(seed = self._seed)
+
+        ################################################################################################################
+
+        galaxies_per_pixels = rng.poisson(number_density_map * mult_factor)
 
         np.clip(galaxies_per_pixels, 0.0, None, out = galaxies_per_pixels)
 
         ################################################################################################################
 
-        for s, e in batch_iterator(galaxies_per_pixels.shape[0], n_max_per_batch):
-
-            ############################################################################################################
-
-            batched_footprint = np.repeat(self._footprint[s: e], galaxies_per_pixels[s: e])
-
-            ############################################################################################################
+        for batched_footprint in self.iterator(galaxies_per_pixels, n_max_per_batch):
 
             yield healpix_rand_ang(
                 self._nside,
                 batched_footprint,
                 lonlat = self._lonlat,
-                rng = self._random_generator
+                rng = rng
             )
 
-    ########################################################################################################################
+########################################################################################################################

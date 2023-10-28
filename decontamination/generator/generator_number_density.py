@@ -75,7 +75,7 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        for batched_footprint in self.iterator(galaxies_per_pixels, n_max_per_batch):
+        for batched_footprint in self._iterator(galaxies_per_pixels, n_max_per_batch):
 
             yield healpix_rand_ang(
                 self._nside,

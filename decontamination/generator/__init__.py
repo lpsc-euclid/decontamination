@@ -25,6 +25,11 @@ def healpix_rand_ang(nside: int, pixels: np.ndarray, lonlat = False, rng: typing
 
     See: https://iopscience.iop.org/article/10.1086/427976/pdf
 
+    .. image:: _html_static/healpix_cartesian_plan.svg
+        :alt: HEALPix Cartesian Plan
+        :width: 50%
+        :align: center
+
     Parameters
     ----------
     nside : int

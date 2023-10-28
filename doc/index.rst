@@ -27,6 +27,11 @@ Decontamination
 
 A toolbox for performing systematics decontamination in cosmology analyses.
 
+Authors:
+ * Jérôme ODIER - jerome.odier@lpsc.in2p3.fr
+ * Gaël ALGUERO - gael.alguero@lpsc.in2p3.fr
+ * Juan MACIAS-PEREZ - juan.macias-perez@lpsc.in2p3.fr
+
 Indices and tables
 ==================
 
@@ -38,6 +43,7 @@ Indices and tables
    module_algo
    module_plotting
    module_generator
+   module_correlation
    module_decontamination
 
 :ref:`genindex`

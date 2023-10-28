@@ -61,7 +61,9 @@ html_static_path = ['_html_static']
 html_theme = 'cloud'
 
 html_theme_options = {
+    'max_width': '13in',
     'externalicon': False,
+    'borderless_decor': True,
 }
 
 html_sidebars = {'**': ['logo.html', 'localtoc.html', 'globaltoc.html', 'searchbox.html']}

@@ -47,15 +47,19 @@ class Generator_Abstract(object):
 
     def _iterator(self, galaxies_per_pixels: np.ndarray, n_max_per_batch: typing.Optional[int]) -> typing.Generator[np.ndarray, None, None]:
 
-        ################################################################################################################
-
-        n_total = np.sum(galaxies_per_pixels)
+        """Iterator for splitting galaxy generation into batches."""
 
         ################################################################################################################
 
         if n_max_per_batch is None:
 
-            n_max_per_batch = n_total
+            yield np.repeat(self._footprint, galaxies_per_pixels)
+
+            return
+
+        ################################################################################################################
+
+        n_total = np.sum(galaxies_per_pixels)
 
         ################################################################################################################
 

@@ -13,12 +13,20 @@ p {
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
+div.sphinxsidebar {
+    border-radius: 0.25rem !important;
+}
+
 div.sphinxsidebar a {
     border: none !important;
 }
 
 div.sphinxsidebar a:hover {
     background: none !important;
+}
+
+div.sphinxsidebarwrapper {
+    padding: 0.5rem !important;
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/

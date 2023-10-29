@@ -180,7 +180,7 @@ class Decontamination_SOM(object):
 
         """Quantization errors for the underlying Self Organizing Map."""
 
-        return self._som.get_quantization_errors()
+        return self._som.quantization_errors
 
     ####################################################################################################################
 
@@ -189,7 +189,7 @@ class Decontamination_SOM(object):
 
         """Topographic errors for the underlying Self Organizing Map."""
 
-        return self._som.get_topographic_errors()
+        return self._som.topographic_errors
 
     ####################################################################################################################
 
@@ -198,7 +198,7 @@ class Decontamination_SOM(object):
 
         """Weights in the latent space with the shape `[m * n, dim]`."""
 
-        return self._som.get_weights()
+        return self._som.weights
 
     ####################################################################################################################
 
@@ -207,7 +207,7 @@ class Decontamination_SOM(object):
 
         """Weights in the latent space with the shape `[m, n, dim]`."""
 
-        return self._som.get_centroids()
+        return self._som.centroids
 
     ####################################################################################################################
 
@@ -550,7 +550,7 @@ class Decontamination_SOM(object):
         # CLUSTER LATENT SPACE                                                                                         #
         ################################################################################################################
 
-        weights = self._som.get_weights().copy()
+        weights = self._som.weights.copy()
 
         weights[self._footprint_activation_map.reshape(m * n) == 0] = np.nan
 

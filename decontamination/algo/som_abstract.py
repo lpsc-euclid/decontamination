@@ -356,7 +356,8 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def get_weights(self) -> np.ndarray:
+    @property
+    def weights(self) -> np.ndarray:
 
         """Neural network weights with the shape `[m * n, dim]`."""
 
@@ -364,7 +365,8 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def get_centroids(self) -> np.ndarray:
+    @property
+    def centroids(self) -> np.ndarray:
 
         """Neural network weights with the shape `[m, n, dim]`."""
 
@@ -372,7 +374,8 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def get_quantization_errors(self) -> np.ndarray:
+    @property
+    def quantization_errors(self) -> np.ndarray:
 
         """
         Returns the quantization error.
@@ -389,7 +392,8 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def get_topographic_errors(self) -> np.ndarray:
+    @property
+    def topographic_errors(self) -> np.ndarray:
 
         """
         Returns the topographic errors.

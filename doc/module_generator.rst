@@ -6,8 +6,7 @@ This module provides a set of standalone galaxy position generators. The generat
 * | *GLASS: Generator for Large Scale Structure*
   | Nicolas Tessore et al.
   | The Open Journal of Astrophysics 6, 11 (2023)
-    (`arXiv <https://arxiv.org/abs/2302.01942>`_,
-     `ADS <https://ui.adsabs.harvard.edu/abs/2023OJAp....6E..11T>`_)
+    (`arXiv <https://arxiv.org/abs/2302.01942>`_, `ADS <https://ui.adsabs.harvard.edu/abs/2023OJAp....6E..11T>`_)
 
 Galaxy generators - footprint
 -----------------------------

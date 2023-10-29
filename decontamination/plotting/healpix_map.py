@@ -168,9 +168,9 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
     norm : typing.Optional[str]
         Color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping (default: **'hist'**).
     v_min : float
-        Minimum color scale (default: **None** ≡ µ-2σ).
+        Minimum color scale (default: **None** ≡ µ(data)-2σ(data)).
     v_max : float
-        Maximum color scale (default: **None** ≡ µ+2σ).
+        Maximum color scale (default: **None** ≡ µ(data)+2σ(data)).
     """
 
     ####################################################################################################################

@@ -5,7 +5,6 @@ import math
 import typing
 
 import numpy as np
-import healpy as hp
 
 from ..algo import batch_iterator
 
@@ -58,7 +57,7 @@ class Generator_FullSkyUniform(object):
 
         ################################################################################################################
 
-        n_galaxies = math.floor(mean_density * hp.nside2npix(self._nside))
+        n_galaxies = math.floor(mean_density * 12 * self._nside ** 2)
 
         ################################################################################################################
 

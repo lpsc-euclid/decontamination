@@ -71,7 +71,12 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
 
         galaxies_per_pixels = rng.poisson(number_density_map * mult_factor)
 
-        np.clip(galaxies_per_pixels, 0.0, None, out = galaxies_per_pixels)
+        np.clip(
+            galaxies_per_pixels,
+            0.0,
+            None,
+            out = galaxies_per_pixels
+        )
 
         ################################################################################################################
 

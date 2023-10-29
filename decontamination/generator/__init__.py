@@ -39,7 +39,7 @@ def healpix_rand_ang(nside: int, pixels: np.ndarray, lonlat = False, rng: typing
     lonlat : bool
         If **True**, assumes longitude and latitude in degree, otherwise, co-latitude and longitude in radians (default: **True**).
     rng : typing.Optional[np.random.Generator]
-        ??? (default: **None**).
+        Random number generator (default: **None** ≡ the default RNG).
     dtype : typing.Type[typing.Union[np.float32, np.float64, float]]
         ??? (default: **np.float64**).
     """

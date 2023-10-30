@@ -57,7 +57,7 @@ class Generator_FullSkyUniform(object):
 
         ################################################################################################################
 
-        n_galaxies = math.floor(mean_density * 12 * self._nside ** 2)
+        n_galaxies = rng.poisson(math.floor(mean_density * 12 * self._nside ** 2))
 
         ################################################################################################################
 

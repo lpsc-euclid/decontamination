@@ -219,8 +219,8 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         ################################################################################################################
 
         self._eigenvalues, self._eigenvectors, self._orders = SOM_PCA._diag_cov_matrix(
-            self.get_centroids(),
-            self._cov_matrix,
+            self.centroids,
+            self.cov_matrix,
             min_weight,
             max_weight,
             self._m,

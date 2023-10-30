@@ -482,13 +482,13 @@ class SOM_Abstract(object):
 
             result = np.full((self._m, self._n, 8), np.nan, dtype = self._dtype)
 
-            SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
+            SOM_Abstract._distance_map(result, self.centroids, SOM_Abstract._X_SQU_STENCIL, SOM_Abstract._Y_SQU_STENCIL, self._m, self._n, 8)
 
         else:
 
             result = np.full((self._m, self._n, 6), np.nan, dtype = self._dtype)
 
-            SOM_Abstract._distance_map(result, self.get_centroids(), SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
+            SOM_Abstract._distance_map(result, self.centroids, SOM_Abstract._X_HEX_STENCIL, SOM_Abstract._Y_HEX_STENCIL, self._m, self._n, 6)
 
         ################################################################################################################
 

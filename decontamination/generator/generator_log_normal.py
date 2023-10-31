@@ -25,7 +25,7 @@ class Generator_LogNormal(generator_abstract.Generator_Abstract):
     nest : bool
         If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: **True**).
     lonlat : bool
-        If **True**, assumes longitude and latitude in degree, otherwise, co-latitude and longitude in radians (default: **True**).
+        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians (default: **True**).
     seed : typing.Optional[int]
         Seed for random generators (default: **None**).
     """

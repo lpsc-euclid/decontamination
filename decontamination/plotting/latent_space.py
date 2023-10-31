@@ -189,9 +189,9 @@ def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = N
     topology : typing.Optional[str]
         Topology of the map, either **'square'** or **'hexagonal'** (default: **None** ≡ **'hexagonal'**).
     v_min : float
-        Minimum color scale (default: **None** ≡ min(data)).
+        Minimum color scale (default: **None** ≡ min(weights)).
     v_max : float
-        Maximum color scale (default: **None** ≡ max(data)).
+        Maximum color scale (default: **None** ≡ max(weights)).
     cmap : str
         Color map (default: **'viridis'**).
     n_hist_bins : int

@@ -9,7 +9,7 @@ import healpy as hp
 
 ########################################################################################################################
 
-def catalog_to_number_density(nside: int, pixels: np.ndarray, fullsky: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, lonlat: bool = True, n_sigma: float = 2.0) -> typing.Tuple[float, float]:
+def catalog_to_number_density(nside: int, pixels: np.ndarray, full_sky: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, lonlat: bool = True, n_sigma: float = 2.0) -> typing.Tuple[float, float]:
 
     """
     Parameters
@@ -17,9 +17,9 @@ def catalog_to_number_density(nside: int, pixels: np.ndarray, fullsky: np.ndarra
     nside : int
         The HEALPix nside parameter.
     pixels : np.ndarray
-        HEALPix indices of the region to display.
-    fullsky : np.ndarray
-        HEALPix weights of the full sky (:math:`12\\cdot\\mathrm{nside}^2`).
+        HEALPix indices of the region to consider.
+    full_sky : np.ndarray
+        Resulting full sky number density (size: :math:`12\\cdot\\mathrm{nside}^2`).
     lon : np.ndarray
         Array of longitudes.
     lat : np.ndarray
@@ -27,9 +27,9 @@ def catalog_to_number_density(nside: int, pixels: np.ndarray, fullsky: np.ndarra
     nest : bool
         If **True**, ordering scheme is *NESTED* (default: **True**).
     lonlat : bool
-        If **True**, assumes longitude and latitude in degree, otherwise, co-latitude and longitude in radians (default: **True**).
+        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians (default: **True**).
     n_sigma : float
-        Multiplier for standard deviations to set number density bounds (default: **2**).
+        Multiplier for standard deviations to set the resulting number density bounds (default: **2**).
 
     Returns
     -------
@@ -45,14 +45,14 @@ def catalog_to_number_density(nside: int, pixels: np.ndarray, fullsky: np.ndarra
 
     ####################################################################################################################
 
-    fullsky[pixels] = 0.0
+    full_sky[pixels] = 0.0
 
-    np.add.at(fullsky, catalog_pixels, 1.0)
+    np.add.at(full_sky, catalog_pixels, 1.0)
 
     ####################################################################################################################
 
-    mean = np.mean(fullsky[pixels])
-    std = np.std(fullsky[pixels])
+    mean = np.mean(full_sky[pixels])
+    std = np.std(full_sky[pixels])
 
     ####################################################################################################################
 

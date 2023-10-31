@@ -108,14 +108,14 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
 
     ####################################################################################################################
 
-    fullsky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
+    full_sky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
 
-    fullsky[pixels] = weights
+    full_sky[pixels] = weights
 
     return _display(
         nside,
         pixels,
-        fullsky,
+        full_sky,
         nest = nest,
         cmap = cmap,
         norm = norm,
@@ -160,14 +160,14 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
 
     ####################################################################################################################
 
-    fullsky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
+    full_sky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
 
-    default_v_min, default_v_max = catalog_to_number_density(nside, pixels, fullsky, lon, lat, nest)
+    default_v_min, default_v_max = catalog_to_number_density(nside, pixels, full_sky, lon, lat, nest)
 
     return _display(
         nside,
         pixels,
-        fullsky,
+        full_sky,
         nest = nest,
         cmap = cmap,
         norm = norm,

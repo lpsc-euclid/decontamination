@@ -21,9 +21,12 @@ LOWEST_CORNER_COORDINATES = np.array([
 def healpix_rand_ang(nside: int, pixels: np.ndarray, lonlat = False, rng: typing.Optional[np.random.Generator] = None, dtype: typing.Type[typing.Union[np.float32, np.float64, float]] = np.float64):
 
     """
-    Samples random spherical coordinates from the given HEALPix pixels. Nested ordering only.
+    Samples random spherical coordinates from the given HEALPix pixels. Nested ordering only. See:
 
-    See: https://iopscience.iop.org/article/10.1086/427976/pdf
+    * | *HEALPix*: a Framework for High Resolution Discretization, and Fast Analysis of Data Distributed on the Sphere
+      | Górski K. M. et al.
+      | The Astrophysical Journal, vol. 622 (2005)
+        (`iopscience <https://iopscience.iop.org/article/10.1086/427976>`_)
 
     .. image:: _html_static/healpix_cartesian_plan.svg
         :alt: HEALPix Cartesian Plan
@@ -37,7 +40,7 @@ def healpix_rand_ang(nside: int, pixels: np.ndarray, lonlat = False, rng: typing
     pixels : np.ndarray
         HEALPix indices of the region where coordinates are generated.
     lonlat : bool
-        If **True**, assumes longitude and latitude in degree, otherwise, co-latitude and longitude in radians (default: **True**).
+        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians (default: **True**).
     rng : typing.Optional[np.random.Generator]
         Random number generator (default: **None** ≡ the default RNG).
     dtype : typing.Type[typing.Union[np.float32, np.float64, float]]

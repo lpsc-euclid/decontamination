@@ -17,3 +17,9 @@ Plotting in the latent space
 
 .. automodule:: decontamination.plotting.latent_space
    :members:
+
+Utilities
+---------
+
+.. automodule:: decontamination.plotting
+   :members:

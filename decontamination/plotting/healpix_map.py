@@ -9,28 +9,7 @@ import healpy as hp
 
 import matplotlib.pyplot as plt
 
-########################################################################################################################
-
-def _catalog_to_density(nside: int, footprint: np.ndarray, sky: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool, n_sigma: float = 2.0) -> typing.Tuple[float, float]:
-
-    ####################################################################################################################
-
-    pixels = hp.ang2pix(nside, lon, lat, nest = nest, lonlat = True)
-
-    ####################################################################################################################
-
-    sky[footprint] = 0.0
-
-    np.add.at(sky, pixels, 1.0)
-
-    ####################################################################################################################
-
-    mean = np.mean(sky[footprint])
-    std = np.std(sky[footprint])
-
-    ####################################################################################################################
-
-    return max(0.0, mean - n_sigma * std), mean + n_sigma * std
+from . import catalog_to_number_density
 
 ########################################################################################################################
 
@@ -106,9 +85,9 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
     nside : int
         The HEALPix nside parameter.
     pixels : np.ndarray
-        Array of HEALPix pixels.
+        HEALPix indices of the region to display.
     weights : np.ndarray
-        Array of HEALPix weights.
+        HEALPix weights of the region to display.
     nest : bool
         If **True**, ordering scheme is *NESTED* (default: **True**).
     cmap : str
@@ -116,9 +95,9 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
     norm : typing.Optional[str]
         Color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping (default: **None**).
     v_min : float
-        Minimum color scale (default: **None** ≡ min(data)).
+        Minimum color scale (default: **None** ≡ min(weights)).
     v_max : float
-        Maximum color scale (default: **None** ≡ max(data)).
+        Maximum color scale (default: **None** ≡ max(weights)).
     """
 
     ####################################################################################################################
@@ -129,14 +108,14 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
 
     ####################################################################################################################
 
-    sky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
+    fullsky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
 
-    sky[pixels] = weights
+    fullsky[pixels] = weights
 
     return _display(
         nside,
         pixels,
-        sky,
+        fullsky,
         nest = nest,
         cmap = cmap,
         norm = norm,
@@ -156,7 +135,7 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
     nside : int
         The HEALPix nside parameter.
     pixels : np.ndarray
-        Array of HEALPix pixels.
+        HEALPix indices of the region to display.
     lon : np.ndarray
         Array of longitudes.
     lat : np.ndarray
@@ -168,9 +147,9 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
     norm : typing.Optional[str]
         Color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping (default: **'hist'**).
     v_min : float
-        Minimum color scale (default: **None** ≡ µ(data)-2σ(data)).
+        Minimum color scale (default: **None** ≡ (:math:`\\mu-n_\\sigma\\cdot\\sigma`).
     v_max : float
-        Maximum color scale (default: **None** ≡ µ(data)+2σ(data)).
+        Maximum color scale (default: **None** ≡ (:math:`\\mu+n_\\sigma\\cdot\\sigma`).
     """
 
     ####################################################################################################################
@@ -181,14 +160,14 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
 
     ####################################################################################################################
 
-    sky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
+    fullsky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
 
-    default_v_min, default_v_max = _catalog_to_density(nside, pixels, sky, lon, lat, nest)
+    default_v_min, default_v_max = catalog_to_number_density(nside, pixels, fullsky, lon, lat, nest)
 
     return _display(
         nside,
         pixels,
-        sky,
+        fullsky,
         nest = nest,
         cmap = cmap,
         norm = norm,

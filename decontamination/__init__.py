@@ -29,6 +29,10 @@ from .algo.clustering import Clustering
 # PLOTTING                                                                                                             #
 ########################################################################################################################
 
+from .plotting import catalog_to_number_density
+
+########################################################################################################################
+
 from .plotting.latent_space import display_latent_space
 
 ########################################################################################################################
@@ -73,6 +77,7 @@ __all__ = [
     'DeviceArray', 'device_array_from', 'device_array_empty', 'device_array_zeros', 'device_array_full',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
     'Clustering',
+    'catalog_to_number_density',
     'display_latent_space',
     'display_healpix', 'display_catalog',
     'Generator_Uniform', 'Generator_LogNormal', 'Generator_NumberDensity', 'Generator_FullSkyUniform',

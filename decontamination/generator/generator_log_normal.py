@@ -68,11 +68,11 @@ class Generator_LogNormal(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        for batched_footprint in self._iterator(galaxies_per_pixels, n_max_per_batch):
+        for pixels in self._iterator(galaxies_per_pixels, n_max_per_batch):
 
             yield hp.pix2ang(
                 self._nside,
-                batched_footprint,
+                pixels,
                 nest = True, lonlat = True
             )
 

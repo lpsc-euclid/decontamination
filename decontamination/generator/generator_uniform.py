@@ -67,11 +67,11 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
         ################################################################################################################
 
-        for batched_footprint in self._iterator(galaxies_per_pixels, n_max_per_batch):
+        for pixels in self._iterator(galaxies_per_pixels, n_max_per_batch):
 
             yield healpix_rand_ang(
                 self._nside,
-                batched_footprint,
+                pixels,
                 lonlat = self._lonlat,
                 rng = rng
             )

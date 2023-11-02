@@ -2,6 +2,7 @@
 ########################################################################################################################
 
 import gc
+import tqdm
 import typing
 
 import numpy as np
@@ -171,7 +172,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], min_weight: float = 0.0, max_weight: float = 1.0) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], min_weight: float = 0.0, max_weight: float = 1.0, show_progress_bar: bool = False) -> None:
 
         """
         Trains the neural network.
@@ -184,6 +185,8 @@ class SOM_PCA(som_abstract.SOM_Abstract):
             Latent space minimum value (default: **O.O**).
         max_weight : float
             Latent space maximum value (default: **1.O**).
+        show_progress_bar : bool
+            Specifies whether to display a progress bar (default: **False**).
         """
 
         ################################################################################################################
@@ -201,7 +204,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        for vectors in generator():
+        for vectors in tqdm.tqdm(generator(), disable = not show_progress_bar):
 
             total_nb += SOM_PCA._update_cov_matrix(total_sum, total_prods, vectors)
 

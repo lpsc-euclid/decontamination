@@ -51,7 +51,7 @@ def test_centroids_epoch():
 
     som.train(data, n_epochs = 1)
 
-    assert np.allclose(som.get_centroids(), expected)
+    assert np.allclose(som.centroids, expected)
 
 ####################################################################################################################
 
@@ -83,8 +83,8 @@ def test_centroids_iter():
 
     som.train(data, n_vectors = data.shape[0])
 
-    print(decontamination.array_to_string(som.get_centroids()))
+    print(decontamination.array_to_string(som.centroids))
 
-    assert np.allclose(som.get_centroids(), expected)
+    assert np.allclose(som.centroids, expected)
 
 ########################################################################################################################

@@ -53,7 +53,7 @@ def test_centroids_epoch(enable_gpu):
 
     som.train(data, n_epochs = 1, enable_gpu = enable_gpu, threads_per_blocks = 64)
 
-    assert np.allclose(som.get_centroids(), expected, rtol = 1e-4)
+    assert np.allclose(som.centroids, expected, rtol = 1e-4)
 
 ####################################################################################################################
 
@@ -86,6 +86,6 @@ def test_centroids_iter(enable_gpu):
 
     som.train(data, n_vectors = data.shape[0], enable_gpu = enable_gpu, threads_per_blocks = 64)
 
-    assert np.allclose(som.get_centroids(), expected, rtol = 1e-4)
+    assert np.allclose(som.centroids, expected, rtol = 1e-4)
 
 ########################################################################################################################

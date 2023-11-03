@@ -73,7 +73,7 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
 
         np.clip(
             galaxies_per_pixels,
-            0.0,
+            0x00,
             None,
             out = galaxies_per_pixels
         )

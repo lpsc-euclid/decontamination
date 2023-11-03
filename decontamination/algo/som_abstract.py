@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
+import tqdm
 import typing
 
 import numpy as np
@@ -507,7 +508,7 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], enable_gpu: bool = True, threads_per_blocks: int = 1024) -> np.ndarray:
+    def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> np.ndarray:
 
         """
         Returns a matrix containing the number of times each neuron have been activated for the given input.
@@ -516,6 +517,8 @@ class SOM_Abstract(object):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Dataset array or generator builder.
+        show_progress_bar : bool
+            Specifies whether to display a progress bar (default: **False**).
         enable_gpu : bool
             If available, run on GPU rather than CPU (default: **True**).
         threads_per_blocks : int
@@ -534,7 +537,7 @@ class SOM_Abstract(object):
 
         generator = generator_builder()
 
-        for data in generator():
+        for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
 
             _count_bmus_kernel[enable_gpu, threads_per_blocks, data.shape[0]](result, self._weights, data, self._m * self._n)
 

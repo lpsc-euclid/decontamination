@@ -485,13 +485,15 @@ class Decontamination_SOM(object):
 
     ####################################################################################################################
 
-    def compute_gndm(self, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def compute_gndm(self, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         Compute the Galaxy Number Density Map from the SOM.
 
         Parameters
         ----------
+        show_progress_bar : bool
+            Specifies whether to display a progress bar (default: **True**).
         enable_gpu : bool
             If available, run on GPU rather than CPU (default: **True**).
         threads_per_blocks : int
@@ -508,8 +510,8 @@ class Decontamination_SOM(object):
         # COMPUTE ACTIVATION MAPS                                                                                      #
         ################################################################################################################
 
-        self._catalog_activation_map = self._som.get_activation_map(self._catalog_systematics, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
-        self._footprint_activation_map = self._som.get_activation_map(self._footprint_systematics, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+        self._catalog_activation_map = self._som.get_activation_map(self._catalog_systematics, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+        self._footprint_activation_map = self._som.get_activation_map(self._footprint_systematics, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
         ################################################################################################################
         # COMPUTE GALAXY NUMBER DENSITY XXX                                                                            #
@@ -522,7 +524,7 @@ class Decontamination_SOM(object):
 
     ####################################################################################################################
 
-    def compute_clustered_gndm(self, n_clusters: int, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def compute_clustered_gndm(self, n_clusters: int, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         Compute the clustered Galaxy Number Density Map from the SOM.
@@ -531,6 +533,8 @@ class Decontamination_SOM(object):
         ----------
         n_clusters : int
             Desired number latent space clusters.
+        show_progress_bar : bool
+            Specifies whether to display a progress bar (default: **True**).
         enable_gpu : bool
             If available, run on GPU rather than CPU (default: **True**).
         threads_per_blocks : int
@@ -544,7 +548,7 @@ class Decontamination_SOM(object):
            or                                   \
            self._footprint_activation_map is None:
 
-            self.compute_gndm(enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+            self.compute_gndm(show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
         ################################################################################################################
         # CLUSTER LATENT SPACE                                                                                         #

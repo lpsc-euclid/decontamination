@@ -32,7 +32,7 @@ sonarqube-check:
     paths:
       - .sonar/cache
   script:
-    - sonar-scanner -Dsonar.python.coverage.reportPaths=coverage.xml
+    - sonar-scanner
   dependencies:
     - pytest-test
   allow_failure: true

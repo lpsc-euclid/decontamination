@@ -14,8 +14,6 @@ pytest-test:
       coverage: coverage.xml
     expire_in: 1 day
   allow_failure: true
-  only:
-    - master
 
 sonarqube-check:
   stage: sonarqube-check
@@ -34,8 +32,6 @@ sonarqube-check:
   dependencies:
     - pytest-test
   allow_failure: true
-  only:
-    - master
 
 sonarqube-vulnerability-report:
   stage: sonarqube-vulnerability-report
@@ -50,5 +46,3 @@ sonarqube-vulnerability-report:
   dependencies:
     - sonarqube-check
   allow_failure: true
-  only:
-    - master

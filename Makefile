@@ -13,12 +13,19 @@ doc:
 
 .PHONY: test
 test:
-	python3 -m pytest ./test/test_jit.py
-	python3 -m pytest ./test/test_som_abstract.py
-	python3 -m pytest ./test/test_som_pca.py
-	python3 -m pytest ./test/test_som_online.py
-	python3 -m pytest ./test/test_som_batch.py
-	python3 -m pytest ./test/test_generator.py
+	python3 -m pytest ./test/
+
+########################################################################################################################
+
+.PHONY: cov
+cov:
+	python3 -m pytest --cov=decontamination --cov-report xml ./test/
+
+########################################################################################################################
+
+.PHONY: htmlcov
+htmlcov:
+	python3 -m pytest --cov=decontamination --cov-report html ./test/
 
 ########################################################################################################################
 

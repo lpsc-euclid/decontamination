@@ -1,6 +1,21 @@
 stages:
+    - pytest-test
     - sonarqube-check
     - sonarqube-vulnerability-report
+
+pytest-test:
+  stage: pytest-test
+  image: python:3.9
+  script:
+    - pip install pytest pytest-cov
+    - make cov
+  artifacts:
+    reports:
+      coverage: coverage.xml
+    expire_in: 1 day
+  allow_failure: true
+  only:
+    - master
 
 sonarqube-check:
   stage: sonarqube-check
@@ -16,8 +31,9 @@ sonarqube-check:
       - .sonar/cache
   script:
     - sonar-scanner
+  dependencies:
+    - pytest-test
   allow_failure: true
-  when: manual
   only:
     - master
 
@@ -27,13 +43,12 @@ sonarqube-vulnerability-report:
     name: curlimages/curl
   script:
     - 'curl -u "${SONAR_TOKEN}:" "${SONAR_HOST_URL}/api/issues/gitlab_sast_export?projectKey=decontamination-key&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
-  allow_failure: true
-  when: manual
-  only:
-    - master
   artifacts:
-    expire_in: 1 day
     reports:
       sast: gl-sast-sonar-report.json
+    expire_in: 1 day
   dependencies:
     - sonarqube-check
+  allow_failure: true
+  only:
+    - master

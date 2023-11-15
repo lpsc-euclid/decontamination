@@ -19,7 +19,7 @@ test:
 
 .PHONY: cov
 cov:
-	python3 -m pytest --cov=decontamination --cov-report xml ./test/
+	python3 -m pytest --cov=decontamination --cov-report xml:coverage.xml ./test/
 
 ########################################################################################################################
 

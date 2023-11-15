@@ -146,7 +146,7 @@ class SOM_Abstract(object):
            or                               \
            self._topology != other._topology:
 
-            raise Exception('Incompatible shapes, dtypes or topologies')
+            raise TypeError('Incompatible shapes, dtypes or topologies')
 
         self._weights[...] = other._weights
 
@@ -500,7 +500,7 @@ class SOM_Abstract(object):
             result = np.nanmean(result, axis = 2)
 
         else:
-            raise Exception(f'Invalid scaling method `{scaling}`')
+            raise ValueError(f'Invalid scaling method `{scaling}`')
 
         ################################################################################################################
 

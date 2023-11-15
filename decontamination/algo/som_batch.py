@@ -404,7 +404,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         else:
 
-            raise Exception('Invalid training method, specify either `n_epochs` or `n_vectors`.')
+            raise ValueError('Invalid training method, specify either `n_epochs` or `n_vectors`.')
 
 ########################################################################################################################
 

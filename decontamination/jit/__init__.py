@@ -233,7 +233,7 @@ class DeviceArray(object):
 
         if self._instance is None:
 
-            raise Exception('Device array not instanced')
+            raise RuntimeError('Device array not instanced')
 
         ################################################################################################################
 
@@ -538,7 +538,7 @@ class jit(object):
 
         if name in globals():
 
-            raise Exception(f'Function {name} already declared')
+            raise RuntimeError(f'Function {name} already declared')
 
         globals()[name] = new_funct
 
@@ -551,7 +551,7 @@ class jit(object):
 
         if name in globals():
 
-            raise Exception(f'Function {name} already declared')
+            raise RuntimeError(f'Function {name} already declared')
 
         globals()[name] = new_funct
 
@@ -561,7 +561,7 @@ class jit(object):
 
         if not self._kernel and not funct.__name__.endswith('_xpu'):
 
-            raise Exception(f'Function `{funct.__name__}` name must ends with `_xpu`')
+            raise RuntimeError(f'Function `{funct.__name__}` name must ends with `_xpu`')
 
         ################################################################################################################
         # FRAME                                                                                                        #

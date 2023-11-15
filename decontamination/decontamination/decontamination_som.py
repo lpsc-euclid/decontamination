@@ -504,7 +504,7 @@ class Decontamination_SOM(object):
            or                                \
            self._footprint_systematics is None:
 
-            raise Exception('Underlying SOM network not trained')
+            raise ValueError('Underlying SOM network not trained')
 
         ################################################################################################################
         # COMPUTE ACTIVATION MAPS                                                                                      #

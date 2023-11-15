@@ -11,7 +11,7 @@ pytest-test:
     - make cov
   artifacts:
     reports:
-      coverage: coverage.xml
+      coverage_report: coverage.xml
     expire_in: 1 day
   allow_failure: true
 

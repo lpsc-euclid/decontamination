@@ -5,7 +5,11 @@ Decontamination
 &nbsp;
 [![][MainRepo img]][MainRepo]
 &nbsp;
+[![][CodeCoverage img]][CodeCoverage]
+&nbsp;
 [![][CodeQuality img]][CodeQuality]
+&nbsp;
+[![][CodeLines img]][CodeLines]
 
 <a href="http://lpsc.in2p3.fr/"              target="_blank"><img src="./doc/_html_static/logo_lpsc.svg" alt="LPSC" height="72" /></a>
 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -49,5 +53,11 @@ Dependencies
 [MainRepo]:https://gitlab.in2p3.fr/lpsc-euclid/decontamination
 [MainRepo img]:https://img.shields.io/badge/repo-gitlab.in2p3.fr-success
 
+[CodeCoverage]:https://sonarqube.in2p3.fr/dashboard?id=decontamination-key
+[CodeCoverage img]:https://sonarqube.in2p3.fr/api/project_badges/measure?project=decontamination-key&metric=coverage&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37
+
 [CodeQuality]:https://sonarqube.in2p3.fr/dashboard?id=decontamination-key
 [CodeQuality img]:https://sonarqube.in2p3.fr/api/project_badges/measure?project=decontamination-key&metric=alert_status&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37
+
+[CodeLines]:https://sonarqube.in2p3.fr/dashboard?id=decontamination-key
+[CodeLines img]:https://sonarqube.in2p3.fr/api/project_badges/measure?project=decontamination-key&metric=ncloc&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37

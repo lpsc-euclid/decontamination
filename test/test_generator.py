@@ -63,7 +63,39 @@ def test_number_density_generator():
     lon, lat = list(generator.generate(weight, 1))[0]
 
     assert np.allclose(lon, expected_lon)
+    assert np.allclose(lat, expected_lat)
 
+########################################################################################################################
+
+def test_uniform_generator():
+
+    expected_lon = np.array([
+        48.65775836, 79.09418367, 263.91297925, 214.98582648, 237.27751641,
+        209.24435309, 242.76530638, 187.23610577, 226.19289745, 350.31505826,
+        -18.08777511, 76.32146662, 73.9637185, 84.51241443, 57.92411222,
+        32.41545667, 56.53218505, 92.85621883, 107.42280235, 112.1605878,
+        121.16747346, 148.45057087, 297.31453315, 275.58830027
+    ], dtype = np.float32)
+
+    expected_lat = np.array([
+        36.41228589, 46.28220487, 43.07795216, 38.71290265, 35.46113872,
+        41.49664408, 31.95211458, 55.81336662, 30.29724531, 41.59388671,
+        -5.49868094, 21.52421792, -18.48592388, 31.65633481, -28.38131078,
+        -58.51421867, -19.60506688, -39.11583833, -28.46528311, -61.14390763,
+        -31.86735425, -28.08853498, -53.85139673, -49.9983985
+    ], dtype = np.float32)
+
+    nside = 1
+
+    npix = hp.nside2npix(nside)
+
+    pixels = np.arange(npix, dtype = np.int32)
+
+    generator = decontamination.Generator_Uniform(nside, pixels, nest = True, seed = 0)
+
+    lon, lat = list(generator.generate(2))[0]
+
+    assert np.allclose(lon, expected_lon)
     assert np.allclose(lat, expected_lat)
 
 ########################################################################################################################
@@ -95,7 +127,6 @@ def test_full_sky_generator():
     lon, lat = list(generator.generate(2))[0]
 
     assert np.allclose(lon, expected_lon)
-
     assert np.allclose(lat, expected_lat)
 
 ########################################################################################################################

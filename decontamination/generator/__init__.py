@@ -57,7 +57,7 @@ def healpix_rand_ang(nside: int, pixels: np.ndarray, lonlat = False, rng: typing
 
     ####################################################################################################################
 
-    uv = rng.random((pixels.shape[0], 2)).T
+    uv = rng.random((pixels.shape[0], 2), dtype = dtype).T
 
     z, s, ϕ = _hpd2loc(nside, x, y, f, uv[0], uv[1])
 

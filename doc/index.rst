@@ -20,7 +20,7 @@
       :height: 72
       :target: http://www.univ-grenoble-alpes.fr/
 
-|License img| |MainRepo img|
+|License img| |MainRepo img| |CodeCoverage img| |CodeLines img|
 
 Decontamination
 ===============
@@ -58,3 +58,9 @@ Indices and tables
 
 .. |AltRepo img| image:: https://img.shields.io/badge/Alt%20Repo-github.com-success
    :target: https://github.com/odier-xyz/decontamination
+
+.. |CodeCoverage img| image:: https://sonarqube.in2p3.fr/api/project_badges/measure?project=decontamination-key&metric=coverage&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37
+   :target: https://sonarqube.in2p3.fr/dashboard?id=decontamination-key
+
+.. |CodeLines img| image:: https://sonarqube.in2p3.fr/api/project_badges/measure?project=decontamination-key&metric=ncloc&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37
+   :target: https://sonarqube.in2p3.fr/dashboard?id=decontamination-key

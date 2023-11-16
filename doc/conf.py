@@ -66,7 +66,7 @@ html_theme_options = {
     'borderless_decor': True,
 }
 
-html_sidebars = {'**': ['logo.html', 'localtoc.html', 'globaltoc.html', 'searchbox.html']}
+html_sidebars = {'**': ['logo.html', 'localtoc.html', 'globaltoc.html', 'searchbox.html', 'sonar.html']}
 
 ########################################################################################################################
 

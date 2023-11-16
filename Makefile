@@ -19,13 +19,13 @@ test:
 
 .PHONY: cov
 cov:
-	python3 -m pytest --cov=decontamination --cov-report xml:coverage.xml ./test/
+	USE_NUMBA_CPU=0 python3 -m pytest --cov=decontamination --cov-report xml:coverage.xml ./test/
 
 ########################################################################################################################
 
 .PHONY: htmlcov
 htmlcov:
-	python3 -m pytest --cov=decontamination --cov-report html ./test/
+	USE_NUMBA_CPU=0 python3 -m pytest --cov=decontamination --cov-report html ./test/
 
 ########################################################################################################################
 

@@ -115,6 +115,46 @@ def test_uniform_generator(n_max_per_batch):
 
 ########################################################################################################################
 
+@pytest.mark.parametrize('n_max_per_batch', [None, 8])
+def test_log_normal_generator(n_max_per_batch):
+
+    expected_lon = np.array([
+        15.92198526, 81.61761075, 236.23471978, 236.53749621, 193.75186869,
+        207.1786702, 191.31170382, 250.31790695, 261.80622882, 323.36269171,
+        -15.56932066, 98.03794086, 99.27174579, 67.96892968, 27.69434522,
+        11.58310501, 69.82476572, 121.58791193, 111.86039975, 138.63196923,
+        118.13026261, 157.0004341, 326.71377674, 303.45869068
+    ], dtype = np.float32)
+
+    expected_lat = np.array([
+        60.45007571, 56.39116146, 36.55537956, 38.42386631, 55.90483215,
+        34.53409102, 37.6695407, 43.16316526, 38.56251597, 18.92101192,
+        9.46484532, -28.56949407, -15.34457699, -12.66653481, -43.3079757,
+        -34.90710904, -67.84648637, -17.20700639, -23.78807778, -45.61984105,
+        -14.86011593, -23.20408608, -29.77304346, -27.16802023
+    ], dtype = np.float32)
+
+    nside = 1
+
+    npix = hp.nside2npix(nside)
+
+    pixels = np.arange(npix, dtype = np.int32)
+
+    generator = decontamination.Generator_LogNormal(nside, pixels, nest = True, seed = 0)
+
+    lon = np.empty(0, dtype = np.float32)
+    lat = np.empty(0, dtype = np.float32)
+
+    for _lon, _lat in generator.generate(2, n_max_per_batch = n_max_per_batch):
+
+        lon = np.append(lon, _lon)
+        lat = np.append(lat, _lat)
+
+    assert np.allclose(lon, expected_lon)
+    assert np.allclose(lat, expected_lat)
+
+########################################################################################################################
+
 @pytest.mark.parametrize('n_max_per_batch', [None])
 def test_full_sky_generator(n_max_per_batch):
 

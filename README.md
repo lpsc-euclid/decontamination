@@ -4,10 +4,8 @@ Decontamination
 [![][License img]][License]
 &nbsp;
 [![][MainRepo img]][MainRepo]
-<!--
 &nbsp;
-[![][AltRepo img]][AltRepo]
--->
+[![][CodeQuality img]][CodeQuality]
 
 <a href="http://lpsc.in2p3.fr/"              target="_blank"><img src="./doc/_html_static/logo_lpsc.svg" alt="LPSC" height="72" /></a>
 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -49,7 +47,7 @@ Dependencies
 [License img]:https://img.shields.io/badge/license-CeCILL--C-blue.svg
 
 [MainRepo]:https://gitlab.in2p3.fr/lpsc-euclid/decontamination
-[MainRepo img]:https://img.shields.io/badge/Main%20Repo-gitlab.in2p3.fr-success
+[MainRepo img]:https://img.shields.io/badge/repo-gitlab.in2p3.fr-success
 
-[AltRepo]:https://github.com/odier-xyz/decontamination
-[AltRepo img]:https://img.shields.io/badge/Alt%20Repo-github.com-success
+[CodeQuality]:https://sonarqube.in2p3.fr/dashboard?id=decontamination-key
+[CodeQuality img]:https://sonarqube.in2p3.fr/api/project_badges/measure?project=decontamination-key&metric=alert_status&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37

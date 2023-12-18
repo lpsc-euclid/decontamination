@@ -10,8 +10,10 @@ Decontamination
 [![][CodeCoverage img]][CodeCoverage]
 &nbsp;
 [![][CodeQuality img]][CodeQuality]
+<!--
 &nbsp;
 [![][CodeLines img]][CodeLines]
+-->
 
 <a href="http://lpsc.in2p3.fr/"              target="_blank"><img src="./doc/_html_static/logo_lpsc.svg" alt="LPSC" height="72" /></a>
 &nbsp;&nbsp;&nbsp;&nbsp;

@@ -10,3 +10,6 @@ help:
 
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
+	rm -fr ../docs/
+	mv ./_build/html/ ../docs/

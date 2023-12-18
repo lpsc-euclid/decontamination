@@ -6,6 +6,7 @@ __pycache__
 /build/
 /htmlcov/
 /*.egg-info/
+/manual/_build/
 
 /coverage.xml
 

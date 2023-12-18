@@ -21,7 +21,7 @@ Decontamination
 &nbsp;&nbsp;&nbsp;&nbsp;
 <a href="http://www.univ-grenoble-alpes.fr/" target="_blank"><img src="./manual/_html_static/logo_uga.svg" alt="UGA" height="72" /></a>
 
-**Decontamination** is a high-performance toolbox, that runs on both CPU and GPU, for performing systematics decontamination in cosmology analyses. See the full documentation [here]().
+**Decontamination** is a high-performance toolbox, that runs on both CPU and GPU, for performing systematics decontamination in cosmology analyses. See the documentation [here](https://lpsc-euclid.github.io/decontamination/).
 
 Installation
 ------------

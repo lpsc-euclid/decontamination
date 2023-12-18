@@ -5,6 +5,8 @@ Decontamination
 &nbsp;
 [![][MainRepo img]][MainRepo]
 &nbsp;
+[![][AltRepo img]][AltRepo]
+&nbsp;
 [![][CodeCoverage img]][CodeCoverage]
 &nbsp;
 [![][CodeQuality img]][CodeQuality]
@@ -51,7 +53,10 @@ Dependencies
 [License img]:https://img.shields.io/badge/license-CeCILL--C-blue.svg
 
 [MainRepo]:https://gitlab.in2p3.fr/lpsc-euclid/decontamination
-[MainRepo img]:https://img.shields.io/badge/repo-gitlab.in2p3.fr-success
+[MainRepo img]:https://img.shields.io/badge/private%20repo-gitlab.in2p3.fr-success
+
+[AltRepo]:https://github.com/lpsc-euclid/decontamination
+[AltRepo img]:https://img.shields.io/badge/public%20repo-github.com-success
 
 [CodeCoverage]:https://sonarqube.in2p3.fr/dashboard?id=decontamination-key
 [CodeCoverage img]:https://sonarqube.in2p3.fr/api/project_badges/measure?project=decontamination-key&metric=coverage&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37

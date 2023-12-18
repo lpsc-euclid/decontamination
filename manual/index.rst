@@ -5,11 +5,6 @@
       :height: 72
       :target: http://lpsc.in2p3.fr/
 
-   .. image:: _html_static/logo_ijclab.svg
-      :alt: IJCLab
-      :height: 72
-      :target: https://www.ijclab.in2p3.fr/
-
    .. image:: _html_static/logo_in2p3.svg
       :alt: IN2P3
       :height: 72

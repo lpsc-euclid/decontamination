@@ -1,0 +1,908 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Module decontamination.algo &#8212; decontamination 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css?v=8edef7da" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=abce926a" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.min.js"></script>
+    <script src="_static/custom.js?v=81cfe101"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Module decontamination.plotting" href="module_plotting.html" />
+    <link rel="prev" title="Module decontamination.jit" href="module_jit.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="module_plotting.html" title="Module decontamination.plotting"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="module_jit.html" title="Module decontamination.jit"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">decontamination 0.0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Module decontamination.algo</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-decontamination-algo">
+<h1>Module decontamination.algo<a class="headerlink" href="#module-decontamination-algo" title="Link to this heading">¶</a></h1>
+<section id="self-organizing-maps">
+<h2>Self-Organizing Maps<a class="headerlink" href="#self-organizing-maps" title="Link to this heading">¶</a></h2>
+<p>Self Organizing Maps (SOMs) are neural networks that transform high-dimensional data into spatially organized low-dimensional clusters.</p>
+<a class="reference internal image-reference" href="_images/som.png"><img alt="Self Organizing Maps" class="align-center" src="_images/som.png" style="width: 50%;" /></a>
+<span class="target" id="module-decontamination.algo.som_abstract"></span><dl class="py class">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_abstract.</span></span><span class="sig-name descname"><span class="pre">SOM_Abstract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Self Organizing Maps (abstract class).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>Number of neuron rows.</p>
+</dd>
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>Number of neuron columns.</p>
+</dd>
+<dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>Dimensionality of the input data.</p>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong> (default: <strong>np.float32</strong>).</p>
+</dd>
+<dt><strong>topology</strong><span class="classifier">Optional[str]</span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong> (default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong>).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.centroids" title="decontamination.algo.som_abstract.SOM_Abstract.centroids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">centroids</span></code></a></dt><dd><p>Neural network weights with the shape <cite>[m, n, dim]</cite>.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.dim" title="decontamination.algo.som_abstract.SOM_Abstract.dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dim</span></code></a></dt><dd><p>Dimensionality of the input data.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.dtype" title="decontamination.algo.som_abstract.SOM_Abstract.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></dt><dd><p>Neural network data type.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.m" title="decontamination.algo.som_abstract.SOM_Abstract.m"><code class="xref py py-obj docutils literal notranslate"><span class="pre">m</span></code></a></dt><dd><p>Number of neuron rows.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.n" title="decontamination.algo.som_abstract.SOM_Abstract.n"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n</span></code></a></dt><dd><p>Number of neuron columns.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.quantization_errors" title="decontamination.algo.som_abstract.SOM_Abstract.quantization_errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantization_errors</span></code></a></dt><dd><p>Returns the quantization error.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.topographic_errors" title="decontamination.algo.som_abstract.SOM_Abstract.topographic_errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">topographic_errors</span></code></a></dt><dd><p>Returns the topographic errors.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.topology" title="decontamination.algo.som_abstract.SOM_Abstract.topology"><code class="xref py py-obj docutils literal notranslate"><span class="pre">topology</span></code></a></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.weights" title="decontamination.algo.som_abstract.SOM_Abstract.weights"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weights</span></code></a></dt><dd><p>Neural network weights with the shape <cite>[m * n, dim]</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.get_activation_map" title="decontamination.algo.som_abstract.SOM_Abstract.get_activation_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code></a>(dataset[, ...])</p></td>
+<td><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.get_distance_map" title="decontamination.algo.som_abstract.SOM_Abstract.get_distance_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code></a>([scaling])</p></td>
+<td><p>Returns a matrix of the distances between each weight.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.get_winners" title="decontamination.algo.som_abstract.SOM_Abstract.get_winners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code></a>(dataset[, enable_gpu, ...])</p></td>
+<td><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.init_from" title="decontamination.algo.som_abstract.SOM_Abstract.init_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code></a>(other)</p></td>
+<td><p>Initializes the neural network from another one.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.init_rand" title="decontamination.algo.som_abstract.SOM_Abstract.init_rand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_rand</span></code></a>([seed])</p></td>
+<td><p>Initializes the neural network randomly.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.load" title="decontamination.algo.som_abstract.SOM_Abstract.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(filename)</p></td>
+<td><p>Loads the trained neural network from a HDF5 file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.save" title="decontamination.algo.som_abstract.SOM_Abstract.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(filename)</p></td>
+<td><p>Saves the trained neural network to a HDF5 file.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.init_rand">
+<span class="sig-name descname"><span class="pre">init_rand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.init_rand" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes the neural network randomly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>seed</strong><span class="classifier">Optional[int]</span></dt><dd><p>Seed for random generator (default: <strong>None</strong>).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.init_from">
+<span class="sig-name descname"><span class="pre">init_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract" title="decontamination.algo.som_abstract.SOM_Abstract"><span class="pre">SOM_Abstract</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.init_from" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes the neural network from another one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>other</strong><span class="classifier">SOM_Abstract</span></dt><dd><p>Another SOM object from which the weights will be copied.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.save" title="Link to this definition">¶</a></dt>
+<dd><p>Saves the trained neural network to a HDF5 file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>Output filename.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.load" title="Link to this definition">¶</a></dt>
+<dd><p>Loads the trained neural network from a HDF5 file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>Input filename.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.m">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">m</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.m" title="Link to this definition">¶</a></dt>
+<dd><p>Number of neuron rows.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.n">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.n" title="Link to this definition">¶</a></dt>
+<dd><p>Number of neuron columns.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.dim">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.dim" title="Link to this definition">¶</a></dt>
+<dd><p>Dimensionality of the input data.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.dtype">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dtype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span></em><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.dtype" title="Link to this definition">¶</a></dt>
+<dd><p>Neural network data type.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.topology">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">topology</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.topology" title="Link to this definition">¶</a></dt>
+<dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.weights">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weights</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.weights" title="Link to this definition">¶</a></dt>
+<dd><p>Neural network weights with the shape <cite>[m * n, dim]</cite>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.centroids">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">centroids</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.centroids" title="Link to this definition">¶</a></dt>
+<dd><p>Neural network weights with the shape <cite>[m, n, dim]</cite>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.quantization_errors">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">quantization_errors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.quantization_errors" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the quantization error.</p>
+<div class="math notranslate nohighlight">
+\[c_i^1\equiv\mathrm{1^\mathrm{st}\,bmu}\equiv\underset{j}{\mathrm{arg\,min}_1}\lVert x_i-w_j\rVert\]</div>
+<div class="math notranslate nohighlight">
+\[\boxed{e_Q\equiv\frac{1}{N}\sum_{i=1}^N\lVert x_i-w_{c_i^1}\rVert}\]</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.topographic_errors">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">topographic_errors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.topographic_errors" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the topographic errors.</p>
+<div class="math notranslate nohighlight">
+\[c_i^n\equiv\mathrm{n^\mathrm{th}\,bmu}\equiv\underset{j}{\mathrm{arg\,min}_n}\lVert x_i-w_j\rVert\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}r\equiv\left\{\begin{array}{ll}\sqrt{1}&amp;\mathrm{topology=hexagon}\\\sqrt{2}&amp;\mathrm{topology=square}\end{array}\right.\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}t(x_i)\equiv\left\{\begin{array}{ll}1&amp;\lVert c_i^1-c_i^2\rVert&gt;r\\0&amp;\mathrm{otherwise}\end{array}\right.\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\boxed{e_t\equiv\frac{1}{N}\sum_{i=0}^Nt(x_i)}\]</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.get_distance_map">
+<span class="sig-name descname"><span class="pre">get_distance_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scaling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.get_distance_map" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a matrix of the distances between each weight.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>scaling</strong><span class="classifier">Optional[str]</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’ (default: <strong>None</strong> ≡ ‘<strong>sum</strong>’).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.get_activation_map">
+<span class="sig-name descname"><span class="pre">get_activation_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.get_activation_map" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Dataset array or generator builder.</p>
+</dd>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>False</strong>).</p>
+</dd>
+<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+</dd>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.get_winners">
+<span class="sig-name descname"><span class="pre">get_winners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.get_winners" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dataset</strong><span class="classifier">np.ndarray</span></dt><dd><p>Dataset array.</p>
+</dd>
+<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+</dd>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-decontamination.algo.som_pca"></span><dl class="py class">
+<dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_pca.</span></span><span class="sig-name descname"><span class="pre">SOM_PCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract" title="decontamination.algo.som_abstract.SOM_Abstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">SOM_Abstract</span></code></a></p>
+<p>Self Organizing Maps that span the first two principal components. It runs with constant memory usage.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A rule of thumb to set the size of the grid for a dimensionality reduction task is that it should contain <span class="math notranslate nohighlight">\(5\sqrt{N}\)</span> neurons where N is the number of samples in the dataset to analyze.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>Number of neuron rows.</p>
+</dd>
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>Number of neuron columns.</p>
+</dd>
+<dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>Dimensionality of the input data.</p>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong> (default: <strong>np.float32</strong>).</p>
+</dd>
+<dt><strong>topology</strong><span class="classifier">Optional[str]</span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong> (default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong>).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">centroids</span></code></dt><dd><p>Neural network weights with the shape <cite>[m, n, dim]</cite>.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.cov_matrix" title="decontamination.algo.som_pca.SOM_PCA.cov_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cov_matrix</span></code></a></dt><dd><p>Covariance matrix of the training dataset.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dim</span></code></dt><dd><p>Dimensionality of the input data.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></dt><dd><p>Neural network data type.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.eigenvalues" title="decontamination.algo.som_pca.SOM_PCA.eigenvalues"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eigenvalues</span></code></a></dt><dd><p>Eigenvalues of the covariance matrix.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.eigenvectors" title="decontamination.algo.som_pca.SOM_PCA.eigenvectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eigenvectors</span></code></a></dt><dd><p>Eigenvectors of the covariance matrix.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">m</span></code></dt><dd><p>Number of neuron rows.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">n</span></code></dt><dd><p>Number of neuron columns.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.orders" title="decontamination.algo.som_pca.SOM_PCA.orders"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orders</span></code></a></dt><dd><p>Order of importance of the components.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantization_errors</span></code></dt><dd><p>Returns the quantization error.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">topographic_errors</span></code></dt><dd><p>Returns the topographic errors.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">topology</span></code></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">weights</span></code></dt><dd><p>Neural network weights with the shape <cite>[m * n, dim]</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code>(dataset[, ...])</p></td>
+<td><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code>([scaling])</p></td>
+<td><p>Returns a matrix of the distances between each weight.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code>(dataset[, enable_gpu, ...])</p></td>
+<td><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code>(other)</p></td>
+<td><p>Initializes the neural network from another one.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_rand</span></code>([seed])</p></td>
+<td><p>Initializes the neural network randomly.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>(filename)</p></td>
+<td><p>Loads the trained neural network from a HDF5 file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code>(filename)</p></td>
+<td><p>Saves the trained neural network to a HDF5 file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.train" title="decontamination.algo.som_pca.SOM_PCA.train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></a>(dataset[, min_weight, max_weight, ...])</p></td>
+<td><p>Trains the neural network.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.cov_matrix">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cov_matrix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.cov_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Covariance matrix of the training dataset.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.eigenvalues">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">eigenvalues</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.eigenvalues" title="Link to this definition">¶</a></dt>
+<dd><p>Eigenvalues of the covariance matrix.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.eigenvectors">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">eigenvectors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.eigenvectors" title="Link to this definition">¶</a></dt>
+<dd><p>Eigenvectors of the covariance matrix.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.orders">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">orders</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.orders" title="Link to this definition">¶</a></dt>
+<dd><p>Order of importance of the components.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.train" title="Link to this definition">¶</a></dt>
+<dd><p>Trains the neural network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Training dataset array or generator builder.</p>
+</dd>
+<dt><strong>min_weight</strong><span class="classifier">float</span></dt><dd><p>Latent space minimum value (default: <strong>O.O</strong>).</p>
+</dd>
+<dt><strong>max_weight</strong><span class="classifier">float</span></dt><dd><p>Latent space maximum value (default: <strong>1.O</strong>).</p>
+</dd>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>False</strong>).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-decontamination.algo.som_online"></span><dl class="py class">
+<dt class="sig sig-object py" id="decontamination.algo.som_online.SOM_Online">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_online.</span></span><span class="sig-name descname"><span class="pre">SOM_Online</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract" title="decontamination.algo.som_abstract.SOM_Abstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">SOM_Abstract</span></code></a></p>
+<p>Self Organizing Maps (standard online implementation). It runs with constant memory usage.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A rule of thumb to set the size of the grid for a dimensionality reduction task is that it should contain <span class="math notranslate nohighlight">\(5\sqrt{N}\)</span> neurons where N is the number of samples in the dataset to analyze.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>Number of neuron rows.</p>
+</dd>
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>Number of neuron columns.</p>
+</dd>
+<dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>Dimensionality of the input data.</p>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong> (default: <strong>np.float32</strong>).</p>
+</dd>
+<dt><strong>topology</strong><span class="classifier">Optional[str]</span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong> (default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong>).</p>
+</dd>
+<dt><strong>alpha</strong><span class="classifier">float</span></dt><dd><p>Starting value of the learning rate (default: <strong>None</strong> ≡ <strong>0.3</strong>).</p>
+</dd>
+<dt><strong>sigma</strong><span class="classifier">float</span></dt><dd><p>Starting value of the neighborhood radius (default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mathrm{max}(m,n)/2\)</span>).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference internal" href="#decontamination.algo.som_online.SOM_Online.alpha" title="decontamination.algo.som_online.SOM_Online.alpha"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alpha</span></code></a></dt><dd><p>Starting value of the learning rate.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">centroids</span></code></dt><dd><p>Neural network weights with the shape <cite>[m, n, dim]</cite>.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dim</span></code></dt><dd><p>Dimensionality of the input data.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></dt><dd><p>Neural network data type.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">m</span></code></dt><dd><p>Number of neuron rows.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">n</span></code></dt><dd><p>Number of neuron columns.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantization_errors</span></code></dt><dd><p>Returns the quantization error.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.algo.som_online.SOM_Online.sigma" title="decontamination.algo.som_online.SOM_Online.sigma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sigma</span></code></a></dt><dd><p>Starting value of the neighborhood radius.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">topographic_errors</span></code></dt><dd><p>Returns the topographic errors.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">topology</span></code></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">weights</span></code></dt><dd><p>Neural network weights with the shape <cite>[m * n, dim]</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code>(dataset[, ...])</p></td>
+<td><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code>([scaling])</p></td>
+<td><p>Returns a matrix of the distances between each weight.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code>(dataset[, enable_gpu, ...])</p></td>
+<td><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code>(other)</p></td>
+<td><p>Initializes the neural network from another one.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_rand</span></code>([seed])</p></td>
+<td><p>Initializes the neural network randomly.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>(filename)</p></td>
+<td><p>Loads the trained neural network from a HDF5 file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code>(filename)</p></td>
+<td><p>Saves the trained neural network to a HDF5 file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.som_online.SOM_Online.train" title="decontamination.algo.som_online.SOM_Online.train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></a>(dataset[, n_epochs, n_vectors, ...])</p></td>
+<td><p>Trains the neural network.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_online.SOM_Online.alpha">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">alpha</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online.alpha" title="Link to this definition">¶</a></dt>
+<dd><p>Starting value of the learning rate.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_online.SOM_Online.sigma">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sigma</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online.sigma" title="Link to this definition">¶</a></dt>
+<dd><p>Starting value of the neighborhood radius.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.som_online.SOM_Online.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_vectors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_error_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online.train" title="Link to this definition">¶</a></dt>
+<dd><p>Trains the neural network. Use either the “<em>number of epochs</em>” training method by specifying <cite>n_epochs</cite> (then <span class="math notranslate nohighlight">\(e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1\)</span>) or the “<em>number of vectors</em>” training method by specifying <cite>n_vectors</cite> (then <span class="math notranslate nohighlight">\(e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1\)</span>). An online formulation of updating weights is implemented:</p>
+<div class="math notranslate nohighlight">
+\[c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert\]</div>
+<div class="math notranslate nohighlight">
+\[\Theta_{ji}(w,e)\equiv\exp\left(-\frac{\lVert j-c_i(w,e)\rVert^2}{2\sigma^2(e)}\right)\]</div>
+<div class="math notranslate nohighlight">
+\[\boxed{\mathrm{iteratively\,for}\,i=0\dots N-1\,\mathrm{:}\,w_j(e+1)=w_j(e)+\alpha(e)\cdot\Theta_{ji}(w,e)[x_i-w_j(e)]}\]</div>
+<p>where <span class="math notranslate nohighlight">\(j=0\dots m\times n-1\)</span> and, at epoch <span class="math notranslate nohighlight">\(e\)</span>, <span class="math notranslate nohighlight">\(\alpha(e)\equiv\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}}\)</span> is the learning rate and <span class="math notranslate nohighlight">\(\sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}}\)</span> is the neighborhood radius.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Training dataset array or generator builder.</p>
+</dd>
+<dt><strong>n_epochs</strong><span class="classifier">Optional[int]</span></dt><dd><p>Number of epochs to train for (default: <strong>None</strong>).</p>
+</dd>
+<dt><strong>n_vectors</strong><span class="classifier">Optional[int]</span></dt><dd><p>Number of vectors to train for (default: <strong>None</strong>).</p>
+</dd>
+<dt><strong>n_error_bins</strong><span class="classifier">int</span></dt><dd><p>Number of quantization and topographic error bins (default: <strong>10</strong>).</p>
+</dd>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>False</strong>).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-decontamination.algo.som_batch"></span><dl class="py class">
+<dt class="sig sig-object py" id="decontamination.algo.som_batch.SOM_Batch">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_batch.</span></span><span class="sig-name descname"><span class="pre">SOM_Batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.som_batch.SOM_Batch" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract" title="decontamination.algo.som_abstract.SOM_Abstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">SOM_Abstract</span></code></a></p>
+<p>Self Organizing Maps (standard batch implementation). It runs with constant memory usage.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A rule of thumb to set the size of the grid for a dimensionality reduction task is that it should contain <span class="math notranslate nohighlight">\(5\sqrt{N}\)</span> neurons where N is the number of samples in the dataset to analyze.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>Number of neuron rows.</p>
+</dd>
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>Number of neuron columns.</p>
+</dd>
+<dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>Dimensionality of the input data.</p>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong> (default: <strong>np.float32</strong>).</p>
+</dd>
+<dt><strong>topology</strong><span class="classifier">Optional[str]</span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong> (default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong>).</p>
+</dd>
+<dt><strong>sigma</strong><span class="classifier">float</span></dt><dd><p>Starting value of the neighborhood radius (default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mathrm{max}(m,n)/2\)</span>).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">centroids</span></code></dt><dd><p>Neural network weights with the shape <cite>[m, n, dim]</cite>.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dim</span></code></dt><dd><p>Dimensionality of the input data.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></dt><dd><p>Neural network data type.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">m</span></code></dt><dd><p>Number of neuron rows.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">n</span></code></dt><dd><p>Number of neuron columns.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantization_errors</span></code></dt><dd><p>Returns the quantization error.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.algo.som_batch.SOM_Batch.sigma" title="decontamination.algo.som_batch.SOM_Batch.sigma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sigma</span></code></a></dt><dd><p>Starting value of the neighborhood radius.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">topographic_errors</span></code></dt><dd><p>Returns the topographic errors.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">topology</span></code></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">weights</span></code></dt><dd><p>Neural network weights with the shape <cite>[m * n, dim]</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code>(dataset[, ...])</p></td>
+<td><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code>([scaling])</p></td>
+<td><p>Returns a matrix of the distances between each weight.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code>(dataset[, enable_gpu, ...])</p></td>
+<td><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code>(other)</p></td>
+<td><p>Initializes the neural network from another one.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_rand</span></code>([seed])</p></td>
+<td><p>Initializes the neural network randomly.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>(filename)</p></td>
+<td><p>Loads the trained neural network from a HDF5 file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code>(filename)</p></td>
+<td><p>Saves the trained neural network to a HDF5 file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.som_batch.SOM_Batch.train" title="decontamination.algo.som_batch.SOM_Batch.train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></a>(dataset[, n_epochs, n_vectors, ...])</p></td>
+<td><p>Trains the neural network.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.algo.som_batch.SOM_Batch.sigma">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sigma</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#decontamination.algo.som_batch.SOM_Batch.sigma" title="Link to this definition">¶</a></dt>
+<dd><p>Starting value of the neighborhood radius.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.som_batch.SOM_Batch.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_vectors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_error_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.algo.som_batch.SOM_Batch.train" title="Link to this definition">¶</a></dt>
+<dd><p>Trains the neural network. Use either the “<em>number of epochs</em>” training method by specifying <cite>n_epochs</cite> (then <span class="math notranslate nohighlight">\(e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_epochs}\}-1\)</span>) or the “<em>number of vectors</em>” training method by specifying <cite>n_vectors</cite> (then <span class="math notranslate nohighlight">\(e\equiv 0\dots\{e_\mathrm{tot}\equiv\mathrm{n\_vectors}\}-1\)</span>). A batch formulation of updating weights is implemented:</p>
+<div class="math notranslate nohighlight">
+\[c_i(w,e)\equiv\mathrm{bmu}(x_i,w,e)\equiv\underset{j}{\mathrm{arg\,min}}\lVert x_i-w_j(e)\rVert\]</div>
+<p>if <span class="math notranslate nohighlight">\(\sigma&gt;0\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\Theta_{ji}(w,e)\equiv\exp\left(-\frac{\lVert j-c_i(w,e)\rVert^2}{2\sigma^2(e)}\right)\]</div>
+<p>if <span class="math notranslate nohighlight">\(\sigma=0\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\Theta_{ji}(w,e)\equiv\delta_{j,c_i(w,e)}\equiv\left\{\begin{array}{ll}1&amp;j=c_i(w,e)\\0&amp;\mathrm{otherwise}\end{array}\right.\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\boxed{w_j(e+1)=\frac{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)\cdot x_i}{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(j=0\dots m\times n-1\)</span>, at epoch <span class="math notranslate nohighlight">\(e\)</span>, <span class="math notranslate nohighlight">\(\sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}}\)</span> is the neighborhood radius.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Training dataset array or generator builder.</p>
+</dd>
+<dt><strong>n_epochs</strong><span class="classifier">Optional[int]</span></dt><dd><p>Number of epochs to train for (default: <strong>None</strong>).</p>
+</dd>
+<dt><strong>n_vectors</strong><span class="classifier">Optional[int]</span></dt><dd><p>Number of vectors to train for (default: <strong>None</strong>).</p>
+</dd>
+<dt><strong>n_error_bins</strong><span class="classifier">int</span></dt><dd><p>Number of quantization and topographic error bins (default: <strong>10</strong>).</p>
+</dd>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>False</strong>).</p>
+</dd>
+<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+</dd>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-decontamination.algo.clustering">
+<span id="clustering"></span><h2>Clustering<a class="headerlink" href="#module-decontamination.algo.clustering" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="decontamination.algo.clustering.Clustering">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.clustering.</span></span><span class="sig-name descname"><span class="pre">Clustering</span></span><a class="headerlink" href="#decontamination.algo.clustering.Clustering" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Hierarchical clustering.</p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.clustering.Clustering.average" title="decontamination.algo.clustering.Clustering.average"><code class="xref py py-obj docutils literal notranslate"><span class="pre">average</span></code></a>(vectors, cluster_ids)</p></td>
+<td><p>Performs averaging per cluster.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.clustering.Clustering.clusterize" title="decontamination.algo.clustering.Clustering.clusterize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clusterize</span></code></a>(vectors, n_clusters)</p></td>
+<td><p>Clusters the input array using the Lance-Williams hierarchical clustering with complete-linkage algorithm.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.clustering.Clustering.clusterize">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clusterize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_clusters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.clustering.Clustering.clusterize" title="Link to this definition">¶</a></dt>
+<dd><p>Clusters the input array using the Lance-Williams hierarchical clustering with complete-linkage algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>vectors</strong><span class="classifier">np.ndarray</span></dt><dd><p>Flat input array to be clustered.</p>
+</dd>
+<dt><strong>n_clusters</strong><span class="classifier">int</span></dt><dd><p>Desired number of clusters.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.clustering.Clustering.average">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.clustering.Clustering.average" title="Link to this definition">¶</a></dt>
+<dd><p>Performs averaging per cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>vectors</strong><span class="classifier">np.ndarray</span></dt><dd><p>Flat input array be averaged.</p>
+</dd>
+<dt><strong>cluster_ids</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of cluster identifiers.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div style="text-align: center; margin-right: 1.0rem; margin-bottom: 1.0rem;">
+    <a href="index.html">
+        <img src="_static/logo.png" alt="" width="66.6%" />
+    </a>
+</div><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Module decontamination.algo</a><ul>
+<li><a class="reference internal" href="#self-organizing-maps">Self-Organizing Maps</a><ul>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract</span></code></a><ul>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.init_rand"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.init_rand()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.init_from"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.init_from()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.save"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.save()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.load"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.load()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.m"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.m</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.n"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.n</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.dim"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.dim</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.dtype"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.dtype</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.topology"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.topology</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.weights"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.weights</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.centroids"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.centroids</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.quantization_errors"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.quantization_errors</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.topographic_errors"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.topographic_errors</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.get_distance_map"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.get_distance_map()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.get_activation_map"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.get_activation_map()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.get_winners"><code class="docutils literal notranslate"><span class="pre">SOM_Abstract.get_winners()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA"><code class="docutils literal notranslate"><span class="pre">SOM_PCA</span></code></a><ul>
+<li><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.cov_matrix"><code class="docutils literal notranslate"><span class="pre">SOM_PCA.cov_matrix</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.eigenvalues"><code class="docutils literal notranslate"><span class="pre">SOM_PCA.eigenvalues</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.eigenvectors"><code class="docutils literal notranslate"><span class="pre">SOM_PCA.eigenvectors</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.orders"><code class="docutils literal notranslate"><span class="pre">SOM_PCA.orders</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.train"><code class="docutils literal notranslate"><span class="pre">SOM_PCA.train()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#decontamination.algo.som_online.SOM_Online"><code class="docutils literal notranslate"><span class="pre">SOM_Online</span></code></a><ul>
+<li><a class="reference internal" href="#decontamination.algo.som_online.SOM_Online.alpha"><code class="docutils literal notranslate"><span class="pre">SOM_Online.alpha</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_online.SOM_Online.sigma"><code class="docutils literal notranslate"><span class="pre">SOM_Online.sigma</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_online.SOM_Online.train"><code class="docutils literal notranslate"><span class="pre">SOM_Online.train()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#decontamination.algo.som_batch.SOM_Batch"><code class="docutils literal notranslate"><span class="pre">SOM_Batch</span></code></a><ul>
+<li><a class="reference internal" href="#decontamination.algo.som_batch.SOM_Batch.sigma"><code class="docutils literal notranslate"><span class="pre">SOM_Batch.sigma</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.som_batch.SOM_Batch.train"><code class="docutils literal notranslate"><span class="pre">SOM_Batch.train()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-decontamination.algo.clustering">Clustering</a><ul>
+<li><a class="reference internal" href="#decontamination.algo.clustering.Clustering"><code class="docutils literal notranslate"><span class="pre">Clustering</span></code></a><ul>
+<li><a class="reference internal" href="#decontamination.algo.clustering.Clustering.clusterize"><code class="docutils literal notranslate"><span class="pre">Clustering.clusterize()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.clustering.Clustering.average"><code class="docutils literal notranslate"><span class="pre">Clustering.average()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+<div class="sphinx-toc sphinxglobaltoc">
+<h3><a href="index.html">Table of Contents</a></h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="module_jit.html">Module decontamination.jit</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Module decontamination.algo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_plotting.html">Module decontamination.plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_generator.html">Module decontamination.generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_correlation.html">Module decontamination.correlation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_decontamination.html">Module decontamination.decontamination</a></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script><div style="text-align: center; margin-right: 1.0rem; margin-top: 1rem;">
+    <a href="https://sonarqube.in2p3.fr/dashboard?id=decontamination-key" target="_blank">
+        <img src="https://sonarqube.in2p3.fr/api/project_badges/quality_gate?project=decontamination-key&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37" alt="Sonar" />
+    </a>
+</div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="module_plotting.html" title="Module decontamination.plotting"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="module_jit.html" title="Module decontamination.jit"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">decontamination 0.0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Module decontamination.algo</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2023, CNRS/LPSC, CNRS/IJCLab.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

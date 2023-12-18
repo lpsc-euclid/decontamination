@@ -1,0 +1,489 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Module decontamination.jit &#8212; decontamination 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css?v=8edef7da" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=abce926a" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/custom.js?v=81cfe101"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Module decontamination.algo" href="module_algo.html" />
+    <link rel="prev" title="Decontamination" href="index.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="module_algo.html" title="Module decontamination.algo"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Decontamination"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">decontamination 0.0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Module decontamination.jit</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-decontamination.jit">
+<span id="module-decontamination-jit"></span><h1>Module decontamination.jit<a class="headerlink" href="#module-decontamination.jit" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="decontamination.jit.device_array_from">
+<span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">device_array_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.device_array_from" title="Link to this definition">¶</a></dt>
+<dd><p>New device array (see <a class="reference internal" href="#decontamination.jit.DeviceArray" title="decontamination.jit.DeviceArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeviceArray</span></code></a>), initialized from a Numpy ndarray.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>array</strong><span class="classifier">np.ndarray</span></dt><dd><p>The initial Numpy ndarray.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="decontamination.jit.device_array_empty">
+<span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">device_array_empty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape:</span> <span class="pre">tuple</span> <span class="pre">|</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.device_array_empty" title="Link to this definition">¶</a></dt>
+<dd><p>New device array (see <a class="reference internal" href="#decontamination.jit.DeviceArray" title="decontamination.jit.DeviceArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeviceArray</span></code></a>), not initialized. Similar to <cite>np.empty()</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>shape</strong><span class="classifier">Union[tuple, int]</span></dt><dd><p>Desired shape for the new array.</p>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Desired data-type for the new array.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="decontamination.jit.device_array_zeros">
+<span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">device_array_zeros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape:</span> <span class="pre">tuple</span> <span class="pre">|</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.device_array_zeros" title="Link to this definition">¶</a></dt>
+<dd><p>New device array (see <a class="reference internal" href="#decontamination.jit.DeviceArray" title="decontamination.jit.DeviceArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeviceArray</span></code></a>), filled with <strong>0</strong>. Similar to <cite>np.zeros()</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>shape</strong><span class="classifier">Union[tuple, int]</span></dt><dd><p>Desired shape for the new array.</p>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Desired data-type for the new array.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="decontamination.jit.device_array_full">
+<span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">device_array_full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape:</span> <span class="pre">tuple</span> <span class="pre">|</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.device_array_full" title="Link to this definition">¶</a></dt>
+<dd><p>New device array (see <a class="reference internal" href="#decontamination.jit.DeviceArray" title="decontamination.jit.DeviceArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeviceArray</span></code></a>), filled with <strong>value</strong>. Similar to <cite>np.full()</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>shape</strong><span class="classifier">Union[tuple, int]</span></dt><dd><p>Desired shape for the new array.</p>
+</dd>
+<dt><strong>value</strong><span class="classifier">Union[int, float]</span></dt><dd><p>Desired value for the new array.</p>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Desired data-type for the new array.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="decontamination.jit.DeviceArray">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">DeviceArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape:</span> <span class="pre">tuple</span> <span class="pre">|</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">~np.ndarray</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.DeviceArray" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Device array to be used when calling a CPU/GPU kernel.</p>
+<p>Prefer using primitives <a class="reference internal" href="#decontamination.jit.device_array_from" title="decontamination.jit.device_array_from"><code class="xref py py-class docutils literal notranslate"><span class="pre">device_array_from</span></code></a>, <a class="reference internal" href="#decontamination.jit.device_array_empty" title="decontamination.jit.device_array_empty"><code class="xref py py-class docutils literal notranslate"><span class="pre">device_array_empty</span></code></a>, <a class="reference internal" href="#decontamination.jit.device_array_zeros" title="decontamination.jit.device_array_zeros"><code class="xref py py-class docutils literal notranslate"><span class="pre">device_array_zeros</span></code></a>, <a class="reference internal" href="#decontamination.jit.device_array_full" title="decontamination.jit.device_array_full"><code class="xref py py-class docutils literal notranslate"><span class="pre">device_array_full</span></code></a> to instantiate a device array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>shape</strong><span class="classifier">Union[tuple, int]</span></dt><dd><p>Desired shape for the new array.</p>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Desired data-type for the new array.</p>
+</dd>
+<dt><strong>content</strong><span class="classifier">Optional[Union[int, float, np.ndarray]]</span></dt><dd><p>Optional content, integer, floating ot Numpy ndarray.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference internal" href="#decontamination.jit.DeviceArray.dtype" title="decontamination.jit.DeviceArray.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></dt><dd><p>Data-type of the array.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.jit.DeviceArray.shape" title="decontamination.jit.DeviceArray.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></dt><dd><p>Shape of the array.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.jit.DeviceArray.copy_to_host" title="decontamination.jit.DeviceArray.copy_to_host"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_to_host</span></code></a>()</p></td>
+<td><p>Create a new Numpy ndarray from the underlying device ndarray.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.jit.DeviceArray.shape">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#decontamination.jit.DeviceArray.shape" title="Link to this definition">¶</a></dt>
+<dd><p>Shape of the array.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.jit.DeviceArray.dtype">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dtype</span></span><a class="headerlink" href="#decontamination.jit.DeviceArray.dtype" title="Link to this definition">¶</a></dt>
+<dd><p>Data-type of the array.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.jit.DeviceArray.copy_to_host">
+<span class="sig-name descname"><span class="pre">copy_to_host</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.jit.DeviceArray.copy_to_host" title="Link to this definition">¶</a></dt>
+<dd><p>Create a new Numpy ndarray from the underlying device ndarray.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="decontamination.jit.jit">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">jit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inline</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fastmath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.jit" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Decorator to recompile Python functions into native CPU/GPU ones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>kernel</strong><span class="classifier">bool</span></dt><dd><p>Indicates whether this function is a CPU/GPU kernel (default: <strong>False</strong>).</p>
+</dd>
+<dt><strong>inline</strong><span class="classifier">bool</span></dt><dd><p>Indicates whether this function must be inlined  (default: <strong>False</strong>).</p>
+</dd>
+<dt><strong>fastmath</strong><span class="classifier">bool</span></dt><dd><p>Enables <em>fast math</em> optimizations when running on CPU (default: <strong>False</strong>).</p>
+</dd>
+<dt><strong>parallel</strong><span class="classifier">bool</span></dt><dd><p>Enables parallelization when running on CPU (default: <strong>False</strong>).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(funct)</p></td>
+<td><p>Call self as a function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.jit.jit.atomic_add" title="decontamination.jit.jit.atomic_add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atomic_add</span></code></a>(array, idx, val)</p></td>
+<td><p>Performs atomic <cite>array[idx] += val</cite> and returns the old value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.jit.jit.atomic_sub" title="decontamination.jit.jit.atomic_sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atomic_sub</span></code></a>(array, idx, val)</p></td>
+<td><p>Performs atomic <cite>array[idx] -= val</cite> and returns the old value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.jit.jit.grid" title="decontamination.jit.jit.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code></a>(ndim)</p></td>
+<td><p>Return the absolute position of the current thread in the entire grid of blocks.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.jit.jit.local_empty" title="decontamination.jit.jit.local_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_empty</span></code></a>(shape[, dtype])</p></td>
+<td><p>Allocate an empty device ndarray in the local memory.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.jit.jit.shared_empty" title="decontamination.jit.jit.shared_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shared_empty</span></code></a>(shape[, dtype])</p></td>
+<td><p>Allocate an empty device ndarray in the shared memory.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.jit.jit.syncthreads" title="decontamination.jit.jit.syncthreads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">syncthreads</span></code></a>()</p></td>
+<td><p>Synchronize all threads in the same thread block.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.jit.jit.grid">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ndim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span></span><a class="headerlink" href="#decontamination.jit.jit.grid" title="Link to this definition">¶</a></dt>
+<dd><p>Return the absolute position of the current thread in the entire grid of blocks. Use on GPU only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ndim</strong><span class="classifier">int</span></dt><dd><p>Number of dimensions.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.jit.jit.local_empty">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_empty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape:</span> <span class="pre">tuple</span> <span class="pre">|</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.jit.jit.local_empty" title="Link to this definition">¶</a></dt>
+<dd><p>Allocate an empty device ndarray in the local memory. Similar to <cite>np.empty()</cite> on CPU.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>shape</strong><span class="classifier">Union[tuple, int]</span></dt><dd><p>Desired shape for the new array.</p>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Desired data-type for the new array.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.jit.jit.shared_empty">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shared_empty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape:</span> <span class="pre">tuple</span> <span class="pre">|</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.jit.jit.shared_empty" title="Link to this definition">¶</a></dt>
+<dd><p>Allocate an empty device ndarray in the shared memory. Similar to <cite>np.empty()</cite> on CPU.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>shape</strong><span class="classifier">Union[tuple, int]</span></dt><dd><p>Desired shape for the new array.</p>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Desired data-type for the new array.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.jit.jit.syncthreads">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">syncthreads</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.jit.jit.syncthreads" title="Link to this definition">¶</a></dt>
+<dd><p>Synchronize all threads in the same thread block. Ignored on CPU.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.jit.jit.atomic_add">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">atomic_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array:</span> <span class="pre">~np.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val:</span> <span class="pre">&lt;numeric</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">&lt;numeric</span> <span class="pre">value&gt;</span></span></span><a class="headerlink" href="#decontamination.jit.jit.atomic_add" title="Link to this definition">¶</a></dt>
+<dd><p>Performs atomic <cite>array[idx] += val</cite> and returns the old value. Supported on int32/64 and float32/64 operands only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>array</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array to be modified.</p>
+</dd>
+<dt><strong>idx</strong><span class="classifier">int</span></dt><dd><p>Index in the array.</p>
+</dd>
+<dt><strong>val</strong><span class="classifier">&lt;numeric value&gt;</span></dt><dd><p>New value.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.jit.jit.atomic_sub">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">atomic_sub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array:</span> <span class="pre">~np.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val:</span> <span class="pre">&lt;numeric</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">&lt;numeric</span> <span class="pre">value&gt;</span></span></span><a class="headerlink" href="#decontamination.jit.jit.atomic_sub" title="Link to this definition">¶</a></dt>
+<dd><p>Performs atomic <cite>array[idx] -= val</cite> and returns the old value. Supported on int32/64 and float32/64 operands only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>array</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array to be modified.</p>
+</dd>
+<dt><strong>idx</strong><span class="classifier">int</span></dt><dd><p>Index in the array.</p>
+</dd>
+<dt><strong>val</strong><span class="classifier">&lt;numeric value&gt;</span></dt><dd><p>New value.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">foo_xpu</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">kernel</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">foo_kernel</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+
+    <span class="c1">########################################################################</span>
+    <span class="c1"># !--BEGIN-CPU--</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nb</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+
+        <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">foo_xpu</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="c1"># !--END-CPU--</span>
+    <span class="c1">########################################################################</span>
+    <span class="c1"># !--BEGIN-GPU--</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="n">jit</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">result</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+
+        <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">foo_xpu</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="c1"># !--END-GPU--</span>
+    <span class="c1">########################################################################</span>
+
+<span class="n">use_gpu</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">threads_per_block</span> <span class="o">=</span> <span class="mi">32</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100_000</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100_000</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">device_array_empty</span><span class="p">(</span><span class="mi">100_000</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">foo_kernel</span><span class="p">[</span><span class="n">use_gpu</span><span class="p">,</span> <span class="n">threads_per_block</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]](</span><span class="n">result</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">copy_to_host</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div style="text-align: center; margin-right: 1.0rem; margin-bottom: 1.0rem;">
+    <a href="index.html">
+        <img src="_static/logo.png" alt="" width="66.6%" />
+    </a>
+</div><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Module decontamination.jit</a><ul>
+<li><a class="reference internal" href="#decontamination.jit.device_array_from"><code class="docutils literal notranslate"><span class="pre">device_array_from()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.device_array_empty"><code class="docutils literal notranslate"><span class="pre">device_array_empty()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.device_array_zeros"><code class="docutils literal notranslate"><span class="pre">device_array_zeros()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.device_array_full"><code class="docutils literal notranslate"><span class="pre">device_array_full()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.DeviceArray"><code class="docutils literal notranslate"><span class="pre">DeviceArray</span></code></a><ul>
+<li><a class="reference internal" href="#decontamination.jit.DeviceArray.shape"><code class="docutils literal notranslate"><span class="pre">DeviceArray.shape</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.DeviceArray.dtype"><code class="docutils literal notranslate"><span class="pre">DeviceArray.dtype</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.DeviceArray.copy_to_host"><code class="docutils literal notranslate"><span class="pre">DeviceArray.copy_to_host()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#decontamination.jit.jit"><code class="docutils literal notranslate"><span class="pre">jit</span></code></a><ul>
+<li><a class="reference internal" href="#decontamination.jit.jit.grid"><code class="docutils literal notranslate"><span class="pre">jit.grid()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.jit.local_empty"><code class="docutils literal notranslate"><span class="pre">jit.local_empty()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.jit.shared_empty"><code class="docutils literal notranslate"><span class="pre">jit.shared_empty()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.jit.syncthreads"><code class="docutils literal notranslate"><span class="pre">jit.syncthreads()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.jit.atomic_add"><code class="docutils literal notranslate"><span class="pre">jit.atomic_add()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.jit.atomic_sub"><code class="docutils literal notranslate"><span class="pre">jit.atomic_sub()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+<div class="sphinx-toc sphinxglobaltoc">
+<h3><a href="index.html">Table of Contents</a></h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Module decontamination.jit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_algo.html">Module decontamination.algo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_plotting.html">Module decontamination.plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_generator.html">Module decontamination.generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_correlation.html">Module decontamination.correlation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_decontamination.html">Module decontamination.decontamination</a></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script><div style="text-align: center; margin-right: 1.0rem; margin-top: 1rem;">
+    <a href="https://sonarqube.in2p3.fr/dashboard?id=decontamination-key" target="_blank">
+        <img src="https://sonarqube.in2p3.fr/api/project_badges/quality_gate?project=decontamination-key&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37" alt="Sonar" />
+    </a>
+</div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="module_algo.html" title="Module decontamination.algo"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Decontamination"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">decontamination 0.0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Module decontamination.jit</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2023, CNRS/LPSC, CNRS/IJCLab.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

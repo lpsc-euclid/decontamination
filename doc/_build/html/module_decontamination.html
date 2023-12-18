@@ -1,0 +1,588 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Module decontamination.decontamination &#8212; decontamination 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css?v=8edef7da" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=abce926a" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.min.js"></script>
+    <script src="_static/custom.js?v=81cfe101"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Module decontamination.correlation" href="module_correlation.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="module_correlation.html" title="Module decontamination.correlation"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">decontamination 0.0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Module decontamination.decontamination</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-decontamination-decontamination">
+<h1>Module decontamination.decontamination<a class="headerlink" href="#module-decontamination-decontamination" title="Link to this heading">¶</a></h1>
+<section id="module-decontamination.decontamination.decontamination_som">
+<span id="self-organizing-map-method"></span><h2><em>Self-Organizing Map</em> method<a class="headerlink" href="#module-decontamination.decontamination.decontamination_som" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.decontamination.decontamination_som.</span></span><span class="sig-name descname"><span class="pre">Decontamination_SOM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch:</span> <span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">'hexagonal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Systematics decontamination using the <em>Self Organizing Map</em> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>Number of neuron rows.</p>
+</dd>
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>Number of neuron columns.</p>
+</dd>
+<dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>Dimensionality of the input data.</p>
+</dd>
+<dt><strong>batch</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to train parallel (<strong>True</strong>) or iterative (<strong>False</strong>).</p>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong> (default: <strong>np.float32</strong>).</p>
+</dd>
+<dt><strong>topology</strong><span class="classifier">Optional[str]</span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong> (default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong>).</p>
+</dd>
+<dt><strong>alpha</strong><span class="classifier">float</span></dt><dd><p>Starting value of the learning rate (default: <strong>None</strong> ≡ <strong>0.3</strong>, iterative training only).</p>
+</dd>
+<dt><strong>sigma</strong><span class="classifier">float</span></dt><dd><p>Starting value of the neighborhood radius (default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mathrm{max}(m,n)/2\)</span>).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.alpha" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.alpha"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alpha</span></code></a></dt><dd><p>Starting value of the learning rate for the underlying Self Organizing Map.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.batch" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.batch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch</span></code></a></dt><dd><p>Parallel or iterative training.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.catalog_activation_map" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.catalog_activation_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">catalog_activation_map</span></code></a></dt><dd><p>Activation map for catalog.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.centroids" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.centroids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">centroids</span></code></a></dt><dd><p>Weights in the latent space with the shape <cite>[m, n, dim]</cite>.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.cluster_ids" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.cluster_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cluster_ids</span></code></a></dt><dd><p>Cluster identifiers for neurons.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_catalog_activation_map" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_catalog_activation_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clustered_catalog_activation_map</span></code></a></dt><dd><p>Clustered activation map for catalog.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_footprint_activation_map" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_footprint_activation_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clustered_footprint_activation_map</span></code></a></dt><dd><p>Clustered activation map for footprint.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gnd" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gnd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clustered_gnd</span></code></a></dt><dd><p>Clustered Galaxy Number Density (GND) in the latent space.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndc" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clustered_gndc</span></code></a></dt><dd><p>Clustered Galaxy Number Density Contrast (GNDC) in the latent space.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndcm" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndcm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clustered_gndcm</span></code></a></dt><dd><p>Clustered Galaxy Number Density Contrast Map (GNDCM) in the physical space.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndm" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clustered_gndm</span></code></a></dt><dd><p>Clustered Galaxy Number Density Map (GNDM) in the physical space.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.dim" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dim</span></code></a></dt><dd><p>Dimensionality of the input data.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.dtype" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></dt><dd><p>Neural network data type.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.footprint_activation_map" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.footprint_activation_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">footprint_activation_map</span></code></a></dt><dd><p>Activation map for footprint.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.gnd" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.gnd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gnd</span></code></a></dt><dd><p>Galaxy Number Density (GND) in the latent space.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.gndc" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.gndc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gndc</span></code></a></dt><dd><p>Galaxy Number Density Contrast (GNDC) in the latent space.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.gndcm" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.gndcm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gndcm</span></code></a></dt><dd><p>Galaxy Number Density Contrast Map (GNDCM) in the physical space.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.gndm" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.gndm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gndm</span></code></a></dt><dd><p>Galaxy Number Density Map (GNDM) in the physical space.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.m" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.m"><code class="xref py py-obj docutils literal notranslate"><span class="pre">m</span></code></a></dt><dd><p>Number of neuron rows.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.n" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.n"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n</span></code></a></dt><dd><p>Number of neuron columns.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.n_gal" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.n_gal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_gal</span></code></a></dt><dd><p>Number of galaxies.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.n_pix" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.n_pix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_pix</span></code></a></dt><dd><p>Number of pixels.</p>
+</dd>
+<dt><strong>pca</strong></dt><dd></dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.quantization_errors" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.quantization_errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantization_errors</span></code></a></dt><dd><p>Quantization errors for the underlying Self Organizing Map.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.sigma" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.sigma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sigma</span></code></a></dt><dd><p>Starting value of the neighborhood radius for the underlying Self Organizing Map.</p>
+</dd>
+<dt><strong>som</strong></dt><dd></dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.topographic_errors" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.topographic_errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">topographic_errors</span></code></a></dt><dd><p>Topographic errors for the underlying Self Organizing Map.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.topology" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.topology"><code class="xref py py-obj docutils literal notranslate"><span class="pre">topology</span></code></a></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.weights" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.weights"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weights</span></code></a></dt><dd><p>Weights in the latent space with the shape <cite>[m * n, dim]</cite>.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.winners" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.winners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">winners</span></code></a></dt><dd><p>Winners (a.k.a.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_clustered_gndm" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_clustered_gndm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_clustered_gndm</span></code></a>(n_clusters[, ...])</p></td>
+<td><p>Compute the clustered Galaxy Number Density Map from the SOM.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_gndm" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_gndm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_gndm</span></code></a>([show_progress_bar, ...])</p></td>
+<td><p>Compute the Galaxy Number Density Map from the SOM.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_histograms" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_histograms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_histograms</span></code></a>()</p></td>
+<td><p>TODO</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.train" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></a>(catalog_systematics, footprint_systematics)</p></td>
+<td><p><p>???</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.m">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">m</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.m" title="Link to this definition">¶</a></dt>
+<dd><p>Number of neuron rows.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.n">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.n" title="Link to this definition">¶</a></dt>
+<dd><p>Number of neuron columns.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.dim">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.dim" title="Link to this definition">¶</a></dt>
+<dd><p>Dimensionality of the input data.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.batch">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">batch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.batch" title="Link to this definition">¶</a></dt>
+<dd><p>Parallel or iterative training.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.dtype">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dtype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.dtype" title="Link to this definition">¶</a></dt>
+<dd><p>Neural network data type.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.topology">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">topology</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.topology" title="Link to this definition">¶</a></dt>
+<dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.alpha">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">alpha</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.alpha" title="Link to this definition">¶</a></dt>
+<dd><p>Starting value of the learning rate for the underlying Self Organizing Map.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.sigma">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sigma</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.sigma" title="Link to this definition">¶</a></dt>
+<dd><p>Starting value of the neighborhood radius for the underlying Self Organizing Map.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.quantization_errors">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">quantization_errors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.quantization_errors" title="Link to this definition">¶</a></dt>
+<dd><p>Quantization errors for the underlying Self Organizing Map.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.topographic_errors">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">topographic_errors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.topographic_errors" title="Link to this definition">¶</a></dt>
+<dd><p>Topographic errors for the underlying Self Organizing Map.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.weights">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weights</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.weights" title="Link to this definition">¶</a></dt>
+<dd><p>Weights in the latent space with the shape <cite>[m * n, dim]</cite>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.centroids">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">centroids</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.centroids" title="Link to this definition">¶</a></dt>
+<dd><p>Weights in the latent space with the shape <cite>[m, n, dim]</cite>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.winners">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">winners</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.winners" title="Link to this definition">¶</a></dt>
+<dd><p>Winners (a.k.a. Best Matching Units) for footprint.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.cluster_ids">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cluster_ids</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.cluster_ids" title="Link to this definition">¶</a></dt>
+<dd><p>Cluster identifiers for neurons.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.catalog_activation_map">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">catalog_activation_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.catalog_activation_map" title="Link to this definition">¶</a></dt>
+<dd><p>Activation map for catalog.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_catalog_activation_map">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clustered_catalog_activation_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_catalog_activation_map" title="Link to this definition">¶</a></dt>
+<dd><p>Clustered activation map for catalog.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.footprint_activation_map">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">footprint_activation_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.footprint_activation_map" title="Link to this definition">¶</a></dt>
+<dd><p>Activation map for footprint.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_footprint_activation_map">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clustered_footprint_activation_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_footprint_activation_map" title="Link to this definition">¶</a></dt>
+<dd><p>Clustered activation map for footprint.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.n_gal">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_gal</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.n_gal" title="Link to this definition">¶</a></dt>
+<dd><p>Number of galaxies.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.n_pix">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_pix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.n_pix" title="Link to this definition">¶</a></dt>
+<dd><p>Number of pixels.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.gnd">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gnd</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.gnd" title="Link to this definition">¶</a></dt>
+<dd><p>Galaxy Number Density (GND) in the latent space.</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{gnd}\equiv\frac{\mathrm{catalog\ activation\ map}}{\mathrm{footprint\ activation\ map}}\]</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gnd">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clustered_gnd</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gnd" title="Link to this definition">¶</a></dt>
+<dd><p>Clustered Galaxy Number Density (GND) in the latent space.</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{clustered\ gnd}\equiv\frac{\mathrm{clustered\ catalog\ activation\ map}}{\mathrm{clustered\ footprint\ activation\ map}}\]</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.gndc">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gndc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.gndc" title="Link to this definition">¶</a></dt>
+<dd><p>Galaxy Number Density Contrast (GNDC) in the latent space.</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{gndc}\equiv\frac{\mathrm{gnd}-\frac{n_\mathrm{gal}}{n_\mathrm{pix}}}{\frac{n_\mathrm{gal}}{n_\mathrm{pix}}}\]</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndc">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clustered_gndc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndc" title="Link to this definition">¶</a></dt>
+<dd><p>Clustered Galaxy Number Density Contrast (GNDC) in the latent space.</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{clustered\ gndc}\equiv\frac{\mathrm{clustered\ gnd}-\frac{n_\mathrm{gal}}{n_\mathrm{pix}}}{\frac{n_\mathrm{gal}}{n_\mathrm{pix}}}\]</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.gndm">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gndm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.gndm" title="Link to this definition">¶</a></dt>
+<dd><p>Galaxy Number Density Map (GNDM) in the physical space.</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{gndcm}\equiv\mathrm{gnd}[\mathrm{winners}]\]</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndm">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clustered_gndm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndm" title="Link to this definition">¶</a></dt>
+<dd><p>Clustered Galaxy Number Density Map (GNDM) in the physical space.</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{clustered\ gndm}\equiv\mathrm{clustered\ gnd}[\mathrm{winners}]\]</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.gndcm">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gndcm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.gndcm" title="Link to this definition">¶</a></dt>
+<dd><p>Galaxy Number Density Contrast Map (GNDCM) in the physical space.</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{gndcm}\equiv\frac{\mathrm{gndm}-\frac{n_\mathrm{gal}}{n_\mathrm{pix}}}{\frac{n_\mathrm{gal}}{n_\mathrm{pix}}}\]</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndcm">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clustered_gndcm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndcm" title="Link to this definition">¶</a></dt>
+<dd><p>Clustered Galaxy Number Density Contrast Map (GNDCM) in the physical space.</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{clustered\ gndcm}\equiv\frac{\mathrm{clustered\ gndm}-\frac{n_\mathrm{gal}}{n_\mathrm{pix}}}{\frac{n_\mathrm{gal}}{n_\mathrm{pix}}}\]</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catalog_systematics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint_systematics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_vectors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_error_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.train" title="Link to this definition">¶</a></dt>
+<dd><p>???</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>catalog_systematics</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Dataset array or generator builder of systematics for the catalog.</p>
+</dd>
+<dt><strong>footprint_systematics</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Dataset array or generator builder of systematics for the footprint.</p>
+</dd>
+<dt><strong>n_epochs</strong><span class="classifier">Optional[int]</span></dt><dd><p>Number of epochs to train for (default: <strong>None</strong>).</p>
+</dd>
+<dt><strong>n_vectors</strong><span class="classifier">Optional[int]</span></dt><dd><p>Number of vectors to train for (default: <strong>None</strong>).</p>
+</dd>
+<dt><strong>n_error_bins</strong><span class="classifier">int</span></dt><dd><p>Number of quantization and topographic error bins (default: <strong>10</strong>).</p>
+</dd>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>True</strong>).</p>
+</dd>
+<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+</dd>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_gndm">
+<span class="sig-name descname"><span class="pre">compute_gndm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_gndm" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the Galaxy Number Density Map from the SOM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>True</strong>).</p>
+</dd>
+<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+</dd>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_clustered_gndm">
+<span class="sig-name descname"><span class="pre">compute_clustered_gndm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_clusters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_clustered_gndm" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the clustered Galaxy Number Density Map from the SOM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n_clusters</strong><span class="classifier">int</span></dt><dd><p>Desired number latent space clusters.</p>
+</dd>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>True</strong>).</p>
+</dd>
+<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+</dd>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_histograms">
+<span class="sig-name descname"><span class="pre">compute_histograms</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_histograms" title="Link to this definition">¶</a></dt>
+<dd><p>TODO</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-decontamination.decontamination.decontamination_isd">
+<span id="iterative-systematics-decontamination-method"></span><h2><em>Iterative Systematics Decontamination</em> method<a class="headerlink" href="#module-decontamination.decontamination.decontamination_isd" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_isd.Decontamination_ISD">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.decontamination.decontamination_isd.</span></span><span class="sig-name descname"><span class="pre">Decontamination_ISD</span></span><a class="headerlink" href="#decontamination.decontamination.decontamination_isd.Decontamination_ISD" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Systematics decontamination using the <em>Iterative Systematics Decontamination</em> method.</p>
+<p>TODO</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div style="text-align: center; margin-right: 1.0rem; margin-bottom: 1.0rem;">
+    <a href="index.html">
+        <img src="_static/logo.png" alt="" width="66.6%" />
+    </a>
+</div><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Module decontamination.decontamination</a><ul>
+<li><a class="reference internal" href="#module-decontamination.decontamination.decontamination_som"><em>Self-Organizing Map</em> method</a><ul>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM</span></code></a><ul>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.m"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.m</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.n"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.n</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.dim"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.dim</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.batch"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.batch</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.dtype"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.dtype</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.topology"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.topology</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.alpha"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.alpha</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.sigma"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.sigma</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.quantization_errors"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.quantization_errors</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.topographic_errors"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.topographic_errors</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.weights"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.weights</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.centroids"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.centroids</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.winners"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.winners</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.cluster_ids"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.cluster_ids</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.catalog_activation_map"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.catalog_activation_map</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_catalog_activation_map"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.clustered_catalog_activation_map</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.footprint_activation_map"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.footprint_activation_map</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_footprint_activation_map"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.clustered_footprint_activation_map</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.n_gal"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.n_gal</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.n_pix"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.n_pix</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.gnd"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.gnd</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gnd"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.clustered_gnd</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.gndc"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.gndc</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndc"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.clustered_gndc</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.gndm"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.gndm</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndm"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.clustered_gndm</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.gndcm"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.gndcm</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndcm"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.clustered_gndcm</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.train"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.train()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_gndm"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.compute_gndm()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_clustered_gndm"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.compute_clustered_gndm()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_histograms"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.compute_histograms()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-decontamination.decontamination.decontamination_isd"><em>Iterative Systematics Decontamination</em> method</a><ul>
+<li><a class="reference internal" href="#decontamination.decontamination.decontamination_isd.Decontamination_ISD"><code class="docutils literal notranslate"><span class="pre">Decontamination_ISD</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+<div class="sphinx-toc sphinxglobaltoc">
+<h3><a href="index.html">Table of Contents</a></h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="module_jit.html">Module decontamination.jit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_algo.html">Module decontamination.algo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_plotting.html">Module decontamination.plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_generator.html">Module decontamination.generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_correlation.html">Module decontamination.correlation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Module decontamination.decontamination</a></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script><div style="text-align: center; margin-right: 1.0rem; margin-top: 1rem;">
+    <a href="https://sonarqube.in2p3.fr/dashboard?id=decontamination-key" target="_blank">
+        <img src="https://sonarqube.in2p3.fr/api/project_badges/quality_gate?project=decontamination-key&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37" alt="Sonar" />
+    </a>
+</div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="module_correlation.html" title="Module decontamination.correlation"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">decontamination 0.0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Module decontamination.decontamination</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2023, CNRS/LPSC, CNRS/IJCLab.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

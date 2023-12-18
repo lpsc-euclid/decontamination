@@ -36,6 +36,12 @@ Installing the last development version from git:
 pip install git+https://gitlab.in2p3.fr/lpsc-euclid/decontamination.git
 ```
 
+or alternatively:
+
+```bash
+pip install git+https://github.com/lpsc-euclid/decontamination.git
+```
+
 Dependencies
 ------------
 

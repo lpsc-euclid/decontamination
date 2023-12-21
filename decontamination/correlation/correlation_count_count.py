@@ -12,7 +12,7 @@ import numpy as np
 class Correlation_CountCount(object):
 
     """
-    ???
+    Count-count two-point correlation function.
 
     Parameters
     ----------
@@ -118,15 +118,15 @@ class Correlation_CountCount(object):
 
         ################################################################################################################
 
-        wtheta, wtheta_variance = self._dd.calculateXi(rr = rr, dr = None, rd = None)
+        w_theta, w_theta_variance = self._dd.calculateXi(rr = rr, dr = None, rd = None)
 
-        wtheta_error = np.sqrt(wtheta_variance)
+        w_theta_error = np.sqrt(w_theta_variance)
 
         theta = np.exp(self._dd.meanlogr)
 
         ################################################################################################################
 
-        return theta, wtheta, wtheta_error
+        return theta, w_theta, w_theta_error
 
     ####################################################################################################################
 
@@ -142,14 +142,14 @@ class Correlation_CountCount(object):
 
         ################################################################################################################
 
-        wtheta, wtheta_variance = self._dd.calculateXi(rr = rr, dr = dr, rd = None)
+        w_theta, w_theta_variance = self._dd.calculateXi(rr = rr, dr = dr, rd = None)
 
-        wtheta_error = np.sqrt(wtheta_variance)
+        w_theta_error = np.sqrt(w_theta_variance)
 
         theta = np.exp(self._dd.meanlogr)
 
         ################################################################################################################
 
-        return theta, wtheta, wtheta_error
+        return theta, w_theta, w_theta_error
 
 ########################################################################################################################

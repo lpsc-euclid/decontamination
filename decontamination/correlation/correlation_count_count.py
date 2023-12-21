@@ -25,7 +25,7 @@ class Correlation_CountCount(object):
     max_sep : float
         The maximum separation being considered (in degrees).
     n_bins : int
-        The number of bins in logr.
+        The number of bins.
     """
 
     ####################################################################################################################
@@ -136,6 +136,8 @@ class Correlation_CountCount(object):
 
         dr = treecorr.NNCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, sep_units = 'arcmin')
         dr.process(self._tc_galaxy_catalog, tc_random_catalog)
+
+        ################################################################################################################
 
         rr = treecorr.NNCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, sep_units = 'arcmin')
         rr.process(tc_random_catalog)

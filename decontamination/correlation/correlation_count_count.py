@@ -17,13 +17,13 @@ class Correlation_CountCount(object):
     Parameters
     ----------
     catalog_ra : np.ndarray
-        Galaxy catalog longitudes.
+        Galaxy catalog longitudes (in degrees).
     catalog_dec : np.ndarray
-        Galaxy catalog latitudes.
+        Galaxy catalog latitudes (in degrees).
     min_sep : float
-        The minimum separation being considered in degrees.
+        The minimum separation being considered (in degrees).
     max_sep : float
-        The maximum separation being considered in degrees.
+        The maximum separation being considered (in degrees).
     n_bins : int
         The number of bins in logr.
     """
@@ -72,9 +72,9 @@ class Correlation_CountCount(object):
         Parameters
         ----------
         random_ra : np.ndarray
-            Random catalog longitudes.
+            Random catalog longitudes (in degrees).
         random_dec : np.ndarray
-            Random catalog latitudes.
+            Random catalog latitudes (in degrees).
         estimator : str
             Estimator to use for calculating the correlation ("peebles_hauser", "landy_szalay").
 

@@ -128,7 +128,7 @@ class Correlation_PairCount(object):
         Returns
         -------
         typing.Tuple[np.ndarray, np.ndarray, np.ndarray]
-            The bin of angles, the angular correlations and the correlation errors.
+            The bin of angles, the angular correlations and the correlation errors: :math:`(\\theta,w(\\theta),w_\\text{err}(\\theta))`.
         """
 
         ################################################################################################################

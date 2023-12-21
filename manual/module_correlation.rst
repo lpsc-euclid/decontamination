@@ -1,8 +1,8 @@
 Module decontamination.correlation
 ==================================
 
-Count-Count two-point angular correlation
------------------------------------------
+Pair count two-point angular correlation function
+-------------------------------------------------
 
-.. automodule:: decontamination.correlation.correlation_count_count
+.. automodule:: decontamination.correlation.correlation_pair_count
    :members:

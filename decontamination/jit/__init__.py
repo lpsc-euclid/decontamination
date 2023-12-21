@@ -340,7 +340,7 @@ class Kernel:
 
 ########################################################################################################################
 
-# noinspection PyPep8Naming,PyUnresolvedReferences
+# noinspection PyPep8Naming, PyUnresolvedReferences
 class jit(object):
 
     """

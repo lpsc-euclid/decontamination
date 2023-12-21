@@ -73,25 +73,35 @@
             
   <section id="module-decontamination-correlation">
 <h1>Module decontamination.correlation<a class="headerlink" href="#module-decontamination-correlation" title="Link to this heading">¶</a></h1>
-<section id="module-decontamination.correlation.correlation_count_count">
-<span id="count-count-two-point-angular-correlation"></span><h2>Count-Count two-point angular correlation<a class="headerlink" href="#module-decontamination.correlation.correlation_count_count" title="Link to this heading">¶</a></h2>
+<section id="module-decontamination.correlation.correlation_pair_count">
+<span id="pair-count-two-point-angular-correlation-function"></span><h2>Pair count two-point angular correlation function<a class="headerlink" href="#module-decontamination.correlation.correlation_pair_count" title="Link to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="decontamination.correlation.correlation_count_count.Correlation_CountCount">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.correlation.correlation_count_count.</span></span><span class="sig-name descname"><span class="pre">Correlation_CountCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catalog_ra</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog_dec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.correlation.correlation_count_count.Correlation_CountCount" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.correlation.correlation_pair_count.</span></span><span class="sig-name descname"><span class="pre">Correlation_PairCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catalog_lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog_lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Count-count two-point correlation function.</p>
+<p>Pair count two-point angular correlation function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>catalog_ra</strong><span class="classifier">np.ndarray</span></dt><dd><p>Galaxy catalog longitudes (in degrees).</p>
+<dt><strong>catalog_lon</strong><span class="classifier">np.ndarray</span></dt><dd><p>Galaxy catalog longitudes (in degrees).</p>
 </dd>
-<dt><strong>catalog_dec</strong><span class="classifier">np.ndarray</span></dt><dd><p>Galaxy catalog latitudes (in degrees).</p>
+<dt><strong>catalog_lat</strong><span class="classifier">np.ndarray</span></dt><dd><p>Galaxy catalog latitudes (in degrees).</p>
 </dd>
-<dt><strong>min_sep</strong><span class="classifier">float</span></dt><dd><p>The minimum separation being considered (in degrees).</p>
+<dt><strong>min_sep</strong><span class="classifier">float</span></dt><dd><p>Minimum separation being considered (in degrees).</p>
 </dd>
-<dt><strong>max_sep</strong><span class="classifier">float</span></dt><dd><p>The maximum separation being considered (in degrees).</p>
+<dt><strong>max_sep</strong><span class="classifier">float</span></dt><dd><p>Maximum separation being considered (in degrees).</p>
 </dd>
-<dt><strong>n_bins</strong><span class="classifier">int</span></dt><dd><p>The number of bins.</p>
+<dt><strong>n_bins</strong><span class="classifier">int</span></dt><dd><p>Number of angular bins.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.max_sep" title="decontamination.correlation.correlation_pair_count.Correlation_PairCount.max_sep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_sep</span></code></a></dt><dd><p>Maximum separation (in degrees).</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.min_sep" title="decontamination.correlation.correlation_pair_count.Correlation_PairCount.min_sep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_sep</span></code></a></dt><dd><p>Minimum separation (in degrees).</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_bins" title="decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_bins"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_bins</span></code></a></dt><dd><p>Number of angular bins.</p>
 </dd>
 </dl>
 </dd>
@@ -99,29 +109,50 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.correlation.correlation_count_count.Correlation_CountCount.calculate" title="decontamination.correlation.correlation_count_count.Correlation_CountCount.calculate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate</span></code></a>(random_ra, random_dec, estimator)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.calculate" title="decontamination.correlation.correlation_pair_count.Correlation_PairCount.calculate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate</span></code></a>(estimator[, random_lon, random_lat])</p></td>
 <td><p>Calculates the angular correlation function with the specified estimator.</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.min_sep">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">min_sep</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.min_sep" title="Link to this definition">¶</a></dt>
+<dd><p>Minimum separation (in degrees).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.max_sep">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_sep</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.max_sep" title="Link to this definition">¶</a></dt>
+<dd><p>Maximum separation (in degrees).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_bins">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_bins</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_bins" title="Link to this definition">¶</a></dt>
+<dd><p>Number of angular bins.</p>
+</dd></dl>
+
 <dl class="py method">
-<dt class="sig sig-object py" id="decontamination.correlation.correlation_count_count.Correlation_CountCount.calculate">
-<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">random_ra</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_dec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">estimator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.correlation.correlation_count_count.Correlation_CountCount.calculate" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estimator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Calculates the angular correlation function with the specified estimator.</p>
 <p>Peebles &amp; Hauser estimator:</p>
 <div class="math notranslate nohighlight">
 \[\hat{\xi}=\frac{DD-RR}{RR}\]</div>
-<p>Landy &amp; Szalay estimator:</p>
+<p>1st Landy &amp; Szalay estimator:</p>
 <div class="math notranslate nohighlight">
 \[\hat{\xi}=\frac{DD-2DR-RR}{RR}\]</div>
+<p>2nd Landy &amp; Szalay estimator:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\xi}=\frac{DD-DR-RD-RR}{RR}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>random_ra</strong><span class="classifier">np.ndarray</span></dt><dd><p>Random catalog longitudes (in degrees).</p>
+<dt><strong>estimator</strong><span class="classifier">str</span></dt><dd><p>Estimator being considered (“dd”, “peebles_hauser”, “landy_szalay_1”, “landy_szalay_2”).</p>
 </dd>
-<dt><strong>random_dec</strong><span class="classifier">np.ndarray</span></dt><dd><p>Random catalog latitudes (in degrees).</p>
+<dt><strong>random_lon</strong><span class="classifier">np.ndarray, default: None</span></dt><dd><p>Random catalog longitudes (in degrees).</p>
 </dd>
-<dt><strong>estimator</strong><span class="classifier">str</span></dt><dd><p>Estimator to use for calculating the correlation (“peebles_hauser”, “landy_szalay”).</p>
+<dt><strong>random_lat</strong><span class="classifier">np.ndarray, default: None</span></dt><dd><p>Random catalog latitudes (in degrees).</p>
 </dd>
 </dl>
 </dd>
@@ -153,9 +184,12 @@
     <h3><a href="index.html">Page contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Module decontamination.correlation</a><ul>
-<li><a class="reference internal" href="#module-decontamination.correlation.correlation_count_count">Count-Count two-point angular correlation</a><ul>
-<li><a class="reference internal" href="#decontamination.correlation.correlation_count_count.Correlation_CountCount"><code class="docutils literal notranslate"><span class="pre">Correlation_CountCount</span></code></a><ul>
-<li><a class="reference internal" href="#decontamination.correlation.correlation_count_count.Correlation_CountCount.calculate"><code class="docutils literal notranslate"><span class="pre">Correlation_CountCount.calculate()</span></code></a></li>
+<li><a class="reference internal" href="#module-decontamination.correlation.correlation_pair_count">Pair count two-point angular correlation function</a><ul>
+<li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount</span></code></a><ul>
+<li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.min_sep"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount.min_sep</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.max_sep"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount.max_sep</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_bins"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount.n_bins</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.calculate"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount.calculate()</span></code></a></li>
 </ul>
 </li>
 </ul>

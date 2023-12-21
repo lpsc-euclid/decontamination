@@ -63,7 +63,7 @@ from .decontamination.decontamination_isd import Decontamination_ISD
 # CORRELATIONS                                                                                                         #
 ########################################################################################################################
 
-from decontamination.correlation.correlation_count_count import Correlation_CountCount
+from decontamination.correlation.correlation_pair_count import Correlation_PairCount
 
 ########################################################################################################################
 # UTILITIES                                                                                                            #
@@ -89,7 +89,7 @@ __all__ = [
     'display_healpix', 'display_catalog',
     'Generator_Uniform', 'Generator_LogNormal', 'Generator_NumberDensity', 'Generator_FullSkyUniform',
     'Decontamination_SOM', 'Decontamination_ElasticNet', 'Decontamination_ISD',
-    'Correlation_CountCount'
+    'Correlation_PairCount'
 ]
 
 ########################################################################################################################

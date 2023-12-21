@@ -62,7 +62,7 @@ class Correlation_CountCount(object):
         Peebles & Hauser estimator:
 
         .. math::
-            \\hat{\\xi}=\\frac{DD}{RR}-1
+            \\hat{\\xi}=\\frac{DD-RR}{RR}
 
         Landy & Szalay estimator:
 

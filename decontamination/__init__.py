@@ -81,7 +81,7 @@ __all__ = [
     'display_latent_space',
     'display_healpix', 'display_catalog',
     'Generator_Uniform', 'Generator_LogNormal', 'Generator_NumberDensity', 'Generator_FullSkyUniform',
-    'Decontamination_SOM', 'Decontamination_ISD',
+    'Decontamination_SOM', 'Decontamination_ElasticNet', 'Decontamination_ISD',
 ]
 
 ########################################################################################################################

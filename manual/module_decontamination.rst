@@ -7,6 +7,12 @@ Module decontamination.decontamination
 .. automodule:: decontamination.decontamination.decontamination_som
    :members:
 
+*Elastic Net* method
+--------------------
+
+.. automodule:: decontamination.decontamination.decontamination_elasticnet
+   :members:
+
 *Iterative Systematics Decontamination* method
 ----------------------------------------------
 

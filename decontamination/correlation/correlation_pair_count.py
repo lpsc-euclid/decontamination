@@ -101,17 +101,17 @@ class Correlation_PairCount(object):
         """
         Calculates the angular correlation function with the specified estimator.
 
-        Peebles & Hauser estimator:
+        Peebles & Hauser estimator (1974):
 
         .. math::
             \\hat{\\xi}=\\frac{DD-RR}{RR}
 
-        1st Landy & Szalay estimator:
+        1st Landy & Szalay estimator (1993):
 
         .. math::
             \\hat{\\xi}=\\frac{DD-2DR-RR}{RR}
 
-        2nd Landy & Szalay estimator:
+        2nd Landy & Szalay estimator (1993):
 
         .. math::
             \\hat{\\xi}=\\frac{DD-DR-RD-RR}{RR}

@@ -136,13 +136,13 @@
 <dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estimator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Calculates the angular correlation function with the specified estimator.</p>
-<p>Peebles &amp; Hauser estimator:</p>
+<p>Peebles &amp; Hauser estimator (1974):</p>
 <div class="math notranslate nohighlight">
 \[\hat{\xi}=\frac{DD-RR}{RR}\]</div>
-<p>1st Landy &amp; Szalay estimator:</p>
+<p>1st Landy &amp; Szalay estimator (1993):</p>
 <div class="math notranslate nohighlight">
 \[\hat{\xi}=\frac{DD-2DR-RR}{RR}\]</div>
-<p>2nd Landy &amp; Szalay estimator:</p>
+<p>2nd Landy &amp; Szalay estimator (1993):</p>
 <div class="math notranslate nohighlight">
 \[\hat{\xi}=\frac{DD-DR-RD-RR}{RR}\]</div>
 <dl class="field-list simple">

@@ -74,7 +74,7 @@
   <section id="module-decontamination-correlation">
 <h1>Module decontamination.correlation<a class="headerlink" href="#module-decontamination-correlation" title="Link to this heading">¶</a></h1>
 <section id="module-decontamination.correlation.correlation_count_count">
-<span id="count-count-2-points-angular-correlations"></span><h2>Count-Count 2-points angular correlations<a class="headerlink" href="#module-decontamination.correlation.correlation_count_count" title="Link to this heading">¶</a></h2>
+<span id="count-count-two-point-angular-correlation"></span><h2>Count-Count two-point angular correlation<a class="headerlink" href="#module-decontamination.correlation.correlation_count_count" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="decontamination.correlation.correlation_count_count.Correlation_CountCount">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.correlation.correlation_count_count.</span></span><span class="sig-name descname"><span class="pre">Correlation_CountCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catalog_ra</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog_dec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.correlation.correlation_count_count.Correlation_CountCount" title="Link to this definition">¶</a></dt>
@@ -100,14 +100,14 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.correlation.correlation_count_count.Correlation_CountCount.calculate" title="decontamination.correlation.correlation_count_count.Correlation_CountCount.calculate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate</span></code></a>(random_ra, random_dec, estimator)</p></td>
-<td><p>Calculates the galaxy angular correlations with the specified estimator.</p></td>
+<td><p>Calculates the angular correlation function with the specified estimator.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.correlation.correlation_count_count.Correlation_CountCount.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">random_ra</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_dec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">estimator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.correlation.correlation_count_count.Correlation_CountCount.calculate" title="Link to this definition">¶</a></dt>
-<dd><p>Calculates the galaxy angular correlations with the specified estimator.</p>
+<dd><p>Calculates the angular correlation function with the specified estimator.</p>
 <p>Peebles &amp; Hauser estimator:</p>
 <div class="math notranslate nohighlight">
 \[\hat{\xi}=\frac{DD-RR}{RR}\]</div>
@@ -153,7 +153,7 @@
     <h3><a href="index.html">Page contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Module decontamination.correlation</a><ul>
-<li><a class="reference internal" href="#module-decontamination.correlation.correlation_count_count">Count-Count 2-points angular correlations</a><ul>
+<li><a class="reference internal" href="#module-decontamination.correlation.correlation_count_count">Count-Count two-point angular correlation</a><ul>
 <li><a class="reference internal" href="#decontamination.correlation.correlation_count_count.Correlation_CountCount"><code class="docutils literal notranslate"><span class="pre">Correlation_CountCount</span></code></a><ul>
 <li><a class="reference internal" href="#decontamination.correlation.correlation_count_count.Correlation_CountCount.calculate"><code class="docutils literal notranslate"><span class="pre">Correlation_CountCount.calculate()</span></code></a></li>
 </ul>

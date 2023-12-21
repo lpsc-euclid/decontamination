@@ -57,7 +57,7 @@ class Correlation_CountCount(object):
     def calculate(self, random_ra: np.ndarray, random_dec: np.ndarray, estimator: str) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         """
-        Calculates the galaxy angular correlations with the specified estimator.
+        Calculates the angular correlation function with the specified estimator.
 
         Peebles & Hauser estimator:
 

@@ -11,6 +11,12 @@ This module provides different ways of computing two-point galaxy angular correl
   | Jarvis M., Bernstein G. and Jain B.
     (`documentation <https://rmjarvis.github.io/TreeCorr/_build/html/index.html>`_)
 
+??? angular correlation function
+--------------------------------
+
+.. automodule:: decontamination.correlation.correlation_anafast
+   :members:
+
 Pair count angular correlation function
 ---------------------------------------
 

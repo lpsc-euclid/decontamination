@@ -5,6 +5,8 @@ import typing
 
 import numpy as np
 
+from . import correlation_abstract
+
 ########################################################################################################################
 
 try:
@@ -18,7 +20,7 @@ except ImportError:
 ########################################################################################################################
 
 # noinspection PyPep8Naming, PyTypeChecker, DuplicatedCode
-class Correlation_PairCount(object):
+class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     """
     Pair count galaxy angular correlation function.
@@ -43,15 +45,13 @@ class Correlation_PairCount(object):
 
         ################################################################################################################
 
-        if treecorr is None:
-
-            raise ImportError('TreeCorr is not installed.')
+        super().__init__(min_sep, max_sep, n_bins)
 
         ################################################################################################################
 
-        self._min_sep = min_sep
-        self._max_sep = max_sep
-        self._n_bins = n_bins
+        if treecorr is None:
+
+            raise ImportError('TreeCorr is not installed.')
 
         ################################################################################################################
 
@@ -66,33 +66,6 @@ class Correlation_PairCount(object):
 
         self._dd = treecorr.NNCorrelation(min_sep = min_sep, max_sep = max_sep, nbins = n_bins, sep_units = 'arcmin')
         self._dd.process(self._tc_galaxy_catalog)
-
-    ####################################################################################################################
-
-    @property
-    def min_sep(self) -> float:
-
-        """Minimum separation (in degrees)."""
-
-        return self._min_sep
-
-    ####################################################################################################################
-
-    @property
-    def max_sep(self) -> float:
-
-        """Maximum separation (in degrees)."""
-
-        return self._max_sep
-
-    ####################################################################################################################
-
-    @property
-    def n_bins(self) -> int:
-
-        """ Number of angular bins."""
-
-        return self._n_bins
 
     ####################################################################################################################
 

@@ -30,9 +30,9 @@ class Correlation_PairCount(object):
     catalog_lat : np.ndarray
         Galaxy catalog latitudes (in degrees).
     min_sep : float
-        Minimum separation being considered (in degrees).
+        Minimum separation being considered (in arcmin).
     max_sep : float
-        Maximum separation being considered (in degrees).
+        Maximum separation being considered (in arcmin).
     n_bins : int
         Number of angular bins.
     """
@@ -104,7 +104,7 @@ class Correlation_PairCount(object):
         Peebles & Hauser estimator (1974):
 
         .. math::
-            \\hat{\\xi}=\\frac{DD-RR}{RR}
+            \\hat{\\xi}=\\frac{DD}{RR}-1
 
         1st Landy & Szalay estimator (1993):
 

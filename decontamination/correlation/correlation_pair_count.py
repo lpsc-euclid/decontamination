@@ -21,7 +21,7 @@ except ImportError:
 class Correlation_PairCount(object):
 
     """
-    Pair count two-point angular correlation function.
+    Pair count angular correlation function.
 
     Parameters
     ----------

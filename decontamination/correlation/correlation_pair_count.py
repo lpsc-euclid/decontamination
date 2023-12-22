@@ -237,7 +237,7 @@ class Correlation_PairCount(object):
 
     ####################################################################################################################
 
-    def _calculate_landy_szalay_2(self, tc_random_catalog: treecorr.Catalog) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def _calculate_landy_szalay_2(self, tc_random_catalog: 'treecorr.Catalog') -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 

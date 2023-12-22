@@ -21,7 +21,7 @@ except ImportError:
 class Correlation_PairCount(object):
 
     """
-    Pair count angular correlation function.
+    Pair count galaxy angular correlation function.
 
     Parameters
     ----------

@@ -128,7 +128,7 @@ class Correlation_PairCount(object):
         Returns
         -------
         typing.Tuple[np.ndarray, np.ndarray, np.ndarray]
-            The bin of angles, the angular correlations and the correlation errors: :math:`(\\theta,w(\\theta),w_\\text{err}(\\theta))`.
+            The bin of angles :math:`\\theta`, the angular correlations :math:`\\xi(\\theta)` and the angular correlation errors :math:`\\xi_\\text{err}(\\theta)`.
         """
 
         ################################################################################################################
@@ -178,15 +178,15 @@ class Correlation_PairCount(object):
 
         ################################################################################################################
 
-        w_theta, w_theta_variance = self._dd.calculateXi(rr = None, dr = None, rd = None)
+        xi_theta, xi_theta_variance = self._dd.calculateXi(rr = None, dr = None, rd = None)
 
-        w_theta_error = np.sqrt(w_theta_variance)
+        xi_theta_error = np.sqrt(xi_theta_variance)
 
         theta = np.exp(self._dd.meanlogr)
 
         ################################################################################################################
 
-        return theta, w_theta, w_theta_error
+        return theta, xi_theta, xi_theta_error
 
     ####################################################################################################################
 
@@ -199,15 +199,15 @@ class Correlation_PairCount(object):
 
         ################################################################################################################
 
-        w_theta, w_theta_variance = self._dd.calculateXi(rr = rr, dr = None, rd = None)
+        xi_theta, xi_theta_variance = self._dd.calculateXi(rr = rr, dr = None, rd = None)
 
-        w_theta_error = np.sqrt(w_theta_variance)
+        xi_theta_error = np.sqrt(xi_theta_variance)
 
         theta = np.exp(self._dd.meanlogr)
 
         ################################################################################################################
 
-        return theta, w_theta, w_theta_error
+        return theta, xi_theta, xi_theta_error
 
     ####################################################################################################################
 
@@ -225,15 +225,15 @@ class Correlation_PairCount(object):
 
         ################################################################################################################
 
-        w_theta, w_theta_variance = self._dd.calculateXi(rr = rr, dr = dr, rd = None)
+        xi_theta, xi_theta_variance = self._dd.calculateXi(rr = rr, dr = dr, rd = None)
 
-        w_theta_error = np.sqrt(w_theta_variance)
+        xi_theta_error = np.sqrt(xi_theta_variance)
 
         theta = np.exp(self._dd.meanlogr)
 
         ################################################################################################################
 
-        return theta, w_theta, w_theta_error
+        return theta, xi_theta, xi_theta_error
 
     ####################################################################################################################
 
@@ -256,14 +256,14 @@ class Correlation_PairCount(object):
 
         ################################################################################################################
 
-        w_theta, w_theta_variance = self._dd.calculateXi(rr = rr, dr = dr, rd = rd)
+        xi_theta, xi_theta_variance = self._dd.calculateXi(rr = rr, dr = dr, rd = rd)
 
-        w_theta_error = np.sqrt(w_theta_variance)
+        xi_theta_error = np.sqrt(xi_theta_variance)
 
         theta = np.exp(self._dd.meanlogr)
 
         ################################################################################################################
 
-        return theta, w_theta, w_theta_error
+        return theta, xi_theta, xi_theta_error
 
 ########################################################################################################################

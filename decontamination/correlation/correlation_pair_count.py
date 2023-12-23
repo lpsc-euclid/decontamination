@@ -23,7 +23,7 @@ except ImportError:
 class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     """
-    Pair count galaxy angular correlation function.
+    Galaxy angular correlation function from pair counting.
 
     Parameters
     ----------

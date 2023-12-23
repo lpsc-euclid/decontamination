@@ -56,7 +56,9 @@ from .generator.generator_fullsky_uniform import Generator_FullSkyUniform
 ########################################################################################################################
 
 from .decontamination.decontamination_som import Decontamination_SOM
+
 from .decontamination.decontamination_elasticnet import Decontamination_ElasticNet
+
 from .decontamination.decontamination_isd import Decontamination_ISD
 
 ########################################################################################################################
@@ -64,6 +66,8 @@ from .decontamination.decontamination_isd import Decontamination_ISD
 ########################################################################################################################
 
 from decontamination.correlation.correlation_pair_count import Correlation_PairCount
+
+from decontamination.correlation.correlation_power_spectrum import Correlation_PowerSpectrum
 
 ########################################################################################################################
 # UTILITIES                                                                                                            #
@@ -89,7 +93,7 @@ __all__ = [
     'display_healpix', 'display_catalog',
     'Generator_Uniform', 'Generator_LogNormal', 'Generator_NumberDensity', 'Generator_FullSkyUniform',
     'Decontamination_SOM', 'Decontamination_ElasticNet', 'Decontamination_ISD',
-    'Correlation_PairCount'
+    'Correlation_PairCount', 'Correlation_PowerSpectrum',
 ]
 
 ########################################################################################################################

@@ -112,9 +112,9 @@
 </dd>
 <dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
 </dd>
-<dt><strong>min_sep</strong><span class="classifier">float</span></dt><dd><p>Minimum separation being considered (in arcmin).</p>
+<dt><strong>min_sep</strong><span class="classifier">float</span></dt><dd><p>Minimum separation being considered (in arcmins).</p>
 </dd>
-<dt><strong>max_sep</strong><span class="classifier">float</span></dt><dd><p>Maximum separation being considered (in arcmin).</p>
+<dt><strong>max_sep</strong><span class="classifier">float</span></dt><dd><p>Maximum separation being considered (in arcmins).</p>
 </dd>
 <dt><strong>n_bins</strong><span class="classifier">int</span></dt><dd><p>Number of angular bins.</p>
 </dd>
@@ -149,13 +149,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>library</strong><span class="classifier">str</span></dt><dd><p>Library to be used for calculating the speudo <span class="math notranslate nohighlight">\(C_l\)</span> inside the footprint (“xpol”, “healpy”).</p>
+<dt><strong>library</strong><span class="classifier">str</span></dt><dd><p>Library to be used for calculating the <span class="math notranslate nohighlight">\(\text{pseudo}-C_l\)</span> inside the footprint (“xpol”, “healpy”).</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>Tuple[np.ndarray, np.ndarray]</dt><dd><p>The bin of angles <span class="math notranslate nohighlight">\(\theta\)</span> and the angular correlations <span class="math notranslate nohighlight">\(\xi(\theta)\)</span>.</p>
+<dt>Tuple[np.ndarray, np.ndarray]</dt><dd><p>The bin of angles <span class="math notranslate nohighlight">\(\theta\)</span> (in arcmins) and the angular correlations <span class="math notranslate nohighlight">\(\xi(\theta)\)</span>.</p>
 </dd>
 </dl>
 </dd>
@@ -179,9 +179,9 @@
 </dd>
 <dt><strong>catalog_lat</strong><span class="classifier">np.ndarray</span></dt><dd><p>Galaxy catalog latitudes (in degrees).</p>
 </dd>
-<dt><strong>min_sep</strong><span class="classifier">float</span></dt><dd><p>Minimum separation being considered (in arcmin).</p>
+<dt><strong>min_sep</strong><span class="classifier">float</span></dt><dd><p>Minimum separation being considered (in arcmins).</p>
 </dd>
-<dt><strong>max_sep</strong><span class="classifier">float</span></dt><dd><p>Maximum separation being considered (in arcmin).</p>
+<dt><strong>max_sep</strong><span class="classifier">float</span></dt><dd><p>Maximum separation being considered (in arcmins).</p>
 </dd>
 <dt><strong>n_bins</strong><span class="classifier">int</span></dt><dd><p>Number of angular bins.</p>
 </dd>
@@ -222,7 +222,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>estimator</strong><span class="classifier">str</span></dt><dd><p>Estimator being considered (“dd”, “peebles_hauser”, “landy_szalay_1”, “landy_szalay_2”).</p>
+<dt><strong>estimator</strong><span class="classifier">str</span></dt><dd><p>Estimator being considered (“dd”, “rr”, “dr”, “rd”, “peebles_hauser”, “landy_szalay_1”, “landy_szalay_2”).</p>
 </dd>
 <dt><strong>random_lon</strong><span class="classifier">np.ndarray, default: None</span></dt><dd><p>Random catalog longitudes (in degrees).</p>
 </dd>
@@ -232,7 +232,7 @@
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>Tuple[np.ndarray, np.ndarray, np.ndarray]</dt><dd><p>The bin of angles <span class="math notranslate nohighlight">\(\theta\)</span>, the angular correlations <span class="math notranslate nohighlight">\(\xi(\theta)\)</span> and the angular correlation errors <span class="math notranslate nohighlight">\(\xi_\text{err}(\theta)\)</span>.</p>
+<dt>Tuple[np.ndarray, np.ndarray, np.ndarray]</dt><dd><p>The bin of angles <span class="math notranslate nohighlight">\(\theta\)</span> (in arcmins), the angular correlations <span class="math notranslate nohighlight">\(\xi(\theta)\)</span> and the angular correlation errors <span class="math notranslate nohighlight">\(\xi_\text{err}(\theta)\)</span>.</p>
 </dd>
 </dl>
 </dd>

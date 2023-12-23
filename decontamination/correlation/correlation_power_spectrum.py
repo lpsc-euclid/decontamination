@@ -115,7 +115,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
         Parameters
         ----------
         library : str
-            Library to be used for calculating the power spectrum ("xpol", "healpy").
+            Library to be used for calculating the speudo :math:`C_l` inside the footprint ("xpol", "healpy").
 
         Returns
         -------

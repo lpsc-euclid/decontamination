@@ -40,9 +40,9 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
     nside : int
         The HEALPix nside parameter.
     min_sep : float
-        Minimum separation being considered (in arcmin).
+        Minimum separation being considered (in arcmins).
     max_sep : float
-        Maximum separation being considered (in arcmin).
+        Maximum separation being considered (in arcmins).
     n_bins : int
         Number of angular bins.
     """
@@ -96,11 +96,11 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def _cl2correlation(self, ell, cell):
+    def _cell2correlation(self, ell, cell):
 
-        pl = np.array([legendre(n)(np.cos(self._theta)) for n in ell])
+        pl = np.array([legendre(l)(np.cos(self._theta)) for l in ell]).T
 
-        return np.sum((2.0 * ell + 1.0) * np.outer(cell, pl), axis = 0) / math.sqrt(4.0 * np.pi)
+        return np.sum((2.0 * ell + 1.0) * cell * pl, axis = 1) / math.sqrt(4.0 * np.pi)
 
     ####################################################################################################################
 
@@ -115,12 +115,12 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
         Parameters
         ----------
         library : str
-            Library to be used for calculating the speudo :math:`C_l` inside the footprint ("xpol", "healpy").
+            Library to be used for calculating the :math:`\\text{pseudo}-C_l` inside the footprint ("xpol", "healpy").
 
         Returns
         -------
         typing.Tuple[np.ndarray, np.ndarray]
-            The bin of angles :math:`\\theta` and the angular correlations :math:`\\xi(\\theta)`.
+            The bin of angles :math:`\\theta` (in arcmins) and the angular correlations :math:`\\xi(\\theta)`.
         """
 
         ################################################################################################################
@@ -151,6 +151,8 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
             ell = binning.lbin.astype(np.int64)
 
+            cell = cell[2:] # WHY ??????
+
         ################################################################################################################
         # LIBRARY = ANAFAST                                                                                            #
         ################################################################################################################
@@ -167,6 +169,6 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        return self._theta, self._cl2correlation(ell, cell)
+        return 60.0 * np.degrees(self._theta), self._cell2correlation(ell, cell)
 
 ########################################################################################################################

@@ -55,6 +55,11 @@ Dependencies
 * [healpy](https://healpy.readthedocs.io/)
 * [matplotlib](https://matplotlib.org/)
 
+And optionally:
+
+* [xpol](https://gitlab.in2p3.fr/tristram/Xpol)
+* [treecorr](https://rmjarvis.github.io/TreeCorr/_build/html/index.html)
+
 [License]:http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.txt
 [License img]:https://img.shields.io/badge/license-CeCILL--C-blue.svg
 

@@ -117,7 +117,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         if estimator == 'dd':
 
-            return self._calculate_xy(self._tc_galaxy_catalog)
+            return self._calculate_xy(self._tc_galaxy_catalog, None)
 
         ################################################################################################################
 
@@ -139,28 +139,17 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         ################################################################################################################
 
         if estimator == 'rr':
-
-            return self._calculate_xy(self_tc_random_catalog)
-
+            return self._calculate_xy(self_tc_random_catalog, None)
         if estimator == 'dr':
-
             return self._calculate_xy(self._tc_galaxy_catalog, self_tc_random_catalog)
-
         if estimator == 'rd':
-
             return self._calculate_xy(self_tc_random_catalog, self._tc_galaxy_catalog)
-
         if estimator == 'peebles_hauser':
-
-            return self._calculate_peebles_hauser(self_tc_random_catalog)
-
+            return self._calculate_xi(self_tc_random_catalog, False, False)
         if estimator == 'landy_szalay_1':
-
-            return self._calculate_landy_szalay_1(self_tc_random_catalog)
-
+            return self._calculate_xi(self_tc_random_catalog, True, False)
         if estimator == 'landy_szalay_2':
-
-            return self._calculate_landy_szalay_2(self_tc_random_catalog)
+            return self._calculate_xi(self_tc_random_catalog, True, True)
 
         ################################################################################################################
 
@@ -194,56 +183,16 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def _calculate_peebles_hauser(self, tc_random_catalog: 'treecorr.Catalog') -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def _calculate_xi(self, self_tc_random_catalog: 'treecorr.Catalog', with_dr: bool, with_rd: bool) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         theta = np.exp(self._dd.meanlogr)
 
         ################################################################################################################
 
         xi_theta, xi_theta_variance = self._dd.calculateXi(
-            rr = self._correlate(tc_random_catalog),
-            dr = None,
-            rd = None
-        )
-
-        xi_theta_error = np.sqrt(xi_theta_variance)
-
-        ################################################################################################################
-
-        return theta, xi_theta, xi_theta_error
-
-    ####################################################################################################################
-
-    def _calculate_landy_szalay_1(self, tc_random_catalog: 'treecorr.Catalog') -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
-
-        theta = np.exp(self._dd.meanlogr)
-
-        ################################################################################################################
-
-        xi_theta, xi_theta_variance = self._dd.calculateXi(
-            rr = self._correlate(tc_random_catalog),
-            dr = self._correlate(self._tc_galaxy_catalog, tc_random_catalog),
-            rd = None
-        )
-
-        xi_theta_error = np.sqrt(xi_theta_variance)
-
-        ################################################################################################################
-
-        return theta, xi_theta, xi_theta_error
-
-    ####################################################################################################################
-
-    def _calculate_landy_szalay_2(self, tc_random_catalog: 'treecorr.Catalog') -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
-
-        theta = np.exp(self._dd.meanlogr)
-
-        ################################################################################################################
-
-        xi_theta, xi_theta_variance = self._dd.calculateXi(
-            rr = self._correlate(tc_random_catalog),
-            dr = self._correlate(self._tc_galaxy_catalog, tc_random_catalog),
-            rd = self._correlate(tc_random_catalog, self._tc_galaxy_catalog)
+            rr = self._correlate(self_tc_random_catalog),
+            dr = self._correlate(self._tc_galaxy_catalog, self_tc_random_catalog) if with_dr else None,
+            rd = self._correlate(self_tc_random_catalog, self._tc_galaxy_catalog) if with_rd else None,
         )
 
         xi_theta_error = np.sqrt(xi_theta_variance)

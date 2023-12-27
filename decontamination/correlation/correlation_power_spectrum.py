@@ -87,6 +87,12 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         self._full_sky_footprint[footprint] = 1.0
 
+        ################################################################################################################
+        # SUBTRACT MEAN                                                                                                #
+        ################################################################################################################
+
+        self._full_sky_number_density[footprint] = self._full_sky_number_density[footprint] - np.mean(self._full_sky_number_density[footprint])
+
     ####################################################################################################################
 
     @property
@@ -98,9 +104,9 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     def _cell2correlation(self, ell, cell):
 
-        pl = np.array([legendre(l)(np.cos(self._theta)) for l in ell]).T
+        pl_cos_theta = np.array([legendre(l)(np.cos(self._theta)) for l in ell]).T
 
-        return np.sum((2.0 * ell + 1.0) * cell * pl, axis = 1) / math.sqrt(4.0 * np.pi)
+        return np.sum((2.0 * ell + 1.0) * cell * pl_cos_theta, axis = 1) / math.sqrt(4.0 * np.pi)
 
     ####################################################################################################################
 
@@ -137,7 +143,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
             zeros = np.zeros_like(self._full_sky_number_density)
 
-            binning = xpol.Bins.fromdeltal(2, 2 * self._nside, 1)
+            binning = xpol.Bins.fromdeltal(0, 2 * self._nside, 1)
 
             xp = xpol.Xpol(self._full_sky_footprint, bins = binning, verbose = False)
 
@@ -147,11 +153,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
                 [zeros                        ], # B
             ]), remove_dipole = False)
 
-            cell = pcl[0, :].flatten().astype(np.float64)
-
-            ell = binning.lbin.astype(np.int64)
-
-            cell = cell[2:] # WHY ??????
+            cell = pcl[0].astype(np.float64)
 
         ################################################################################################################
         # LIBRARY = ANAFAST                                                                                            #
@@ -165,9 +167,9 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
             cell = hp.anafast(ma.filled(), lmax = 2 * self._nside)
 
-            ell = np.arange(cell.shape[0])
-
         ################################################################################################################
+
+        ell = np.arange(cell.shape[0], dtype = np.int64)
 
         return 60.0 * np.degrees(self._theta), self._cell2correlation(ell, cell)
 

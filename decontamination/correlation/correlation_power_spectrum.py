@@ -43,9 +43,9 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
     nside : int
         The HEALPix nside parameter.
     min_sep : float
-        Minimum separation being considered (in arcmins).
+        Minimum galaxy separation being considered (in arcmins).
     max_sep : float
-        Maximum separation being considered (in arcmins).
+        Maximum galaxy separation being considered (in arcmins).
     n_bins : int
         Number of angular bins.
     library : str

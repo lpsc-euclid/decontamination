@@ -32,9 +32,9 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
     catalog_lat : np.ndarray
         Galaxy catalog latitudes (in degrees).
     min_sep : float
-        Minimum separation being considered (in arcmins).
+        Minimum galaxy separation being considered (in arcmins).
     max_sep : float
-        Maximum separation being considered (in arcmins).
+        Maximum galaxy separation being considered (in arcmins).
     n_bins : int
         Number of angular bins.
     """

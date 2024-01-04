@@ -98,17 +98,17 @@
 <span id="angular-correlation-function-from-power-spectrum"></span><h2>Angular correlation function from power spectrum<a class="headerlink" href="#module-decontamination.correlation.correlation_power_spectrum" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.correlation.correlation_power_spectrum.</span></span><span class="sig-name descname"><span class="pre">Correlation_PowerSpectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog_lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog_lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.correlation.correlation_power_spectrum.</span></span><span class="sig-name descname"><span class="pre">Correlation_PowerSpectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catalog_lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog_lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">library</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'xpol'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Correlation_Abstract</span></code></p>
 <p>Angular correlation function from power spectrum.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the region where correlation must be calculated.</p>
-</dd>
 <dt><strong>catalog_lon</strong><span class="classifier">np.ndarray</span></dt><dd><p>Galaxy catalog longitudes (in degrees).</p>
 </dd>
 <dt><strong>catalog_lat</strong><span class="classifier">np.ndarray</span></dt><dd><p>Galaxy catalog latitudes (in degrees).</p>
+</dd>
+<dt><strong>footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the region where correlation must be calculated.</p>
 </dd>
 <dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
 </dd>
@@ -118,10 +118,14 @@
 </dd>
 <dt><strong>n_bins</strong><span class="classifier">int</span></dt><dd><p>Number of angular bins.</p>
 </dd>
+<dt><strong>library</strong><span class="classifier">str</span></dt><dd><p>Library to be used for calculating the <span class="math notranslate nohighlight">\(\text{pseudo-}C_l\)</span> inside the footprint (“xpol”, “healpy”).</p>
+</dd>
 </dl>
 </dd>
 <dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
+<dt><strong>footprint</strong></dt><dd></dd>
+<dt><strong>library</strong></dt><dd></dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_sep</span></code></dt><dd><p>Maximum separation (in degrees).</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_sep</span></code></dt><dd><p>Minimum separation (in degrees).</p>
@@ -135,27 +139,40 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.calculate" title="decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.calculate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate</span></code></a>(library)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.calculate" title="decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.calculate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate</span></code></a>(estimator[, random_lon, random_lat])</p></td>
 <td><p>Calculates the angular correlation function.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.calculate">
-<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">library</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.calculate" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estimator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Calculates the angular correlation function.</p>
+<p>Peebles &amp; Hauser estimator (1974):</p>
+<div class="math notranslate nohighlight">
+\[\hat{\xi}=\frac{DD}{RR}-1\]</div>
+<p>1st Landy &amp; Szalay estimator (1993):</p>
+<div class="math notranslate nohighlight">
+\[\hat{\xi}=\frac{DD-2DR-RR}{RR}\]</div>
+<p>2nd Landy &amp; Szalay estimator (1993):</p>
+<div class="math notranslate nohighlight">
+\[\hat{\xi}=\frac{DD-DR-RD-RR}{RR}\]</div>
 <div class="math notranslate nohighlight">
 \[\xi(\theta)=\frac{1}{\sqrt{4\pi}}\sum_{l=0}^{2\times\text{nside}}(2l+1)\,C_l\,P_l(\cos\theta)\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>library</strong><span class="classifier">str</span></dt><dd><p>Library to be used for calculating the <span class="math notranslate nohighlight">\(\text{pseudo}-C_l\)</span> inside the footprint (“xpol”, “healpy”).</p>
+<dt><strong>estimator</strong><span class="classifier">str</span></dt><dd><p>Estimator being considered (“dd”, “rr”, “dr”, “rd”, “peebles_hauser”, “landy_szalay_1”, “landy_szalay_2”).</p>
+</dd>
+<dt><strong>random_lon</strong><span class="classifier">np.ndarray, default: None</span></dt><dd><p>Random catalog longitudes (in degrees). For Peebles &amp; Hauser and Landy &amp; Szalay estimators only.</p>
+</dd>
+<dt><strong>random_lat</strong><span class="classifier">np.ndarray, default: None</span></dt><dd><p>Random catalog latitudes (in degrees). For Peebles &amp; Hauser and Landy &amp; Szalay estimators only.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>Tuple[np.ndarray, np.ndarray]</dt><dd><p>The bin of angles <span class="math notranslate nohighlight">\(\theta\)</span> (in arcmins) and the angular correlations <span class="math notranslate nohighlight">\(\xi(\theta)\)</span>.</p>
+<dt>Tuple[np.ndarray, np.ndarray]</dt><dd><p>The bin of angles <span class="math notranslate nohighlight">\(\theta\)</span> (in arcmins), the angular correlations <span class="math notranslate nohighlight">\(\xi(\theta)\)</span>.</p>
 </dd>
 </dl>
 </dd>

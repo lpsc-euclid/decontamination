@@ -87,6 +87,10 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         self._data_contrast = self._build_full_sky_contrast(catalog_lon, catalog_lat)
 
+        ################################################################################################################
+        # CORRELATE                                                                                                    #
+        ################################################################################################################
+
         self._dd = self._calculate_xy(self._data_contrast, None)
 
     ####################################################################################################################
@@ -275,6 +279,8 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
         ################################################################################################################
 
         ell = np.arange(cell.shape[0], dtype = np.int64)
+
+        ################################################################################################################
 
         return 60.0 * np.degrees(self._theta), self._cell2correlation(ell, cell)
 

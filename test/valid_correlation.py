@@ -49,10 +49,9 @@ if __name__ == '__main__':
 
     else:
 
-        correlation = decontamination.Correlation_PowerSpectrum(footprint, catalog['ra'], catalog['dec'], nside, 3.0, 250.0, 20)
+        correlation = decontamination.Correlation_PowerSpectrum(footprint, catalog['ra'], catalog['dec'], nside, 3.0, 250.0, 20, library = 'anafast')
 
-        #theta, w_theta = correlation.calculate('xpol')
-        theta, w_theta = correlation.calculate('anafast')
+        theta, w_theta = correlation.calculate('dd')
 
     plt.scatter(x = theta, y = theta * w_theta)
     plt.xlabel(r'$ \theta [arcmin] $')

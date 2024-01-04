@@ -61,6 +61,8 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         self._library = library
 
+        self._footprint = footprint
+
         ################################################################################################################
 
         self._theta = np.linspace(
@@ -68,18 +70,6 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
             np.radians(max_sep / 60.0),
             n_bins
         )
-
-        ################################################################################################################
-        # BUILD THE GALAXY NUMBER DENSITY MAP                                                                          #
-        ################################################################################################################
-
-        galaxy_pixels = hp.ang2pix(nside, catalog_lon, catalog_lat, nest = False, lonlat = True)
-
-        ################################################################################################################
-
-        self._full_sky_contrast = np.zeros(hp.nside2npix(nside), dtype = np.float32)
-
-        np.add.at(self._full_sky_contrast, galaxy_pixels, 1.0)
 
         ################################################################################################################
         # BUILD THE FOOTPRINT                                                                                          #
@@ -93,9 +83,9 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
         # BUILD THE CONTRAST                                                                                           #
         ################################################################################################################
 
-        mean = np.mean(self._full_sky_contrast[footprint])
+        self._data_contrast = self._build_full_sky_contrast(catalog_lon, catalog_lat)
 
-        self._full_sky_contrast[footprint] = (self._full_sky_contrast[footprint] - mean) / mean
+        self._dd = self._calculate_xy(self._data_contrast, None)
 
     ####################################################################################################################
 
@@ -103,6 +93,39 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
     def nside(self):
 
         return self._nside
+
+    ####################################################################################################################
+
+    @property
+    def library(self):
+
+        return self._library
+
+    ####################################################################################################################
+
+    def _build_full_sky_contrast(self, catalog_lon: np.ndarray, catalog_lat: np.ndarray) -> np.ndarray:
+
+        ################################################################################################################
+        # BUILD THE GALAXY NUMBER DENSITY MAP                                                                          #
+        ################################################################################################################
+
+        galaxy_pixels = hp.ang2pix(self._nside, catalog_lon, catalog_lat, nest = False, lonlat = True)
+
+        ################################################################################################################
+
+        result = np.zeros(hp.nside2npix(self._nside), dtype = np.float32)
+
+        np.add.at(result, galaxy_pixels, 1.0)
+
+        ################################################################################################################
+        # BUILD THE CONTRAST                                                                                           #
+        ################################################################################################################
+
+        mean = np.mean(result[self._footprint])
+
+        result[self._footprint] = (result[self._footprint] - mean) / mean
+
+        return result
 
     ####################################################################################################################
 
@@ -114,30 +137,76 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def calculate(self, estimator: str, random_contrast: typing.Optional[np.ndarray] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
-
-        pass
-
-    ####################################################################################################################
-
-    def calculate_xy(self, contrast1: np.ndarray, contrast2: np.ndarray, library: str) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def calculate(self, estimator: str, random_lon: typing.Optional[np.ndarray] = None, random_lat: typing.Optional[np.ndarray] = None) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         """
         Calculates the angular correlation function.
+
+        Peebles & Hauser estimator (1974):
+
+        .. math::
+            \\hat{\\xi}=\\frac{DD}{RR}-1
+
+        1st Landy & Szalay estimator (1993):
+
+        .. math::
+            \\hat{\\xi}=\\frac{DD-2DR-RR}{RR}
+
+        2nd Landy & Szalay estimator (1993):
+
+        .. math::
+            \\hat{\\xi}=\\frac{DD-DR-RD-RR}{RR}
 
         .. math::
             \\xi(\\theta)=\\frac{1}{\\sqrt{4\\pi}}\\sum_{l=0}^{2\\times\\text{nside}}(2l+1)\\,C_l\\,P_l(\\cos\\theta)
 
         Parameters
         ----------
-        library : str
-            Library to be used for calculating the :math:`\\text{pseudo}-C_l` inside the footprint ("xpol", "healpy").
+        estimator : str
+            Estimator being considered ("dd", "rr", "dr", "rd", "peebles_hauser", "landy_szalay_1", "landy_szalay_2").
+        random_lon : np.ndarray, default: None
+            Random catalog longitudes (in degrees). For Peebles & Hauser and Landy & Szalay estimators only.
+        random_lat : np.ndarray, default: None
+            Random catalog latitudes (in degrees). For Peebles & Hauser and Landy & Szalay estimators only.
 
         Returns
         -------
         typing.Tuple[np.ndarray, np.ndarray]
-            The bin of angles :math:`\\theta` (in arcmins) and the angular correlations :math:`\\xi(\\theta)`.
+            The bin of angles :math:`\\theta` (in arcmins), the angular correlations :math:`\\xi(\\theta)`.
         """
+
+        ################################################################################################################
+
+        if estimator == 'dd':
+
+            return self._dd
+
+        ################################################################################################################
+
+        if random_lon is None\
+           or                \
+           random_lat is None:
+
+            raise ValueError(f'Parameters `random_lon` and `random_lat` have be provided with estimator `{estimator}`.')
+
+        ################################################################################################################
+
+        random_contrast = self._build_full_sky_contrast(random_lon, random_lat)
+
+        if estimator == 'rr':
+            return self._calculate_xy(random_contrast, None)
+        if estimator == 'dr':
+            return self._calculate_xy(self._data_contrast, random_contrast)
+        if estimator == 'rd':
+            return self._calculate_xy(random_contrast, self._data_contrast)
+
+        ################################################################################################################
+
+        raise ValueError('Invalid estimator (`dd`, `rr`, `dr`, `rd`, `peebles_hauser`, `landy_szalay1`, `landy_szalay_2`)')
+
+    ####################################################################################################################
+
+    def _calculate_xy(self, contrast1: typing.Optional[np.ndarray], contrast2: typing.Optional[np.ndarray]) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         ################################################################################################################
         # LIBRARY = XPOL                                                                                               #
@@ -175,16 +244,44 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         else:
 
-            ma = hp.ma(self._full_sky_contrast)
+            ma1 = hp.ma(contrast1)
+            ma1.mask = np.logical_not(self._full_sky_footprint)
 
-            ma.mask = np.logical_not(self._full_sky_footprint)
+            if contrast2 is not None:
 
-            cell = hp.anafast(ma.filled(), lmax = 2 * self._nside)
+                ma2 = hp.ma(contrast2)
+                ma2.mask = np.logical_not(self._full_sky_footprint)
+
+                cell = hp.anafast(map1 = ma1.filled(), map2 = ma2.filled(), lmax = 2 * self._nside)
+
+            else:
+
+                cell = hp.anafast(map1 = ma1.filled(), map2 = None, lmax = 2 * self._nside)
 
         ################################################################################################################
 
         ell = np.arange(cell.shape[0], dtype = np.int64)
 
         return 60.0 * np.degrees(self._theta), self._cell2correlation(ell, cell)
+
+    ####################################################################################################################
+
+    def _calculate_xi(self, random_contrast: np.ndarray, with_dr: bool, with_rd: bool):
+
+        rr = self._calculate_xy(random_contrast, None)
+
+        if with_dr:
+
+            dr = self._calculate_xy(self._data_contrast, random_contrast)
+
+            if with_rd:
+
+                rd = self._calculate_xy(random_contrast, self._data_contrast)
+
+                return self._dd[0], (self._dd[1] - dr[1] - rd[1] + rr[1]) / rr[1]
+            else:
+                return self._dd[0], (self._dd[1] - 2.0 * dr[1] + rr[1]) / rr[1]
+        else:
+            return self._dd[0], self._dd[1] / rr[1] - 1.0
 
 ########################################################################################################################

@@ -75,9 +75,9 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        self._full_sky_number_density = np.zeros(hp.nside2npix(nside), dtype = np.float32)
+        self._full_sky_contrast = np.zeros(hp.nside2npix(nside), dtype = np.float32)
 
-        np.add.at(self._full_sky_number_density, galaxy_pixels, 1.0)
+        np.add.at(self._full_sky_contrast, galaxy_pixels, 1.0)
 
         ################################################################################################################
         # BUILD THE FOOTPRINT                                                                                          #
@@ -88,10 +88,12 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
         self._full_sky_footprint[footprint] = 1.0
 
         ################################################################################################################
-        # SUBTRACT MEAN                                                                                                #
+        # BUILD THE CONTRAST                                                                                           #
         ################################################################################################################
 
-        self._full_sky_number_density[footprint] = self._full_sky_number_density[footprint] - np.mean(self._full_sky_number_density[footprint])
+        mean = np.mean(self._full_sky_contrast[footprint])
+
+        self._full_sky_contrast[footprint] = (self._full_sky_contrast[footprint] - mean) / mean
 
     ####################################################################################################################
 
@@ -141,16 +143,16 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
             ####
 
-            zeros = np.zeros_like(self._full_sky_number_density)
+            zeros = np.zeros_like(self._full_sky_contrast)
 
             binning = xpol.Bins.fromdeltal(0, 2 * self._nside, 1)
 
             xp = xpol.Xpol(self._full_sky_footprint, bins = binning, verbose = False)
 
             pcl, _ = xp.get_spectra(np.asarray([
-                [self._full_sky_number_density], # T
-                [zeros                        ], # E
-                [zeros                        ], # B
+                [self._full_sky_contrast], # T
+                [zeros                  ], # E
+                [zeros                  ], # B
             ]), remove_dipole = False)
 
             cell = pcl[0].astype(np.float64)
@@ -161,7 +163,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         else:
 
-            ma = hp.ma(self._full_sky_number_density)
+            ma = hp.ma(self._full_sky_contrast)
 
             ma.mask = np.logical_not(self._full_sky_footprint)
 

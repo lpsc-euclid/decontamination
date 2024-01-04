@@ -55,7 +55,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        self._tc_galaxy_catalog = treecorr.Catalog(
+        self._data_catalog = treecorr.Catalog(
             ra = catalog_lon,
             dec = catalog_lat,
             ra_units = 'degrees',
@@ -63,8 +63,10 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         )
 
         ################################################################################################################
+        # CORRELATE                                                                                                    #
+        ################################################################################################################
 
-        self._dd = self._correlate(self._tc_galaxy_catalog)
+        self._dd = self._correlate(self._data_catalog, None)
 
     ####################################################################################################################
 
@@ -117,7 +119,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         if estimator == 'dd':
 
-            return self._calculate_xy(self._tc_galaxy_catalog, None)
+            return self._calculate_xy(self._data_catalog, None)
 
         ################################################################################################################
 
@@ -129,7 +131,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        self_tc_random_catalog = treecorr.Catalog(
+        self_random_catalog = treecorr.Catalog(
             ra = random_lon,
             dec = random_lat,
             ra_units = 'degrees',
@@ -139,17 +141,17 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         ################################################################################################################
 
         if estimator == 'rr':
-            return self._calculate_xy(self_tc_random_catalog, None)
+            return self._calculate_xy(self_random_catalog, None)
         if estimator == 'dr':
-            return self._calculate_xy(self._tc_galaxy_catalog, self_tc_random_catalog)
+            return self._calculate_xy(self._data_catalog, self_random_catalog)
         if estimator == 'rd':
-            return self._calculate_xy(self_tc_random_catalog, self._tc_galaxy_catalog)
+            return self._calculate_xy(self_random_catalog, self._data_catalog)
         if estimator == 'peebles_hauser':
-            return self._calculate_xi(self_tc_random_catalog, False, False)
+            return self._calculate_xi(self_random_catalog, False, False)
         if estimator == 'landy_szalay_1':
-            return self._calculate_xi(self_tc_random_catalog, True, False)
+            return self._calculate_xi(self_random_catalog, True, False)
         if estimator == 'landy_szalay_2':
-            return self._calculate_xi(self_tc_random_catalog, True, True)
+            return self._calculate_xi(self_random_catalog, True, True)
 
         ################################################################################################################
 
@@ -163,7 +165,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        if catalog1 != self._tc_galaxy_catalog or catalog2 is not None:
+        if catalog1 != self._data_catalog or catalog2 is not None:
 
             xy = self._correlate(catalog1, catalog2)
 
@@ -183,16 +185,16 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def _calculate_xi(self, self_tc_random_catalog: 'treecorr.Catalog', with_dr: bool, with_rd: bool) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def _calculate_xi(self, self_random_catalog: 'treecorr.Catalog', with_dr: bool, with_rd: bool) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         theta = np.exp(self._dd.meanlogr)
 
         ################################################################################################################
 
         xi_theta, xi_theta_variance = self._dd.calculateXi(
-            rr = self._correlate(self_tc_random_catalog),
-            dr = self._correlate(self._tc_galaxy_catalog, self_tc_random_catalog) if with_dr else None,
-            rd = self._correlate(self_tc_random_catalog, self._tc_galaxy_catalog) if with_rd else None,
+            rr = self._correlate(self_random_catalog),
+            dr = self._correlate(self._data_catalog, self_random_catalog) if with_dr else None,
+            rd = self._correlate(self_random_catalog, self._data_catalog) if with_rd else None,
         )
 
         xi_theta_error = np.sqrt(xi_theta_variance)

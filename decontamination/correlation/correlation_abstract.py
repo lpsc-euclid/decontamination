@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
+import abc
+import typing
+
+import numpy as np
+
+########################################################################################################################
+
 # noinspection PyPep8Naming
-class Correlation_Abstract(object):
+class Correlation_Abstract(abc.ABC):
 
     ####################################################################################################################
 
@@ -38,5 +45,12 @@ class Correlation_Abstract(object):
         """ Number of angular bins."""
 
         return self._n_bins
+
+    ####################################################################################################################
+
+    @abc.abstractmethod
+    def calculate(self, estimator: str, random_lon: typing.Optional[np.ndarray] = None, random_lat: typing.Optional[np.ndarray] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+
+        return None, None, None
 
 ########################################################################################################################

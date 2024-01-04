@@ -49,7 +49,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def __init__(self, footprint: np.ndarray, catalog_lon: np.ndarray, catalog_lat: np.ndarray, nside: int, min_sep: float, max_sep: float, n_bins: int):
+    def __init__(self, footprint: np.ndarray, catalog_lon: np.ndarray, catalog_lat: np.ndarray, nside: int, min_sep: float, max_sep: float, n_bins: int, library: str = 'xpol'):
 
         ################################################################################################################
 
@@ -58,6 +58,8 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
         ################################################################################################################
 
         self._nside = nside
+
+        self._library = library
 
         ################################################################################################################
 
@@ -112,7 +114,13 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def calculate(self, library: str) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def calculate(self, estimator: str, random_contrast: typing.Optional[np.ndarray] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+
+        pass
+
+    ####################################################################################################################
+
+    def calculate_xy(self, contrast1: np.ndarray, contrast2: np.ndarray, library: str) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         """
         Calculates the angular correlation function.
@@ -135,7 +143,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
         # LIBRARY = XPOL                                                                                               #
         ################################################################################################################
 
-        if library == 'xpol':
+        if self._library == 'xpol':
 
             if xpol is None:
 
@@ -143,17 +151,21 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
             ####
 
-            zeros = np.zeros_like(self._full_sky_contrast)
+            zeros = np.zeros_like(contrast1)
 
             binning = xpol.Bins.fromdeltal(0, 2 * self._nside, 1)
 
             xp = xpol.Xpol(self._full_sky_footprint, bins = binning, verbose = False)
 
-            pcl, _ = xp.get_spectra(np.asarray([
-                [self._full_sky_contrast], # T
-                [zeros                  ], # E
-                [zeros                  ], # B
-            ]), remove_dipole = False)
+            pcl, _ = xp.get_spectra(m1 = np.asarray([
+                [contrast1], # T
+                [zeros],     # E
+                [zeros],     # B
+            ]), m2 = np.asarray([
+                [contrast2], # T
+                [zeros],     # E
+                [zeros],     # B
+            ]) if contrast2 is not None else None, pixwin = True, remove_dipole = False)
 
             cell = pcl[0].astype(np.float64)
 

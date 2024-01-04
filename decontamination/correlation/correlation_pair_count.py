@@ -165,7 +165,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        if catalog1 != self._data_catalog or catalog2 is not None:
+        if catalog1 is self._data_catalog or catalog2 is not None:
 
             xy = self._correlate(catalog1, catalog2)
 

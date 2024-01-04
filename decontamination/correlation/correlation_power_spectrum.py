@@ -296,7 +296,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     def _calculate_xy(self, contrast1: typing.Optional[np.ndarray], contrast2: typing.Optional[np.ndarray]) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
-        if contrast1 != self._data_contrast or contrast2 is not None:
+        if contrast1 is self._data_contrast or contrast2 is not None:
 
             xy = self._correlate(contrast1, contrast2)
 

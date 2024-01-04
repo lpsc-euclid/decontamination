@@ -29,6 +29,9 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
     """
     Angular correlation function from power spectrum.
 
+    .. math::
+        \\xi(\\theta)=\\frac{1}{\\sqrt{4\\pi}}\\sum_{l=0}^{2\\times\\text{nside}}(2l+1)\\,C_l\\,P_l(\\cos\\theta)
+
     Parameters
     ----------
     catalog_lon : np.ndarray
@@ -157,9 +160,6 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         .. math::
             \\hat{\\xi}=\\frac{DD-DR-RD-RR}{RR}
-
-        .. math::
-            \\xi(\\theta)=\\frac{1}{\\sqrt{4\\pi}}\\sum_{l=0}^{2\\times\\text{nside}}(2l+1)\\,C_l\\,P_l(\\cos\\theta)
 
         Parameters
         ----------

@@ -237,15 +237,18 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
             xp = xpol.Xpol(self._full_sky_footprint, bins = binning, verbose = False)
 
-            pcl, _ = xp.get_spectra(m1 = np.asarray([
-                [contrast1], # T
-                [zeros],     # E
-                [zeros],     # B
-            ]), m2 = np.asarray([
-                [contrast2], # T
-                [zeros],     # E
-                [zeros],     # B
-            ]) if contrast2 is not None else None, pixwin = True, remove_dipole = False)
+            pcl, _ = xp.get_spectra(
+                m1 = np.asarray([
+                    [contrast1], # T
+                    [zeros],     # E
+                    [zeros],     # B
+                ]),
+                m2 = np.asarray([
+                    [contrast2], # T
+                    [zeros],     # E
+                    [zeros],     # B
+                ]) if contrast2 is not None else None, pixwin = True, remove_dipole = False
+            )
 
             cell = pcl[0].astype(np.float64)
 

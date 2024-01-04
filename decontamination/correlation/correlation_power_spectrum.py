@@ -31,12 +31,12 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     Parameters
     ----------
-    footprint : np.ndarray
-        HEALPix indices of the region where correlation must be calculated.
     catalog_lon : np.ndarray
         Galaxy catalog longitudes (in degrees).
     catalog_lat : np.ndarray
         Galaxy catalog latitudes (in degrees).
+    footprint : np.ndarray
+        HEALPix indices of the region where correlation must be calculated.
     nside : int
         The HEALPix nside parameter.
     min_sep : float
@@ -45,11 +45,13 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
         Maximum separation being considered (in arcmins).
     n_bins : int
         Number of angular bins.
+    library : str
+        Library to be used for calculating the :math:`\\text{pseudo-}C_l` inside the footprint (“xpol”, “healpy”).
     """
 
     ####################################################################################################################
 
-    def __init__(self, footprint: np.ndarray, catalog_lon: np.ndarray, catalog_lat: np.ndarray, nside: int, min_sep: float, max_sep: float, n_bins: int, library: str = 'xpol'):
+    def __init__(self, catalog_lon: np.ndarray, catalog_lat: np.ndarray, footprint: np.ndarray, nside: int, min_sep: float, max_sep: float, n_bins: int, library: str = 'xpol'):
 
         ################################################################################################################
 
@@ -57,11 +59,11 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
+        self._footprint = footprint
+
         self._nside = nside
 
         self._library = library
-
-        self._footprint = footprint
 
         ################################################################################################################
 
@@ -90,6 +92,13 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
     ####################################################################################################################
 
     @property
+    def footprint(self):
+
+        return self._footprint
+
+    ####################################################################################################################
+
+    @property
     def nside(self):
 
         return self._nside
@@ -106,34 +115,22 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
     def _build_full_sky_contrast(self, catalog_lon: np.ndarray, catalog_lat: np.ndarray) -> np.ndarray:
 
         ################################################################################################################
-        # BUILD THE GALAXY NUMBER DENSITY MAP                                                                          #
-        ################################################################################################################
 
         galaxy_pixels = hp.ang2pix(self._nside, catalog_lon, catalog_lat, nest = False, lonlat = True)
-
-        ################################################################################################################
 
         result = np.zeros(hp.nside2npix(self._nside), dtype = np.float32)
 
         np.add.at(result, galaxy_pixels, 1.0)
 
         ################################################################################################################
-        # BUILD THE CONTRAST                                                                                           #
-        ################################################################################################################
 
         mean = np.mean(result[self._footprint])
 
         result[self._footprint] = (result[self._footprint] - mean) / mean
 
+        ################################################################################################################
+
         return result
-
-    ####################################################################################################################
-
-    def _cell2correlation(self, ell, cell):
-
-        pl_cos_theta = np.array([legendre(l)(np.cos(self._theta)) for l in ell]).T
-
-        return np.sum((2.0 * ell + 1.0) * cell * pl_cos_theta, axis = 1) / math.sqrt(4.0 * np.pi)
 
     ####################################################################################################################
 
@@ -199,10 +196,24 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
             return self._calculate_xy(self._data_contrast, random_contrast)
         if estimator == 'rd':
             return self._calculate_xy(random_contrast, self._data_contrast)
+        if estimator == 'peebles_hauser':
+            return self._calculate_xi(random_contrast, False, False)
+        if estimator == 'landy_szalay_1':
+            return self._calculate_xi(random_contrast, True, False)
+        if estimator == 'landy_szalay_2':
+            return self._calculate_xi(random_contrast, True, True)
 
         ################################################################################################################
 
         raise ValueError('Invalid estimator (`dd`, `rr`, `dr`, `rd`, `peebles_hauser`, `landy_szalay1`, `landy_szalay_2`)')
+
+    ####################################################################################################################
+
+    def _cell2correlation(self, ell, cell):
+
+        pl_cos_theta = np.array([legendre(l)(np.cos(self._theta)) for l in ell]).T
+
+        return np.sum((2.0 * ell + 1.0) * cell * pl_cos_theta, axis = 1) / math.sqrt(4.0 * np.pi)
 
     ####################################################################################################################
 
@@ -279,9 +290,12 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
                 rd = self._calculate_xy(random_contrast, self._data_contrast)
 
                 return self._dd[0], (self._dd[1] - dr[1] - rd[1] + rr[1]) / rr[1]
+
             else:
+
                 return self._dd[0], (self._dd[1] - 2.0 * dr[1] + rr[1]) / rr[1]
         else:
+
             return self._dd[0], self._dd[1] / rr[1] - 1.0
 
 ########################################################################################################################

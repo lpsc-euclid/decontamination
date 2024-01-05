@@ -103,7 +103,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
         # CORRELATE IT                                                                                                 #
         ################################################################################################################
 
-        self._dd = self._correlate(self._data_contrast, None)
+        self._dd = self._calculate_xy(self._data_contrast, None)
 
     ####################################################################################################################
 
@@ -277,6 +277,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     def _calculate_xi(self, random_contrast: np.ndarray, with_dr: bool, with_rd: bool) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
+        dd = self._calculate_xy(self._data_contrast, None)
         rr = self._calculate_xy(random_contrast, None)
 
         if with_dr:
@@ -287,13 +288,13 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
                 rd = self._calculate_xy(random_contrast, self._data_contrast)
 
-                return self._dd[0], (self._dd[1] - dr[1] - rd[1] + rr[1]) / rr[1], self._dd[2]
+                return dd[0], (dd[1] - dr[1] - rd[1] + rr[1]) / rr[1], dd[2]
 
             else:
 
-                return self._dd[0], (self._dd[1] - 2.0 * dr[1] + rr[1]) / rr[1], self._dd[2]
+                return dd[0], (dd[1] - 2.0 * dr[1] + rr[1]) / rr[1], dd[2]
         else:
 
-            return self._dd[0], self._dd[1] / rr[1] - 1.0, self._dd[2]
+            return dd[0], dd[1] / rr[1] - 1.0, dd[2]
 
 ########################################################################################################################

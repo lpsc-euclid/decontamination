@@ -49,7 +49,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
     n_bins : int
         Number of angular bins.
     library : str
-        Library to be used for calculating the :math:`\\text{pseudo-}C_l` inside the footprint (“xpol”, “healpy”).
+        Library to be used for calculating the :math:`C_l` inside the footprint (“xpol”, “healpy”).
     """
 
     ####################################################################################################################
@@ -146,9 +146,11 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     def _cell2correlation(self, ell, cell):
 
-        pl_cos_theta = np.array([legendre(l)(np.cos(self._theta)) for l in ell]).T
+        a = np.cos(self._theta)
 
-        return np.sum((2.0 * ell + 1.0) * cell * pl_cos_theta, axis = 1) / math.sqrt(4.0 * np.pi)
+        b = (2.0 * ell + 1.0) * cell
+
+        return np.polynomial.legendre.legval(a, b) / math.sqrt(4.0 * np.pi)
 
     ####################################################################################################################
 
@@ -166,26 +168,16 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
             ####
 
-            zeros = np.zeros_like(contrast1)
-
             binning = xpol.Bins.fromdeltal(0, 2 * self._nside, 1)
 
-            xp = xpol.Xpol(self._full_sky_footprint, bins = binning, verbose = False)
+            xp = xpol.Xpol(self._full_sky_footprint, bins = binning, polar = False, verbose = False)
 
-            pcl, _ = xp.get_spectra(
-                m1 = np.asarray([
-                    [contrast1], # T
-                    [zeros],     # E
-                    [zeros],     # B
-                ]),
-                m2 = np.asarray([
-                    [contrast2], # T
-                    [zeros],     # E
-                    [zeros],     # B
-                ]) if contrast2 is not None else None, pixwin = True, remove_dipole = False
+            cell, _ = xp.get_spectra(
+                m1 = contrast1,
+                m2 = contrast2,
+                pixwin = True,
+                remove_dipole = False
             )
-
-            cell = pcl[0].astype(np.float64)
 
         ################################################################################################################
         # LIBRARY = ANAFAST                                                                                            #

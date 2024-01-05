@@ -7,8 +7,6 @@ import typing
 import numpy as np
 import healpy as hp
 
-from scipy.special import legendre
-
 from . import correlation_abstract
 
 ########################################################################################################################
@@ -42,6 +40,8 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
         HEALPix indices of the region where correlation must be calculated.
     nside : int
         The HEALPix nside parameter.
+    nest : bool
+        If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering.
     min_sep : float
         Minimum galaxy separation being considered (in arcmins).
     max_sep : float
@@ -54,7 +54,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def __init__(self, catalog_lon: np.ndarray, catalog_lat: np.ndarray, footprint: np.ndarray, nside: int, min_sep: float, max_sep: float, n_bins: int, library: str = 'xpol'):
+    def __init__(self, catalog_lon: np.ndarray, catalog_lat: np.ndarray, footprint: np.ndarray, nside: int, nest: bool, min_sep: float, max_sep: float, n_bins: int, library: str = 'xpol'):
 
         ################################################################################################################
 
@@ -82,7 +82,13 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         self._full_sky_footprint = np.zeros(hp.nside2npix(nside), dtype = np.float32)
 
-        self._full_sky_footprint[footprint] = 1.0
+        if nest:
+
+            self._full_sky_footprint[hp.nest2ring(nside, footprint)] = 1.0
+
+        else:
+
+            self._full_sky_footprint[footprint] = 1.0
 
         ################################################################################################################
         # BUILD THE CONTRAST                                                                                           #

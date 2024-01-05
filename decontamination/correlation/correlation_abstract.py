@@ -84,6 +84,10 @@ class Correlation_Abstract(abc.ABC):
             The bin of angles :math:`\\theta` (in arcmins), the angular correlations :math:`\\xi(\\theta)` and the angular correlation errors :math:`\\xi_\\text{err}(\\theta)`.
         """
 
-        return None, None, None
+        return (
+            np.array(0, dtype = np.float32),
+            np.array(0, dtype = np.float32),
+            np.array(0, dtype = np.float32),
+        )
 
 ########################################################################################################################

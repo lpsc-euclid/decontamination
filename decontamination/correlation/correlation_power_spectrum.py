@@ -48,7 +48,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
         Maximum galaxy separation being considered (in arcmins).
     n_bins : int
         Number of angular bins.
-    library : str
+    library : str, default: xpol
         Library to be used for calculating the :math:`C_l` inside the footprint (“xpol”, “healpy”).
     """
 

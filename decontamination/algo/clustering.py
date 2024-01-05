@@ -29,8 +29,8 @@ class Clustering(object):
         n_clusters : int
             Desired number of clusters.
 
-        Return
-        ------
+        Returns
+        -------
         Array giving a cluster identifier for each input vector.
         """
 

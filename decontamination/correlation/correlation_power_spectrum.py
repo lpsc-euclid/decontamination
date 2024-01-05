@@ -219,39 +219,6 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     def calculate(self, estimator: str, random_lon: typing.Optional[np.ndarray] = None, random_lat: typing.Optional[np.ndarray] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
-        """
-        Calculates the angular correlation function.
-
-        Peebles & Hauser estimator (1974):
-
-        .. math::
-            \\hat{\\xi}=\\frac{DD}{RR}-1
-
-        1st Landy & Szalay estimator (1993):
-
-        .. math::
-            \\hat{\\xi}=\\frac{DD-2DR-RR}{RR}
-
-        2nd Landy & Szalay estimator (1993):
-
-        .. math::
-            \\hat{\\xi}=\\frac{DD-DR-RD-RR}{RR}
-
-        Parameters
-        ----------
-        estimator : str
-            Estimator being considered ("dd", "rr", "dr", "rd", "peebles_hauser", "landy_szalay_1", "landy_szalay_2").
-        random_lon : np.ndarray, default: None
-            Random catalog longitudes (in degrees). For Peebles & Hauser and Landy & Szalay estimators only.
-        random_lat : np.ndarray, default: None
-            Random catalog latitudes (in degrees). For Peebles & Hauser and Landy & Szalay estimators only.
-
-        Returns
-        -------
-        typing.Tuple[np.ndarray, np.ndarray]
-            The bin of angles :math:`\\theta` (in arcmins), the angular correlations :math:`\\xi(\\theta)`.
-        """
-
         ################################################################################################################
 
         if estimator == 'dd':

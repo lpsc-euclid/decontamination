@@ -19,10 +19,8 @@ Angular correlation function from power spectrum
 ------------------------------------------------
 
 .. automodule:: decontamination.correlation.correlation_power_spectrum
-   :members:
 
 Angular correlation function from pair counting
 -----------------------------------------------
 
 .. automodule:: decontamination.correlation.correlation_pair_count
-   :members:

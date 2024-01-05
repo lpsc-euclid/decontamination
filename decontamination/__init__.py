@@ -84,6 +84,7 @@ def array_to_string(arr):
 ########################################################################################################################
 
 __all__ = [
+    'override',
     'CPU_OPTIMIZATION_AVAILABLE', 'GPU_OPTIMIZATION_AVAILABLE', 'jit',
     'DeviceArray', 'device_array_from', 'device_array_empty', 'device_array_zeros', 'device_array_full',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',

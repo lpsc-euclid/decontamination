@@ -4,6 +4,7 @@ import os
 import sys
 import json
 import typing
+import inspect
 
 import numpy as np
 
@@ -34,9 +35,14 @@ extensions = [
 
 autodoc_default_options = {
     'docstring': 'class',
-    'show-inheritance': True,
     'member-order': 'bysource',
+    #
+    'members': True,
+    'show-inheritance': True,
+    'inherited-members': True,
 }
+
+autodoc_inherit_docstrings = True
 
 mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.min.js'
 
@@ -76,6 +82,36 @@ html_use_modindex = False
 
 # noinspection PyUnusedLocal
 def skip_member(app, what, name, obj, skip, options):
+
+    ####################################################################################################################
+
+    if hasattr(obj, '__self__'):
+
+        docstrings = {}
+
+        ################################################################################################################
+
+        for cls in obj.__self__.mro()[1:]:
+
+            for func_name in dir(cls):
+
+                func_obj = getattr(cls, func_name)
+
+                if inspect.isfunction(func_obj) and not func_name.startswith('_') and func_obj.__doc__:
+
+                    docstrings[func_name] = func_obj.__doc__
+
+        ################################################################################################################
+
+        for func_name in dir(obj.__self__):
+
+            func_obj = getattr(obj.__self__, func_name)
+
+            if inspect.isfunction(func_obj) and not func_name.startswith('_') and not func_obj.__doc__:
+
+                func_obj.__doc__ = docstrings.get(func_name, '')
+
+    ####################################################################################################################
 
     if not name.startswith('_') and getattr(obj, '__doc__', ''):
 

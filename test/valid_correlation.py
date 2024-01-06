@@ -34,19 +34,19 @@ if __name__ == '__main__':
 
     cl = np.random.poisson(size = 2 * nside)
 
-    map = hp.synfast(cl, nside)
+    skymap = hp.synfast(cl, nside)
 
-    min = np.min(map)
-    max = np.max(map)
+    min = np.min(skymap)
+    max = np.max(skymap)
 
-    map = (map - min) / (max - min)
+    skymap = (skymap - min) / (max - min)
 
-    hp.mollview(map)
+    hp.mollview(skymap)
     plt.show()
 
     ####################################################################################################################
 
-    footprint = np.arange(map.shape[0], dtype = np.int64)
+    footprint = np.arange(skymap.shape[0], dtype = np.int64)
 
     ####################################################################################################################
 
@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
     catalog = np.empty(0, dtype = [('ra', np.float32), ('dec', np.float32)])
 
-    for lon, lat in tqdm.tqdm(generator.generate(map, 2.0, n_max_per_batch = 1000)):
+    for lon, lat in tqdm.tqdm(generator.generate(skymap, 2.0, n_max_per_batch = 1000)):
 
         rows = np.empty(lon.shape[0], dtype = catalog.dtype)
         rows['ra'] = lon

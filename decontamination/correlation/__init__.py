@@ -6,15 +6,15 @@ import healpy as hp
 
 ########################################################################################################################
 
-def apodization(full_sky_footprint, fwhm, threshold = 1.0e-5, nest : bool = True):
+def apodization(full_sky_map, fwhm, threshold = 1.0e-5, nest : bool = True):
 
     """
     Applies Gaussian smoothing to a full-sky map for edge minimization (= apodization).
 
     Parameters
     ----------
-    full_sky_footprint : np.ndarray
-        The input full-sky footprint to be apodized.
+    full_sky_map : np.ndarray
+        The input full-sky map to be apodized.
     fwhm : float
         The full width half max parameter of the Gaussian (in arcmins).
     threshold : float, default: **1.0e-5**
@@ -25,10 +25,10 @@ def apodization(full_sky_footprint, fwhm, threshold = 1.0e-5, nest : bool = True
     Returns
     -------
     np.ndarray
-        Apodized version of the input full-sky footprint.
+        Apodized version of the input full-sky map.
     """
 
-    result = hp.smoothing(full_sky_footprint, fwhm = np.deg2rad(fwhm / 60.0), pol = False)
+    result = hp.smoothing(full_sky_map, fwhm = np.deg2rad(fwhm / 60.0), pol = False, nest = nest)
 
     result[result < (0.0 + threshold)] = 0.0 + threshold
     result[result > (1.0 - threshold)] = 1.0 - threshold

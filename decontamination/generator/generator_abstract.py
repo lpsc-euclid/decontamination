@@ -21,12 +21,12 @@ class Generator_Abstract(object):
         The HEALPix nside parameter.
     footprint : np.ndarray
         HEALPix indices of the region where galaxies are generated.
-    nest : bool
-        If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: **True**).
-    lonlat : bool
-        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians (default: **True**).
-    seed : typing.Optional[int]
-        Seed for random generators (default: **None**).
+    nest : bool, default: **True**
+        If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering.
+    lonlat : bool, default: **True**
+        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.
+    seed : typing.Optional[int], default: **None**
+        Seed for random generators.
     """
 
     ####################################################################################################################

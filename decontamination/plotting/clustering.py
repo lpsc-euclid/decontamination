@@ -168,10 +168,10 @@ def display_clusters(ax: pyplot.Axes, cluster_ids: np.ndarray, topology: typing.
         Matplotlib `Axes` object.
     cluster_ids : np.ndarray
         Array of cluster identifiers.
-    topology : typing.Optional[str]
-        Topology of the map, either **'square'** or **'hexagonal'** (default: **None** ≡ **'hexagonal'**).
-    show_cluster_labels : bool
-        Specifies whether to display the cluster labels (default: **False**).
+    topology : typing.Optional[str], default: **None** ≡ **'hexagonal'**
+        Topology of the map, either **'square'** or **'hexagonal'**.
+    show_cluster_labels : bool, default: **False**
+        Specifies whether to display the cluster labels.
     """
 
     if max(cluster_ids.shape[0], cluster_ids.shape[1]) > 200 or topology == 'square':

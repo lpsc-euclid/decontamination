@@ -89,18 +89,18 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.generator.generator_uniform.</span></span><span class="sig-name descname"><span class="pre">Generator_Uniform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lonlat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.generator.generator_uniform.Generator_Uniform" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generator_Abstract</span></code></p>
 <p>Uniform galaxy catalog generator.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
 </dd>
 <dt><strong>footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the region where galaxies are generated.</p>
 </dd>
-<dt><strong>nest</strong><span class="classifier">bool</span></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: <strong>True</strong>).</p>
+<dt><strong>nest</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering.</p>
 </dd>
-<dt><strong>lonlat</strong><span class="classifier">bool</span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians (default: <strong>True</strong>).</p>
+<dt><strong>lonlat</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.</p>
 </dd>
-<dt><strong>seed</strong><span class="classifier">Optional[int]</span></dt><dd><p>Seed for random generators (default: <strong>None</strong>).</p>
+<dt><strong>seed</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Seed for random generators.</p>
 </dd>
 </dl>
 </dd>
@@ -117,12 +117,12 @@
 <dt class="sig sig-object py" id="decontamination.generator.generator_uniform.Generator_Uniform.generate">
 <span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean_density</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max_per_batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.generator.generator_uniform.Generator_Uniform.generate" title="Link to this definition">¶</a></dt>
 <dd><p>Iterator that yields uniform galaxy positions.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>mean_density</strong><span class="classifier">float</span></dt><dd><p>Mean number of galaxies per HEALPix pixel (default: <strong>10.0</strong>).</p>
+<dd class="field-odd"><dl>
+<dt><strong>mean_density</strong><span class="classifier">float, default: <strong>10.0</strong></span></dt><dd><p>Mean number of galaxies per HEALPix pixel.</p>
 </dd>
-<dt><strong>n_max_per_batch</strong><span class="classifier">Optional[int]</span></dt><dd><p>Maximum number of galaxy positions to yield in one batch (default: <strong>None</strong>).</p>
+<dt><strong>n_max_per_batch</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Maximum number of galaxy positions to yield in one batch.</p>
 </dd>
 </dl>
 </dd>
@@ -142,18 +142,18 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.generator.generator_log_normal.</span></span><span class="sig-name descname"><span class="pre">Generator_LogNormal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lonlat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.generator.generator_log_normal.Generator_LogNormal" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generator_Abstract</span></code></p>
 <p>Log-normal galaxy catalog generator.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
 </dd>
 <dt><strong>footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the region where galaxies are generated.</p>
 </dd>
-<dt><strong>nest</strong><span class="classifier">bool</span></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: <strong>True</strong>).</p>
+<dt><strong>nest</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering.</p>
 </dd>
-<dt><strong>lonlat</strong><span class="classifier">bool</span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians (default: <strong>True</strong>).</p>
+<dt><strong>lonlat</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.</p>
 </dd>
-<dt><strong>seed</strong><span class="classifier">Optional[int]</span></dt><dd><p>Seed for random generators (default: <strong>None</strong>).</p>
+<dt><strong>seed</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Seed for random generators.</p>
 </dd>
 </dl>
 </dd>
@@ -170,12 +170,12 @@
 <dt class="sig sig-object py" id="decontamination.generator.generator_log_normal.Generator_LogNormal.generate">
 <span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean_density</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max_per_batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.generator.generator_log_normal.Generator_LogNormal.generate" title="Link to this definition">¶</a></dt>
 <dd><p>Iterator that yields log-normal galaxy positions.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>mean_density</strong><span class="classifier">float</span></dt><dd><p>Mean number of galaxies per HEALPix pixel (default: <strong>10.0</strong>).</p>
+<dd class="field-odd"><dl>
+<dt><strong>mean_density</strong><span class="classifier">float, default: <strong>10.0</strong></span></dt><dd><p>Mean number of galaxies per HEALPix pixel.</p>
 </dd>
-<dt><strong>n_max_per_batch</strong><span class="classifier">Optional[int]</span></dt><dd><p>Maximum number of galaxy positions to yield in one batch (default: <strong>None</strong>).</p>
+<dt><strong>n_max_per_batch</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Maximum number of galaxy positions to yield in one batch.</p>
 </dd>
 </dl>
 </dd>
@@ -195,18 +195,18 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.generator.generator_number_density.</span></span><span class="sig-name descname"><span class="pre">Generator_NumberDensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lonlat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.generator.generator_number_density.Generator_NumberDensity" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generator_Abstract</span></code></p>
 <p>Galaxy catalog generator from a density map.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
 </dd>
 <dt><strong>footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the region where galaxies are generated.</p>
 </dd>
-<dt><strong>nest</strong><span class="classifier">bool</span></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: <strong>True</strong>).</p>
+<dt><strong>nest</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering.</p>
 </dd>
-<dt><strong>lonlat</strong><span class="classifier">bool</span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians (default: <strong>True</strong>).</p>
+<dt><strong>lonlat</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.</p>
 </dd>
-<dt><strong>seed</strong><span class="classifier">Optional[int]</span></dt><dd><p>Seed for random generators (default: <strong>None</strong>).</p>
+<dt><strong>seed</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Seed for random generators.</p>
 </dd>
 </dl>
 </dd>
@@ -223,14 +223,14 @@
 <dt class="sig sig-object py" id="decontamination.generator.generator_number_density.Generator_NumberDensity.generate">
 <span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_density_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mult_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max_per_batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.generator.generator_number_density.Generator_NumberDensity.generate" title="Link to this definition">¶</a></dt>
 <dd><p>Iterator that yields galaxy positions from a density map.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>number_density_map</strong><span class="classifier">np.ndarray</span></dt><dd><p>Number of galaxies per HEALPix pixels.</p>
 </dd>
-<dt><strong>mult_factor</strong><span class="classifier">Optional[float]</span></dt><dd><p>Statistics multiplication factor (default: <strong>10.0</strong>).</p>
+<dt><strong>mult_factor</strong><span class="classifier">Optional[float], default: <strong>10.0</strong></span></dt><dd><p>Statistics multiplication factor.</p>
 </dd>
-<dt><strong>n_max_per_batch</strong><span class="classifier">Optional[int]</span></dt><dd><p>Maximum number of galaxy positions to yield in one batch (default: <strong>None</strong>).</p>
+<dt><strong>n_max_per_batch</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Maximum number of galaxy positions to yield in one batch.</p>
 </dd>
 </dl>
 </dd>
@@ -253,12 +253,12 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.generator.generator_fullsky_uniform.</span></span><span class="sig-name descname"><span class="pre">Generator_FullSkyUniform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.generator.generator_fullsky_uniform.Generator_FullSkyUniform" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Uniform galaxy catalog generator over the sphere.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
 </dd>
-<dt><strong>seed</strong><span class="classifier">Optional[int]</span></dt><dd><p>Seed for random generators (default: <strong>None</strong>).</p>
+<dt><strong>seed</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Seed for random generators.</p>
 </dd>
 </dl>
 </dd>
@@ -275,12 +275,12 @@
 <dt class="sig sig-object py" id="decontamination.generator.generator_fullsky_uniform.Generator_FullSkyUniform.generate">
 <span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean_density</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max_per_batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.generator.generator_fullsky_uniform.Generator_FullSkyUniform.generate" title="Link to this definition">¶</a></dt>
 <dd><p>Iterator that yields uniform galaxy positions.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>mean_density</strong><span class="classifier">float</span></dt><dd><p>Mean number of galaxies per HEALPix pixel (default: <strong>10.0</strong>).</p>
+<dd class="field-odd"><dl>
+<dt><strong>mean_density</strong><span class="classifier">float, default: <strong>10.0</strong></span></dt><dd><p>Mean number of galaxies per HEALPix pixel.</p>
 </dd>
-<dt><strong>n_max_per_batch</strong><span class="classifier">Optional[int]</span></dt><dd><p>Maximum number of galaxy positions to yield in one batch (default: <strong>None</strong>).</p>
+<dt><strong>n_max_per_batch</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Maximum number of galaxy positions to yield in one batch.</p>
 </dd>
 </dl>
 </dd>
@@ -312,18 +312,18 @@
 </li>
 </ul>
 <a class="reference internal image-reference" href="_images/healpix_cartesian_plan.svg"><img alt="HEALPix Cartesian Plan" class="align-center" src="_images/healpix_cartesian_plan.svg" width="50%" /></a>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
 </dd>
 <dt><strong>pixels</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the region where coordinates are generated.</p>
 </dd>
-<dt><strong>lonlat</strong><span class="classifier">bool</span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians (default: <strong>True</strong>).</p>
+<dt><strong>lonlat</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.</p>
 </dd>
-<dt><strong>rng</strong><span class="classifier">Optional[np.random.Generator]</span></dt><dd><p>Random number generator (default: <strong>None</strong> ≡ the default RNG).</p>
+<dt><strong>rng</strong><span class="classifier">Optional[np.random.Generator], default: <strong>None</strong> ≡ the default RNG</span></dt><dd><p>Random number generator.</p>
 </dd>
-<dt><strong>dtype</strong><span class="classifier">Type[Union[np.float32, np.float64, float]]</span></dt><dd><p>??? (default: <strong>np.float64</strong>).</p>
+<dt><strong>dtype</strong><span class="classifier">Type[Union[np.float32, np.float64, float]], default: <strong>np.float64</strong></span></dt><dd><p>Desired data-type for the new array.</p>
 </dd>
 </dl>
 </dd>

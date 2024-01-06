@@ -82,18 +82,18 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_abstract.</span></span><span class="sig-name descname"><span class="pre">SOM_Abstract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Self Organizing Maps (abstract class).</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>Number of neuron rows.</p>
 </dd>
 <dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>Number of neuron columns.</p>
 </dd>
 <dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>Dimensionality of the input data.</p>
 </dd>
-<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong> (default: <strong>np.float32</strong>).</p>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;, default: <strong>np.float32</strong></span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong>.</p>
 </dd>
-<dt><strong>topology</strong><span class="classifier">Optional[str]</span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong> (default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong>).</p>
+<dt><strong>topology</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
 </dd>
 </dl>
 </dd>
@@ -150,10 +150,10 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.init_rand">
 <span class="sig-name descname"><span class="pre">init_rand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.init_rand" title="Link to this definition">¶</a></dt>
 <dd><p>Initializes the neural network randomly.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>seed</strong><span class="classifier">Optional[int]</span></dt><dd><p>Seed for random generator (default: <strong>None</strong>).</p>
+<dd class="field-odd"><dl>
+<dt><strong>seed</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Seed for random generator.</p>
 </dd>
 </dl>
 </dd>
@@ -272,10 +272,10 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.get_distance_map">
 <span class="sig-name descname"><span class="pre">get_distance_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scaling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.get_distance_map" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a matrix of the distances between each weight.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>scaling</strong><span class="classifier">Optional[str]</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’ (default: <strong>None</strong> ≡ ‘<strong>sum</strong>’).</p>
+<dd class="field-odd"><dl>
+<dt><strong>scaling</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ ‘<strong>sum</strong>’</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’.</p>
 </dd>
 </dl>
 </dd>
@@ -286,16 +286,16 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.get_activation_map">
 <span class="sig-name descname"><span class="pre">get_activation_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.get_activation_map" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Dataset array or generator builder.</p>
 </dd>
-<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>False</strong>).</p>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
-<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+<dt><strong>enable_gpu</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If available, run on GPU rather than CPU.</p>
 </dd>
-<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int, default: <strong>1024</strong></span></dt><dd><p>Number of GPU threads per blocks.</p>
 </dd>
 </dl>
 </dd>
@@ -306,14 +306,14 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.get_winners">
 <span class="sig-name descname"><span class="pre">get_winners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.get_winners" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>dataset</strong><span class="classifier">np.ndarray</span></dt><dd><p>Dataset array.</p>
 </dd>
-<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+<dt><strong>enable_gpu</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If available, run on GPU rather than CPU.</p>
 </dd>
-<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int, default: <strong>1024</strong></span></dt><dd><p>Number of GPU threads per blocks.</p>
 </dd>
 </dl>
 </dd>
@@ -331,18 +331,18 @@
 <p class="admonition-title">Note</p>
 <p>A rule of thumb to set the size of the grid for a dimensionality reduction task is that it should contain <span class="math notranslate nohighlight">\(5\sqrt{N}\)</span> neurons where N is the number of samples in the dataset to analyze.</p>
 </div>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>Number of neuron rows.</p>
 </dd>
 <dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>Number of neuron columns.</p>
 </dd>
 <dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>Dimensionality of the input data.</p>
 </dd>
-<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong> (default: <strong>np.float32</strong>).</p>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;, default: <strong>np.float32</strong></span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong>.</p>
 </dd>
-<dt><strong>topology</strong><span class="classifier">Optional[str]</span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong> (default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong>).</p>
+<dt><strong>topology</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
 </dd>
 </dl>
 </dd>
@@ -434,16 +434,16 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.train">
 <span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.train" title="Link to this definition">¶</a></dt>
 <dd><p>Trains the neural network.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Training dataset array or generator builder.</p>
 </dd>
-<dt><strong>min_weight</strong><span class="classifier">float</span></dt><dd><p>Latent space minimum value (default: <strong>O.O</strong>).</p>
+<dt><strong>min_weight</strong><span class="classifier">float, default: <strong>0.0</strong></span></dt><dd><p>Latent space minimum value.</p>
 </dd>
-<dt><strong>max_weight</strong><span class="classifier">float</span></dt><dd><p>Latent space maximum value (default: <strong>1.O</strong>).</p>
+<dt><strong>max_weight</strong><span class="classifier">float, default: <strong>1.0</strong></span></dt><dd><p>Latent space maximum value.</p>
 </dd>
-<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>False</strong>).</p>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
 </dl>
 </dd>
@@ -472,16 +472,16 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.get_activation_map">
 <span class="sig-name descname"><span class="pre">get_activation_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.get_activation_map" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Dataset array or generator builder.</p>
 </dd>
-<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>False</strong>).</p>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
-<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+<dt><strong>enable_gpu</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If available, run on GPU rather than CPU.</p>
 </dd>
-<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int, default: <strong>1024</strong></span></dt><dd><p>Number of GPU threads per blocks.</p>
 </dd>
 </dl>
 </dd>
@@ -492,10 +492,10 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.get_distance_map">
 <span class="sig-name descname"><span class="pre">get_distance_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scaling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.get_distance_map" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a matrix of the distances between each weight.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>scaling</strong><span class="classifier">Optional[str]</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’ (default: <strong>None</strong> ≡ ‘<strong>sum</strong>’).</p>
+<dd class="field-odd"><dl>
+<dt><strong>scaling</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ ‘<strong>sum</strong>’</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’.</p>
 </dd>
 </dl>
 </dd>
@@ -506,14 +506,14 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.get_winners">
 <span class="sig-name descname"><span class="pre">get_winners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.get_winners" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>dataset</strong><span class="classifier">np.ndarray</span></dt><dd><p>Dataset array.</p>
 </dd>
-<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+<dt><strong>enable_gpu</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If available, run on GPU rather than CPU.</p>
 </dd>
-<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int, default: <strong>1024</strong></span></dt><dd><p>Number of GPU threads per blocks.</p>
 </dd>
 </dl>
 </dd>
@@ -538,10 +538,10 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.init_rand">
 <span class="sig-name descname"><span class="pre">init_rand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.init_rand" title="Link to this definition">¶</a></dt>
 <dd><p>Initializes the neural network randomly.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>seed</strong><span class="classifier">Optional[int]</span></dt><dd><p>Seed for random generator (default: <strong>None</strong>).</p>
+<dd class="field-odd"><dl>
+<dt><strong>seed</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Seed for random generator.</p>
 </dd>
 </dl>
 </dd>
@@ -635,22 +635,22 @@
 <p class="admonition-title">Note</p>
 <p>A rule of thumb to set the size of the grid for a dimensionality reduction task is that it should contain <span class="math notranslate nohighlight">\(5\sqrt{N}\)</span> neurons where N is the number of samples in the dataset to analyze.</p>
 </div>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>Number of neuron rows.</p>
 </dd>
 <dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>Number of neuron columns.</p>
 </dd>
 <dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>Dimensionality of the input data.</p>
 </dd>
-<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong> (default: <strong>np.float32</strong>).</p>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;, default: <strong>np.float32</strong></span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong>.</p>
 </dd>
-<dt><strong>topology</strong><span class="classifier">Optional[str]</span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong> (default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong>).</p>
+<dt><strong>topology</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
 </dd>
-<dt><strong>alpha</strong><span class="classifier">float</span></dt><dd><p>Starting value of the learning rate (default: <strong>None</strong> ≡ <strong>0.3</strong>).</p>
+<dt><strong>alpha</strong><span class="classifier">float, default: <strong>None</strong> ≡ <strong>0.3</strong></span></dt><dd><p>Starting value of the learning rate.</p>
 </dd>
-<dt><strong>sigma</strong><span class="classifier">float</span></dt><dd><p>Starting value of the neighborhood radius (default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mathrm{max}(m,n)/2\)</span>).</p>
+<dt><strong>sigma</strong><span class="classifier">float, default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mathrm{max}(m,n)/2\)</span></span></dt><dd><p>Starting value of the neighborhood radius.</p>
 </dd>
 </dl>
 </dd>
@@ -733,18 +733,18 @@
 <div class="math notranslate nohighlight">
 \[\boxed{\mathrm{iteratively\,for}\,i=0\dots N-1\,\mathrm{:}\,w_j(e+1)=w_j(e)+\alpha(e)\cdot\Theta_{ji}(w,e)[x_i-w_j(e)]}\]</div>
 <p>where <span class="math notranslate nohighlight">\(j=0\dots m\times n-1\)</span> and, at epoch <span class="math notranslate nohighlight">\(e\)</span>, <span class="math notranslate nohighlight">\(\alpha(e)\equiv\alpha\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}}\)</span> is the learning rate and <span class="math notranslate nohighlight">\(\sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}}\)</span> is the neighborhood radius.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Training dataset array or generator builder.</p>
 </dd>
-<dt><strong>n_epochs</strong><span class="classifier">Optional[int]</span></dt><dd><p>Number of epochs to train for (default: <strong>None</strong>).</p>
+<dt><strong>n_epochs</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Number of epochs to train for.</p>
 </dd>
-<dt><strong>n_vectors</strong><span class="classifier">Optional[int]</span></dt><dd><p>Number of vectors to train for (default: <strong>None</strong>).</p>
+<dt><strong>n_vectors</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Number of vectors to train for.</p>
 </dd>
-<dt><strong>n_error_bins</strong><span class="classifier">int</span></dt><dd><p>Number of quantization and topographic error bins (default: <strong>10</strong>).</p>
+<dt><strong>n_error_bins</strong><span class="classifier">int, default: <strong>10</strong></span></dt><dd><p>Number of quantization and topographic error bins.</p>
 </dd>
-<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>False</strong>).</p>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
 </dl>
 </dd>
@@ -773,16 +773,16 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_online.SOM_Online.get_activation_map">
 <span class="sig-name descname"><span class="pre">get_activation_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online.get_activation_map" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Dataset array or generator builder.</p>
 </dd>
-<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>False</strong>).</p>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
-<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+<dt><strong>enable_gpu</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If available, run on GPU rather than CPU.</p>
 </dd>
-<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int, default: <strong>1024</strong></span></dt><dd><p>Number of GPU threads per blocks.</p>
 </dd>
 </dl>
 </dd>
@@ -793,10 +793,10 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_online.SOM_Online.get_distance_map">
 <span class="sig-name descname"><span class="pre">get_distance_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scaling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online.get_distance_map" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a matrix of the distances between each weight.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>scaling</strong><span class="classifier">Optional[str]</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’ (default: <strong>None</strong> ≡ ‘<strong>sum</strong>’).</p>
+<dd class="field-odd"><dl>
+<dt><strong>scaling</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ ‘<strong>sum</strong>’</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’.</p>
 </dd>
 </dl>
 </dd>
@@ -807,14 +807,14 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_online.SOM_Online.get_winners">
 <span class="sig-name descname"><span class="pre">get_winners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online.get_winners" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>dataset</strong><span class="classifier">np.ndarray</span></dt><dd><p>Dataset array.</p>
 </dd>
-<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+<dt><strong>enable_gpu</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If available, run on GPU rather than CPU.</p>
 </dd>
-<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int, default: <strong>1024</strong></span></dt><dd><p>Number of GPU threads per blocks.</p>
 </dd>
 </dl>
 </dd>
@@ -839,10 +839,10 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_online.SOM_Online.init_rand">
 <span class="sig-name descname"><span class="pre">init_rand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online.init_rand" title="Link to this definition">¶</a></dt>
 <dd><p>Initializes the neural network randomly.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>seed</strong><span class="classifier">Optional[int]</span></dt><dd><p>Seed for random generator (default: <strong>None</strong>).</p>
+<dd class="field-odd"><dl>
+<dt><strong>seed</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Seed for random generator.</p>
 </dd>
 </dl>
 </dd>
@@ -936,20 +936,20 @@
 <p class="admonition-title">Note</p>
 <p>A rule of thumb to set the size of the grid for a dimensionality reduction task is that it should contain <span class="math notranslate nohighlight">\(5\sqrt{N}\)</span> neurons where N is the number of samples in the dataset to analyze.</p>
 </div>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>Number of neuron rows.</p>
 </dd>
 <dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>Number of neuron columns.</p>
 </dd>
 <dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>Dimensionality of the input data.</p>
 </dd>
-<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong> (default: <strong>np.float32</strong>).</p>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;, default:  <strong>np.float32</strong></span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong>.</p>
 </dd>
-<dt><strong>topology</strong><span class="classifier">Optional[str]</span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong> (default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong>).</p>
+<dt><strong>topology</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
 </dd>
-<dt><strong>sigma</strong><span class="classifier">float</span></dt><dd><p>Starting value of the neighborhood radius (default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mathrm{max}(m,n)/2\)</span>).</p>
+<dt><strong>sigma</strong><span class="classifier">float, default: default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mathrm{max}(m,n)/2\)</span></span></dt><dd><p>Starting value of the neighborhood radius.</p>
 </dd>
 </dl>
 </dd>
@@ -1028,22 +1028,22 @@
 <div class="math notranslate nohighlight">
 \[\boxed{w_j(e+1)=\frac{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)\cdot x_i}{\sum_{i=0}^{N-1}\Theta_{ji}(w,e)}}\]</div>
 <p>where <span class="math notranslate nohighlight">\(j=0\dots m\times n-1\)</span>, at epoch <span class="math notranslate nohighlight">\(e\)</span>, <span class="math notranslate nohighlight">\(\sigma(e)\equiv\sigma\cdot\frac{1}{1+2\frac{e}{e_\mathrm{tot}}}\)</span> is the neighborhood radius.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Training dataset array or generator builder.</p>
 </dd>
-<dt><strong>n_epochs</strong><span class="classifier">Optional[int]</span></dt><dd><p>Number of epochs to train for (default: <strong>None</strong>).</p>
+<dt><strong>n_epochs</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Number of epochs to train for.</p>
 </dd>
-<dt><strong>n_vectors</strong><span class="classifier">Optional[int]</span></dt><dd><p>Number of vectors to train for (default: <strong>None</strong>).</p>
+<dt><strong>n_vectors</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Number of vectors to train for.</p>
 </dd>
-<dt><strong>n_error_bins</strong><span class="classifier">int</span></dt><dd><p>Number of quantization and topographic error bins (default: <strong>10</strong>).</p>
+<dt><strong>n_error_bins</strong><span class="classifier">int, default: <strong>10</strong></span></dt><dd><p>Number of quantization and topographic error bins.</p>
 </dd>
-<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>False</strong>).</p>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
-<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+<dt><strong>enable_gpu</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If available, run on GPU rather than CPU.</p>
 </dd>
-<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int, default: <strong>1024</strong></span></dt><dd><p>Number of GPU threads per blocks.</p>
 </dd>
 </dl>
 </dd>
@@ -1072,16 +1072,16 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_batch.SOM_Batch.get_activation_map">
 <span class="sig-name descname"><span class="pre">get_activation_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_batch.SOM_Batch.get_activation_map" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Dataset array or generator builder.</p>
 </dd>
-<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>False</strong>).</p>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
-<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+<dt><strong>enable_gpu</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If available, run on GPU rather than CPU.</p>
 </dd>
-<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int, default: <strong>1024</strong></span></dt><dd><p>Number of GPU threads per blocks.</p>
 </dd>
 </dl>
 </dd>
@@ -1092,10 +1092,10 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_batch.SOM_Batch.get_distance_map">
 <span class="sig-name descname"><span class="pre">get_distance_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scaling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_batch.SOM_Batch.get_distance_map" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a matrix of the distances between each weight.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>scaling</strong><span class="classifier">Optional[str]</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’ (default: <strong>None</strong> ≡ ‘<strong>sum</strong>’).</p>
+<dd class="field-odd"><dl>
+<dt><strong>scaling</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ ‘<strong>sum</strong>’</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’.</p>
 </dd>
 </dl>
 </dd>
@@ -1106,14 +1106,14 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_batch.SOM_Batch.get_winners">
 <span class="sig-name descname"><span class="pre">get_winners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_batch.SOM_Batch.get_winners" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>dataset</strong><span class="classifier">np.ndarray</span></dt><dd><p>Dataset array.</p>
 </dd>
-<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+<dt><strong>enable_gpu</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If available, run on GPU rather than CPU.</p>
 </dd>
-<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int, default: <strong>1024</strong></span></dt><dd><p>Number of GPU threads per blocks.</p>
 </dd>
 </dl>
 </dd>
@@ -1138,10 +1138,10 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_batch.SOM_Batch.init_rand">
 <span class="sig-name descname"><span class="pre">init_rand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.algo.som_batch.SOM_Batch.init_rand" title="Link to this definition">¶</a></dt>
 <dd><p>Initializes the neural network randomly.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>seed</strong><span class="classifier">Optional[int]</span></dt><dd><p>Seed for random generator (default: <strong>None</strong>).</p>
+<dd class="field-odd"><dl>
+<dt><strong>seed</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Seed for random generator.</p>
 </dd>
 </dl>
 </dd>

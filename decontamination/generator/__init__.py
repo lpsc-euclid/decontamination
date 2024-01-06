@@ -39,12 +39,12 @@ def healpix_rand_ang(nside: int, pixels: np.ndarray, lonlat = False, rng: typing
         The HEALPix nside parameter.
     pixels : np.ndarray
         HEALPix indices of the region where coordinates are generated.
-    lonlat : bool
-        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians (default: **True**).
-    rng : typing.Optional[np.random.Generator]
-        Random number generator (default: **None** ≡ the default RNG).
-    dtype : typing.Type[typing.Union[np.float32, np.float64, float]]
-        ??? (default: **np.float64**).
+    lonlat : bool, default: **True**
+        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.
+    rng : typing.Optional[np.random.Generator], default: **None** ≡ the default RNG
+        Random number generator.
+    dtype : typing.Type[typing.Union[np.float32, np.float64, float]], default: **np.float64**
+        Desired data-type for the new array.
     """
 
     if rng is None:

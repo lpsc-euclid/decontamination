@@ -186,30 +186,30 @@ def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = N
     ----------
     weights : np.ndarray
         Weights of the map.
-    topology : typing.Optional[str]
-        Topology of the map, either **'square'** or **'hexagonal'** (default: **None** ≡ **'hexagonal'**).
-    v_min : float
-        Minimum color scale (default: **None** ≡ min(weights)).
-    v_max : float
-        Maximum color scale (default: **None** ≡ max(weights)).
-    cmap : str
-        Color map (default: **'viridis'**).
-    n_hist_bins : int
-        Number of histogram bins in the colorbar (default: **100**).
-    cluster_ids : typing.Optional[np.ndarray]
-        Array of cluster identifiers (see :class:`Clustering <decontamination.algo.clustering.Clustering>`, default: **None**).
-    log_scale : bool
-        Specifies whether to enable the logarithm scaling (default: **False**).
-    antialiased : bool
-        Specifies whether to enable the antialiasing (default: **False**).
-    show_frame : bool
-        Specifies whether to display the frame (default: **True**).
-    show_colorbar : bool
-        Specifies whether to display the colorbar (default: **True**).
-    show_histogram : bool
-        Specifies whether to display the histogram (default: **True**).
-    show_cluster_labels : bool
-        Specifies whether to display the cluster labels (default: **False**).
+    topology : typing.Optional[str], default: **None** ≡ **'hexagonal'**
+        Topology of the map, either **'square'** or **'hexagonal'**.
+    v_min : float, default: **None** ≡ min(weights)
+        Minimum color scale.
+    v_max : float, default: **None** ≡ max(weights)
+        Maximum color scale.
+    cmap : str, default: **'viridis'**
+        Color map.
+    n_hist_bins : int, default: **100**
+        Number of histogram bins in the colorbar.
+    cluster_ids : typing.Optional[np.ndarray], default: **None**
+        Array of cluster identifiers (see :class:`Clustering <decontamination.algo.clustering.Clustering>`).
+    log_scale : bool, default: **False**
+        Specifies whether to enable the logarithm scaling.
+    antialiased : bool, default: **False**
+        Specifies whether to enable the antialiasing.
+    show_frame : bool, default: **True**
+        Specifies whether to display the frame.
+    show_colorbar : bool, default: **True**
+        Specifies whether to display the colorbar.
+    show_histogram : bool, default: **True**
+        Specifies whether to display the histogram.
+    show_cluster_labels : bool, default: **False**
+        Specifies whether to display the cluster labels.
     """
 
     ####################################################################################################################

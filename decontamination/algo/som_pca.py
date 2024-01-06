@@ -29,10 +29,10 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         Number of neuron columns.
     dim : int
         Dimensionality of the input data.
-    dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
-        Neural network data type, either **np.float32** or **np.float64** (default: **np.float32**).
-    topology : typing.Optional[str]
-        Neural network topology, either **'square'** or **'hexagonal'** (default: **None** ≡ **'hexagonal'**).
+    dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]], default: **np.float32**
+        Neural network data type, either **np.float32** or **np.float64**.
+    topology : typing.Optional[str], default: **None** ≡ **'hexagonal'**
+        Neural network topology, either **'square'** or **'hexagonal'**.
     """
 
     __MODE__ = 'pca'
@@ -181,12 +181,12 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
-        min_weight : float
-            Latent space minimum value (default: **O.O**).
-        max_weight : float
-            Latent space maximum value (default: **1.O**).
-        show_progress_bar : bool
-            Specifies whether to display a progress bar (default: **False**).
+        min_weight : float, default: **0.0**
+            Latent space minimum value.
+        max_weight : float, default: **1.0**
+            Latent space maximum value.
+        show_progress_bar : bool, default: **False**
+            Specifies whether to display a progress bar.
         """
 
         ################################################################################################################

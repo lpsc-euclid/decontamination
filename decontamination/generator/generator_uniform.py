@@ -21,12 +21,12 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
         The HEALPix nside parameter.
     footprint : np.ndarray
         HEALPix indices of the region where galaxies are generated.
-    nest : bool
-        If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: **True**).
-    lonlat : bool
-        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians (default: **True**).
-    seed : typing.Optional[int]
-        Seed for random generators (default: **None**).
+    nest : bool, default: **True**
+        If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering.
+    lonlat : bool, default: **True**
+        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.
+    seed : typing.Optional[int], default: **None**
+        Seed for random generators.
     """
 
     ####################################################################################################################
@@ -46,10 +46,10 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
         Parameters
         ----------
-        mean_density : float
-            Mean number of galaxies per HEALPix pixel (default: **10.0**).
-        n_max_per_batch : typing.Optional[int]
-            Maximum number of galaxy positions to yield in one batch (default: **None**).
+        mean_density : float, default: **10.0**
+            Mean number of galaxies per HEALPix pixel.
+        n_max_per_batch : typing.Optional[int], default: **None**
+            Maximum number of galaxy positions to yield in one batch.
 
         Returns
         -------

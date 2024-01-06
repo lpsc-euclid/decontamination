@@ -103,9 +103,9 @@
 <p>Angular correlation function from power spectrum.</p>
 <div class="math notranslate nohighlight">
 \[\xi(\theta)=\frac{1}{\sqrt{4\pi}}\sum_{l=0}^{2\times\text{nside}}(2l+1)\,C_l\,P_l(\cos\theta)\]</div>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>catalog_lon</strong><span class="classifier">np.ndarray</span></dt><dd><p>Galaxy catalog longitudes (in degrees).</p>
 </dd>
 <dt><strong>catalog_lat</strong><span class="classifier">np.ndarray</span></dt><dd><p>Galaxy catalog latitudes (in degrees).</p>
@@ -122,7 +122,7 @@
 </dd>
 <dt><strong>n_bins</strong><span class="classifier">int</span></dt><dd><p>Number of angular bins.</p>
 </dd>
-<dt><strong>library</strong><span class="classifier">str, default: xpol</span></dt><dd><p>Library to be used for calculating the <span class="math notranslate nohighlight">\(C_l\)</span> inside the footprint (“xpol”, “healpy”).</p>
+<dt><strong>library</strong><span class="classifier">str, default: <strong>‘xpol’</strong></span></dt><dd><p>Library to be used for calculating the <span class="math notranslate nohighlight">\(C_l\)</span> inside the footprint (<strong>‘xpol’</strong>, <strong>‘anafast’</strong>).</p>
 </dd>
 </dl>
 </dd>
@@ -304,17 +304,17 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.correlation.apodization">
 <span class="sig-prename descclassname"><span class="pre">decontamination.correlation.</span></span><span class="sig-name descname"><span class="pre">apodization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">full_sky_footprint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fwhm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.correlation.apodization" title="Link to this definition">¶</a></dt>
-<dd><p>Applies Gaussian smoothing to a full-sky map for edge minimization (= apodizedization).</p>
-<dl class="field-list simple">
+<dd><p>Applies Gaussian smoothing to a full-sky map for edge minimization (= apodization).</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>full_sky_footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>The input full-sky footprint to be apodized.</p>
 </dd>
 <dt><strong>fwhm</strong><span class="classifier">float</span></dt><dd><p>The full width half max parameter of the Gaussian (in arcmins).</p>
 </dd>
-<dt><strong>threshold</strong><span class="classifier">float, default: 1.0e-5</span></dt><dd><p>Sets lower and upper value limits to mitigate extreme values after smoothing.</p>
+<dt><strong>threshold</strong><span class="classifier">float, default: <strong>1.0e-5</strong></span></dt><dd><p>Sets lower and upper value limits to mitigate extreme values after smoothing.</p>
 </dd>
-<dt><strong>nest</strong><span class="classifier">bool, default: True</span></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: <strong>True</strong>).</p>
+<dt><strong>nest</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering.</p>
 </dd>
 </dl>
 </dd>

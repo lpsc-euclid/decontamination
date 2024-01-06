@@ -348,14 +348,14 @@ class jit(object):
 
     Parameters
     ----------
-    kernel : bool
-        Indicates whether this function is a CPU/GPU kernel (default: **False**).
-    inline : bool
-        Indicates whether this function must be inlined  (default: **False**).
-    fastmath : bool
-        Enables *fast math* optimizations when running on CPU (default: **False**).
-    parallel : bool
-        Enables parallelization when running on CPU (default: **False**).
+    kernel : bool, default: **False**
+        Indicates whether this function is a CPU/GPU kernel.
+    inline : bool, default: **False**
+        Indicates whether this function must be inlined.
+    fastmath : bool, default: **False**
+        Enables *fast math* optimizations when running on CPU.
+    parallel : bool, default: **False**
+        Enables parallelization when running on CPU.
     """
 
     ####################################################################################################################

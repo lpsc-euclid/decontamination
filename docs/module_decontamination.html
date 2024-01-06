@@ -76,9 +76,9 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.decontamination.decontamination_som.</span></span><span class="sig-name descname"><span class="pre">Decontamination_SOM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch:</span> <span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">'hexagonal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Systematics decontamination using the <em>Self Organizing Map</em> method.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>Number of neuron rows.</p>
 </dd>
 <dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>Number of neuron columns.</p>
@@ -87,13 +87,13 @@
 </dd>
 <dt><strong>batch</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to train parallel (<strong>True</strong>) or iterative (<strong>False</strong>).</p>
 </dd>
-<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong> (default: <strong>np.float32</strong>).</p>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;, default: <strong>np.float32</strong></span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong>.</p>
 </dd>
-<dt><strong>topology</strong><span class="classifier">Optional[str]</span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong> (default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong>).</p>
+<dt><strong>topology</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
 </dd>
-<dt><strong>alpha</strong><span class="classifier">float</span></dt><dd><p>Starting value of the learning rate (default: <strong>None</strong> ≡ <strong>0.3</strong>, iterative training only).</p>
+<dt><strong>alpha</strong><span class="classifier">float, default: <strong>None</strong> ≡ <strong>0.3</strong>, iterative training only</span></dt><dd><p>Starting value of the learning rate.</p>
 </dd>
-<dt><strong>sigma</strong><span class="classifier">float</span></dt><dd><p>Starting value of the neighborhood radius (default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mathrm{max}(m,n)/2\)</span>).</p>
+<dt><strong>sigma</strong><span class="classifier">float, default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mathrm{max}(m,n)/2\)</span></span></dt><dd><p>Starting value of the neighborhood radius.</p>
 </dd>
 </dl>
 </dd>
@@ -366,24 +366,24 @@
 <dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.train">
 <span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catalog_systematics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint_systematics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_vectors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_error_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.train" title="Link to this definition">¶</a></dt>
 <dd><p>???</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>catalog_systematics</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Dataset array or generator builder of systematics for the catalog.</p>
 </dd>
 <dt><strong>footprint_systematics</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Dataset array or generator builder of systematics for the footprint.</p>
 </dd>
-<dt><strong>n_epochs</strong><span class="classifier">Optional[int]</span></dt><dd><p>Number of epochs to train for (default: <strong>None</strong>).</p>
+<dt><strong>n_epochs</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Number of epochs to train for.</p>
 </dd>
-<dt><strong>n_vectors</strong><span class="classifier">Optional[int]</span></dt><dd><p>Number of vectors to train for (default: <strong>None</strong>).</p>
+<dt><strong>n_vectors</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Number of vectors to train for.</p>
 </dd>
-<dt><strong>n_error_bins</strong><span class="classifier">int</span></dt><dd><p>Number of quantization and topographic error bins (default: <strong>10</strong>).</p>
+<dt><strong>n_error_bins</strong><span class="classifier">int, default: <strong>10</strong></span></dt><dd><p>Number of quantization and topographic error bins.</p>
 </dd>
-<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>True</strong>).</p>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
-<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+<dt><strong>enable_gpu</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If available, run on GPU rather than CPU.</p>
 </dd>
-<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int, default: <strong>1024</strong></span></dt><dd><p>Number of GPU threads per blocks.</p>
 </dd>
 </dl>
 </dd>
@@ -394,14 +394,14 @@
 <dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_gndm">
 <span class="sig-name descname"><span class="pre">compute_gndm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_gndm" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the Galaxy Number Density Map from the SOM.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>True</strong>).</p>
+<dd class="field-odd"><dl>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
-<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+<dt><strong>enable_gpu</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If available, run on GPU rather than CPU.</p>
 </dd>
-<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int, default: <strong>1024</strong></span></dt><dd><p>Number of GPU threads per blocks.</p>
 </dd>
 </dl>
 </dd>
@@ -412,16 +412,16 @@
 <dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_clustered_gndm">
 <span class="sig-name descname"><span class="pre">compute_clustered_gndm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_clusters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_clustered_gndm" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the clustered Galaxy Number Density Map from the SOM.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>n_clusters</strong><span class="classifier">int</span></dt><dd><p>Desired number latent space clusters.</p>
 </dd>
-<dt><strong>show_progress_bar</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to display a progress bar (default: <strong>True</strong>).</p>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
-<dt><strong>enable_gpu</strong><span class="classifier">bool</span></dt><dd><p>If available, run on GPU rather than CPU (default: <strong>True</strong>).</p>
+<dt><strong>enable_gpu</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If available, run on GPU rather than CPU.</p>
 </dd>
-<dt><strong>threads_per_blocks</strong><span class="classifier">int</span></dt><dd><p>Number of GPU threads per blocks (default: <strong>1024</strong>).</p>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int, default: <strong>1024</strong></span></dt><dd><p>Number of GPU threads per blocks.</p>
 </dd>
 </dl>
 </dd>

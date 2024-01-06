@@ -27,10 +27,10 @@ class SOM_Abstract(object):
         Number of neuron columns.
     dim : int
         Dimensionality of the input data.
-    dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
-        Neural network data type, either **np.float32** or **np.float64** (default: **np.float32**).
-    topology : typing.Optional[str]
-        Neural network topology, either **'square'** or **'hexagonal'** (default: **None** ≡ **'hexagonal'**).
+    dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]], default: **np.float32**
+        Neural network data type, either **np.float32** or **np.float64**.
+    topology : typing.Optional[str], default: **None** ≡ **'hexagonal'**
+        Neural network topology, either **'square'** or **'hexagonal'**.
     """
 
     __MODE__ = 'abstract'
@@ -111,8 +111,8 @@ class SOM_Abstract(object):
 
         Parameters
         ----------
-        seed : typing.Optional[int]
-            Seed for random generator (default: **None**).
+        seed : typing.Optional[int], default: **None**
+            Seed for random generator.
         """
 
         ################################################################################################################
@@ -471,8 +471,8 @@ class SOM_Abstract(object):
 
         Parameters
         ----------
-        scaling : typing.Optional[str]
-            Normalization method, either '**sum**' or '**mean**' (default: **None** ≡ '**sum**').
+        scaling : typing.Optional[str], default: **None** ≡ '**sum**'
+            Normalization method, either '**sum**' or '**mean**'.
         """
 
         scaling = scaling or 'sum'
@@ -517,12 +517,12 @@ class SOM_Abstract(object):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Dataset array or generator builder.
-        show_progress_bar : bool
-            Specifies whether to display a progress bar (default: **False**).
-        enable_gpu : bool
-            If available, run on GPU rather than CPU (default: **True**).
-        threads_per_blocks : int
-            Number of GPU threads per blocks (default: **1024**).
+        show_progress_bar : bool, default: **False**
+            Specifies whether to display a progress bar.
+        enable_gpu : bool, default: **True**
+            If available, run on GPU rather than CPU.
+        threads_per_blocks : int, default: **1024**
+            Number of GPU threads per blocks.
         """
 
         ################################################################################################################
@@ -556,10 +556,10 @@ class SOM_Abstract(object):
         ----------
         dataset : np.ndarray
             Dataset array.
-        enable_gpu : bool
-            If available, run on GPU rather than CPU (default: **True**).
-        threads_per_blocks : int
-            Number of GPU threads per blocks (default: **1024**).
+        enable_gpu : bool, default: **True**
+            If available, run on GPU rather than CPU.
+        threads_per_blocks : int, default: **1024**
+            Number of GPU threads per blocks.
         """
 
         ################################################################################################################

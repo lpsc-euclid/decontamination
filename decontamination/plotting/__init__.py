@@ -24,12 +24,12 @@ def catalog_to_number_density(nside: int, pixels: np.ndarray, full_sky: np.ndarr
         Array of longitudes.
     lat : np.ndarray
         Array of latitudes.
-    nest : bool
-        If **True**, ordering scheme is *NESTED* (default: **True**).
-    lonlat : bool
-        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians (default: **True**).
-    n_sigma : float
-        Multiplier for standard deviations to set the resulting number density bounds (default: **2**).
+    nest : bool, default: **True**
+        If **True**, ordering scheme is *NESTED*.
+    lonlat : bool, default: **True**
+        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.
+    n_sigma : float, default: **2**
+        Multiplier for standard deviations to set the resulting number density bounds.
 
     Returns
     -------

@@ -88,16 +88,16 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
         HEALPix indices of the region to display.
     weights : np.ndarray
         HEALPix weights of the region to display.
-    nest : bool
-        If **True**, ordering scheme is *NESTED* (default: **True**).
-    cmap : str
-        Color map (default: **'jet'**).
-    norm : typing.Optional[str]
-        Color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping (default: **None**).
-    v_min : float
-        Minimum color scale (default: **None** ≡ min(weights)).
-    v_max : float
-        Maximum color scale (default: **None** ≡ max(weights)).
+    nest : bool, default: **True**
+        If **True**, ordering scheme is *NESTED*.
+    cmap : str, default: **'jet'**
+        Color map.
+    norm : typing.Optional[str], default: **None**
+        Color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping.
+    v_min : float, default: **None** ≡ min(weights)
+        Minimum color scale.
+    v_max : float, default: **None** ≡ max(weights)
+        Maximum color scale.
     """
 
     ####################################################################################################################
@@ -140,16 +140,16 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
         Array of longitudes.
     lat : np.ndarray
         Array of latitudes.
-    nest : bool
-        If **True**, ordering scheme is *NESTED* (default: **True**).
-    cmap : str
-        Color map (default: **'jet'**).
-    norm : typing.Optional[str]
-        Color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping (default: **'hist'**).
-    v_min : float
-        Minimum color scale (default: **None** ≡ (:math:`\\mu-n_\\sigma\\cdot\\sigma`).
-    v_max : float
-        Maximum color scale (default: **None** ≡ (:math:`\\mu+n_\\sigma\\cdot\\sigma`).
+    nest : bool, default: **True**
+        If **True**, ordering scheme is *NESTED*.
+    cmap : str, default: **'jet'**
+        Color map.
+    norm : typing.Optional[str], default: **'hist'**
+        Color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping.
+    v_min : float, default: **None** ≡ :math:`\\mu-n_\\sigma\\cdot\\sigma`
+        Minimum color scale.
+    v_max : float, default: **None** ≡ :math:`\\mu+n_\\sigma\\cdot\\sigma`
+        Maximum color scale.
     """
 
     ####################################################################################################################

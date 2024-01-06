@@ -25,14 +25,14 @@ class Decontamination_SOM(object):
         Dimensionality of the input data.
     batch : bool
         Specifies whether to train parallel (**True**) or iterative (**False**).
-    dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
-        Neural network data type, either **np.float32** or **np.float64** (default: **np.float32**).
-    topology : typing.Optional[str]
-        Neural network topology, either **'square'** or **'hexagonal'** (default: **None** ≡ **'hexagonal'**).
-    alpha : float
-        Starting value of the learning rate (default: **None** ≡ **0.3**, iterative training only).
-    sigma : float
-        Starting value of the neighborhood radius (default: **None** ≡ :math:`\\mathrm{max}(m,n)/2`).
+    dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]], default: **np.float32**
+        Neural network data type, either **np.float32** or **np.float64**.
+    topology : typing.Optional[str], default: **None** ≡ **'hexagonal'**
+        Neural network topology, either **'square'** or **'hexagonal'**.
+    alpha : float, default: **None** ≡ **0.3**, iterative training only
+        Starting value of the learning rate.
+    sigma : float, default: **None** ≡ :math:`\\mathrm{max}(m,n)/2`
+        Starting value of the neighborhood radius.
     """
 
     ####################################################################################################################
@@ -407,18 +407,18 @@ class Decontamination_SOM(object):
             Dataset array or generator builder of systematics for the catalog.
         footprint_systematics : typing.Union[np.ndarray, typing.Callable]
             Dataset array or generator builder of systematics for the footprint.
-        n_epochs : typing.Optional[int]
-            Number of epochs to train for (default: **None**).
-        n_vectors : typing.Optional[int]
-            Number of vectors to train for (default: **None**).
-        n_error_bins : int
-            Number of quantization and topographic error bins (default: **10**).
-        show_progress_bar : bool
-            Specifies whether to display a progress bar (default: **True**).
-        enable_gpu : bool
-            If available, run on GPU rather than CPU (default: **True**).
-        threads_per_blocks : int
-            Number of GPU threads per blocks (default: **1024**).
+        n_epochs : typing.Optional[int], default: **None**
+            Number of epochs to train for.
+        n_vectors : typing.Optional[int], default: **None**
+            Number of vectors to train for.
+        n_error_bins : int, default: **10**
+            Number of quantization and topographic error bins.
+        show_progress_bar : bool, default: **True**
+            Specifies whether to display a progress bar.
+        enable_gpu : bool, default: **True**
+            If available, run on GPU rather than CPU.
+        threads_per_blocks : int, default: **1024**
+            Number of GPU threads per blocks.
         """
 
         ################################################################################################################
@@ -492,12 +492,12 @@ class Decontamination_SOM(object):
 
         Parameters
         ----------
-        show_progress_bar : bool
-            Specifies whether to display a progress bar (default: **True**).
-        enable_gpu : bool
-            If available, run on GPU rather than CPU (default: **True**).
-        threads_per_blocks : int
-            Number of GPU threads per blocks (default: **1024**).
+        show_progress_bar : bool, default: **True**
+            Specifies whether to display a progress bar.
+        enable_gpu : bool, default: **True**
+            If available, run on GPU rather than CPU.
+        threads_per_blocks : int, default: **1024**
+            Number of GPU threads per blocks.
         """
 
         if self._catalog_systematics is None\
@@ -533,12 +533,12 @@ class Decontamination_SOM(object):
         ----------
         n_clusters : int
             Desired number latent space clusters.
-        show_progress_bar : bool
-            Specifies whether to display a progress bar (default: **True**).
-        enable_gpu : bool
-            If available, run on GPU rather than CPU (default: **True**).
-        threads_per_blocks : int
-            Number of GPU threads per blocks (default: **1024**).
+        show_progress_bar : bool, default: **True**
+            Specifies whether to display a progress bar.
+        enable_gpu : bool, default: **True**
+            If available, run on GPU rather than CPU.
+        threads_per_blocks : int, default: **1024**
+            Number of GPU threads per blocks.
         """
 
         m = self._som.m

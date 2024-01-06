@@ -20,8 +20,8 @@ class Generator_FullSkyUniform(object):
     ----------
     nside : int
         The HEALPix nside parameter.
-    seed : typing.Optional[int]
-        Seed for random generators (default: **None**).
+    seed : typing.Optional[int], default: **None**
+        Seed for random generators.
     """
 
     ####################################################################################################################
@@ -40,10 +40,10 @@ class Generator_FullSkyUniform(object):
 
         Parameters
         ----------
-        mean_density : float
-            Mean number of galaxies per HEALPix pixel (default: **10.0**).
-        n_max_per_batch : typing.Optional[int]
-            Maximum number of galaxy positions to yield in one batch (default: **None**).
+        mean_density : float, default: **10.0**
+            Mean number of galaxies per HEALPix pixel.
+        n_max_per_batch : typing.Optional[int], default: **None**
+            Maximum number of galaxy positions to yield in one batch.
 
         Returns
         -------

@@ -86,6 +86,8 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         self._footprint = hp.nest2ring(nside, footprint) if nest else footprint
 
+        # Anafast works only with the ring ordering!
+
         ################################################################################################################
         # BUILD THE FOOTPRINT                                                                                          #
         ################################################################################################################
@@ -107,7 +109,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
         # CORRELATE IT                                                                                                 #
         ################################################################################################################
 
-        self._dd = self._correlate(self._data_contrast, None)
+        self._dd = self._correlate(self._data_contrast)
 
     ####################################################################################################################
 
@@ -126,6 +128,13 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
     ####################################################################################################################
 
     @property
+    def library(self):
+
+        return self._library
+
+    ####################################################################################################################
+
+    @property
     def ell(self):
 
         return self._ell
@@ -136,13 +145,6 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
     def spectrum(self):
 
         return self._dd[0]
-
-    ####################################################################################################################
-
-    @property
-    def library(self):
-
-        return self._library
 
     ####################################################################################################################
 
@@ -160,7 +162,8 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         mean = np.mean(result[self._footprint])
 
-        result[self._footprint] = (result[self._footprint] - mean) / mean
+        result[self._footprint] -= mean
+        result[self._footprint] /= mean
 
         ################################################################################################################
 
@@ -184,7 +187,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def _correlate(self, contrast1: np.ndarray, contrast2: typing.Optional[np.ndarray]) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def _correlate(self, contrast1: np.ndarray, contrast2: typing.Optional[np.ndarray] = None) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         ################################################################################################################
         # LIBRARY = XPOL                                                                                               #
@@ -231,7 +234,9 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        self._ell = np.arange(cell.shape[0], dtype = np.int64)
+        if self._ell is None:
+
+            self._ell = np.arange(cell.shape[0], dtype = np.int64)
 
         ################################################################################################################
 
@@ -286,7 +291,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def _calculate_xy(self, contrast1: np.ndarray, contrast2: typing.Optional[np.ndarray]) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def _calculate_xy(self, contrast1: np.ndarray, contrast2: typing.Optional[np.ndarray] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         if contrast1 is self._data_contrast or contrast2 is not None:
 

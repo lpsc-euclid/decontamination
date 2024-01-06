@@ -6,7 +6,7 @@ import healpy as hp
 
 ########################################################################################################################
 
-def apodization(full_sky_map, fwhm, threshold = 1.0e-5, nest : bool = True):
+def apodization(full_sky_map: np.ndarray, fwhm: float, threshold: float = 1.0e-5, nest: bool = True) -> np.ndarray:
 
     """
     Applies Gaussian smoothing to a full-sky map for edge minimization (= apodization).

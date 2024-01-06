@@ -18,7 +18,7 @@ def apodization(full_sky_map, fwhm, threshold = 1.0e-5, nest : bool = True):
     fwhm : float
         The full width half max parameter of the Gaussian (in arcmins).
     threshold : float, default: **1.0e-5**
-        Sets lower and upper value limits to mitigate extreme values after smoothing.
+        Sets lower and upper limits to mitigate extreme values after smoothing.
     nest : bool, default: **True**
         If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering.
 

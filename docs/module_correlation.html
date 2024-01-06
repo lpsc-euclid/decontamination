@@ -299,6 +299,35 @@
 </dd></dl>
 
 </section>
+<section id="module-decontamination.correlation">
+<span id="utilities"></span><h2>Utilities<a class="headerlink" href="#module-decontamination.correlation" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="decontamination.correlation.apodization">
+<span class="sig-prename descclassname"><span class="pre">decontamination.correlation.</span></span><span class="sig-name descname"><span class="pre">apodization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">full_sky_footprint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fwhm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.correlation.apodization" title="Link to this definition">¶</a></dt>
+<dd><p>Applies Gaussian smoothing to a full-sky map for edge minimization (= apodizedization).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>full_sky_footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>The input full-sky footprint to be apodized.</p>
+</dd>
+<dt><strong>fwhm</strong><span class="classifier">float</span></dt><dd><p>The full width half max parameter of the Gaussian (in arcmins).</p>
+</dd>
+<dt><strong>threshold</strong><span class="classifier">float, default: 1.0e-5</span></dt><dd><p>Sets lower and upper value limits to mitigate extreme values after smoothing.</p>
+</dd>
+<dt><strong>nest</strong><span class="classifier">bool, default: True</span></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering (default: <strong>True</strong>).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>np.ndarray</dt><dd><p>Apodized version of the input full-sky footprint.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 
 
@@ -333,6 +362,10 @@
 <li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_bins"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount.n_bins</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-decontamination.correlation">Utilities</a><ul>
+<li><a class="reference internal" href="#decontamination.correlation.apodization"><code class="docutils literal notranslate"><span class="pre">apodization()</span></code></a></li>
 </ul>
 </li>
 </ul>

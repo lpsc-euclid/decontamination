@@ -62,7 +62,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        self._footprint = footprint
+        self._ell = None
 
         self._nside = nside
 
@@ -70,11 +70,21 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        self._theta = np.linspace(
-            np.radians(min_sep / 60.0),
-            np.radians(max_sep / 60.0),
+        self._theta_radian = np.linspace(
+            np.deg2rad(min_sep / 60.0),
+            np.deg2rad(max_sep / 60.0),
             n_bins
         )
+
+        self._theta_arcmin = np.linspace(
+            min_sep,
+            max_sep,
+            n_bins
+        )
+
+        ################################################################################################################
+
+        self._footprint = hp.nest2ring(nside, footprint) if nest else footprint
 
         ################################################################################################################
         # BUILD THE FOOTPRINT                                                                                          #
@@ -82,13 +92,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         self._full_sky_footprint = np.zeros(hp.nside2npix(nside), dtype = np.float32)
 
-        if nest:
-
-            self._full_sky_footprint[hp.nest2ring(nside, footprint)] = 1.0
-
-        else:
-
-            self._full_sky_footprint[footprint] = 1.0
+        self._full_sky_footprint[self._footprint] = 1.0
 
         ################################################################################################################
         # BUILD THE CONTRAST                                                                                           #
@@ -103,7 +107,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
         # CORRELATE IT                                                                                                 #
         ################################################################################################################
 
-        self._dd = self._calculate_xy(self._data_contrast, None)
+        self._dd = self._correlate(self._data_contrast, None)
 
     ####################################################################################################################
 
@@ -118,6 +122,20 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
     def nside(self):
 
         return self._nside
+
+    ####################################################################################################################
+
+    @property
+    def ell(self):
+
+        return self._ell
+
+    ####################################################################################################################
+
+    @property
+    def spectrum(self):
+
+        return self._dd[0]
 
     ####################################################################################################################
 
@@ -150,17 +168,23 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def _cell2correlation(self, ell, cell):
+    def _cell2power_spectrum(self, cell):
 
-        a = np.cos(self._theta)
+        return self._ell * (self._ell + 1.0) * cell
 
-        b = (2.0 * ell + 1.0) * cell
+    ####################################################################################################################
+
+    def _cell2correlation(self, cell):
+
+        a = np.cos(self._theta_radian)
+
+        b = (2.0 * self._ell + 1.0) * cell
 
         return np.polynomial.legendre.legval(a, b) / math.sqrt(4.0 * np.pi)
 
     ####################################################################################################################
 
-    def _correlate(self, contrast1: typing.Optional[np.ndarray], contrast2: typing.Optional[np.ndarray]) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def _correlate(self, contrast1: np.ndarray, contrast2: typing.Optional[np.ndarray]) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         ################################################################################################################
         # LIBRARY = XPOL                                                                                               #
@@ -174,9 +198,9 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
             ####
 
-            binning = xpol.Bins.fromdeltal(0, 2 * self._nside, 1)
+            bins = xpol.Bins.fromdeltal(0, 2 * self._nside, 1)
 
-            xp = xpol.Xpol(self._full_sky_footprint, bins = binning, polar = False, verbose = False)
+            xp = xpol.Xpol(self._full_sky_footprint, bins = bins, polar = False)
 
             cell, _ = xp.get_spectra(
                 m1 = contrast1,
@@ -199,19 +223,22 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
                 ma2 = hp.ma(contrast2)
                 ma2.mask = np.logical_not(self._full_sky_footprint)
 
-                cell = hp.anafast(map1 = ma1.filled(), map2 = ma2.filled(), lmax = 2 * self._nside)
+                cell = hp.anafast(map1 = ma1.filled(), map2 = ma2.filled(), lmax = 2 * self._nside, pol = False)
 
             else:
 
-                cell = hp.anafast(map1 = ma1.filled(), map2 = None, lmax = 2 * self._nside)
+                cell = hp.anafast(map1 = ma1.filled(), map2 = None, lmax = 2 * self._nside, pol = False)
 
         ################################################################################################################
 
-        ell = np.arange(cell.shape[0], dtype = np.int64)
+        self._ell = np.arange(cell.shape[0], dtype = np.int64)
 
         ################################################################################################################
 
-        return 60.0 * np.degrees(self._theta), self._cell2correlation(ell, cell)
+        return (
+            self._cell2power_spectrum(cell),
+            self._cell2correlation(cell),
+        )
 
     ####################################################################################################################
 
@@ -259,7 +286,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def _calculate_xy(self, contrast1: typing.Optional[np.ndarray], contrast2: typing.Optional[np.ndarray]) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def _calculate_xy(self, contrast1: np.ndarray, contrast2: typing.Optional[np.ndarray]) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         if contrast1 is self._data_contrast or contrast2 is not None:
 
@@ -271,14 +298,14 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        return xy[0], xy[1], np.zeros_like(xy[1])
+        return self._theta_arcmin, xy[1], np.zeros_like(xy[1])
 
     ####################################################################################################################
 
     def _calculate_xi(self, random_contrast: np.ndarray, with_dr: bool, with_rd: bool) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         dd = self._calculate_xy(self._data_contrast, None)
-        rr = self._calculate_xy(random_contrast, None)
+        rr = self._calculate_xy(  random_contrast  , None)
 
         if with_dr:
 

@@ -20,7 +20,7 @@ Galaxy generators - footprint
 .. automodule:: decontamination.generator.generator_number_density
    :members:
 
-Galaxy generators - full sky
+Galaxy generators - full-sky
 ----------------------------
 
 .. automodule:: decontamination.generator.generator_fullsky_uniform

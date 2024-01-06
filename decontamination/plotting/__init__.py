@@ -19,7 +19,7 @@ def catalog_to_number_density(nside: int, pixels: np.ndarray, full_sky: np.ndarr
     pixels : np.ndarray
         HEALPix indices of the region to consider.
     full_sky : np.ndarray
-        Resulting full sky number density (size: :math:`12\\cdot\\mathrm{nside}^2`).
+        Resulting full-sky number density (size: :math:`12\\cdot\\mathrm{nside}^2`).
     lon : np.ndarray
         Array of longitudes.
     lat : np.ndarray

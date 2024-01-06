@@ -27,15 +27,15 @@ def _get_bounding_box(nside: int, footprint: np.ndarray, nest: bool) -> typing.T
 
     lon %= 360
 
-    lon_rad = np.radians(lon)
-    lat_rad = np.radians(lat)
+    lon_rad = np.deg2rad(lon)
+    lat_rad = np.deg2rad(lat)
 
     x_mean = np.mean(np.cos(lat_rad) * np.cos(lon_rad))
     y_mean = np.mean(np.cos(lat_rad) * np.sin(lon_rad))
 
     ####################################################################################################################
 
-    lon_center = np.degrees(np.arctan2(y_mean, x_mean)) % 360
+    lon_center = np.rad2deg(np.arctan2(y_mean, x_mean)) % 360
 
     d_lon = (lon - lon_center + 180) % 360 - 180
 

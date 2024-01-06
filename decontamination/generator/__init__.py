@@ -67,8 +67,8 @@ def healpix_rand_ang(nside: int, pixels: np.ndarray, lonlat = False, rng: typing
 
     if lonlat:
 
-        lon = 00.0 + np.degrees(ϕ)
-        lat = 90.0 - np.degrees(θ)
+        lon = 00.0 + np.rad2deg(ϕ)
+        lat = 90.0 - np.rad2deg(θ)
 
         return lon, lat
 

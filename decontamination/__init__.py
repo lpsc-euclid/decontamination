@@ -94,7 +94,8 @@ __all__ = [
     'display_latent_space',
     'display_healpix', 'display_catalog',
     'Generator_Uniform', 'Generator_LogNormal', 'Generator_NumberDensity', 'Generator_FullSkyUniform',
-    'apodization', 'Correlation_PairCount', 'Correlation_PowerSpectrum',
+    'apodization',
+    'Correlation_PairCount', 'Correlation_PowerSpectrum',
     'Decontamination_SOM', 'Decontamination_ElasticNet', 'Decontamination_ISD',
 ]
 

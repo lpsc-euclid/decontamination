@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     np.random.seed(0)
 
-    cl = np.random.poisson(size = 2 * nside)
+    cl = np.random.uniform(size = 2 * nside)
 
     skymap = hp.synfast(cl, nside)
 

@@ -52,6 +52,16 @@ from .generator.generator_number_density import Generator_NumberDensity
 from .generator.generator_fullsky_uniform import Generator_FullSkyUniform
 
 ########################################################################################################################
+# CORRELATIONS                                                                                                         #
+########################################################################################################################
+
+from decontamination.correlation import apodization
+
+from decontamination.correlation.correlation_pair_count import Correlation_PairCount
+
+from decontamination.correlation.correlation_power_spectrum import Correlation_PowerSpectrum
+
+########################################################################################################################
 # DECONTAMINATION                                                                                                      #
 ########################################################################################################################
 
@@ -60,14 +70,6 @@ from .decontamination.decontamination_som import Decontamination_SOM
 from .decontamination.decontamination_elasticnet import Decontamination_ElasticNet
 
 from .decontamination.decontamination_isd import Decontamination_ISD
-
-########################################################################################################################
-# CORRELATIONS                                                                                                         #
-########################################################################################################################
-
-from decontamination.correlation.correlation_pair_count import Correlation_PairCount
-
-from decontamination.correlation.correlation_power_spectrum import Correlation_PowerSpectrum
 
 ########################################################################################################################
 # UTILITIES                                                                                                            #
@@ -92,8 +94,8 @@ __all__ = [
     'display_latent_space',
     'display_healpix', 'display_catalog',
     'Generator_Uniform', 'Generator_LogNormal', 'Generator_NumberDensity', 'Generator_FullSkyUniform',
+    'apodization', 'Correlation_PairCount', 'Correlation_PowerSpectrum',
     'Decontamination_SOM', 'Decontamination_ElasticNet', 'Decontamination_ISD',
-    'Correlation_PairCount', 'Correlation_PowerSpectrum',
 ]
 
 ########################################################################################################################

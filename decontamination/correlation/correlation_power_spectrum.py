@@ -54,7 +54,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def __init__(self, catalog_lon: np.ndarray, catalog_lat: np.ndarray, footprint: np.ndarray, nside: int, nest: bool, min_sep: float, max_sep: float, n_bins: int, library: str = 'xpol'):
+    def __init__(self, catalog_lon: np.ndarray, catalog_lat: np.ndarray, footprint: np.ndarray, nside: int, nest: bool, min_sep: float, max_sep: float, n_bins: int, l_max = None, library: str = 'xpol'):
 
         ################################################################################################################
 
@@ -62,11 +62,15 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        self._ell = None
-
         self._nside = nside
 
         self._library = library
+
+        ################################################################################################################
+
+        self._l = None
+
+        self._l_max = 2 * nside if l_max is None else l_max
 
         ################################################################################################################
 
@@ -135,16 +139,30 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
     ####################################################################################################################
 
     @property
-    def ell(self):
+    def l(self):
 
-        return self._ell
+        return self._l
 
     ####################################################################################################################
 
     @property
-    def spectrum(self):
+    def l_max(self):
+
+        return self._l_max
+
+    ####################################################################################################################
+
+    @property
+    def data_spectrum(self):
 
         return self._dd[0]
+
+    ####################################################################################################################
+
+    @property
+    def data_contrast(self):
+
+        return self._data_contrast
 
     ####################################################################################################################
 
@@ -171,19 +189,19 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def _cell2power_spectrum(self, cell):
+    def cell2power_spectrum(self, cl):
 
-        return self._ell * (self._ell + 1.0) * cell
+        return self._l * (self._l + 1.0) * cl
 
     ####################################################################################################################
 
-    def _cell2correlation(self, cell):
+    def cell2correlation(self, cl):
 
         a = np.cos(self._theta_radian)
 
-        b = (2.0 * self._ell + 1.0) * cell
+        b = (2.0 * self._l + 1.0) * cl
 
-        return np.polynomial.legendre.legval(a, b) / math.sqrt(4.0 * np.pi)
+        return np.polynomial.legendre.legval(a, b) / (4.0 * np.pi)
 
     ####################################################################################################################
 
@@ -201,11 +219,11 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
             ####
 
-            bins = xpol.Bins.fromdeltal(0, 2 * self._nside, 1)
+            bins = xpol.Bins.fromdeltal(0, self._l_max, 1)
 
             xp = xpol.Xpol(self._full_sky_footprint, bins = bins, polar = False)
 
-            cell, _ = xp.get_spectra(
+            cl, _ = xp.get_spectra(
                 m1 = contrast1,
                 m2 = contrast2,
                 pixwin = True,
@@ -226,23 +244,23 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
                 ma2 = hp.ma(contrast2)
                 ma2.mask = np.logical_not(self._full_sky_footprint)
 
-                cell = hp.anafast(map1 = ma1.filled(), map2 = ma2.filled(), lmax = 2 * self._nside, pol = False)
+                cl = hp.anafast(map1 = ma1.filled(), map2 = ma2.filled(), lmax = self._l_max, pol = False)
 
             else:
 
-                cell = hp.anafast(map1 = ma1.filled(), map2 = None, lmax = 2 * self._nside, pol = False)
+                cl = hp.anafast(map1 = ma1.filled(), map2 = None, lmax = self._l_max, pol = False)
 
         ################################################################################################################
 
-        if self._ell is None:
+        if self._l is None:
 
-            self._ell = np.arange(cell.shape[0], dtype = np.int64)
+            self._l = np.arange(cl.shape[0], dtype = np.int64)
 
         ################################################################################################################
 
         return (
-            self._cell2power_spectrum(cell),
-            self._cell2correlation(cell),
+            self.cell2power_spectrum(cl),
+            self.cell2correlation(cl),
         )
 
     ####################################################################################################################

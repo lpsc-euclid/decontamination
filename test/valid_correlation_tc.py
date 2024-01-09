@@ -80,52 +80,13 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    uniform_ra = np.array([], dtype = np.float32)
-    uniform_dec = np.array([], dtype = np.float32)
-
-    generator2 = decontamination.Generator_FullSkyUniform(nside, seed = None)
-
-    for lon, lat in tqdm.tqdm(generator2.generate(10.0, n_max_per_batch = 1000)):
-
-        uniform_ra = np.concatenate((uniform_ra, lon))
-        uniform_dec = np.concatenate((uniform_dec, lat))
-
-    ####################################################################################################################
-
-    n_catalog = len(catalog_ra)
-    n_uniform = len(uniform_ra)
-
-    print('#catalog', n_catalog)
-    print('#uniform', n_uniform)
-
-    ####################################################################################################################
-
     correlation1 = decontamination.Correlation_PairCount(catalog_ra, catalog_dec, 3.0, 1500.0, 300)
 
     theta1, w_theta1, _ = correlation1.calculate('dd')
 
-    theta2, w_theta2, _ = correlation1.calculate(
-        'peebles_hauser',
-        random_lon = uniform_ra,
-        random_lat = uniform_dec
-    )
-
     ####################################################################################################################
 
-    correlation2 = decontamination.Correlation_PowerSpectrum(catalog_ra, catalog_dec, footprint, nside, False, 3.0, 1500.0, 300, library = 'anafast')
-    #correlation2 = decontamination.Correlation_PowerSpectrum(catalog_ra, catalog_dec, footprint, nside, False, 3.0, 1500.0, 300, library = 'xpol')
-
-    theta3, w_theta3, _ = correlation2.calculate('dd')
-
-    ####################################################################################################################
-
-    hp.mollview(correlation2.data_contrast)
-    plt.show()
-
-    ####################################################################################################################
-
-    plt.scatter(x = theta3, y = theta3 * correlation2.cell2correlation(cl_th), label = 'th')
-    plt.scatter(x = theta3, y = theta3 * correlation2.cell2correlation(cl_reco), label = 'reco')
+    plt.scatter(x = theta1, y = theta1 * w_theta1, label = 'treecorr')
     plt.xlabel('θ [arcmin]')
     plt.ylabel('θw(θ)')
     #plt.semilogx()
@@ -134,29 +95,8 @@ if __name__ == '__main__':
     plt.legend()
     plt.show()
 
-    plt.scatter(x = theta2, y = theta2 * w_theta2, label = 'treecorr')
-    plt.scatter(x = theta3, y = theta3 * w_theta3, label = 'xpol')
-    plt.xlabel('θ [arcmin]')
-    plt.ylabel('θw(θ)')
-    #plt.semilogx()
-    #plt.semilogy()
-    plt.grid()
-    plt.legend()
-    plt.show()
+    ####################################################################################################################
 
-    plt.plot(correlation2.l, correlation2.cell2power_spectrum(cl_th), label = 'th')
-    plt.plot(correlation2.l, correlation2.cell2power_spectrum(cl_reco), label = 'reco')
-    plt.xlabel('l')
-    plt.ylabel('power spectrum')
-    plt.grid()
-    plt.legend()
-    plt.show()
-
-    plt.plot(correlation2.l, correlation2.data_spectrum, label = 'xpol')
-    plt.xlabel('l')
-    plt.ylabel('power spectrum')
-    plt.grid()
-    plt.legend()
-    plt.show()
+    print('bye')
 
 ########################################################################################################################

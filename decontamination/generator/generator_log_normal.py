@@ -54,7 +54,7 @@ class Generator_LogNormal(generator_abstract.Generator_Abstract):
         Returns
         -------
         typing.Tuple[np.ndarray, np.ndarray]
-            Galaxy catalog (longitudes and latitudes).
+            Galaxy catalog (longitudes and latitudes) in degrees.
         """
 
         ################################################################################################################

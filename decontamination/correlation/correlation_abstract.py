@@ -17,6 +17,7 @@ class Correlation_Abstract(abc.ABC):
 
         self._min_sep = min_sep
         self._max_sep = max_sep
+
         self._n_bins = n_bins
 
     ####################################################################################################################

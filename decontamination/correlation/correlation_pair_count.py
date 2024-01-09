@@ -142,9 +142,9 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        xi_theta = xy.npairs / xy.tot
+        xi_theta = np.diff(xy.npairs, prepend = 0)
 
-        xi_theta_error = np.sqrt(xy.npairs) / xy.tot
+        xi_theta_error = np.sqrt(xy.npairs)
 
         ################################################################################################################
 

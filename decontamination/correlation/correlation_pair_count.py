@@ -41,7 +41,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def __init__(self, catalog_lon: np.ndarray, catalog_lat: np.ndarray, min_sep: float, max_sep: float, n_bins: int):
+    def __init__(self, catalog_lon: np.ndarray, catalog_lat: np.ndarray, min_sep: float, max_sep: float, n_bins: int, kappa: typing.Optional[np.ndarray] = None):
 
         ################################################################################################################
 
@@ -59,7 +59,8 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
             ra = catalog_lon,
             dec = catalog_lat,
             ra_units = 'degrees',
-            dec_units = 'degrees'
+            dec_units = 'degrees',
+            k = kappa
         )
 
         ################################################################################################################
@@ -72,7 +73,13 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     def _correlate(self, catalog1: 'treecorr.Catalog', catalog2: typing.Optional['treecorr.Catalog'] = None) -> 'treecorr.NNCorrelation':
 
-        result = treecorr.NNCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, sep_units = 'arcmin')
+        if catalog1.k is None:
+
+            result = treecorr.NNCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, sep_units = 'arcmin')
+
+        else:
+
+            result = treecorr.KKCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, sep_units = 'arcmin')
 
         result.process(catalog1, catalog2)
 
@@ -80,7 +87,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def calculate(self, estimator: str, random_lon: typing.Optional[np.ndarray] = None, random_lat: typing.Optional[np.ndarray] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def calculate(self, estimator: str, random_lon: typing.Optional[np.ndarray] = None, random_lat: typing.Optional[np.ndarray] = None, random_kappa: typing.Optional[np.ndarray] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
@@ -102,7 +109,8 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
             ra = random_lon,
             dec = random_lat,
             ra_units = 'degrees',
-            dec_units = 'degrees'
+            dec_units = 'degrees',
+            k = random_kappa
         )
 
         ################################################################################################################
@@ -144,7 +152,12 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         xi_theta = np.diff(xy.npairs, prepend = 0)
 
-        xi_theta_error = np.sqrt(xy.npairs)
+        xi_theta_error = np.sqrt(xi_theta)
+
+        n = np.sum(xi_theta)
+
+        xi_theta /= n
+        xi_theta_error /= n
 
         ################################################################################################################
 

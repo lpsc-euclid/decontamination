@@ -150,14 +150,22 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        xi_theta = np.diff(xy.npairs, prepend = 0)
+        if catalog1.k is None:
 
-        xi_theta_error = np.sqrt(xi_theta)
+            xi_theta = np.diff(xy.npairs, prepend = 0)
 
-        n = np.sum(xi_theta)
+            xi_theta_error = np.sqrt(xi_theta)
 
-        xi_theta /= n
-        xi_theta_error /= n
+            n = np.sum(xi_theta)
+
+            xi_theta /= n
+            xi_theta_error /= n
+
+        else:
+
+            xi_theta = xy.xi
+
+            xi_theta_error = np.sqrt(xy.varxi)
 
         ################################################################################################################
 

@@ -116,8 +116,8 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
                 dec = lat,
                 ra_units = 'degrees',
                 dec_units = 'degrees',
-                k = data_contrast,
-                w = self._coverage
+                k = data_contrast[self._footprint],
+                w = np.ones(self._footprint.shape[0], dtype = np.float32) if self._coverage is None else self._coverage
             )
 
     ####################################################################################################################

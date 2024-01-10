@@ -37,15 +37,21 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         Maximum galaxy separation being considered (in arcmins).
     n_bins : int
         Number of angular bins.
+    bin_slop : typing.Optional[float]
+        ???
+    kappa : typing.Optional[np.ndarray]
+        ???
     """
 
     ####################################################################################################################
 
-    def __init__(self, catalog_lon: np.ndarray, catalog_lat: np.ndarray, min_sep: float, max_sep: float, n_bins: int, kappa: typing.Optional[np.ndarray] = None):
+    def __init__(self, catalog_lon: np.ndarray, catalog_lat: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, kappa: typing.Optional[np.ndarray] = None):
 
         ################################################################################################################
 
         super().__init__(min_sep, max_sep, n_bins)
+
+        self._bin_slop = bin_slop
 
         ################################################################################################################
 
@@ -75,11 +81,11 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         if catalog1.k is None:
 
-            result = treecorr.NNCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, sep_units = 'arcmin')
+            result = treecorr.NNCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, bin_slop = self._bin_slop, sep_units = 'arcmin')
 
         else:
 
-            result = treecorr.KKCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, sep_units = 'arcmin')
+            result = treecorr.KKCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, bin_slop = self._bin_slop, sep_units = 'arcmin')
 
         result.process(catalog1, catalog2)
 

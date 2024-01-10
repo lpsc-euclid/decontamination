@@ -112,20 +112,26 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    correlation2 = decontamination.Correlation_PowerSpectrum(catalog_ra, catalog_dec, footprint, nside, False, 3.0, 1500.0, 300, library = 'anafast')
-    #correlation2 = decontamination.Correlation_PowerSpectrum(catalog_ra, catalog_dec, footprint, nside, False, 3.0, 1500.0, 300, library = 'xpol')
+    correlation2 = decontamination.Correlation_PairCount(catalog_ra, catalog_dec, 3.0, 1500.0, 300, footprint = footprint, nside = nside, nest = False)
 
     theta3, w_theta3, _ = correlation2.calculate('dd')
 
     ####################################################################################################################
 
-    hp.mollview(correlation2.data_contrast)
+    correlation3 = decontamination.Correlation_PowerSpectrum(catalog_ra, catalog_dec, footprint, nside, False, 3.0, 1500.0, 300, library ='anafast')
+    #correlation3 = decontamination.Correlation_PowerSpectrum(catalog_ra, catalog_dec, footprint, nside, False, 3.0, 1500.0, 300, library = 'xpol')
+
+    theta4, w_theta4, _ = correlation3.calculate('dd')
+
+    ####################################################################################################################
+
+    hp.mollview(correlation3.data_contrast)
     plt.show()
 
     ####################################################################################################################
 
-    plt.scatter(x = theta3, y = theta3 * correlation2.cell2correlation(cl_th), label = 'th')
-    plt.scatter(x = theta3, y = theta3 * correlation2.cell2correlation(cl_reco), label = 'reco')
+    plt.scatter(x = theta4, y = theta4 * correlation3.cell2correlation(cl_th), label ='th')
+    plt.scatter(x = theta4, y = theta4 * correlation3.cell2correlation(cl_reco), label ='reco')
     plt.xlabel('θ [arcmin]')
     plt.ylabel('θw(θ)')
     #plt.semilogx()
@@ -134,8 +140,9 @@ if __name__ == '__main__':
     plt.legend()
     plt.show()
 
-    plt.scatter(x = theta2, y = theta2 * w_theta2, label = 'treecorr')
-    plt.scatter(x = theta3, y = theta3 * w_theta3, label = 'xpol')
+    plt.scatter(x = theta2, y = theta2 * w_theta2, label = 'NN')
+    plt.scatter(x = theta3, y = theta3 * w_theta3, label = 'KK')
+    plt.scatter(x = theta4, y = theta4 * w_theta4, label ='xpol')
     plt.xlabel('θ [arcmin]')
     plt.ylabel('θw(θ)')
     #plt.semilogx()
@@ -144,15 +151,15 @@ if __name__ == '__main__':
     plt.legend()
     plt.show()
 
-    plt.plot(correlation2.l, correlation2.cell2power_spectrum(cl_th), label = 'th')
-    plt.plot(correlation2.l, correlation2.cell2power_spectrum(cl_reco), label = 'reco')
+    plt.plot(correlation3.l, correlation3.cell2power_spectrum(cl_th), label = 'th')
+    plt.plot(correlation3.l, correlation3.cell2power_spectrum(cl_reco), label = 'reco')
     plt.xlabel('l')
     plt.ylabel('power spectrum')
     plt.grid()
     plt.legend()
     plt.show()
 
-    plt.plot(correlation2.l, correlation2.data_spectrum, label = 'xpol')
+    plt.plot(correlation3.l, correlation3.data_spectrum, label = 'xpol')
     plt.xlabel('l')
     plt.ylabel('power spectrum')
     plt.grid()

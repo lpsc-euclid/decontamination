@@ -24,7 +24,10 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    nside = 64
+    nside = 128
+
+    library = 'xpol'
+    #library = 'anafast'
 
     ####################################################################################################################
 
@@ -48,10 +51,10 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    min = np.min(skymap)
-    max = np.max(skymap)
+    skymap_min = np.min(skymap)
+    skymap_max = np.max(skymap)
 
-    skymap = (skymap - min) / (max - min)
+    skymap = (skymap - skymap_min) / (skymap_max - skymap_min)
 
     hp.mollview(skymap)
     plt.show()
@@ -62,6 +65,8 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
+    print('Generating data catalog...')
+
     catalog_ra = np.array([], dtype = np.float32)
     catalog_dec = np.array([], dtype = np.float32)
 
@@ -71,7 +76,7 @@ if __name__ == '__main__':
 
         pix = hp.ang2pix(nside, lon, lat, nest = False, lonlat = True)
 
-        n = np.random.uniform(size = pix.shape[0])
+        n = np.random.uniform(size = pix.size)
 
         ok = np.where((1.0 - skymap[pix]) < n)[0]
 
@@ -79,6 +84,8 @@ if __name__ == '__main__':
         catalog_dec = np.concatenate((catalog_dec, lat[ok]))
 
     ####################################################################################################################
+
+    print('Generating uniform catalog...')
 
     uniform_ra = np.array([], dtype = np.float32)
     uniform_dec = np.array([], dtype = np.float32)
@@ -92,19 +99,11 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    n_catalog = len(catalog_ra)
-    n_uniform = len(uniform_ra)
-
-    print('#catalog', n_catalog)
-    print('#uniform', n_uniform)
-
-    ####################################################################################################################
+    print('NN correlation...')
 
     correlation1 = decontamination.Correlation_PairCount(catalog_ra, catalog_dec, 3.0, 1500.0, 300)
 
-    theta1, w_theta1, _ = correlation1.calculate('dd')
-
-    theta2, w_theta2, _ = correlation1.calculate(
+    theta1, w_theta1, _ = correlation1.calculate(
         'peebles_hauser',
         random_lon = uniform_ra,
         random_lat = uniform_dec
@@ -112,16 +111,23 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
+    print('KK correlation...')
+
     correlation2 = decontamination.Correlation_PairCount(catalog_ra, catalog_dec, 3.0, 1500.0, 300, footprint = footprint, nside = nside, nest = False)
 
-    theta3, w_theta3, _ = correlation2.calculate('dd')
+    theta2, w_theta2, _ = correlation2.calculate('dd')
 
     ####################################################################################################################
 
-    correlation3 = decontamination.Correlation_PowerSpectrum(catalog_ra, catalog_dec, footprint, nside, False, 3.0, 1500.0, 300, library ='anafast')
-    #correlation3 = decontamination.Correlation_PowerSpectrum(catalog_ra, catalog_dec, footprint, nside, False, 3.0, 1500.0, 300, library = 'xpol')
+    print('XPol correlation...')
 
-    theta4, w_theta4, _ = correlation3.calculate('dd')
+    correlation3 = decontamination.Correlation_PowerSpectrum(catalog_ra, catalog_dec, footprint, nside, False, 3.0, 1500.0, 300, library = library)
+
+    theta3, w_theta3, _ = correlation3.calculate('dd')
+
+    ####################################################################################################################
+
+    print('done.')
 
     ####################################################################################################################
 
@@ -130,8 +136,8 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    plt.scatter(x = theta4, y = theta4 * correlation3.cell2correlation(cl_th), label ='th')
-    plt.scatter(x = theta4, y = theta4 * correlation3.cell2correlation(cl_reco), label ='reco')
+    plt.scatter(x = theta3, y = theta3 * correlation3.cell2correlation(cl_th), label = 'th')
+    plt.scatter(x = theta3, y = theta3 * correlation3.cell2correlation(cl_reco), label = 'reco')
     plt.xlabel('θ [arcmin]')
     plt.ylabel('θw(θ)')
     #plt.semilogx()
@@ -140,9 +146,9 @@ if __name__ == '__main__':
     plt.legend()
     plt.show()
 
-    plt.scatter(x = theta2, y = theta2 * w_theta2, label = 'NN')
-    plt.scatter(x = theta3, y = theta3 * w_theta3, label = 'KK')
-    plt.scatter(x = theta4, y = theta4 * w_theta4, label ='xpol')
+    plt.scatter(x = theta1, y = theta1 * w_theta1, marker = '.', label = 'NN')
+    plt.scatter(x = theta2, y = theta2 * w_theta2, marker = '.', label = 'KK')
+    plt.scatter(x = theta3, y = theta3 * w_theta3, marker = '.', label = 'xpol')
     plt.xlabel('θ [arcmin]')
     plt.ylabel('θw(θ)')
     #plt.semilogx()
@@ -150,6 +156,8 @@ if __name__ == '__main__':
     plt.grid()
     plt.legend()
     plt.show()
+
+    ####################################################################################################################
 
     plt.plot(correlation3.l, correlation3.cell2power_spectrum(cl_th), label = 'th')
     plt.plot(correlation3.l, correlation3.cell2power_spectrum(cl_reco), label = 'reco')

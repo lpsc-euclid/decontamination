@@ -39,7 +39,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
     n_bins : int
         Number of angular bins.
     bin_slop : typing.Optional[float]
-        ???
+        See TreeCorr documentation: https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop.
     footprint : typing.Optional[np.ndarray]
         ???
     coverage : typing.Optional[np.ndarray]

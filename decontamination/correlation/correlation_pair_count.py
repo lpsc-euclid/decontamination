@@ -96,7 +96,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
                 ra = lon,
                 dec = lat,
                 ra_units = 'degrees',
-                dec_units = 'degrees',
+                dec_units = 'degrees'
             )
 
             ############################################################################################################

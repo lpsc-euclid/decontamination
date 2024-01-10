@@ -96,7 +96,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
                 ra = lon,
                 dec = lat,
                 ra_units = 'degrees',
-                dec_units = 'degrees',
+                dec_units = 'degrees'
             )
 
             ############################################################################################################
@@ -116,8 +116,8 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
                 dec = lat,
                 ra_units = 'degrees',
                 dec_units = 'degrees',
-                k = data_contrast,
-                w = self._coverage
+                k = data_contrast[self._footprint],
+                w = np.ones(self._footprint.shape[0], dtype = np.float32) if self._coverage is None else self._coverage
             )
 
     ####################################################################################################################
@@ -126,11 +126,17 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         if catalog1.k is None:
 
-            result = treecorr.NNCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, bin_slop = self._bin_slop, sep_units = 'arcmin')
+            if self._bin_slop is None:
+                result = treecorr.NNCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, sep_units = 'arcmin')
+            else:
+                result = treecorr.NNCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, bin_slop = self._bin_slop, sep_units = 'arcmin')
 
         else:
 
-            result = treecorr.KKCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, bin_slop = self._bin_slop, sep_units = 'arcmin')
+            if self._bin_slop is None:
+                result = treecorr.KKCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, sep_units = 'arcmin')
+            else:
+                result = treecorr.KKCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, bin_slop = self._bin_slop, sep_units = 'arcmin')
 
         result.process(catalog1, catalog2)
 

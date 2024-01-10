@@ -168,13 +168,17 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def cell2power_spectrum(self, cl):
+    def cell2power_spectrum(self, cl: np.ndarray) -> np.ndarray:
+
+        """???"""
 
         return self._l * (self._l + 1.0) * cl
 
     ####################################################################################################################
 
-    def cell2correlation(self, cl):
+    def cell2correlation(self, cl: np.ndarray) -> np.ndarray:
+
+        """???"""
 
         a = np.cos(self._theta_radian)
 

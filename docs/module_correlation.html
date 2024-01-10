@@ -150,18 +150,28 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.calculate" title="decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.calculate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate</span></code></a>(estimator[, random_lon, random_lat])</p></td>
 <td><p>Calculates the angular correlation function.</p></td>
 </tr>
-</tbody>
-</table>
-<table class="docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><strong>cell2correlation</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2correlation" title="decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2correlation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell2correlation</span></code></a>(cl)</p></td>
+<td><p><p>???</p>
+</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>cell2power_spectrum</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2power_spectrum" title="decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2power_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell2power_spectrum</span></code></a>(cl)</p></td>
+<td><p><p>???</p>
+</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2power_spectrum">
+<span class="sig-name descname"><span class="pre">cell2power_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2power_spectrum" title="Link to this definition">¶</a></dt>
+<dd><p>???</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2correlation">
+<span class="sig-name descname"><span class="pre">cell2correlation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2correlation" title="Link to this definition">¶</a></dt>
+<dd><p>???</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estimator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.calculate" title="Link to this definition">¶</a></dt>
@@ -222,7 +232,8 @@
 <dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.correlation.correlation_pair_count.</span></span><span class="sig-name descname"><span class="pre">Correlation_PairCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_slop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coverage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Correlation_Abstract</span></code></p>
-<p>Galaxy angular correlation function from pair counting.</p>
+<p>Galaxy angular correlation function using the TreeCorr library. Supports pair counting (NN correlations)
+or a scalar field approach (KK correlations).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -236,15 +247,15 @@
 </dd>
 <dt><strong>n_bins</strong><span class="classifier">int</span></dt><dd><p>Number of angular bins.</p>
 </dd>
-<dt><strong>bin_slop</strong><span class="classifier">Optional[float]</span></dt><dd><p>See TreeCorr documentation: <a class="reference external" href="https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop">https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop</a>.</p>
+<dt><strong>bin_slop</strong><span class="classifier">Optional[float]</span></dt><dd><p>Precision parameter for binning (see <a class="reference external" href="https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop">TreeCorr documentation</a>).</p>
 </dd>
-<dt><strong>footprint</strong><span class="classifier">Optional[np.ndarray]</span></dt><dd><p>???</p>
+<dt><strong>footprint</strong><span class="classifier">Optional[np.ndarray]</span></dt><dd><p>HEALPix indices of the region where correlation must be calculated (KK correlations only).</p>
 </dd>
-<dt><strong>coverage</strong><span class="classifier">Optional[np.ndarray]</span></dt><dd><p>???</p>
+<dt><strong>coverage</strong><span class="classifier">Optional[np.ndarray]</span></dt><dd><p>Observed sky fraction for each of the aforementioned HEALPix pixels (KK correlations only).</p>
 </dd>
-<dt><strong>nside</strong><span class="classifier">Optional[np.ndarray]</span></dt><dd><p>???</p>
+<dt><strong>nside</strong><span class="classifier">Optional[np.ndarray]</span></dt><dd><p>The HEALPix nside parameter (KK correlations only).</p>
 </dd>
-<dt><strong>nest</strong><span class="classifier">bool, default: True</span></dt><dd><p>???</p>
+<dt><strong>nest</strong><span class="classifier">bool, default: True</span></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering (KK correlations only).</p>
 </dd>
 </dl>
 </dd>
@@ -368,6 +379,8 @@
 <li><a class="reference internal" href="#">Module decontamination.correlation</a><ul>
 <li><a class="reference internal" href="#module-decontamination.correlation.correlation_power_spectrum">Angular correlation function from power spectrum</a><ul>
 <li><a class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum"><code class="docutils literal notranslate"><span class="pre">Correlation_PowerSpectrum</span></code></a><ul>
+<li><a class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2power_spectrum"><code class="docutils literal notranslate"><span class="pre">Correlation_PowerSpectrum.cell2power_spectrum()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2correlation"><code class="docutils literal notranslate"><span class="pre">Correlation_PowerSpectrum.cell2correlation()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.calculate"><code class="docutils literal notranslate"><span class="pre">Correlation_PowerSpectrum.calculate()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.max_sep"><code class="docutils literal notranslate"><span class="pre">Correlation_PowerSpectrum.max_sep</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.min_sep"><code class="docutils literal notranslate"><span class="pre">Correlation_PowerSpectrum.min_sep</span></code></a></li>

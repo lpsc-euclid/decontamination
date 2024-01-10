@@ -24,7 +24,8 @@ except ImportError:
 class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     """
-    Galaxy angular correlation function from pair counting.
+    Galaxy angular correlation function using the TreeCorr library. Supports pair counting (NN correlations)
+    or a scalar field approach (KK correlations).
 
     Parameters
     ----------
@@ -39,15 +40,15 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
     n_bins : int
         Number of angular bins.
     bin_slop : typing.Optional[float]
-        See TreeCorr documentation: https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop.
+        Precision parameter for binning (see `TreeCorr documentation <https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop>`_).
     footprint : typing.Optional[np.ndarray]
-        ???
+        HEALPix indices of the region where correlation must be calculated (KK correlations only).
     coverage : typing.Optional[np.ndarray]
-        ???
+        Observed sky fraction for each of the aforementioned HEALPix pixels (KK correlations only).
     nside : typing.Optional[np.ndarray]
-        ???
+        The HEALPix nside parameter (KK correlations only).
     nest : bool, default: True
-        ???
+        If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering (KK correlations only).
     """
 
     ####################################################################################################################
@@ -56,19 +57,21 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
+        if treecorr is None:
+
+            raise ImportError('TreeCorr is not installed.')
+
+        ################################################################################################################
+
         super().__init__(min_sep, max_sep, n_bins)
+
+        ################################################################################################################
 
         self._bin_slop = bin_slop
         self._footprint = footprint
         self._coverage = coverage
         self._nside = nside
         self._nest = nest
-
-        ################################################################################################################
-
-        if treecorr is None:
-
-            raise ImportError('TreeCorr is not installed.')
 
         ################################################################################################################
         # BUILD THE CATALOG                                                                                            #
@@ -111,18 +114,22 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
             lon, lat = hp.pix2ang(self._nside, self._footprint, nest = self._nest, lonlat = True)
 
+            ############################################################################################################
+
             return treecorr.Catalog(
                 ra = lon,
                 dec = lat,
                 ra_units = 'degrees',
                 dec_units = 'degrees',
                 k = data_contrast[self._footprint],
-                w = np.ones(self._footprint.shape[0], dtype = np.float32) if self._coverage is None else self._coverage
+                w = self._coverage or np.ones(self._footprint.shape[0], dtype = np.float32)
             )
 
     ####################################################################################################################
 
     def _correlate(self, catalog1: 'treecorr.Catalog', catalog2: typing.Optional['treecorr.Catalog'] = None) -> 'treecorr.NNCorrelation':
+
+        ################################################################################################################
 
         if catalog1.k is None:
 
@@ -138,7 +145,11 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
             else:
                 result = treecorr.KKCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, bin_slop = self._bin_slop, sep_units = 'arcmin')
 
+        ################################################################################################################
+
         result.process(catalog1, catalog2)
+
+        ################################################################################################################
 
         return result
 
@@ -196,6 +207,8 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     def _calculate_xy(self, catalog1: 'treecorr.Catalog', catalog2: typing.Optional['treecorr.Catalog'] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
+        ################################################################################################################
+
         if catalog1 is not self._data_catalog or catalog2 is not None:
 
             xy = self._correlate(catalog1, catalog2)
@@ -203,6 +216,8 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         else:
 
             xy = self._dd
+
+        ################################################################################################################
 
         theta = np.exp(xy.meanlogr)
 
@@ -215,8 +230,6 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
             ############################################################################################################
 
             xi_theta = np.diff(xy.npairs, prepend = 0)
-
-            xi_theta /= np.sum(xi_theta)
 
             xi_theta_error = np.zeros_like(xi_theta)
 
@@ -239,6 +252,8 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
     ####################################################################################################################
 
     def _calculate_xi(self, self_random_catalog: 'treecorr.Catalog', with_dr: bool, with_rd: bool) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+
+        ################################################################################################################
 
         theta = np.exp(self._dd.meanlogr)
 

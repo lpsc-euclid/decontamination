@@ -196,17 +196,15 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     def _calculate_xy(self, catalog1: 'treecorr.Catalog', catalog2: typing.Optional['treecorr.Catalog'] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
-        theta = np.exp(self._dd.meanlogr)
-
-        ################################################################################################################
-
-        if catalog1 is self._data_catalog or catalog2 is not None:
+        if catalog1 is not self._data_catalog or catalog2 is not None:
 
             xy = self._correlate(catalog1, catalog2)
 
         else:
 
             xy = self._dd
+
+        theta = np.exp(xy.meanlogr)
 
         ################################################################################################################
 

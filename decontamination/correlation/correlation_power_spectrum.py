@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
-import math
 import typing
 
 import numpy as np
@@ -32,9 +31,9 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     Parameters
     ----------
-    catalog_lon : np.ndarray
+    data_lon : np.ndarray
         Galaxy catalog longitudes (in degrees).
-    catalog_lat : np.ndarray
+    data_lat : np.ndarray
         Galaxy catalog latitudes (in degrees).
     footprint : np.ndarray
         HEALPix indices of the region where correlation must be calculated.
@@ -54,7 +53,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def __init__(self, catalog_lon: np.ndarray, catalog_lat: np.ndarray, footprint: np.ndarray, nside: int, nest: bool, min_sep: float, max_sep: float, n_bins: int, l_max = None, library: str = 'xpol'):
+    def __init__(self, data_lon: np.ndarray, data_lat: np.ndarray, footprint: np.ndarray, nside: int, nest: bool, min_sep: float, max_sep: float, n_bins: int, l_max = None, library: str = 'xpol'):
 
         ################################################################################################################
 
@@ -104,9 +103,12 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
         # BUILD THE CONTRAST                                                                                           #
         ################################################################################################################
 
-        self._data_contrast = self._build_full_sky_contrast(
-            catalog_lon,
-            catalog_lat
+        self._data_contrast = correlation_abstract.Correlation_Abstract._build_full_sky_contrast(
+            self._nside,
+            False,
+            self._footprint,
+            data_lon,
+            data_lat
         )
 
         ################################################################################################################
@@ -163,29 +165,6 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
     def data_contrast(self):
 
         return self._data_contrast
-
-    ####################################################################################################################
-
-    def _build_full_sky_contrast(self, catalog_lon: np.ndarray, catalog_lat: np.ndarray) -> np.ndarray:
-
-        ################################################################################################################
-
-        galaxy_pixels = hp.ang2pix(self._nside, catalog_lon, catalog_lat, nest = False, lonlat = True)
-
-        result = np.zeros(hp.nside2npix(self._nside), dtype = np.float32)
-
-        np.add.at(result, galaxy_pixels, 1.0)
-
-        ################################################################################################################
-
-        mean = np.mean(result[self._footprint])
-
-        result[self._footprint] -= mean
-        result[self._footprint] /= mean
-
-        ################################################################################################################
-
-        return result
 
     ####################################################################################################################
 
@@ -283,7 +262,10 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        random_contrast = self._build_full_sky_contrast(
+        random_contrast = correlation_abstract.Correlation_Abstract._build_full_sky_contrast(
+            self._nside,
+            False,
+            self._footprint,
             random_lon,
             random_lat
         )

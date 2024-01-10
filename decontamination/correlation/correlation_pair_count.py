@@ -4,6 +4,7 @@
 import typing
 
 import numpy as np
+import healpy as hp
 
 from . import correlation_abstract
 
@@ -27,9 +28,9 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     Parameters
     ----------
-    catalog_lon : np.ndarray
+    data_lon : np.ndarray
         Galaxy catalog longitudes (in degrees).
-    catalog_lat : np.ndarray
+    data_lat : np.ndarray
         Galaxy catalog latitudes (in degrees).
     min_sep : float
         Minimum galaxy separation being considered (in arcmins).
@@ -39,19 +40,29 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         Number of angular bins.
     bin_slop : typing.Optional[float]
         ???
-    kappa : typing.Optional[np.ndarray]
+    footprint : typing.Optional[np.ndarray]
+        ???
+    coverage : typing.Optional[np.ndarray]
+        ???
+    nside : typing.Optional[np.ndarray]
+        ???
+    nest : bool, default: True
         ???
     """
 
     ####################################################################################################################
 
-    def __init__(self, catalog_lon: np.ndarray, catalog_lat: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, kappa: typing.Optional[np.ndarray] = None):
+    def __init__(self, data_lon: np.ndarray, data_lat: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, footprint: typing.Optional[np.ndarray] = None, coverage: typing.Optional[np.ndarray] = None, nside: typing.Optional[bool] = None, nest: bool = True):
 
         ################################################################################################################
 
         super().__init__(min_sep, max_sep, n_bins)
 
         self._bin_slop = bin_slop
+        self._footprint = footprint
+        self._coverage = coverage
+        self._nside = nside
+        self._nest = nest
 
         ################################################################################################################
 
@@ -60,20 +71,54 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
             raise ImportError('TreeCorr is not installed.')
 
         ################################################################################################################
+        # BUILD THE CATALOG                                                                                            #
+        ################################################################################################################
 
-        self._data_catalog = treecorr.Catalog(
-            ra = catalog_lon,
-            dec = catalog_lat,
-            ra_units = 'degrees',
-            dec_units = 'degrees',
-            k = kappa
-        )
+        self._data_catalog = self._build_catalog(data_lon, data_lat)
 
         ################################################################################################################
-        # CORRELATE                                                                                                    #
+        # CORRELATE IT                                                                                                 #
         ################################################################################################################
 
         self._dd = self._correlate(self._data_catalog, None)
+
+    ####################################################################################################################
+
+    def _build_catalog(self, lon, lat):
+
+        if self._footprint is None or self._nside is None:
+
+            ############################################################################################################
+            # NN CORRELATION                                                                                           #
+            ############################################################################################################
+
+            return treecorr.Catalog(
+                ra = lon,
+                dec = lat,
+                ra_units = 'degrees',
+                dec_units = 'degrees',
+            )
+
+            ############################################################################################################
+
+        else:
+
+            ############################################################################################################
+            # ΚΚ CORRELATION                                                                                           #
+            ############################################################################################################
+
+            data_contrast = correlation_abstract.Correlation_Abstract._build_full_sky_contrast(self._nside, self._nest, self._footprint, lon, lat)
+
+            lon, lat = hp.pix2ang(self._nside, self._footprint, nest = self._nest, lonlat = True)
+
+            return treecorr.Catalog(
+                ra = lon,
+                dec = lat,
+                ra_units = 'degrees',
+                dec_units = 'degrees',
+                k = data_contrast,
+                w = self._coverage
+            )
 
     ####################################################################################################################
 
@@ -111,13 +156,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        self_random_catalog = treecorr.Catalog(
-            ra = random_lon,
-            dec = random_lat,
-            ra_units = 'degrees',
-            dec_units = 'degrees',
-            k = random_kappa
-        )
+        self_random_catalog = self._data_catalog = self._build_catalog(random_lon, random_lat)
 
         ################################################################################################################
 
@@ -127,16 +166,25 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
             return self._calculate_xy(self._data_catalog, self_random_catalog)
         if estimator == 'rd':
             return self._calculate_xy(self_random_catalog, self._data_catalog)
-        if estimator == 'peebles_hauser':
-            return self._calculate_xi(self_random_catalog, False, False)
-        if estimator == 'landy_szalay_1':
-            return self._calculate_xi(self_random_catalog, True, False)
-        if estimator == 'landy_szalay_2':
-            return self._calculate_xi(self_random_catalog, True, True)
+
+        else:
+
+            if self._data_catalog.k is None:
+
+                if estimator == 'peebles_hauser':
+                    return self._calculate_xi(self_random_catalog, False, False)
+                if estimator == 'landy_szalay_1':
+                    return self._calculate_xi(self_random_catalog, True, False)
+                if estimator == 'landy_szalay_2':
+                    return self._calculate_xi(self_random_catalog, True, True)
+
+            else:
+
+                raise ValueError('Invalid estimator for kappa-kappa correlations (`peebles_hauser`, `landy_szalay1`, `landy_szalay_2` are forbidden)')
 
         ################################################################################################################
 
-        raise ValueError('Invalid estimator (`dd`, `rr`, `dr`, `rd`, `peebles_hauser`, `landy_szalay1`, `landy_szalay_2`)')
+        raise ValueError('Invalid estimator (`dd`, `rr`, `dr`, `rd`, `peebles_hauser`, `landy_szalay1`, `landy_szalay_2` are authorized)')
 
     ####################################################################################################################
 
@@ -158,6 +206,10 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         if catalog1.k is None:
 
+            ############################################################################################################
+            # NN CORRELATION                                                                                           #
+            ############################################################################################################
+
             xi_theta = np.diff(xy.npairs, prepend = 0)
 
             xi_theta_error = np.sqrt(xi_theta)
@@ -167,7 +219,13 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
             xi_theta /= n
             xi_theta_error /= n
 
+            ############################################################################################################
+
         else:
+
+            ############################################################################################################
+            # ΚΚ CORRELATION                                                                                           #
+            ############################################################################################################
 
             xi_theta = xy.xi
 

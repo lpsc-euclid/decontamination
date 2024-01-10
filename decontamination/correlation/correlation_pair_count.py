@@ -156,7 +156,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        self_random_catalog = self._data_catalog = self._build_catalog(random_lon, random_lat)
+        self_random_catalog = self._build_catalog(random_lon, random_lat)
 
         ################################################################################################################
 
@@ -212,12 +212,9 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
             xi_theta = np.diff(xy.npairs, prepend = 0)
 
-            xi_theta_error = np.sqrt(xi_theta)
+            xi_theta /= np.sum(xi_theta)
 
-            n = np.sum(xi_theta)
-
-            xi_theta /= n
-            xi_theta_error /= n
+            xi_theta_error = np.zeros_like(xi_theta)
 
             ############################################################################################################
 

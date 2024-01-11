@@ -41,6 +41,8 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         Number of angular bins.
     bin_slop : typing.Optional[float]
         Precision parameter for binning (see `TreeCorr documentation <https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop>`_).
+    n_threads : typing.Optional[int], default: **None** ≡ the number of cpu cores
+        How many OpenMP threads to use during the calculation.
     footprint : typing.Optional[np.ndarray]
         HEALPix indices of the region where correlation must be calculated (KK correlations only).
     coverage : typing.Optional[np.ndarray]
@@ -53,7 +55,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def __init__(self, data_lon: np.ndarray, data_lat: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, footprint: typing.Optional[np.ndarray] = None, coverage: typing.Optional[np.ndarray] = None, nside: typing.Optional[bool] = None, nest: bool = True):
+    def __init__(self, data_lon: np.ndarray, data_lat: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, n_threads: typing.Optional[int] = None, footprint: typing.Optional[np.ndarray] = None, coverage: typing.Optional[np.ndarray] = None, nside: typing.Optional[bool] = None, nest: bool = True):
 
         ################################################################################################################
 
@@ -68,6 +70,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         ################################################################################################################
 
         self._bin_slop = bin_slop
+        self._n_threads = n_threads
         self._footprint = footprint
         self._coverage = coverage
         self._nside = nside
@@ -147,7 +150,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        result.process(catalog1, catalog2)
+        result.process(catalog1, catalog2, num_threads = self._n_threads)
 
         ################################################################################################################
 

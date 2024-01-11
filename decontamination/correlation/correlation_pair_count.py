@@ -179,7 +179,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
                 ra_units = 'degrees',
                 dec_units = 'degrees',
                 k = data_contrast[self._footprint],
-                w = self._coverage or np.ones(self._footprint.shape[0], dtype = np.float32)
+                w = np.ones(self._footprint.shape[0], dtype = np.float32) if self._coverage is None else self._coverage
             )
 
     ####################################################################################################################
@@ -188,7 +188,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        if catalog1.k is None:
+        if self._footprint is None or self._nside is None:
 
             if self._bin_slop is None:
                 result = treecorr.NNCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, sep_units = 'arcmin')
@@ -243,7 +243,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         else:
 
-            if self._data_catalog.k is None:
+            if self._footprint is None or self._nside is None:
 
                 if estimator == 'peebles_hauser':
                     return self._calculate_xi(self_random_catalog, False, False)
@@ -280,7 +280,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        if catalog1.k is None:
+        if self._footprint is None or self._nside is None:
 
             ############################################################################################################
             # NN CORRELATION                                                                                           #

@@ -91,7 +91,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
     ####################################################################################################################
 
     @property
-    def bin_slop(self):
+    def bin_slop(self) -> typing.Optional[float]:
 
         """Precision parameter for binning (see `TreeCorr documentation <https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop>`_)."""
 
@@ -100,7 +100,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
     ####################################################################################################################
 
     @property
-    def n_threads(self):
+    def n_threads(self) -> typing.Optional[int]:
 
         """How many OpenMP threads to use during the calculation."""
 
@@ -109,25 +109,25 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
     ####################################################################################################################
 
     @property
-    def footprint(self):
+    def footprint(self) -> typing.Optional[np.ndarray]:
 
         """HEALPix indices of the region where correlation must be calculated (KK correlations only)."""
 
-        self._footprint
+        return self._footprint
 
     ####################################################################################################################
 
     @property
-    def coverage(self):
+    def coverage(self) -> typing.Optional[np.ndarray]:
 
         """Observed sky fraction for each of the aforementioned HEALPix pixels (KK correlations only)."""
 
-        self._coverage
+        return self._coverage
 
     ####################################################################################################################
 
     @property
-    def nside(self):
+    def nside(self) -> typing.Optional[int]:
 
         """The HEALPix nside parameter (KK correlations only)."""
 
@@ -136,7 +136,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
     ####################################################################################################################
 
     @property
-    def nest(self):
+    def nest(self) -> typing.Optional[bool]:
 
         """If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering (KK correlations only)."""
 

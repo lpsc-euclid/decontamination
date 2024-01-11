@@ -87,7 +87,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def _build_catalog(self, lon, lat):
+    def _build_catalog(self, lon: np.ndarray, lat: np.ndarray) -> 'treecorr.Catalog':
 
         if self._footprint is None or self._nside is None:
 
@@ -127,7 +127,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def _correlate(self, catalog1: 'treecorr.Catalog', catalog2: typing.Optional['treecorr.Catalog'] = None) -> 'treecorr.NNCorrelation':
+    def _correlate(self, catalog1: 'treecorr.Catalog', catalog2: typing.Optional['treecorr.Catalog'] = None) -> typing.Union['treecorr.NNCorrelation', 'treecorr.KKCorrelation']:
 
         ################################################################################################################
 

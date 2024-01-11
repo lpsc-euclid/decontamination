@@ -90,6 +90,60 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
+    @property
+    def bin_slop(self):
+
+        """Precision parameter for binning (see `TreeCorr documentation <https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop>`_)."""
+
+        return self._bin_slop
+
+    ####################################################################################################################
+
+    @property
+    def n_threads(self):
+
+        """How many OpenMP threads to use during the calculation."""
+
+        return self._n_threads
+
+    ####################################################################################################################
+
+    @property
+    def footprint(self):
+
+        """HEALPix indices of the region where correlation must be calculated (KK correlations only)."""
+
+        self._footprint
+
+    ####################################################################################################################
+
+    @property
+    def coverage(self):
+
+        """Observed sky fraction for each of the aforementioned HEALPix pixels (KK correlations only)."""
+
+        self._coverage
+
+    ####################################################################################################################
+
+    @property
+    def nside(self):
+
+        """The HEALPix nside parameter (KK correlations only)."""
+
+        return self._nside
+
+    ####################################################################################################################
+
+    @property
+    def nest(self):
+
+        """If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering (KK correlations only)."""
+
+        return self._nest
+
+    ####################################################################################################################
+
     def _build_catalog(self, lon: np.ndarray, lat: np.ndarray) -> 'treecorr.Catalog':
 
         if self._footprint is None or self._nside is None:

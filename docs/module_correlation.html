@@ -263,11 +263,23 @@ or a scalar field approach (≡ KK correlations) if a footprint is provided.</p>
 </dd>
 <dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
+<dt><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.bin_slop" title="decontamination.correlation.correlation_pair_count.Correlation_PairCount.bin_slop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bin_slop</span></code></a></dt><dd><p>Precision parameter for binning (see <a class="reference external" href="https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop">TreeCorr documentation</a>).</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.coverage" title="decontamination.correlation.correlation_pair_count.Correlation_PairCount.coverage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coverage</span></code></a></dt><dd><p>Observed sky fraction for each of the aforementioned HEALPix pixels (KK correlations only).</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.footprint" title="decontamination.correlation.correlation_pair_count.Correlation_PairCount.footprint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">footprint</span></code></a></dt><dd><p>HEALPix indices of the region where correlation must be calculated (KK correlations only).</p>
+</dd>
 <dt><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.max_sep" title="decontamination.correlation.correlation_pair_count.Correlation_PairCount.max_sep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_sep</span></code></a></dt><dd><p>Maximum separation (in degrees).</p>
 </dd>
 <dt><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.min_sep" title="decontamination.correlation.correlation_pair_count.Correlation_PairCount.min_sep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_sep</span></code></a></dt><dd><p>Minimum separation (in degrees).</p>
 </dd>
 <dt><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_bins" title="decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_bins"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_bins</span></code></a></dt><dd><p>Number of angular bins.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_threads" title="decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_threads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_threads</span></code></a></dt><dd><p>How many OpenMP threads to use during the calculation.</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.nest" title="decontamination.correlation.correlation_pair_count.Correlation_PairCount.nest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nest</span></code></a></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering (KK correlations only).</p>
+</dd>
+<dt><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.nside" title="decontamination.correlation.correlation_pair_count.Correlation_PairCount.nside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nside</span></code></a></dt><dd><p>The HEALPix nside parameter (KK correlations only).</p>
 </dd>
 </dl>
 </dd>
@@ -280,6 +292,42 @@ or a scalar field approach (≡ KK correlations) if a footprint is provided.</p>
 </tr>
 </tbody>
 </table>
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.bin_slop">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bin_slop</span></span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.bin_slop" title="Link to this definition">¶</a></dt>
+<dd><p>Precision parameter for binning (see <a class="reference external" href="https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop">TreeCorr documentation</a>).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_threads">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_threads</span></span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_threads" title="Link to this definition">¶</a></dt>
+<dd><p>How many OpenMP threads to use during the calculation.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.footprint">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">footprint</span></span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.footprint" title="Link to this definition">¶</a></dt>
+<dd><p>HEALPix indices of the region where correlation must be calculated (KK correlations only).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.coverage">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coverage</span></span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.coverage" title="Link to this definition">¶</a></dt>
+<dd><p>Observed sky fraction for each of the aforementioned HEALPix pixels (KK correlations only).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.nside">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nside</span></span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.nside" title="Link to this definition">¶</a></dt>
+<dd><p>The HEALPix nside parameter (KK correlations only).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.nest">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nest</span></span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.nest" title="Link to this definition">¶</a></dt>
+<dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering (KK correlations only).</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estimator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_kappa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.calculate" title="Link to this definition">¶</a></dt>
@@ -393,6 +441,12 @@ or a scalar field approach (≡ KK correlations) if a footprint is provided.</p>
 </li>
 <li><a class="reference internal" href="#module-decontamination.correlation.correlation_pair_count">Angular correlation function from pair counting</a><ul>
 <li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount</span></code></a><ul>
+<li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.bin_slop"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount.bin_slop</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_threads"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount.n_threads</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.footprint"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount.footprint</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.coverage"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount.coverage</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.nside"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount.nside</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.nest"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount.nest</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.calculate"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount.calculate()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.max_sep"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount.max_sep</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.min_sep"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount.min_sep</span></code></a></li>

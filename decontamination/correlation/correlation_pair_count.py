@@ -212,7 +212,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def calculate(self, estimator: str, random_lon: typing.Optional[np.ndarray] = None, random_lat: typing.Optional[np.ndarray] = None, random_kappa: typing.Optional[np.ndarray] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def calculate(self, estimator: str, random_lon: typing.Optional[np.ndarray] = None, random_lat: typing.Optional[np.ndarray] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 

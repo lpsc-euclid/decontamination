@@ -101,7 +101,7 @@ if __name__ == '__main__':
 
     print('NN correlation...')
 
-    correlation1 = decontamination.Correlation_PairCount(catalog_ra, catalog_dec, 3.0, 1500.0, 300)
+    correlation1 = decontamination.Correlation_PairCount(catalog_ra, catalog_dec, 3.0, 1500.0, 300, n_threads = 8)
 
     theta1, w_theta1, _ = correlation1.calculate(
         'peebles_hauser',
@@ -113,7 +113,7 @@ if __name__ == '__main__':
 
     print('KK correlation...')
 
-    correlation2 = decontamination.Correlation_PairCount(catalog_ra, catalog_dec, 3.0, 1500.0, 300, footprint = footprint, nside = nside, nest = False)
+    correlation2 = decontamination.Correlation_PairCount(catalog_ra, catalog_dec, 3.0, 1500.0, 300, n_threads = 8, footprint = footprint, nside = nside, nest = False)
 
     theta2, w_theta2, _ = correlation2.calculate('dd')
 

@@ -102,7 +102,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Correlation_Abstract</span></code></p>
 <p>Angular correlation function from power spectrum.</p>
 <div class="math notranslate nohighlight">
-\[\xi(\theta)=\frac{1}{\sqrt{4\pi}}\sum_{l=0}^{2\times\text{nside}}(2l+1)\,C_l\,P_l(\cos\theta)\]</div>
+\[\xi(\theta)=\frac{1}{4\pi}\sum_{l=0}^{2\times\text{nside}}(2l+1)\,C_l\,P_l(\cos\theta)\]</div>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -294,37 +294,37 @@ or a scalar field approach (≡ KK correlations) if a footprint is provided.</p>
 </table>
 <dl class="py property">
 <dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.bin_slop">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bin_slop</span></span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.bin_slop" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bin_slop</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.bin_slop" title="Link to this definition">¶</a></dt>
 <dd><p>Precision parameter for binning (see <a class="reference external" href="https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop">TreeCorr documentation</a>).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_threads">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_threads</span></span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_threads" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_threads</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_threads" title="Link to this definition">¶</a></dt>
 <dd><p>How many OpenMP threads to use during the calculation.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.footprint">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">footprint</span></span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.footprint" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">footprint</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.footprint" title="Link to this definition">¶</a></dt>
 <dd><p>HEALPix indices of the region where correlation must be calculated (KK correlations only).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.coverage">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coverage</span></span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.coverage" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coverage</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.coverage" title="Link to this definition">¶</a></dt>
 <dd><p>Observed sky fraction for each of the aforementioned HEALPix pixels (KK correlations only).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.nside">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nside</span></span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.nside" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nside</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.nside" title="Link to this definition">¶</a></dt>
 <dd><p>The HEALPix nside parameter (KK correlations only).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="decontamination.correlation.correlation_pair_count.Correlation_PairCount.nest">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nest</span></span><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.nest" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nest</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.nest" title="Link to this definition">¶</a></dt>
 <dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering (KK correlations only).</p>
 </dd></dl>
 

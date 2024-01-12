@@ -50,7 +50,7 @@ def get_bounding_box(nside: int, footprint: np.ndarray, nest: bool) -> typing.Tu
 
 ########################################################################################################################
 
-def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cmap: str, norm: typing.Optional[str], v_min: float, v_max: float, label: str) -> typing.Tuple[typing.Any, plt.Figure, plt.Axes]:
+def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cmap: str, norm: typing.Optional[str], v_min: float, v_max: float, label: str) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     ####################################################################################################################
 
@@ -83,15 +83,20 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cma
 
     img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), origin = 'lower', cmap = cmap, vmin = v_min, vmax = v_max)
 
-    bar = fig.colorbar(img, ax = ax)
-
     ax.set_xlabel('Longitude (deg)')
     ax.set_ylabel('Latitude (deg)')
-    ax.set_title(label)
+
+    bar = fig.colorbar(img, ax = ax)
+
+    bar.set_label(label)
 
     ####################################################################################################################
 
-    return bar, fig, ax
+    fig.tight_layout()
+
+    ####################################################################################################################
+
+    return fig, ax
 
 ########################################################################################################################
 
@@ -134,7 +139,7 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
 
     ####################################################################################################################
 
-    bar, fig, ax = _display(
+    fig, ax = _display(
         nside,
         pixels,
         full_sky,
@@ -193,7 +198,7 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
 
     ####################################################################################################################
 
-    bar, fig, ax = _display(
+    fig, ax = _display(
         nside,
         pixels,
         full_sky,

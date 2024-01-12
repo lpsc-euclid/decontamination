@@ -122,49 +122,49 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
     ####################################################################################################################
 
     @property
-    def footprint(self):
+    def footprint(self) -> np.ndarray:
 
         return self._footprint
 
     ####################################################################################################################
 
     @property
-    def nside(self):
+    def nside(self) -> int:
 
         return self._nside
 
     ####################################################################################################################
 
     @property
-    def library(self):
+    def library(self) -> str:
 
         return self._library
 
     ####################################################################################################################
 
     @property
-    def l(self):
+    def l(self) -> np.ndarray:
 
         return self._l
 
     ####################################################################################################################
 
     @property
-    def l_max(self):
+    def l_max(self) -> int:
 
         return self._l_max
 
     ####################################################################################################################
 
     @property
-    def data_spectrum(self):
+    def data_spectrum(self) -> np.ndarray:
 
         return self._dd[0]
 
     ####################################################################################################################
 
     @property
-    def data_contrast(self):
+    def data_contrast(self) -> np.ndarray:
 
         return self._data_contrast
 

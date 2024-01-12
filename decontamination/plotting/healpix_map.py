@@ -13,7 +13,7 @@ from . import catalog_to_number_density
 
 ########################################################################################################################
 
-def _get_bounding_box(nside: int, footprint: np.ndarray, nest: bool) -> typing.Tuple[float, float, float, float]:
+def get_bounding_box(nside: int, footprint: np.ndarray, nest: bool) -> typing.Tuple[float, float, float, float]:
 
     ####################################################################################################################
     # PIXELS TO ANGLES                                                                                                 #
@@ -54,9 +54,7 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cma
 
     ####################################################################################################################
 
-    lon_min, lon_max, lat_min, lat_max = _get_bounding_box(nside, footprint, nest)
-
-    print(lon_min, lon_max, lat_min, lat_max)
+    lon_min, lon_max, lat_min, lat_max = get_bounding_box(nside, footprint, nest)
 
     ####################################################################################################################
 

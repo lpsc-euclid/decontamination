@@ -50,7 +50,7 @@ def get_bounding_box(nside: int, footprint: np.ndarray, nest: bool) -> typing.Tu
 
 ########################################################################################################################
 
-def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cmap: str, norm: typing.Optional[str], v_min: float, v_max: float) -> typing.Tuple[plt.Figure, plt.Axes]:
+def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cmap: str, norm: typing.Optional[str], v_min: float, v_max: float, label: str) -> typing.Tuple[typing.Any, plt.Figure, plt.Axes]:
 
     ####################################################################################################################
 
@@ -58,7 +58,7 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cma
 
     ####################################################################################################################
 
-    hp.cartview(
+    image = hp.cartview(
         sky,
         nest = nest,
         cmap = cmap,
@@ -67,12 +67,25 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cma
         max = v_max,
         lonra = [lon_min, lon_max],
         latra = [lat_min, lat_max],
-        flip = 'geo'
+        flip = 'geo',
+        return_projected_map = True,
     )
 
     ####################################################################################################################
 
-    return plt.gcf(), plt.gca()
+    fig, ax = plt.subplots(figsize = (10, 7))
+
+    img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), origin = 'lower', cmap = cmap, vmin = v_min, vmax = v_max)
+
+    bar = fig.colorbar(img, ax = ax)
+
+    ax.set_xlabel('Longitude (deg)')
+    ax.set_ylabel('Latitude (deg)')
+    ax.set_title(label)
+
+    ####################################################################################################################
+
+    return bar, fig, ax
 
 ########################################################################################################################
 
@@ -113,7 +126,9 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
 
     full_sky[pixels] = weights
 
-    return _display(
+    ####################################################################################################################
+
+    bar, fig, ax = _display(
         nside,
         pixels,
         full_sky,
@@ -121,8 +136,13 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
         cmap = cmap,
         norm = norm,
         v_min = v_min,
-        v_max = v_max
+        v_max = v_max,
+        label = 'value'
     )
+
+    ####################################################################################################################
+
+    return fig, ax
 
 ########################################################################################################################
 
@@ -165,7 +185,9 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
 
     default_v_min, default_v_max = catalog_to_number_density(nside, pixels, full_sky, lon, lat, nest)
 
-    return _display(
+    ####################################################################################################################
+
+    bar, fig, ax = _display(
         nside,
         pixels,
         full_sky,
@@ -173,7 +195,12 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
         cmap = cmap,
         norm = norm,
         v_min = v_min or default_v_min,
-        v_max = v_max or default_v_max
+        v_max = v_max or default_v_max,
+        label = 'Number of galaxies'
     )
+
+    ####################################################################################################################
+
+    return fig, ax
 
 ########################################################################################################################

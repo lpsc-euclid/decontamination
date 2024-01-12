@@ -54,7 +54,9 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cma
 
     ####################################################################################################################
 
-    #lon_min, lon_max, lat_min, lat_max = _get_bounding_box(nside, footprint, nest)
+    lon_min, lon_max, lat_min, lat_max = _get_bounding_box(nside, footprint, nest)
+
+    print(lon_min, lon_max, lat_min, lat_max)
 
     ####################################################################################################################
 
@@ -65,8 +67,8 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cma
         norm = norm,
         min = v_min,
         max = v_max,
-        #lonra = [lon_min, lon_max],
-        #latra = [lat_min, lat_max],
+        lonra = [lon_min, lon_max],
+        latra = [lat_min, lat_max],
         flip = 'geo'
     )
 

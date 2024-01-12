@@ -64,24 +64,26 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cma
 
     ####################################################################################################################
 
-    image = hp.cartview(
-        sky,
-        nest = nest,
-        cmap = cmap,
-        norm = norm,
-        min = v_min,
-        max = v_max,
-        lonra = [lon_min, lon_max],
-        latra = [lat_min, lat_max],
-        flip = 'geo',
-        return_projected_map = True,
-    )
+    #image = hp.cartview(
+    #    sky,
+    #    nest = nest,
+    #    cmap = cmap,
+    #    norm = norm,
+    #    min = v_min,
+    #    max = v_max,
+    #    lonra = [lon_min, lon_max],
+    #    latra = [lat_min, lat_max],
+    #    flip = 'geo',
+    #    return_projected_map = True,
+    #)
+
+    image = hp.projector.MollweideProj().projmap(sky, lambda x, y, z: hp.vec2pix(nside, x, y, z, nest = nest))
 
     ####################################################################################################################
 
     fig, ax = plt.subplots(figsize = (10, 7))
 
-    img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), origin = 'lower', cmap = cmap, vmin = v_min, vmax = v_max)
+    img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), origin = 'lower', cmap = cmap, vmin = v_min, vmax = v_max, interpolation = 'none')
 
     ax.set_xlabel('Longitude (deg)')
     ax.set_ylabel('Latitude (deg)')

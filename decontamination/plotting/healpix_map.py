@@ -77,7 +77,7 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cma
     #    return_projected_map = True,
     #)
 
-    image = hp.projector.MollweideProj().projmap(sky, lambda x, y, z: hp.vec2pix(nside, x, y, z, nest = nest))
+    image = hp.projector.CartesianProj().projmap(sky, lambda x, y, z: hp.vec2pix(nside, x, y, z, nest = nest))
 
     ####################################################################################################################
 

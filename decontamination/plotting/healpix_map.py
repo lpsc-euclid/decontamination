@@ -73,6 +73,8 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
         ysize = 800
     )
 
+    projector.set_flip('geo')
+
     image = projector.projmap(full_sky, lambda x, y, z: hp.vec2pix(nside, x, y, z, nest = nest))
 
     ####################################################################################################################

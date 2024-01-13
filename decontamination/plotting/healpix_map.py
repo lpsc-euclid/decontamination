@@ -60,7 +60,9 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cma
 
     ####################################################################################################################
 
-    sky[sky == hp.UNSEEN] = np.nan
+    unseen_mask = sky[footprint] == hp.UNSEEN
+
+    sky[footprint[unseen_mask]] = np.nan
 
     ####################################################################################################################
 

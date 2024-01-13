@@ -84,7 +84,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
     ax.set_xlabel('Longitude (deg)')
     ax.set_ylabel('Latitude (deg)')
 
-    bar = fig.colorbar(img, ax = ax)
+    bar = fig.colorbar(img, ax = ax, orientation = 'horizontal')
 
     bar.set_label(label)
 

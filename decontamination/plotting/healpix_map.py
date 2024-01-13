@@ -79,7 +79,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
     fig, ax = plt.subplots(figsize = (10, 7))
 
-    img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), origin = 'lower', aspect = (lat_max - lat_min) / (lon_max - lon_min), cmap = cmap, vmin = v_min, vmax = v_max)
+    img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), origin = 'lower', aspect = 1.0, cmap = cmap, vmin = v_min, vmax = v_max)
 
     ax.set_xlabel('Longitude (deg)')
     ax.set_ylabel('Latitude (deg)')

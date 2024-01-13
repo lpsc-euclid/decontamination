@@ -50,7 +50,7 @@ def get_bounding_box(nside: int, footprint: np.ndarray, nest: bool) -> typing.Tu
 
 ########################################################################################################################
 
-def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cmap: str, norm: typing.Optional[str], v_min: float, v_max: float, label: str) -> typing.Tuple[plt.Figure, plt.Axes]:
+def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool, cmap: str, norm: typing.Optional[str], v_min: float, v_max: float, label: str) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     ####################################################################################################################
 
@@ -58,9 +58,7 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cma
 
     cmap.set_bad(color = '#808080')
 
-    ####################################################################################################################
-
-    sky[sky == hp.UNSEEN] = np.nan
+    full_sky[full_sky == hp.UNSEEN] = np.nan
 
     ####################################################################################################################
 
@@ -68,15 +66,20 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cma
 
     ####################################################################################################################
 
-    projector = hp.projector.CartesianProj(lonra = [lon_min, lon_max], latra = [lat_min, lat_max], xsize = 800, ysize = 800)
+    projector = hp.projector.CartesianProj(
+        lonra = [lon_min, lon_max],
+        latra = [lat_min, lat_max],
+        xsize = 800,
+        ysize = 800
+    )
 
-    image = projector.projmap(sky, lambda x, y, z: hp.vec2pix(nside, x, y, z, nest = nest))
+    image = projector.projmap(full_sky, lambda x, y, z: hp.vec2pix(nside, x, y, z, nest = nest))
 
     ####################################################################################################################
 
     fig, ax = plt.subplots(figsize = (10, 7))
 
-    img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), origin = 'lower', cmap = cmap, vmin = v_min, vmax = v_max, interpolation = 'none')
+    img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), origin = 'lower', aspect = (lat_max - lat_min) / (lon_max - lon_min), cmap = cmap, vmin = v_min, vmax = v_max)
 
     ax.set_xlabel('Longitude (deg)')
     ax.set_ylabel('Latitude (deg)')
@@ -84,8 +87,6 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cma
     bar = fig.colorbar(img, ax = ax)
 
     bar.set_label(label)
-
-    ####################################################################################################################
 
     fig.tight_layout()
 

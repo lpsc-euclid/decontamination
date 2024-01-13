@@ -60,22 +60,13 @@ def _display(nside: int, footprint: np.ndarray, sky: np.ndarray, nest: bool, cma
 
     ####################################################################################################################
 
-    lon_min, lon_max, lat_min, lat_max = get_bounding_box(nside, footprint, nest)
+    sky[footprint][sky[footprint] == hp.UNSEEN] = np.nan
 
     ####################################################################################################################
 
-    #image = hp.cartview(
-    #    sky,
-    #    nest = nest,
-    #    cmap = cmap,
-    #    norm = norm,
-    #    min = v_min,
-    #    max = v_max,
-    #    lonra = [lon_min, lon_max],
-    #    latra = [lat_min, lat_max],
-    #    flip = 'geo',
-    #    return_projected_map = True,
-    #)
+    lon_min, lon_max, lat_min, lat_max = get_bounding_box(nside, footprint, nest)
+
+    ####################################################################################################################
 
     projector = hp.projector.CartesianProj(lonra = [lon_min, lon_max], latra = [lat_min, lat_max])
 

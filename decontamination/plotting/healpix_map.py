@@ -77,7 +77,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
     ####################################################################################################################
 
-    fig, ax = plt.subplots(figsize = (10, 7))
+    fig, ax = plt.subplots(figsize = (8, 8))
 
     img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), origin = 'lower', aspect = 1.0, cmap = cmap, vmin = v_min, vmax = v_max)
 

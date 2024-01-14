@@ -82,7 +82,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     @staticmethod
     @jit(kernel = True, parallel = True)
-    def _train_step1_epoch_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, penalty_dist: float, mn: int) -> None:
+    def _train_step1_epoch_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, mn: int) -> None:
 
         ################################################################################################################
         # !--BEGIN-CPU--
@@ -94,14 +94,10 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             _train_step2_xpu(
                 numerator,
                 denominator,
-                quantization_errors,
-                topographic_errors,
                 weights,
                 topography,
                 vectors[i],
                 sigma,
-                penalty_dist,
-                cur_epoch,
                 mn
             )
 
@@ -118,14 +114,10 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             _train_step2_xpu(
                 numerator,
                 denominator,
-                quantization_errors,
-                topographic_errors,
                 weights,
                 topography,
                 vectors[i],
                 sigma,
-                penalty_dist,
-                cur_epoch,
                 mn
             )
 
@@ -138,28 +130,22 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     @staticmethod
     @jit(kernel = True, parallel = True)
-    def _train_step1_iter_kernel(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, sigma0: float, penalty_dist: float, mn: int) -> None:
+    def _train_step1_iter_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_vector: int, n_vectors: int, sigma0: float, mn: int) -> None:
 
         ################################################################################################################
         # !--BEGIN-CPU--
 
         for i in nb.prange(vectors.shape[0]):
 
-            cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
-
             sigma = sigma0 * asymptotic_decay_cpu(cur_vector + i, n_vectors)
 
             _train_step2_xpu(
                 numerator,
                 denominator,
-                quantization_errors,
-                topographic_errors,
                 weights,
                 topography,
                 vectors[i],
                 sigma,
-                penalty_dist,
-                cur_err_bin,
                 mn
             )
 
@@ -171,21 +157,15 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         if i < vectors.shape[0]:
 
-            cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
-
             sigma = sigma0 * asymptotic_decay_gpu(cur_vector + i, n_vectors)
 
             _train_step2_xpu(
                 numerator,
                 denominator,
-                quantization_errors,
-                topographic_errors,
                 weights,
                 topography,
                 vectors[i],
                 sigma,
-                penalty_dist,
-                cur_err_bin,
                 mn
             )
 
@@ -196,7 +176,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, n_error_bins: int = 10, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`). A batch formulation of updating weights is implemented:
@@ -227,8 +207,6 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             Number of epochs to train for.
         n_vectors : typing.Optional[int], default: **None**
             Number of vectors to train for.
-        n_error_bins : int, default: **10**
-            Number of quantization and topographic error bins.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**
@@ -249,17 +227,15 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         self._n_vectors = n_vectors
 
-        penalty_dist = 2.0 if self._topology == 'square' else 1.0
-
         if not (n_epochs is None) and (n_vectors is None):
 
             ############################################################################################################
             # TRAINING BY NUMBER OF EPOCHS                                                                             #
             ############################################################################################################
 
-            quantization_errors = device_array_empty(n_epochs, dtype = np.float32)
+            quantization_errors = np.empty(n_epochs, dtype = np.float32)
 
-            topographic_errors = device_array_empty(n_epochs, dtype = np.float32)
+            topographic_errors = np.empty(n_epochs, dtype = np.float32)
 
             ############################################################################################################
 
@@ -282,15 +258,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                     SOM_Batch._train_step1_epoch_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
                         numerator,
                         denominator,
-                        quantization_errors,
-                        topographic_errors,
                         self._weights,
                         self._topography,
                         vectors,
                         cur_epoch,
                         n_epochs,
                         self._sigma,
-                        penalty_dist,
                         self._m * self._n
                     )
 
@@ -313,13 +286,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                     where = denominator_host != 0.0
                 )
 
-            ############################################################################################################
+                ############################################################################################################
 
-            if cur_vector > 0:
+                errors = self.compute_errors(dataset, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
-                self._quantization_errors = quantization_errors.copy_to_host() * n_epochs / cur_vector
-
-                self._topographic_errors = topographic_errors.copy_to_host() * n_epochs / cur_vector
+                quantization_errors[cur_epoch] = errors[0]
+                topographic_errors[cur_epoch] = errors[1]
 
             ############################################################################################################
 
@@ -329,9 +301,9 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             # TRAINING BY NUMBER OF VECTORS                                                                            #
             ############################################################################################################
 
-            quantization_errors = device_array_empty(n_error_bins, dtype = np.float32)
+            quantization_errors = np.empty(1, dtype = np.float32)
 
-            topographic_errors = device_array_empty(n_error_bins, dtype = np.float32)
+            topographic_errors = np.empty(1, dtype = np.float32)
 
             ############################################################################################################
 
@@ -352,16 +324,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 SOM_Batch._train_step1_iter_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
                     numerator,
                     denominator,
-                    quantization_errors,
-                    topographic_errors,
                     self._weights,
                     self._topography,
                     vectors[0: count],
                     cur_vector,
                     n_vectors,
-                    n_error_bins,
                     self._sigma,
-                    penalty_dist,
                     self._m * self._n
                 )
 
@@ -394,11 +362,10 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
-            if cur_vector > 0:
+            errors = self.compute_errors(dataset, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
-                self._quantization_errors = quantization_errors.copy_to_host() * n_error_bins / cur_vector
-
-                self._topographic_errors = topographic_errors.copy_to_host() * n_error_bins / cur_vector
+            quantization_errors[0] = errors[0]
+            topographic_errors[0] = errors[1]
 
             ############################################################################################################
 
@@ -409,34 +376,27 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 ########################################################################################################################
 
 @jit(fastmath = True)
-def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, sigma: float, penalty_dist: float, err_bin: int, mn: int) -> None:
+def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, sigma: float, mn: int) -> None:
 
     ####################################################################################################################
     # DO BMUS CALCULATION                                                                                              #
     ####################################################################################################################
 
-    ###_distance2 = 1.0e99
-    min_distance1 = 1.0e99
-
-    min_index2 = 0
-    min_index1 = 0
+    min_distance = 1.0e99
+    min_index = 0
 
     for min_index0 in range(mn):
 
         min_distance0 = square_distance_xpu(weights[min_index0], vector)
 
-        if min_distance1 > min_distance0:
+        if min_distance > min_distance0:
 
-            ###_distance2 = min_distance1
-            min_distance1 = min_distance0
-
-            min_index2 = min_index1
-            min_index1 = min_index0
+            min_distance = min_distance0
+            min_index = min_index0
 
     ####################################################################################################################
 
-    bmu2 = topography[min_index2]
-    bmu1 = topography[min_index1]
+    bmu = topography[min_index]
 
     ####################################################################################################################
     # UPDATE WEIGHTS                                                                                                   #
@@ -452,7 +412,7 @@ def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, quantizatio
 
             ############################################################################################################
 
-            neighborhood_i = math.exp(-square_distance_xpu(topography[i], bmu1) / (2.0 * sigma ** 2))
+            neighborhood_i = math.exp(-square_distance_xpu(topography[i], bmu) / (2.0 * sigma ** 2))
 
             ############################################################################################################
 
@@ -472,18 +432,8 @@ def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, quantizatio
         # ... WITH DIRAC NEIGHBORHOOD OPERATOR                                                                         #
         ################################################################################################################
 
-        atomic_add_vector_xpu(numerator[min_index1], vector)
+        atomic_add_vector_xpu(numerator[min_index], vector)
 
-        jit.atomic_add(denominator, min_index1, 1.0000)
-
-    ####################################################################################################################
-    # UPDATE ERRORS                                                                                                    #
-    ####################################################################################################################
-
-    if square_distance_xpu(bmu1, bmu2) > penalty_dist:
-
-        jit.atomic_add(topographic_errors, err_bin, 1.0000000000000000000000)
-
-    jit.atomic_add(quantization_errors, err_bin, math.sqrt(min_distance1))
+        jit.atomic_add(denominator, min_index, 1.0000)
 
 ########################################################################################################################

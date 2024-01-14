@@ -64,3 +64,12 @@ def test_winners(enable_gpu):
     assert np.allclose(som.get_winners(data, enable_gpu = enable_gpu, threads_per_blocks = 8), expected)
 
 ########################################################################################################################
+
+@pytest.mark.parametrize('enable_gpu', [False, True])
+def test_errors(enable_gpu):
+
+    data = np.random.default_rng(seed = 0).random((8, 4), np.float32)
+
+    print(som.compute_errors(data, enable_gpu = enable_gpu, threads_per_blocks = 8))
+
+########################################################################################################################

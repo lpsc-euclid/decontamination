@@ -509,6 +509,49 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
+    def compute_errors(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> typing.Tuple[float, float]:
+
+        """
+        Computes the quantization and topographic errors for the given input.
+
+        Parameters
+        ----------
+        dataset : typing.Union[np.ndarray, typing.Callable]
+            Dataset array or generator builder.
+        show_progress_bar : bool, default: **False**
+            Specifies whether to display a progress bar.
+        enable_gpu : bool, default: **True**
+            If available, run on GPU rather than CPU.
+        threads_per_blocks : int, default: **1024**
+            Number of GPU threads per blocks.
+        """
+
+        ################################################################################################################
+
+        generator_builder = dataset_to_generator_builder(dataset)
+
+        ################################################################################################################
+
+        result = device_array_empty(shape = 2, dtype = np.float32)
+
+        ################################################################################################################
+
+        n_vectors = 0
+
+        generator = generator_builder()
+
+        for vectors in tqdm.tqdm(generator(), disable = not show_progress_bar):
+
+            n_vectors += vectors.shape[0]
+
+            _compute_errors_kernel[enable_gpu, threads_per_blocks, dataset.shape[0]](result, self._weights, self._topography, vectors, 2.0 if self._topology == 'square' else 1.0, self._m * self._n)
+
+        ################################################################################################################
+
+        return result.copy_to_host() / n_vectors
+
+    ####################################################################################################################
+
     def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> np.ndarray:
 
         """
@@ -574,34 +617,6 @@ class SOM_Abstract(object):
         ################################################################################################################
 
         return result.copy_to_host()
-
-    ####################################################################################################################
-
-    def compute_errors(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> typing.Tuple[float, float]:
-
-        ################################################################################################################
-
-        generator_builder = dataset_to_generator_builder(dataset)
-
-        ################################################################################################################
-
-        result = device_array_empty(2, dtype = np.float32)
-
-        ################################################################################################################
-
-        n_vectors = 0
-
-        generator = generator_builder()
-
-        for vectors in tqdm.tqdm(generator(), disable = not show_progress_bar):
-
-            n_vectors += vectors.shape[0]
-
-            _compute_errors_kernel[enable_gpu, threads_per_blocks, dataset.shape[0]](result, self._weights, self._topography, vectors, 2.0 if self._topology == 'square' else 1.0, self._m * self._n)
-
-        ################################################################################################################
-
-        return result.copy_to_host() / n_vectors
 
 ########################################################################################################################
 
@@ -732,8 +747,8 @@ def _compute_errors_xpu(errors: np.ndarray, weights: np.ndarray, topography: np.
 
     if square_distance_xpu(bmu1, bmu2) > penalty_dist:
 
-        jit.atomic_add(errors, 0, 1.0000000000000000000000)
+        jit.atomic_add(errors, 1, 1.0000000000000000000000)
 
-    jit.atomic_add(errors, 1, math.sqrt(min_distance1))
+    jit.atomic_add(errors, 0, math.sqrt(min_distance1))
 
 ########################################################################################################################

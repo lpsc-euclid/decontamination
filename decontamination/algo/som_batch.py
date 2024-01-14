@@ -9,7 +9,7 @@ import typing
 import numpy as np
 import numba as nb
 
-from .. import jit, device_array_empty, device_array_zeros
+from .. import jit, device_array_zeros
 
 from . import som_abstract, square_distance_xpu, atomic_add_vector_xpu, asymptotic_decay_cpu, asymptotic_decay_gpu, dataset_to_generator_builder
 
@@ -233,9 +233,9 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             # TRAINING BY NUMBER OF EPOCHS                                                                             #
             ############################################################################################################
 
-            quantization_errors = np.empty(n_epochs, dtype = np.float32)
+            self._quantization_errors = np.empty(n_epochs, dtype = np.float32)
 
-            topographic_errors = np.empty(n_epochs, dtype = np.float32)
+            self._topographic_errors = np.empty(n_epochs, dtype = np.float32)
 
             ############################################################################################################
 
@@ -290,8 +290,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                 errors = self.compute_errors(dataset, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
-                quantization_errors[cur_epoch] = errors[0]
-                topographic_errors[cur_epoch] = errors[1]
+                self._quantization_errors[cur_epoch] = errors[0]
+                self._topographic_errors[cur_epoch] = errors[1]
 
             ############################################################################################################
 
@@ -301,9 +301,9 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             # TRAINING BY NUMBER OF VECTORS                                                                            #
             ############################################################################################################
 
-            quantization_errors = np.empty(1, dtype = np.float32)
+            self._quantization_errors = np.empty(1, dtype = np.float32)
 
-            topographic_errors = np.empty(1, dtype = np.float32)
+            self._topographic_errors = np.empty(1, dtype = np.float32)
 
             ############################################################################################################
 
@@ -364,8 +364,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             errors = self.compute_errors(dataset, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
-            quantization_errors[0] = errors[0]
-            topographic_errors[0] = errors[1]
+            self._quantization_errors[0] = errors[0]
+            self._topographic_errors[0] = errors[1]
 
             ############################################################################################################
 

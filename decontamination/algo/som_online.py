@@ -145,7 +145,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, max_epoch: typing.Optional[int] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`). An online formulation of updating weights is implemented:
@@ -169,6 +169,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
             Number of epochs to train for.
         n_vectors : typing.Optional[int], default: **None**
             Number of vectors to train for.
+        max_epoch : typing.Optional[int], default: **None**
+            ???
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**
@@ -200,6 +202,12 @@ class SOM_Online(som_abstract.SOM_Abstract):
             ############################################################################################################
 
             for cur_epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
+
+                if max_epoch is not None and cur_epoch == max_epoch:
+
+                    break
+
+                ########################################################################################################
 
                 generator = generator_builder()
 

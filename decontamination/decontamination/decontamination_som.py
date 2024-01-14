@@ -412,9 +412,9 @@ class Decontamination_SOM(object):
         n_vectors : typing.Optional[int], default: **None**
             Number of vectors to train for.
         stop_quantization_error : typing.Optional[float], default: **None**
-            ???
+            Stop the training if quantization_error < stop_quantization_error.
         stop_topographic_error : typing.Optional[float], default: **None**
-            ???
+            Stop the training if stop_topographic < stop_topographic_error.
         show_progress_bar : bool, default: **True**
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**

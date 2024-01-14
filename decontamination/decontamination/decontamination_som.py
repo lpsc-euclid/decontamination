@@ -396,7 +396,7 @@ class Decontamination_SOM(object):
     ####################################################################################################################
 
     # noinspection PyArgumentList
-    def train(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], footprint_systematics: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def train(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], footprint_systematics: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, max_epoch: typing.Optional[int] = None, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         ???
@@ -411,6 +411,8 @@ class Decontamination_SOM(object):
             Number of epochs to train for.
         n_vectors : typing.Optional[int], default: **None**
             Number of vectors to train for.
+        max_epoch : typing.Optional[int], default: **None**
+            ???
         show_progress_bar : bool, default: **True**
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**
@@ -439,9 +441,9 @@ class Decontamination_SOM(object):
         self._som.init_from(self._pca)
 
         if self._batch:
-            self._som.train(catalog_systematics, n_epochs = n_epochs, n_vectors = n_vectors, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+            self._som.train(catalog_systematics, n_epochs = n_epochs, n_vectors = n_vectors, max_epoch = max_epoch, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
         else:
-            self._som.train(catalog_systematics, n_epochs = n_epochs, n_vectors = n_vectors, show_progress_bar = show_progress_bar)
+            self._som.train(catalog_systematics, n_epochs = n_epochs, n_vectors = n_vectors, max_epoch = max_epoch, show_progress_bar = show_progress_bar)
 
         ################################################################################################################
         # COMPUTE FOOTPRINT WINNERS                                                                                    #

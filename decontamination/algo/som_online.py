@@ -193,9 +193,9 @@ class SOM_Online(som_abstract.SOM_Abstract):
             # TRAINING BY NUMBER OF EPOCHS                                                                             #
             ############################################################################################################
 
-            self._quantization_errors = np.empty(n_epochs, dtype = np.float32)
+            self._quantization_errors = np.zeros(n_epochs, dtype = np.float32)
 
-            self._topographic_errors = np.empty(n_epochs, dtype = np.float32)
+            self._topographic_errors = np.zeros(n_epochs, dtype = np.float32)
 
             ############################################################################################################
 
@@ -235,9 +235,9 @@ class SOM_Online(som_abstract.SOM_Abstract):
             # TRAINING BY NUMBER OF VECTORS                                                                            #
             ############################################################################################################
 
-            self._quantization_errors = np.empty(1, dtype = np.float32)
+            self._quantization_errors = np.zeros(1, dtype = np.float32)
 
-            self._topographic_errors = np.empty(1, dtype = np.float32)
+            self._topographic_errors = np.zeros(1, dtype = np.float32)
 
             ############################################################################################################
 

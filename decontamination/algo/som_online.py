@@ -183,8 +183,6 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        cur_vector = 0
-
         self._n_epochs = n_epochs
 
         self._n_vectors = n_vectors
@@ -207,8 +205,6 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
                 for vectors in generator():
 
-                    cur_vector += vectors.shape[0]
-
                     SOM_Online._train_step1_epoch(
                         self._weights,
                         self._topography,
@@ -222,15 +218,18 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
                     gc.collect()
 
-            ############################################################################################################
+                ########################################################################################################
 
-            if cur_vector > 0:
+                errors = self.compute_errors(dataset, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
-                pass
+                self._quantization_errors[cur_epoch] = errors[0]
+                self._topographic_errors[cur_epoch] = errors[1]
 
             ############################################################################################################
 
         elif (n_epochs is None) and not (n_vectors is None):
+
+            cur_vector = 0
 
             ############################################################################################################
             # TRAINING BY NUMBER OF VECTORS                                                                            #

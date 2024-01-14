@@ -221,8 +221,6 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        cur_vector = 0
-
         self._n_epochs = n_epochs
 
         self._n_vectors = n_vectors
@@ -252,8 +250,6 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 generator = generator_builder()
 
                 for vectors in generator():
-
-                    cur_vector += vectors.shape[0]
 
                     SOM_Batch._train_step1_epoch_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
                         numerator,
@@ -296,6 +292,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
             ############################################################################################################
 
         elif (n_epochs is None) and not (n_vectors is None):
+
+            cur_vector = 0
 
             ############################################################################################################
             # TRAINING BY NUMBER OF VECTORS                                                                            #

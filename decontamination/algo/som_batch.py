@@ -241,7 +241,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             for cur_epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
 
-                if max_epoch is not None and cur_epoch == max_epoch:
+                if max_epoch is not None and cur_epoch >= max_epoch:
 
                     break
 

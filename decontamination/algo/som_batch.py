@@ -299,6 +299,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 self._quantization_errors[cur_epoch] = errors[0]
                 self._topographic_errors[cur_epoch] = errors[1]
 
+                print(errors[0], stop_quantization_error, '-', errors[1], stop_topographic_error)
+
                 if errors[0] <= stop_quantization_error\
                    and                                 \
                    errors[1] <= stop_topographic_error :

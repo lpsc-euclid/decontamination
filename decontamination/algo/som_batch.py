@@ -220,10 +220,10 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         """
 
         if stop_quantization_error is None:
-            stop_quantization_error = -1.0
+            stop_quantization_error = -1.0e6
 
         if stop_topographic_error is None:
-            stop_topographic_error = -1.0
+            stop_topographic_error = -1.0e6
 
         ################################################################################################################
 
@@ -302,6 +302,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 if errors[0] <= stop_quantization_error\
                    and                                 \
                    errors[1] <= stop_topographic_error :
+
+                    print('Stopping at epoch #{}.'.format(cur_epoch))
 
                     break
 

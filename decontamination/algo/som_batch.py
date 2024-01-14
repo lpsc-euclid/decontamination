@@ -385,14 +385,14 @@ def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np
     min_distance = 1.0e99
     min_index = 0
 
-    for min_index0 in range(mn):
+    for index in range(mn):
 
-        min_distance0 = square_distance_xpu(weights[min_index0], vector)
+        distance = square_distance_xpu(weights[index], vector)
 
-        if min_distance > min_distance0:
+        if min_distance > distance:
 
-            min_distance = min_distance0
-            min_index = min_index0
+            min_distance = distance
+            min_index = index
 
     ####################################################################################################################
 

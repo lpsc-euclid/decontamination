@@ -2,7 +2,6 @@
 ########################################################################################################################
 
 import gc
-import math
 import tqdm
 import typing
 
@@ -94,7 +93,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit()
-    def _train_step1_epoch(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
+    def _train_step1_epoch(weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, mn: int):
 
         ################################################################################################################
 
@@ -109,15 +108,11 @@ class SOM_Online(som_abstract.SOM_Abstract):
         for i in range(vectors.shape[0]):
 
             _train_step2(
-                quantization_errors,
-                topographic_errors,
                 weights,
                 topography,
                 vectors[i],
                 alpha,
                 sigma,
-                penalty_dist,
-                cur_epoch,
                 mn
             )
 
@@ -125,13 +120,9 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit()
-    def _train_step1_iter(weights: np.ndarray, quantization_errors: np.ndarray, topographic_errors: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_vector: int, n_vectors: int, n_err_bins: int, alpha0: float, sigma0: float, penalty_dist: float, mn: int):
+    def _train_step1_iter(weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_vector: int, n_vectors: int, alpha0: float, sigma0: float, mn: int):
 
         for i in range(vectors.shape[0]):
-
-            ############################################################################################################
-
-            cur_err_bin = (n_err_bins * (cur_vector + i)) // n_vectors
 
             ############################################################################################################
 
@@ -144,21 +135,17 @@ class SOM_Online(som_abstract.SOM_Abstract):
             ############################################################################################################
 
             _train_step2(
-                quantization_errors,
-                topographic_errors,
                 weights,
                 topography,
                 vectors[i],
                 alpha,
                 sigma,
-                penalty_dist,
-                cur_err_bin,
                 mn
             )
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, n_error_bins: int = 10, show_progress_bar: bool = False) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`). An online formulation of updating weights is implemented:
@@ -182,10 +169,12 @@ class SOM_Online(som_abstract.SOM_Abstract):
             Number of epochs to train for.
         n_vectors : typing.Optional[int], default: **None**
             Number of vectors to train for.
-        n_error_bins : int, default: **10**
-            Number of quantization and topographic error bins.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
+        enable_gpu : bool, default: **True**
+            If available, run on GPU rather than CPU.
+        threads_per_blocks : int, default: **1024**
+            Number of GPU threads per blocks.
         """
 
         ################################################################################################################
@@ -200,17 +189,15 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
         self._n_vectors = n_vectors
 
-        penalty_dist = 2.0 if self._topology == 'square' else 1.0
-
         if not (n_epochs is None) and (n_vectors is None):
 
             ############################################################################################################
             # TRAINING BY NUMBER OF EPOCHS                                                                             #
             ############################################################################################################
 
-            quantization_errors = np.zeros(n_epochs, dtype = np.float32)
+            self._quantization_errors = np.empty(n_epochs, dtype = np.float32)
 
-            topographic_errors = np.zeros(n_epochs, dtype = np.float32)
+            self._topographic_errors = np.empty(n_epochs, dtype = np.float32)
 
             ############################################################################################################
 
@@ -224,15 +211,12 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
                     SOM_Online._train_step1_epoch(
                         self._weights,
-                        quantization_errors,
-                        topographic_errors,
                         self._topography,
                         vectors,
                         cur_epoch,
                         n_epochs,
                         self._alpha,
                         self._sigma,
-                        penalty_dist,
                         self._m * self._n
                     )
 
@@ -242,9 +226,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
             if cur_vector > 0:
 
-                self._quantization_errors = quantization_errors * n_epochs / cur_vector
-
-                self._topographic_errors = topographic_errors * n_epochs / cur_vector
+                pass
 
             ############################################################################################################
 
@@ -254,9 +236,9 @@ class SOM_Online(som_abstract.SOM_Abstract):
             # TRAINING BY NUMBER OF VECTORS                                                                            #
             ############################################################################################################
 
-            quantization_errors = np.zeros(n_error_bins, dtype = np.float32)
+            self._quantization_errors = np.empty(1, dtype = np.float32)
 
-            topographic_errors = np.zeros(n_error_bins, dtype = np.float32)
+            self._topographic_errors = np.empty(1, dtype = np.float32)
 
             ############################################################################################################
 
@@ -270,16 +252,12 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
                 SOM_Online._train_step1_iter(
                     self._weights,
-                    quantization_errors,
-                    topographic_errors,
                     self._topography,
                     vectors[0: count],
                     cur_vector,
                     n_vectors,
-                    n_error_bins,
                     self._alpha,
                     self._sigma,
-                    penalty_dist,
                     self._m * self._n
                 )
 
@@ -295,11 +273,10 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
-            if cur_vector > 0:
+            errors = self.compute_errors(dataset, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
-                self._quantization_errors = quantization_errors * n_error_bins / cur_vector
-
-                self._topographic_errors = topographic_errors * n_error_bins / cur_vector
+            self._quantization_errors[0] = errors[0]
+            self._topographic_errors[0] = errors[1]
 
             ############################################################################################################
 
@@ -310,34 +287,27 @@ class SOM_Online(som_abstract.SOM_Abstract):
 ########################################################################################################################
 
 @nb.njit(fastmath = True)
-def _train_step2(quantization_errors: np.ndarray, topographic_errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, alpha: float, sigma: float, penalty_dist: float, err_bin: int, mn: int) -> None:
+def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, alpha: float, sigma: float, mn: int) -> None:
 
     ####################################################################################################################
     # DO BMUS CALCULATION                                                                                              #
     ####################################################################################################################
 
-    ###_distance2 = 1.0e99
-    min_distance1 = 1.0e99
+    min_distance = 1.0e99
+    min_index = 0
 
-    min_index2 = 0
-    min_index1 = 0
+    for index in range(mn):
 
-    for min_index0 in range(mn):
+        distance = np.sum((weights[index] - vector) ** 2)
 
-        min_distance0 = np.sum((weights[min_index0] - vector) ** 2)
+        if min_distance > distance:
 
-        if min_distance1 > min_distance0:
-
-            ###_distance2 = min_distance1
-            min_distance1 = min_distance0
-
-            min_index2 = min_index1
-            min_index1 = min_index0
+            min_distance = distance
+            min_index = index
 
     ####################################################################################################################
 
-    bmu2 = topography[min_index2]
-    bmu1 = topography[min_index1]
+    bmu1 = topography[min_index]
 
     ####################################################################################################################
     # DO NEIGHBORHOOD OPERATOR CALCULATION                                                                             #
@@ -350,15 +320,5 @@ def _train_step2(quantization_errors: np.ndarray, topographic_errors: np.ndarray
     ####################################################################################################################
 
     weights += alpha * np.expand_dims(neighborhood_op, -1) * (vector - weights)
-
-    ####################################################################################################################
-    # UPDATE ERRORS                                                                                                    #
-    ####################################################################################################################
-
-    if np.sum((bmu1 - bmu2) ** 2) > penalty_dist:
-
-        topographic_errors[err_bin] += 1.0000000000000000000000
-
-    quantization_errors[err_bin] += math.sqrt(min_distance1)
 
 ########################################################################################################################

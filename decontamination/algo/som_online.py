@@ -181,6 +181,12 @@ class SOM_Online(som_abstract.SOM_Abstract):
             Number of GPU threads per blocks.
         """
 
+        if stop_quantization_error is None:
+            stop_quantization_error = -1.0
+
+        if stop_topographic_error is None:
+            stop_topographic_error = -1.0
+
         ################################################################################################################
 
         generator_builder = dataset_to_generator_builder(dataset)
@@ -231,13 +237,9 @@ class SOM_Online(som_abstract.SOM_Abstract):
                 self._quantization_errors[cur_epoch] = errors[0]
                 self._topographic_errors[cur_epoch] = errors[1]
 
-                if stop_quantization_error is not None  \
-                   and                                  \
-                   stop_topographic_error is not None   \
-                   and                                  \
-                   errors[0] <= stop_quantization_error \
-                   and                                  \
-                   errors[1] <= stop_topographic_error  :
+                if errors[0] <= stop_quantization_error\
+                   and                                 \
+                   errors[1] <= stop_topographic_error :
 
                     break
 

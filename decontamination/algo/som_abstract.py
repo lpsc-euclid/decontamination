@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
+import math
 import tqdm
 import typing
 
@@ -574,6 +575,34 @@ class SOM_Abstract(object):
 
         return result.copy_to_host()
 
+    ####################################################################################################################
+
+    def compute_errors(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> typing.Tuple[float, float]:
+
+        ################################################################################################################
+
+        generator_builder = dataset_to_generator_builder(dataset)
+
+        ################################################################################################################
+
+        result = device_array_empty(2, dtype = np.float32)
+
+        ################################################################################################################
+
+        n_vectors = 0
+
+        generator = generator_builder()
+
+        for vectors in tqdm.tqdm(generator(), disable = not show_progress_bar):
+
+            n_vectors += vectors.shape[0]
+
+            _compute_errors_kernel[enable_gpu, threads_per_blocks, dataset.shape[0]](result, self._weights, self._topography, vectors, 2.0 if self._topology == 'square' else 1.0, self._m * self._n)
+
+        ################################################################################################################
+
+        return result.copy_to_host() / n_vectors
+
 ########################################################################################################################
 
 @jit(kernel = True, parallel = True)
@@ -640,5 +669,71 @@ def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
             min_index = index
 
     return min_index
+
+########################################################################################################################
+
+@jit(kernel = True, parallel = True)
+def _compute_errors_kernel(errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, penalty_dist: float, mn: int) -> None:
+
+    ####################################################################################################################
+    # !--BEGIN-CPU--
+
+    for i in nb.prange(vectors.shape[0]):
+
+        _compute_errors_xpu(errors, weights, topography, vectors[i], penalty_dist, mn)
+
+    # !--END-CPU--
+    ####################################################################################################################
+    # !--BEGIN-GPU--
+
+    i = jit.grid(1)
+
+    if i < vectors.shape[0]:
+
+        _compute_errors_xpu(errors, weights, topography, vectors[i], penalty_dist, mn)
+
+    # !--END-GPU--
+
+########################################################################################################################
+
+@jit(fastmath = True)
+def _compute_errors_xpu(errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, penalty_dist: float, mn: int) -> None:
+
+    ####################################################################################################################
+    # DO BMUS CALCULATION                                                                                              #
+    ####################################################################################################################
+
+    ###_distance2 = 1.0e99
+    min_distance1 = 1.0e99
+
+    min_index2 = 0
+    min_index1 = 0
+
+    for min_index0 in range(mn):
+
+        min_distance0 = square_distance_xpu(weights[min_index0], vector)
+
+        if min_distance1 > min_distance0:
+
+            ###_distance2 = min_distance1
+            min_distance1 = min_distance0
+
+            min_index2 = min_index1
+            min_index1 = min_index0
+
+    ####################################################################################################################
+
+    bmu2 = topography[min_index2]
+    bmu1 = topography[min_index1]
+
+    ####################################################################################################################
+    # UPDATE ERRORS                                                                                                    #
+    ####################################################################################################################
+
+    if square_distance_xpu(bmu1, bmu2) > penalty_dist:
+
+        jit.atomic_add(errors, 0, 1.0000000000000000000000)
+
+    jit.atomic_add(errors, 1, math.sqrt(min_distance1))
 
 ########################################################################################################################

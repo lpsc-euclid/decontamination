@@ -172,7 +172,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
         stop_quantization_error : typing.Optional[float], default: **None**
             Stop the training if quantization_error < stop_quantization_error.
         stop_topographic_error : typing.Optional[float], default: **None**
-            Stop the training if stop_topographic < stop_topographic_error.
+            Stop the training if topographic_error < stop_topographic_error.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**

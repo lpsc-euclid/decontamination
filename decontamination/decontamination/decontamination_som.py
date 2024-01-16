@@ -627,20 +627,22 @@ class Decontamination_SOM(object):
             ############################################################################################################
 
             idx = 1
-            val = 0.0
+            acc = 0.0
 
-            area = np.sum(tmp_hist[i]) / corr_n_bins
+            hist = tmp_hist[i]
+
+            area = np.sum(hist) / corr_n_bins
 
             for j in range(temp_n_bins):
 
-                val += tmp_hist[i, j]
+                acc += hist[j]
 
-                if val >= area:
+                if acc >= area:
 
                     result_corr_edges[idx] = j / temp_n_bins
 
                     idx += 1
-                    val = 0.0
+                    acc = 0.0
 
             ############################################################################################################
 

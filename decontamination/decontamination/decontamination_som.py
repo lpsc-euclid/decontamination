@@ -583,7 +583,7 @@ class Decontamination_SOM(object):
 
     @staticmethod
     @nb.njit()
-    def _get_same_area_edges(result_edges, hist, syst_min, syst_max, n_bins):
+    def _compute_same_area_edges_step2(result_edges, hist, syst_min, syst_max, n_bins):
 
         ############################################################################################################
 
@@ -655,7 +655,7 @@ class Decontamination_SOM(object):
 
         for i in range(self._som.dim):
 
-            Decontamination_SOM._get_same_area_edges(
+            Decontamination_SOM._compute_same_area_edges_step2(
                 result[i],
                 hist[i],
                 minima[i],

@@ -5,7 +5,7 @@ import typing
 
 import numpy as np
 
-from ..algo import som_pca, som_batch, som_online, som_abstract, clustering
+from ..algo import som_pca, som_batch, som_online, som_abstract, clustering, dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -580,10 +580,89 @@ class Decontamination_SOM(object):
 
     ####################################################################################################################
 
-    def compute_histograms(self):
+    def compute_1d_correlations(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
 
-        """TODO"""
+        ################################################################################################################
 
-        pass
+        generator_builder = dataset_to_generator_builder(catalog_systematics)
+
+        ################################################################################################################
+        #                                                                                                              #
+        ################################################################################################################
+
+        quantile_estimates = np.zeros((self._som.dim, n_bins + 1), dtype = np.int64)
+
+        result_hist = np.zeros(n_bins, dtype = np.int64)
+
+        ################################################################################################################
+
+        n_vectors = 0
+
+        generator = generator_builder()
+
+        bin_edges = np.linspace(0.0, 100.0, n_bins + 1)
+
+        ################################################################################################################
+
+        for vectors in generator():
+
+            n_vectors += vectors.shape[0]
+
+            for i in range(self._som.dim):
+
+                quantile_estimates[i] += np.percentile(vectors[:, i], bin_edges) * vectors.shape[0]
+
+                hist, _ = np.histogram(vectors[:, i], bins = n_bins, range = (0.0, 1.0))
+
+                result_hist += hist
+
+        ################################################################################################################
+
+        quantile_estimates /= n_vectors
+
+        ################################################################################################################
+        #                                                                                                              #
+        ################################################################################################################
+
+        result_equal_area_hist = np.zeros((self._som.dim, n_bins), dtype = np.int64)
+        result_equal_area_syst = np.zeros((self._som.dim, n_bins), dtype = np.float64)
+        result_equal_area_gndm = np.zeros((self._som.dim, n_bins), dtype = np.float64)
+        result_equal_area_cgndm = np.zeros((self._som.dim, n_bins), dtype = np.float64)
+
+        ################################################################################################################
+
+        generator = generator_builder()
+
+        ################################################################################################################
+
+        for vectors in generator():
+
+            for i in range(self._som.dim):
+
+                indices = np.digitize(vectors[:, i], quantile_estimates[i], right = True) - 1
+
+                indices = np.clip(indices, a_min = 0, a_max = n_bins - 1)
+
+                for j in range(n_bins):
+
+                    mask = np.where(indices == j)[0]
+
+                    result_equal_area_hist[i, j] += np.sum(mask)
+                    result_equal_area_syst[i, j] += np.sum(vectors[mask, i])
+
+        ################################################################################################################
+        #                                                                                                              #
+        ################################################################################################################
+
+        result_equal_area_syst = np.divide(
+            result_equal_area_syst,
+            result_equal_area_hist,
+            out = np.zeros_like(result_equal_area_syst),
+            where = result_equal_area_hist != 0
+        )
+
+        ################################################################################################################
+
+        return result_hist, result_equal_area_hist, result_equal_area_syst, result_equal_area_gndm, result_equal_area_cgndm
 
 ########################################################################################################################

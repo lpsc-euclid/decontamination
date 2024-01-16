@@ -4,6 +4,7 @@
 import typing
 
 import numpy as np
+import numba as nb
 
 from ..algo import som_pca, som_batch, som_online, som_abstract, clustering, dataset_to_generator_builder
 
@@ -580,81 +581,90 @@ class Decontamination_SOM(object):
 
     ####################################################################################################################
 
-    def compute_1d_correlations(self, systematics: typing.Union[np.ndarray, typing.Callable], corr_n_bins: int, hist_n_bins: int) -> typing.Tuple[np.ndarray, np.ndarray]:
+    @staticmethod
+    @nb.njit()
+    def _get_same_area_edges(result_edges, hist, syst_min, syst_max, n_bins):
+
+        ############################################################################################################
+
+        idx = 1
+        acc = 0.0
+
+        area = np.sum(hist) / n_bins
+
+        ############################################################################################################
+
+        for j in range(hist.shape[0]):
+
+            acc += hist[j]
+
+            if acc >= area:
+
+                result_edges[idx] = (j / hist.shape[0]) * (syst_max - syst_min) + syst_min
+
+                idx += 1
+                acc = 0.0
+
+        ############################################################################################################
+
+        result_edges[0x0000] = syst_min
+        result_edges[n_bins] = syst_max
+
+    ####################################################################################################################
+
+    def compute_same_area_edges(self, systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int) -> np.ndarray:
 
         ################################################################################################################
 
         generator_builder = dataset_to_generator_builder(systematics)
 
         ################################################################################################################
+        # ????                                                                                                         #
+        ################################################################################################################
+
+        minima = np.zeros(self._som.dim, dtype = np.float32)
+        maxima = np.ones(self._som.dim, dtype = np.float32)
+
+        tmp_n_bins = 100
+
+        ################################################################################################################
         # BUILD HISTOGRAMS                                                                                             #
         ################################################################################################################
 
-        tmp_hist = np.zeros((self._som.dim, corr_n_bins), dtype = np.float32)
-
-        result_hist = np.zeros((self._som.dim, hist_n_bins), dtype = np.float32)
+        hist = np.zeros((self._som.dim, tmp_n_bins), dtype = np.float32)
 
         ################################################################################################################
-
-        n_vectors = 0
-
-        temp_n_bins = 100
 
         generator = generator_builder()
 
         for vectors in generator():
 
-            n_vectors += vectors.shape[0]
+            for i in range(self._som.dim):
 
-            for idx in range(self._som.dim):
+                temp, _ = np.histogram(vectors[i, :], bins = tmp_n_bins, range = (minima[i], maxima[i]))
 
-                hist, _ = np.histogram(vectors[idx, :], bins = temp_n_bins, range = (0.0, 1.0))
-                tmp_hist += hist
-
-                hist, _ = np.histogram(vectors[idx, :], bins = corr_n_bins, range = (0.0, 1.0))
-                result_hist += hist
+                hist += temp
 
         ################################################################################################################
-        # REBIN / RENORMALIZE HISTOGRAMS                                                                               #
+        # REBIN HISTOGRAM                                                                                              #
         ################################################################################################################
 
-        result_corr_edges = np.empty(corr_n_bins + 1, dtype = np.float32)
+        result = np.empty((self._som.dim, n_bins + 1), dtype = np.float32)
 
         ################################################################################################################
 
         for i in range(self._som.dim):
 
-            ############################################################################################################
-
-            idx = 1
-            acc = 0.0
-
-            hist = tmp_hist[i]
-
-            area = np.sum(hist) / corr_n_bins
-
-            for j in range(temp_n_bins):
-
-                acc += hist[j]
-
-                if acc >= area:
-
-                    result_corr_edges[idx] = j / temp_n_bins
-
-                    idx += 1
-                    acc = 0.0
-
-            ############################################################################################################
-
-            result_corr_edges[0x000000000] = 0.0
-            result_corr_edges[hist_n_bins] = 1.0
+            Decontamination_SOM._get_same_area_edges(
+                result[i],
+                hist[i],
+                minima[i],
+                maxima[i],
+                n_bins
+            )
 
         ################################################################################################################
 
-        result_hist /= n_vectors
-
-        ################################################################################################################
-
-        return result_corr_edges, result_hist
+        return result
 
 ########################################################################################################################

@@ -580,89 +580,79 @@ class Decontamination_SOM(object):
 
     ####################################################################################################################
 
-    def compute_1d_correlations(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    def compute_1d_correlations(self, systematics: typing.Union[np.ndarray, typing.Callable], corr_n_bins: int, hist_n_bins: int) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
-        generator_builder = dataset_to_generator_builder(catalog_systematics)
+        generator_builder = dataset_to_generator_builder(systematics)
 
         ################################################################################################################
-        #                                                                                                              #
+        # BUILD HISTOGRAMS                                                                                             #
         ################################################################################################################
 
-        quantile_estimates = np.zeros((self._som.dim, n_bins + 1), dtype = np.int64)
+        tmp_hist = np.zeros((self._som.dim, corr_n_bins), dtype = np.float32)
 
-        result_hist = np.zeros(n_bins, dtype = np.int64)
+        result_hist = np.zeros((self._som.dim, hist_n_bins), dtype = np.float32)
 
         ################################################################################################################
 
         n_vectors = 0
 
+        temp_n_bins = 100
+
         generator = generator_builder()
-
-        bin_edges = np.linspace(0.0, 100.0, n_bins + 1)
-
-        ################################################################################################################
 
         for vectors in generator():
 
             n_vectors += vectors.shape[0]
 
-            for i in range(self._som.dim):
+            for idx in range(self._som.dim):
 
-                quantile_estimates[i] += np.percentile(vectors[:, i], bin_edges) * vectors.shape[0]
+                hist, _ = np.histogram(vectors[idx, :], bins = temp_n_bins, range = (0.0, 1.0))
+                tmp_hist += hist
 
-                hist, _ = np.histogram(vectors[:, i], bins = n_bins, range = (0.0, 1.0))
-
+                hist, _ = np.histogram(vectors[idx, :], bins = corr_n_bins, range = (0.0, 1.0))
                 result_hist += hist
 
         ################################################################################################################
-
-        quantile_estimates /= n_vectors
-
-        ################################################################################################################
-        #                                                                                                              #
+        # REBIN / RENORMALIZE HISTOGRAMS                                                                               #
         ################################################################################################################
 
-        result_equal_area_hist = np.zeros((self._som.dim, n_bins), dtype = np.int64)
-        result_equal_area_syst = np.zeros((self._som.dim, n_bins), dtype = np.float64)
-        result_equal_area_gndm = np.zeros((self._som.dim, n_bins), dtype = np.float64)
-        result_equal_area_cgndm = np.zeros((self._som.dim, n_bins), dtype = np.float64)
+        result_corr_edges = np.empty(corr_n_bins + 1, dtype = np.float32)
 
         ################################################################################################################
 
-        generator = generator_builder()
+        for i in range(self._som.dim):
+
+            ############################################################################################################
+
+            idx = 1
+            val = 0.0
+
+            area = np.sum(tmp_hist[i]) / corr_n_bins
+
+            for j in range(temp_n_bins):
+
+                val += tmp_hist[i, j]
+
+                if val >= area:
+
+                    result_corr_edges[idx] = j / temp_n_bins
+
+                    idx += 1
+                    val = 0.0
+
+            ############################################################################################################
+
+            result_corr_edges[0x000000000] = 0.0
+            result_corr_edges[hist_n_bins] = 1.0
 
         ################################################################################################################
 
-        for vectors in generator():
-
-            for i in range(self._som.dim):
-
-                indices = np.digitize(vectors[:, i], quantile_estimates[i], right = True) - 1
-
-                indices = np.clip(indices, a_min = 0, a_max = n_bins - 1)
-
-                for j in range(n_bins):
-
-                    mask = np.where(indices == j)[0]
-
-                    result_equal_area_hist[i, j] += np.sum(mask)
-                    result_equal_area_syst[i, j] += np.sum(vectors[mask, i])
-
-        ################################################################################################################
-        #                                                                                                              #
-        ################################################################################################################
-
-        result_equal_area_syst = np.divide(
-            result_equal_area_syst,
-            result_equal_area_hist,
-            out = np.zeros_like(result_equal_area_syst),
-            where = result_equal_area_hist != 0
-        )
+        result_hist /= n_vectors
 
         ################################################################################################################
 
-        return result_hist, result_equal_area_hist, result_equal_area_syst, result_equal_area_gndm, result_equal_area_cgndm
+        return result_corr_edges, result_hist
 
 ########################################################################################################################

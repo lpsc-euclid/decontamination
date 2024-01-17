@@ -131,9 +131,13 @@ class Decontamination_Abstract(object):
         # ESTIMATE BINNING                                                                                             #
         ################################################################################################################
 
-        tmp_n_bins = np.full(dim, np.int64(10.0 * n_bins * (1.0 + np.log2(vectors.shape[1]))) if temp_n_bins is None else temp_n_bins, np.int64)
+        default_n_bins = np.int64(10.0 * n_bins * (1.0 + np.log2(n_vectors)))
 
-        print(tmp_n_bins)
+        print('default_n_bins', default_n_bins)
+
+        ################################################################################################################
+
+        tmp_n_bins = np.full(dim, default_n_bins if temp_n_bins is None else temp_n_bins, np.int64)
 
         ################################################################################################################
         # BUILD HISTOGRAMS                                                                                             #

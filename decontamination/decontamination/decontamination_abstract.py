@@ -77,7 +77,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @staticmethod
-    def compute_same_sky_area_edges_and_stats(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, temp_n_bins: typing.Option[float] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    def compute_same_sky_area_edges_and_stats(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, temp_n_bins: typing.Optional[float] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
@@ -133,9 +133,7 @@ class Decontamination_Abstract(object):
         # ESTIMATE BINNING                                                                                             #
         ################################################################################################################
 
-        default_n_bins = np.int64(100.0 * (1.0 + np.log2(vectors.shape[1])))
-
-        tmp_n_bins = np.full(dim, default_n_bins if temp_n_bins is None else temp_n_bins, np.int64)
+        tmp_n_bins = np.full(dim, np.int64(100.0 * (1.0 + np.log2(vectors.shape[1]))) if temp_n_bins is None else temp_n_bins, np.int64)
 
         ################################################################################################################
         # BUILD HISTOGRAMS                                                                                             #

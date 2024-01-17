@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
-import math
 import typing
 
 import numpy as np
 import numba as nb
+
+import scipy.stats as stats
 
 from ..algo import dataset_to_generator_builder
 
@@ -22,33 +23,51 @@ class Decontamination_Abstract(object):
 
     @staticmethod
     @nb.njit(fastmath = True)
-    def _compute_same_sky_area_edges_step2(result_edges, hist, minimum, maximum, n_bins):
+    def _compute_same_sky_area_edges_step2(result_edges, result_centers, hits, vals, minimum, maximum, n_bins):
 
         ################################################################################################################
 
-        idx = 1
-        acc = 0.0000
+        idx = 0
 
-        area = np.sum(hist) / n_bins
+        acc_n = 0.0
+        acc_v = 0.0
+
+        area = np.sum(hits) / n_bins
 
         ################################################################################################################
 
-        for j in range(hist.shape[0]):
+        for j in range(hits.shape[0]):
 
-            val = hist[j]
+            cur_n = hits[j]
+            cur_v = vals[j]
 
-            acc += val
+            if cur_n == 0:
 
-            if acc >= area:
+                continue
 
-                excess = acc - area
+            acc_n += cur_n
+            acc_v += cur_v
 
-                used_proportion = (val - excess) / val
+            if acc_n >= area:
 
-                result_edges[idx] = ((j + used_proportion + 1) / hist.shape[0]) * (maximum - minimum) + minimum
+                ########################################################################################################
+
+                excess_n = acc_n - area
+
+                excess_v = cur_v * (excess_n / cur_n)
+
+                ########################################################################################################
+
+                result_edges[idx + 1] = ((j + (cur_n - excess_n) / cur_n) / hits.shape[0]) * (maximum - minimum) + minimum
+
+                result_centers[idx + 0] = (acc_v - excess_v) / (acc_n - excess_n)
+
+                ########################################################################################################
 
                 idx += 1
-                acc = excess
+
+                acc_n = excess_n
+                acc_v = excess_v
 
         ################################################################################################################
 
@@ -58,7 +77,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @staticmethod
-    def compute_same_sky_area_edges_and_stats(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, bin_downsizing: float = 1.5) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    def compute_same_sky_area_edges_and_stats(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, tolerance: float = 0.05) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
@@ -114,36 +133,60 @@ class Decontamination_Abstract(object):
         # ESTIMATE BINNING                                                                                             #
         ################################################################################################################
 
-        tmp_n_bins = np.full(dim, 1.0 + math.log2(n_vectors), np.float32) # Sturges' rule
+        tmp_n_bins = np.full(dim, 1000, np.float32)
 
         ################################################################################################################
 
         area = n_vectors / n_bins
 
+        ################################################################################################################
+
         for i in range(dim):
 
-            j = 0
+            ############################################################################################################
 
-            h_max = 0.68 * n_vectors / (2.0 * stds[i])
+            bin_mean = rmss[i]
+            bin_std = stds[i]
 
-            while True:
+            ############################################################################################################
 
-                bin_width = (maxima[i] - minima[i]) / tmp_n_bins[i]
+            max_iter = 1000
+            cur_iter = 0x00
 
-                if bin_width * h_max * bin_downsizing > area:
+            bin_width = bin_std
 
-                    tmp_n_bins[i] = tmp_n_bins[i] * bin_downsizing
+            while cur_iter < max_iter:
 
-                    print('iter#', j)
-                    j += 1
+                ########################################################################################################
 
-                else:
+                percentage_in_bin = (
+                    stats.norm.cdf(bin_mean + bin_width / 2.0, bin_mean, bin_std)
+                    -
+                    stats.norm.cdf(bin_mean - bin_width / 2.0, bin_mean, bin_std)
+                )
+
+                central_area = percentage_in_bin * n_vectors
+
+                ########################################################################################################
+
+                if (1.0 - tolerance) * area <= central_area <= (1.0 + tolerance) * area:
+
+                    tmp_n_bins[i] = np.ceil(6 * bin_std / bin_width).astype(np.int64)
+
+                    # 6 sigma is ~99,7% of the gaussian area
 
                     break
 
-        ################################################################################################################
+                ########################################################################################################
 
-        tmp_n_bins = tmp_n_bins.astype(np.int64)
+                if central_area > area:
+                    bin_width *= 1.1
+                else:
+                    bin_width *= 0.9
+
+                ########################################################################################################
+
+                cur_iter += 1
 
         ################################################################################################################
 
@@ -153,7 +196,8 @@ class Decontamination_Abstract(object):
         # BUILD HISTOGRAMS                                                                                             #
         ################################################################################################################
 
-        hist = [np.zeros(tmp_n_bins[i], dtype = np.float32) for i in range(dim)]
+        hits = [np.zeros(tmp_n_bins[i], dtype = np.float32) for i in range(dim)]
+        vals = [np.zeros(tmp_n_bins[i], dtype = np.float32) for i in range(dim)]
 
         ################################################################################################################
 
@@ -164,10 +208,10 @@ class Decontamination_Abstract(object):
             for i in range(dim):
 
                 temp, _ = np.histogram(vectors[i, :], bins = tmp_n_bins[i], range = (minima[i], maxima[i]))
+                hits += temp
 
-                hist += temp
-
-        print('hist', hist[0])
+                temp, _ = np.histogram(vectors[i, :], bins = tmp_n_bins[i], range = (minima[i], maxima[i]), weights = vectors[i, :])
+                vals += temp
 
         ################################################################################################################
         # REBIN HISTOGRAMS                                                                                             #
@@ -181,7 +225,8 @@ class Decontamination_Abstract(object):
 
             Decontamination_Abstract._compute_same_sky_area_edges_step2(
                 result[i],
-                hist[i],
+                hits[i],
+                vals[i],
                 minima[i],
                 maxima[i],
                 n_bins

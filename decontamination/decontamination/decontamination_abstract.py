@@ -44,7 +44,7 @@ class Decontamination_Abstract(object):
 
                 used_proportion = (val - excess) / val
 
-                result_edges[idx] = ((j + used_proportion) / hist.shape[0]) * (maximum - minimum) + minimum
+                result_edges[idx] = ((j + used_proportion + 1) / hist.shape[0]) * (maximum - minimum) + minimum
 
                 idx += 1
                 acc = excess

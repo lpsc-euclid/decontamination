@@ -21,7 +21,7 @@ class Decontamination_Abstract(object):
 
     @staticmethod
     @nb.njit(fastmath = True)
-    def _compute_same_area_edges_step2(result_edges, hist, minimum, maximum, n_bins):
+    def _compute_same_sky_area_edges_step2(result_edges, hist, minimum, maximum, n_bins):
 
         ################################################################################################################
 
@@ -57,7 +57,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @staticmethod
-    def compute_same_area_edges(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    def compute_same_sky_area_edges_and_stats(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
@@ -147,7 +147,7 @@ class Decontamination_Abstract(object):
 
         for i in range(dim):
 
-            Decontamination_Abstract._compute_same_area_edges_step2(
+            Decontamination_Abstract._compute_same_sky_area_edges_step2(
                 result[i],
                 hist[i],
                 minima[i],

@@ -113,10 +113,11 @@ class Decontamination_Abstract(object):
                 sum2[i] += np.sum(systematics ** 2)
 
                 minimum = np.nanmin(systematics)
-                maximum = np.nanmax(systematics)
 
                 if minima[i] > minimum:
                     minima[i] = minimum
+
+                maximum = np.nanmax(systematics)
 
                 if maxima[i] < maximum:
                     maxima[i] = maximum
@@ -157,10 +158,10 @@ class Decontamination_Abstract(object):
             for i in range(dim):
 
                 temp, _ = np.histogram(vectors[i, :], bins = tmp_n_bins[i], range = (minima[i], maxima[i]))
-                hits += temp
+                hits[i] += temp
 
                 temp, _ = np.histogram(vectors[i, :], bins = tmp_n_bins[i], range = (minima[i], maxima[i]), weights = vectors[i, :])
-                vals += temp
+                vals[i] += temp
 
         ################################################################################################################
         # REBIN HISTOGRAMS                                                                                             #

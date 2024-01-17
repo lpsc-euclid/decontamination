@@ -111,7 +111,7 @@ class Decontamination_Abstract(object):
         # BUILD HISTOGRAMS                                                                                             #
         ################################################################################################################
 
-        tmp_n_bins = 1.0 + math.log2(n_vectors)  # Sturges' rule
+        tmp_n_bins = int(1.0 + math.log2(n_vectors))  # Sturges' rule
 
         h_max = 0.68 * n_vectors / std  # For gaussian
 
@@ -119,7 +119,7 @@ class Decontamination_Abstract(object):
 
         while h_max / tmp_n_bins > 2.0 * area:
 
-            tmp_n_bins *= 2.0
+            tmp_n_bins *= 2
 
         ################################################################################################################
 

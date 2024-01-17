@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
-
+import math
 import typing
 
 import numpy as np
@@ -57,7 +57,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @staticmethod
-    def compute_same_area_edges(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, is_normalized: bool = True) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def compute_same_area_edges(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
@@ -71,36 +71,55 @@ class Decontamination_Abstract(object):
         # RENORMALIZE                                                                                                  #
         ################################################################################################################
 
-        if is_normalized:
+        n_vectors = 0
 
-            minima = np.full(dim, 0.0, dtype = np.float32)
-            maxima = np.full(dim, 1.0, dtype = np.float32)
+        sum1 = np.full(dim, 0.0, dtype = np.float32)
+        sum2 = np.full(dim, 0.0, dtype = np.float32)
 
-        else:
+        minima = np.full(dim, +np.inf, dtype = np.float32)
+        maxima = np.full(dim, -np.inf, dtype = np.float32)
 
-            minima = np.full(dim, +np.inf, dtype = np.float32)
-            maxima = np.full(dim, -np.inf, dtype = np.float32)
+        generator = generator_builder()
 
-            generator = generator_builder()
+        for vectors in generator():
 
-            for vectors in generator():
+            n_vectors += vectors.shape[0]
 
-                for i in range(dim):
+            for i in range(dim):
 
-                    minimum = np.nanmin(vectors)
-                    maximum = np.nanmax(vectors)
+                sum1[i] += np.sum(vectors ** 1)
+                sum2[i] += np.sum(vectors ** 2)
 
-                    if minima[i] > minimum:
-                        minima[i] = minimum
+                minimum = np.nanmin(vectors)
+                maximum = np.nanmax(vectors)
 
-                    if maxima[i] < maximum:
-                        maxima[i] = maximum
+                if minima[i] > minimum:
+                    minima[i] = minimum
+
+                if maxima[i] < maximum:
+                    maxima[i] = maximum
+
+        ################################################################################################################
+
+        mean = sum1 / n_vectors
+
+        rms = np.sqrt(sum2 / n_vectors)
+
+        std = np.sqrt((sum2 - (sum1 ** 2) / n_vectors) / (n_vectors - 1))
 
         ################################################################################################################
         # BUILD HISTOGRAMS                                                                                             #
         ################################################################################################################
 
-        tmp_n_bins = 100
+        tmp_n_bins = 1.0 + math.log2(n_vectors)  # Sturges' rule
+
+        h_max = 0.68 * n_vectors / std  # For gaussian
+
+        area = n_vectors / n_bins
+
+        while h_max / tmp_n_bins > 2.0 * area:
+
+            tmp_n_bins *= 2.0
 
         ################################################################################################################
 
@@ -138,6 +157,6 @@ class Decontamination_Abstract(object):
 
         ################################################################################################################
 
-        return result, minima, maxima
+        return result, minima, maxima, mean, rms, std
 
 ########################################################################################################################

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
-# TODO #
+from . import decontamination_abstract
 
 ########################################################################################################################
 
 # noinspection PyPep8Naming
-class Decontamination_ISD(object):
+class Decontamination_ISD(decontamination_abstract.Decontamination_Abstract):
 
     """
     Systematics decontamination using the *Iterative Systematics Decontamination* method.

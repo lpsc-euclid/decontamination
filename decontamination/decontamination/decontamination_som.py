@@ -4,14 +4,15 @@
 import typing
 
 import numpy as np
-import numba as nb
 
-from ..algo import som_pca, som_batch, som_online, som_abstract, clustering, dataset_to_generator_builder
+from . import decontamination_abstract
+
+from ..algo import som_pca, som_batch, som_online, som_abstract, clustering
 
 ########################################################################################################################
 
 # noinspection PyPep8Naming
-class Decontamination_SOM(object):
+class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
 
     """
     Systematics decontamination using the *Self Organizing Map* method.
@@ -578,123 +579,5 @@ class Decontamination_SOM(object):
             self._clustered_catalog_activation_map,
             self._clustered_footprint_activation_map
         )
-
-    ####################################################################################################################
-
-    @staticmethod
-    @nb.njit(fastmath = True)
-    def _compute_same_area_edges_step2(result_edges, hist, syst_min, syst_max, n_bins):
-
-        ################################################################################################################
-
-        idx = 1
-        acc = 0.0
-
-        area = np.sum(hist) / n_bins
-
-        ################################################################################################################
-
-        for j in range(hist.shape[0]):
-
-            val = hist[j]
-
-            acc += val
-
-            if acc >= area:
-
-                excess = acc - area
-
-                used_proportion = (val - excess) / val
-
-                result_edges[idx] = ((j + used_proportion) / hist.shape[0]) * (syst_max - syst_min) + syst_min
-
-                idx += 1
-                acc = excess
-
-        ################################################################################################################
-
-        result_edges[0x0000] = syst_min
-        result_edges[n_bins] = syst_max
-
-    ####################################################################################################################
-
-    def compute_same_area_edges(self, systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, is_normalized: bool = True) -> np.ndarray:
-
-        ################################################################################################################
-
-        generator_builder = dataset_to_generator_builder(systematics)
-
-        ################################################################################################################
-        # RENORMALIZE                                                                                                  #
-        ################################################################################################################
-
-        if is_normalized:
-
-            minima = np.full(self._som.dim, 0.0, dtype = np.float32)
-            maxima = np.full(self._som.dim, 1.0, dtype = np.float32)
-
-        else:
-
-            minima = np.full(self._som.dim, +np.inf, dtype = np.float32)
-            maxima = np.full(self._som.dim, -np.inf, dtype = np.float32)
-
-            generator = generator_builder()
-
-            for vectors in generator():
-
-                for i in range(self._som.dim):
-
-                    minimum = np.nanmin(vectors)
-                    maximum = np.nanmax(vectors)
-
-                    if minima[i] > minimum:
-                        minima[i] = minimum
-
-                    if maxima[i] < maximum:
-                        maxima[i] = maximum
-
-        ################################################################################################################
-
-        tmp_n_bins = 100
-
-        ################################################################################################################
-        # BUILD HISTOGRAMS                                                                                             #
-        ################################################################################################################
-
-        hist = np.zeros((self._som.dim, tmp_n_bins), dtype = np.float32)
-
-        ################################################################################################################
-
-        generator = generator_builder()
-
-        for vectors in generator():
-
-            for i in range(self._som.dim):
-
-                temp, _ = np.histogram(vectors[i, :], bins = tmp_n_bins, range = (minima[i], maxima[i]))
-
-                hist += temp
-
-        ################################################################################################################
-        # REBIN HISTOGRAM                                                                                              #
-        ################################################################################################################
-
-        result = np.empty((self._som.dim, n_bins + 1), dtype = np.float32)
-
-        ################################################################################################################
-
-        for i in range(self._som.dim):
-
-            Decontamination_SOM._compute_same_area_edges_step2(
-                result[i],
-                hist[i],
-                minima[i],
-                maxima[i],
-                n_bins
-            )
-
-        ################################################################################################################
-
-        return result, minima, maxima
 
 ########################################################################################################################

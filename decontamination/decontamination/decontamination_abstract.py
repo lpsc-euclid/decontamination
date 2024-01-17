@@ -126,14 +126,14 @@ class Decontamination_Abstract(object):
 
             h_max = 0.68 * n_vectors / (2.0 * stds[i])
 
-            i = 0
+            j = 0
 
             while bin_width * h_max * bin_downsizing > area:
 
                 tmp_n_bins[i] = tmp_n_bins[i] * bin_downsizing
 
-                print(i)
-                i += 1
+                print('iter#', j)
+                j += 1
 
         ################################################################################################################
 

@@ -77,7 +77,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @staticmethod
-    def compute_same_sky_area_edges_and_stats(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, tolerance: float = 0.05) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    def compute_same_sky_area_edges_and_stats(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, temp_n_bins: typing.Option[float] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
@@ -133,64 +133,9 @@ class Decontamination_Abstract(object):
         # ESTIMATE BINNING                                                                                             #
         ################################################################################################################
 
-        tmp_n_bins = np.full(dim, 1000, np.int64)
+        default_n_bins = np.int64(100.0 * (1.0 + np.log2(vectors.shape[1])))
 
-        ################################################################################################################
-
-        area = n_vectors / n_bins
-
-        ################################################################################################################
-
-        for i in range(dim):
-
-            ############################################################################################################
-
-            bin_mean = rmss[i]
-            bin_std = stds[i]
-
-            ############################################################################################################
-
-            max_iter = 1000
-            cur_iter = 0x00
-
-            bin_width = bin_std
-
-            while cur_iter < max_iter:
-
-                ########################################################################################################
-
-                percentage_in_bin = (
-                    stats.norm.cdf(bin_mean + bin_width / 2.0, bin_mean, bin_std)
-                    -
-                    stats.norm.cdf(bin_mean - bin_width / 2.0, bin_mean, bin_std)
-                )
-
-                central_area = percentage_in_bin * n_vectors
-
-                ########################################################################################################
-
-                if (1.0 - tolerance) * area <= central_area <= (1.0 + tolerance) * area:
-
-                    tmp_n_bins[i] = np.ceil(6 * bin_std / bin_width).astype(np.int64)
-
-                    # 6 sigma is ~99,7% of the gaussian area
-
-                    break
-
-                ########################################################################################################
-
-                if central_area > area:
-                    bin_width *= 1.1
-                else:
-                    bin_width *= 0.9
-
-                ########################################################################################################
-
-                cur_iter += 1
-
-        ################################################################################################################
-
-        print('area', area, 'tmp_n_bins', tmp_n_bins[0])
+        tmp_n_bins = np.full(dim, default_n_bins if temp_n_bins is None else temp_n_bins, np.int64)
 
         ################################################################################################################
         # BUILD HISTOGRAMS                                                                                             #

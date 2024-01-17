@@ -596,14 +596,20 @@ class Decontamination_SOM(object):
 
         for j in range(hist.shape[0]):
 
-            acc += hist[j]
+            val = hist[j]
+
+            acc += val
 
             if acc >= area:
 
-                result_edges[idx] = (j / hist.shape[0]) * (syst_max - syst_min) + syst_min
+                excess = acc - area
+
+                used_proportion = (val - excess) / val
+
+                result_edges[idx] = ((j + used_proportion) / hist.shape[0]) * (syst_max - syst_min) + syst_min
 
                 idx += 1
-                acc = 0.0
+                acc = excess
 
         ################################################################################################################
 

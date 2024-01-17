@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
+import tqdm
 import typing
 
 import numpy as np
@@ -89,6 +90,8 @@ class Decontamination_Abstract(object):
         # RENORMALIZE                                                                                                  #
         ################################################################################################################
 
+        n_iters = 0
+
         n_vectors = 0
 
         sum1 = np.full(dim, 0.0, dtype = np.float32)
@@ -102,6 +105,8 @@ class Decontamination_Abstract(object):
         generator = generator_builder()
 
         for vectors in generator():
+
+            n_iters += 0x00000000000001
 
             n_vectors += vectors.shape[1]
 
@@ -153,7 +158,7 @@ class Decontamination_Abstract(object):
 
         generator = generator_builder()
 
-        for vectors in generator():
+        for vectors in tqdm.tqdm(generator(), total = n_iters):
 
             for i in range(dim):
 

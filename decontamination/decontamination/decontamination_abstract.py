@@ -156,8 +156,6 @@ class Decontamination_Abstract(object):
 
         ################################################################################################################
 
-        print('n_iters', n_iters)
-
         generator = generator_builder()
 
         for vectors in tqdm.tqdm(generator(), total = n_iters):

@@ -21,7 +21,7 @@ class Decontamination_Abstract(object):
 
     @staticmethod
     @nb.njit(fastmath = True)
-    def _compute_same_area_edges_step2(result_edges, hist, syst_min, syst_max, n_bins):
+    def _compute_same_area_edges_step2(result_edges, hist, minimum, maximum, n_bins):
 
         ################################################################################################################
 
@@ -44,15 +44,15 @@ class Decontamination_Abstract(object):
 
                 used_proportion = (val - excess) / val
 
-                result_edges[idx] = ((j + used_proportion) / hist.shape[0]) * (syst_max - syst_min) + syst_min
+                result_edges[idx] = ((j + used_proportion) / hist.shape[0]) * (maximum - minimum) + minimum
 
                 idx += 1
                 acc = excess
 
         ################################################################################################################
 
-        result_edges[0x0000] = syst_min
-        result_edges[n_bins] = syst_max
+        result_edges[0x0000] = minimum
+        result_edges[n_bins] = maximum
 
     ####################################################################################################################
 

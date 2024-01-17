@@ -86,7 +86,7 @@ class Decontamination_Abstract(object):
 
         for vectors in generator():
 
-            n_vectors += vectors.shape[0]
+            n_vectors += vectors.shape[1]
 
             for i in range(dim):
 

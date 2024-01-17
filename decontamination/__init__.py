@@ -65,6 +65,8 @@ from decontamination.correlation.correlation_power_spectrum import Correlation_P
 # DECONTAMINATION                                                                                                      #
 ########################################################################################################################
 
+from .decontamination.decontamination_abstract import Decontamination_Abstract
+
 from .decontamination.decontamination_som import Decontamination_SOM
 
 from .decontamination.decontamination_elasticnet import Decontamination_ElasticNet
@@ -96,7 +98,7 @@ __all__ = [
     'Generator_Uniform', 'Generator_LogNormal', 'Generator_NumberDensity', 'Generator_FullSkyUniform',
     'apodization',
     'Correlation_PairCount', 'Correlation_PowerSpectrum',
-    'Decontamination_SOM', 'Decontamination_ElasticNet', 'Decontamination_ISD',
+    'Decontamination_Abstract', 'Decontamination_SOM', 'Decontamination_ElasticNet', 'Decontamination_ISD',
 ]
 
 ########################################################################################################################

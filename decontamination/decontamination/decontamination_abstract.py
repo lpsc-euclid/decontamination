@@ -22,7 +22,7 @@ class Decontamination_Abstract(object):
 
     @staticmethod
     @nb.njit(fastmath = True)
-    def _compute_same_sky_area_edges_step2(result_edges, result_centers, hits, vals, minimum, maximum, n_bins):
+    def _compute_equal_sky_area_edges_step2(result_edges: np.ndarray, result_centers: np.ndarray, hits: np.ndarray, vals: np.ndarray, minimum: np.ndarray, maximum: np.ndarray, n_bins: int) -> None:
 
         ################################################################################################################
 
@@ -76,7 +76,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @staticmethod
-    def compute_same_sky_area_edges_and_stats(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, temp_n_bins: typing.Optional[float] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    def compute_equal_sky_area_edges_and_stats(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, temp_n_bins: typing.Optional[float] = None, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
@@ -91,7 +91,6 @@ class Decontamination_Abstract(object):
         ################################################################################################################
 
         n_iters = 0
-
         n_vectors = 0
 
         sum1 = np.full(dim, 0.0, dtype = np.float32)
@@ -104,7 +103,7 @@ class Decontamination_Abstract(object):
 
         generator = generator_builder()
 
-        for vectors in tqdm.tqdm(generator(), total = None):
+        for vectors in tqdm.tqdm(generator(), total = None, disable = not show_progress_bar):
 
             n_iters += 0x00000000000001
 
@@ -158,7 +157,7 @@ class Decontamination_Abstract(object):
 
         generator = generator_builder()
 
-        for vectors in tqdm.tqdm(generator(), total = n_iters):
+        for vectors in tqdm.tqdm(generator(), total = n_iters, disable = not show_progress_bar):
 
             for i in range(dim):
 
@@ -179,7 +178,7 @@ class Decontamination_Abstract(object):
 
         for i in range(dim):
 
-            Decontamination_Abstract._compute_same_sky_area_edges_step2(
+            Decontamination_Abstract._compute_equal_sky_area_edges_step2(
                 result_edges[i],
                 result_centers[i],
                 hits[i],

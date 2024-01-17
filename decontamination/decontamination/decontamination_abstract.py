@@ -109,11 +109,11 @@ class Decontamination_Abstract(object):
 
                 systematics = vectors[i]
 
-                sum1[i] += np.sum(systematics ** 1, axis = 1)
-                sum2[i] += np.sum(systematics ** 2, axis = 1)
+                sum1[i] += np.sum(systematics ** 1)
+                sum2[i] += np.sum(systematics ** 2)
 
-                minimum = np.nanmin(systematics, axis = 1)
-                maximum = np.nanmax(systematics, axis = 1)
+                minimum = np.nanmin(systematics)
+                maximum = np.nanmax(systematics)
 
                 if minima[i] > minimum:
                     minima[i] = minimum

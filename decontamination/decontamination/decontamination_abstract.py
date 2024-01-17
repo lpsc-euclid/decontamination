@@ -168,7 +168,7 @@ class Decontamination_Abstract(object):
         ################################################################################################################
 
         result_edges = np.empty((dim, n_bins + 1), dtype = np.float32)
-        result_centers = np.empty((dim, n_bins + 1), dtype = np.float32)
+        result_centers = np.empty((dim, n_bins + 0), dtype = np.float32)
 
         ################################################################################################################
 

@@ -27,7 +27,7 @@ class Decontamination_Abstract(object):
         ################################################################################################################
 
         idx = 1
-        acc = 0.0
+        acc = 0.0000
 
         area = np.sum(hist) / n_bins
 
@@ -114,7 +114,7 @@ class Decontamination_Abstract(object):
         # ESTIMATE BINNING                                                                                             #
         ################################################################################################################
 
-        tmp_n_bins = np.full(dim, int(1.0 + math.log2(n_vectors)), np.int64)  # Sturges' rule
+        tmp_n_bins = np.full(dim, int(1.0 + math.log2(n_vectors)), np.int64) # Sturges' rule
 
         ################################################################################################################
 

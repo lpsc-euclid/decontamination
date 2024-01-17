@@ -104,7 +104,7 @@ class Decontamination_Abstract(object):
 
         generator = generator_builder()
 
-        for vectors in generator():
+        for vectors in tqdm.tqdm(generator(), total = None):
 
             n_iters += 0x00000000000001
 
@@ -155,6 +155,8 @@ class Decontamination_Abstract(object):
         vals = [np.zeros(tmp_n_bins[i], dtype = np.float32) for i in range(dim)]
 
         ################################################################################################################
+
+        print('n_iters', n_iters)
 
         generator = generator_builder()
 

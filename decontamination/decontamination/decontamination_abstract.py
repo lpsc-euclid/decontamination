@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 ########################################################################################################################
+
 import math
 import typing
 
@@ -79,6 +80,8 @@ class Decontamination_Abstract(object):
         minima = np.full(dim, +np.inf, dtype = np.float32)
         maxima = np.full(dim, -np.inf, dtype = np.float32)
 
+        ################################################################################################################
+
         generator = generator_builder()
 
         for vectors in generator():
@@ -101,29 +104,35 @@ class Decontamination_Abstract(object):
 
         ################################################################################################################
 
-        mean = sum1 / n_vectors
+        means = sum1 / n_vectors
 
-        rms = np.sqrt(sum2 / n_vectors)
+        rmss = np.sqrt(sum2 / n_vectors)
 
-        std = np.sqrt((sum2 - (sum1 ** 2) / n_vectors) / (n_vectors - 1))
+        stds = np.sqrt((sum2 - (sum1 ** 2) / n_vectors) / (n_vectors - 1))
+
+        ################################################################################################################
+        # ESTIMATE BINNING                                                                                             #
+        ################################################################################################################
+
+        tmp_n_bins = np.full(dim, int(1.0 + math.log2(n_vectors)), np.int64)  # Sturges' rule
+
+        ################################################################################################################
+
+        area = n_vectors / n_bins
+
+        for i in range(dim):
+
+            h_max = 0.68 * n_vectors / stds[i]
+
+            while h_max / tmp_n_bins[i] > 2.0 * area:
+
+                tmp_n_bins[i] *= 2
 
         ################################################################################################################
         # BUILD HISTOGRAMS                                                                                             #
         ################################################################################################################
 
-        tmp_n_bins = int(1.0 + math.log2(n_vectors))  # Sturges' rule
-
-        h_max = 0.68 * n_vectors / std  # For gaussian
-
-        area = n_vectors / n_bins
-
-        while h_max / tmp_n_bins > 2.0 * area:
-
-            tmp_n_bins *= 2
-
-        ################################################################################################################
-
-        hist = np.zeros((dim, tmp_n_bins), dtype = np.float32)
+        hist = [np.zeros(tmp_n_bins[i], dtype = np.float32) for i in range(dim)]
 
         ################################################################################################################
 
@@ -133,7 +142,7 @@ class Decontamination_Abstract(object):
 
             for i in range(dim):
 
-                temp, _ = np.histogram(vectors[i, :], bins = tmp_n_bins, range = (minima[i], maxima[i]))
+                temp, _ = np.histogram(vectors[i, :], bins = tmp_n_bins[i], range = (minima[i], maxima[i]))
 
                 hist += temp
 
@@ -157,6 +166,6 @@ class Decontamination_Abstract(object):
 
         ################################################################################################################
 
-        return result, minima, maxima, mean, rms, std
+        return result, minima, maxima, means, rmss, stds
 
 ########################################################################################################################

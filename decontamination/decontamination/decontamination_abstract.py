@@ -56,7 +56,8 @@ class Decontamination_Abstract(object):
 
     ####################################################################################################################
 
-    def compute_same_area_edges(self, systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, is_normalized: bool = True) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    @staticmethod
+    def compute_same_area_edges(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, is_normalized: bool = True) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 

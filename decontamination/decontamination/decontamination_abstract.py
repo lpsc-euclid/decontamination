@@ -58,7 +58,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @staticmethod
-    def compute_same_sky_area_edges_and_stats(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    def compute_same_sky_area_edges_and_stats(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, bin_downsizing: float = 1.5) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
@@ -122,11 +122,17 @@ class Decontamination_Abstract(object):
 
         for i in range(dim):
 
-            h_max = 0.68 * n_vectors / stds[i]
+            bin_width = (maxima[i] - minima[i]) / tmp_n_bins[i]
 
-            while h_max / tmp_n_bins[i] > 2.0 * area:
+            h_max = 0.68 * n_vectors / (2.0 * stds[i])
 
-                tmp_n_bins[i] *= 2
+            while bin_width * h_max * bin_downsizing > area:
+
+                tmp_n_bins[i] = int(tmp_n_bins[i] * bin_downsizing)
+
+        ################################################################################################################
+
+        print('area', area, 'tmp_n_bins', tmp_n_bins[0])
 
         ################################################################################################################
         # BUILD HISTOGRAMS                                                                                             #
@@ -145,6 +151,8 @@ class Decontamination_Abstract(object):
                 temp, _ = np.histogram(vectors[i, :], bins = tmp_n_bins[i], range = (minima[i], maxima[i]))
 
                 hist += temp
+
+        print('hist', hist[0])
 
         ################################################################################################################
         # REBIN HISTOGRAMS                                                                                             #

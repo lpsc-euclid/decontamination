@@ -90,11 +90,11 @@ class Decontamination_Abstract(object):
 
             for i in range(dim):
 
-                sum1[i] += np.sum(vectors ** 1)
-                sum2[i] += np.sum(vectors ** 2)
+                sum1[i] += np.sum(vectors ** 1, axis = 1)
+                sum2[i] += np.sum(vectors ** 2, axis = 1)
 
-                minimum = np.nanmin(vectors)
-                maximum = np.nanmax(vectors)
+                minimum = np.nanmin(vectors, axis = 1)
+                maximum = np.nanmax(vectors, axis = 1)
 
                 if minima[i] > minimum:
                     minima[i] = minimum

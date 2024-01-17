@@ -114,7 +114,7 @@ class Decontamination_Abstract(object):
         # ESTIMATE BINNING                                                                                             #
         ################################################################################################################
 
-        tmp_n_bins = np.full(dim, int(1.0 + math.log2(n_vectors)), np.int64) # Sturges' rule
+        tmp_n_bins = np.full(dim, np.int64(1.0 + math.log2(n_vectors)), np.int64) # Sturges' rule
 
         ################################################################################################################
 
@@ -128,7 +128,7 @@ class Decontamination_Abstract(object):
 
             while bin_width * h_max * bin_downsizing > area:
 
-                tmp_n_bins[i] = int(tmp_n_bins[i] * bin_downsizing)
+                tmp_n_bins[i] = np.int64(tmp_n_bins[i] * bin_downsizing)
 
         ################################################################################################################
 

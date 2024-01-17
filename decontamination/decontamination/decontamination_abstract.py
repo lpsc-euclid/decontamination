@@ -217,14 +217,16 @@ class Decontamination_Abstract(object):
         # REBIN HISTOGRAMS                                                                                             #
         ################################################################################################################
 
-        result = np.empty((dim, n_bins + 1), dtype = np.float32)
+        result_edges = np.empty((dim, n_bins + 1), dtype = np.float32)
+        result_centers = np.empty((dim, n_bins + 1), dtype = np.float32)
 
         ################################################################################################################
 
         for i in range(dim):
 
             Decontamination_Abstract._compute_same_sky_area_edges_step2(
-                result[i],
+                result_edges[i],
+                result_centers[i],
                 hits[i],
                 vals[i],
                 minima[i],
@@ -234,6 +236,6 @@ class Decontamination_Abstract(object):
 
         ################################################################################################################
 
-        return result, minima, maxima, means, rmss, stds
+        return result_edges, result_centers, minima, maxima, means, rmss, stds
 
 ########################################################################################################################

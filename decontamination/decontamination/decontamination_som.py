@@ -630,8 +630,8 @@ class Decontamination_SOM(object):
 
         if is_normalized:
 
-            minima = np.zeros(self._som.dim, dtype = np.float32)
-            maxima = np.ones(self._som.dim, dtype = np.float32)
+            minima = np.full(self._som.dim, 0.0, dtype = np.float32)
+            maxima = np.full(self._som.dim, 1.0, dtype = np.float32)
 
         else:
 

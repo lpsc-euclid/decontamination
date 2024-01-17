@@ -618,18 +618,42 @@ class Decontamination_SOM(object):
 
     ####################################################################################################################
 
-    def compute_same_area_edges(self, systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int) -> np.ndarray:
+    def compute_same_area_edges(self, systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, is_normalized: bool = True) -> np.ndarray:
 
         ################################################################################################################
 
         generator_builder = dataset_to_generator_builder(systematics)
 
         ################################################################################################################
-        # ????                                                                                                         #
+        # RENORMALIZE                                                                                                  #
         ################################################################################################################
 
-        minima = np.zeros(self._som.dim, dtype = np.float32)
-        maxima = np.ones(self._som.dim, dtype = np.float32)
+        if is_normalized:
+
+            minima = np.zeros(self._som.dim, dtype = np.float32)
+            maxima = np.ones(self._som.dim, dtype = np.float32)
+
+        else:
+
+            minima = np.full(self._som.dim, +np.inf, dtype = np.float32)
+            maxima = np.full(self._som.dim, -np.inf, dtype = np.float32)
+
+            generator = generator_builder()
+
+            for vectors in generator():
+
+                for i in range(self._som.dim):
+
+                    minimum = np.nanmin(vectors)
+                    maximum = np.nanmax(vectors)
+
+                    if minima[i] > minimum:
+                        minima[i] = minimum
+
+                    if maxima[i] < maximum:
+                        maxima[i] = maximum
+
+        ################################################################################################################
 
         tmp_n_bins = 100
 
@@ -671,6 +695,6 @@ class Decontamination_SOM(object):
 
         ################################################################################################################
 
-        return result
+        return result, minima, maxima
 
 ########################################################################################################################

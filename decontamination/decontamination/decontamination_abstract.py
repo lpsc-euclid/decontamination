@@ -76,7 +76,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @staticmethod
-    def compute_equal_sky_area_edges_and_stats(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, temp_n_bins: typing.Optional[float] = None, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    def compute_equal_sky_area_edges_and_stats(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, temp_n_bins: typing.Optional[float] = None, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, float]:
 
         ################################################################################################################
 
@@ -87,7 +87,7 @@ class Decontamination_Abstract(object):
         generator_builder = dataset_to_generator_builder(systematics)
 
         ################################################################################################################
-        # RENORMALIZE                                                                                                  #
+        # COMPUTE STATISTICS                                                                                           #
         ################################################################################################################
 
         n_iters = 0
@@ -190,6 +190,6 @@ class Decontamination_Abstract(object):
 
         ################################################################################################################
 
-        return result_edges, result_centers, minima, maxima, means, rmss, stds
+        return result_edges, result_centers, minima, maxima, means, rmss, stds, n_vectors
 
 ########################################################################################################################

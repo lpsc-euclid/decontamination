@@ -106,15 +106,14 @@ class Decontamination_Abstract(object):
         for vectors in tqdm.tqdm(generator(), total = None, disable = not show_progress_bar):
 
             n_iters += 0x00000000000001
-
             n_vectors += vectors.shape[1]
 
             for i in range(dim):
 
                 systematics = vectors[i]
 
-                sum1[i] += np.sum(systematics ** 1)
-                sum2[i] += np.sum(systematics ** 2)
+                sum1[i] += np.nansum(systematics ** 1)
+                sum2[i] += np.nansum(systematics ** 2)
 
                 minimum = np.nanmin(systematics)
 
@@ -161,7 +160,7 @@ class Decontamination_Abstract(object):
 
             for i in range(dim):
 
-                temp, _ = np.histogram(vectors[i, :], bins = tmp_n_bins[i], range = (minima[i], maxima[i]))
+                temp, _ = np.histogram(vectors[i, :], bins = tmp_n_bins[i], range = (minima[i], maxima[i]), weights = None)
                 hits[i] += temp
 
                 temp, _ = np.histogram(vectors[i, :], bins = tmp_n_bins[i], range = (minima[i], maxima[i]), weights = vectors[i, :])

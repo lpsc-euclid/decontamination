@@ -33,7 +33,7 @@ def _θϕ2lonlat(θ: np.ndarray, ϕ: np.ndarray) -> typing.Tuple[np.ndarray, np.
 @nb.njit(nb.int64[:](nb.int64[:]))
 def _spread_bits(v: np.ndarray) -> np.ndarray:
 
-    """Spreads the bits of the provided integer array."""
+    # Spreads the bits of the provided integer array.
 
     result = v & 0x00000000FFFFFFFF
 
@@ -50,7 +50,7 @@ def _spread_bits(v: np.ndarray) -> np.ndarray:
 @nb.njit(nb.int64[:](nb.int64[:]))
 def _compress_bits(v: np.ndarray) -> np.ndarray:
 
-    """Compresses the bits of the provided integer array."""
+    # Compresses the bits of the provided integer array.
 
     result = v & 0x5555555555555555
 
@@ -67,7 +67,7 @@ def _compress_bits(v: np.ndarray) -> np.ndarray:
 @nb.njit(nb.int64[:](nb.int64, nb.int64[:], nb.int64[:], nb.int64[:]))
 def xyf2nest(nside: int, x: np.ndarray, y: np.ndarray, f: np.ndarray) -> np.ndarray:
 
-    """Convert x, y, face (HEALPix Discrete) coordinates to nested HEALPix pixel indices."""
+    # Convert x, y, face (HEALPix Discrete) coordinates to nested HEALPix pixel indices.
 
     return (
         (_spread_bits(x) << 0)
@@ -82,7 +82,7 @@ def xyf2nest(nside: int, x: np.ndarray, y: np.ndarray, f: np.ndarray) -> np.ndar
 @nb.njit(nb.types.Tuple((nb.int64[:], nb.int64[:], nb.int64[:]))(nb.int64, nb.int64[:]))
 def nest2xyf(nside: int, pixels: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
-    """Convert nested HEALPix pixel indices to x, y, face (HEALPix Discrete) coordinates."""
+    # Convert nested HEALPix pixel indices to x, y, face (HEALPix Discrete) coordinates.
 
     v = pixels & (nside ** 2 - 1)
 
@@ -100,6 +100,21 @@ def nest2xyf(nside: int, pixels: np.ndarray) -> typing.Tuple[np.ndarray, np.ndar
 
 @nb.njit
 def ang2pix(nside: int, θ: np.ndarray, ϕ: np.ndarray, lonlat: bool = False) -> np.ndarray:
+
+    """
+    Converts spherical coordinates to HEALPix pixel indices. Nested ordering only.
+
+    Parameters
+    ----------
+    nside : int
+        The HEALPix nside parameter.
+    θ : np.ndarray
+        The θ angular coordinates of a point on the sphere.
+    ϕ : np.ndarray
+        The ϕ angular coordinates of a point on the sphere.
+    lonlat : bool, default: **False**
+        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.
+    """
 
     ####################################################################################################################
 
@@ -219,12 +234,12 @@ def rand_ang(nside: int, pixels: np.ndarray, lonlat: bool = False, compat: bool 
         The HEALPix nside parameter.
     pixels : np.ndarray
         HEALPix indices of the region where coordinates are generated.
-    lonlat : bool
-        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians (default: **True**).
-    compat : bool
-        ???
-    rng : typing.Optional[np.random.Generator]
-        Random number generator (default: **None** ≡ the default RNG).
+    lonlat : bool, default: **False**
+        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.
+    compat : bool, default: **False**
+        If **True**, assumes to be compatible with `healpix.randang`.
+    rng : np.random.Generator, default: **None** ≡ the default RNG
+        Optional random number generator.
     """
 
     if rng is None:
@@ -267,7 +282,7 @@ LOWEST_CORNER_COORDINATES = np.array([
 @nb.njit(nb.types.Tuple((nb.float64[:], nb.float64[:], nb.float64[:]))(nb.int64, nb.int64[:], nb.int64[:], nb.int64[:], nb.float64[:], nb.float64[:]))
 def _xyf2loc(nside: int, x: np.ndarray, y: np.ndarray, f: np.ndarray, u: np.ndarray, v: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
-    """Convert x, y, face (HEALPix Discrete) coordinates to local cylindrical coordinates."""
+    # Convert x, y, face (HEALPix Discrete) coordinates to local cylindrical coordinates.
 
     ####################################################################################################################
 

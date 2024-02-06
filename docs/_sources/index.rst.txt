@@ -35,6 +35,7 @@ Indices and tables
    :caption: Contents:
 
    module_jit
+   module_hp
    module_algo
    module_plotting
    module_generator

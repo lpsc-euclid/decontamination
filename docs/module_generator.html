@@ -137,59 +137,6 @@
 
 </dd></dl>
 
-<span class="target" id="module-decontamination.generator.generator_log_normal"></span><dl class="py class">
-<dt class="sig sig-object py" id="decontamination.generator.generator_log_normal.Generator_LogNormal">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.generator.generator_log_normal.</span></span><span class="sig-name descname"><span class="pre">Generator_LogNormal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lonlat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.generator.generator_log_normal.Generator_LogNormal" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generator_Abstract</span></code></p>
-<p>Log-normal galaxy catalog generator.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
-</dd>
-<dt><strong>footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the region where galaxies are generated.</p>
-</dd>
-<dt><strong>nest</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering.</p>
-</dd>
-<dt><strong>lonlat</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.</p>
-</dd>
-<dt><strong>seed</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Seed for random generators.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.generator.generator_log_normal.Generator_LogNormal.generate" title="decontamination.generator.generator_log_normal.Generator_LogNormal.generate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate</span></code></a>([mean_density, n_max_per_batch])</p></td>
-<td><p>Iterator that yields log-normal galaxy positions.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.generator.generator_log_normal.Generator_LogNormal.generate">
-<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean_density</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max_per_batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.generator.generator_log_normal.Generator_LogNormal.generate" title="Link to this definition">¶</a></dt>
-<dd><p>Iterator that yields log-normal galaxy positions.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>mean_density</strong><span class="classifier">float, default: <strong>10.0</strong></span></dt><dd><p>Mean number of galaxies per HEALPix pixel.</p>
-</dd>
-<dt><strong>n_max_per_batch</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Maximum number of galaxy positions to yield in one batch.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>Tuple[np.ndarray, np.ndarray]</dt><dd><p>Galaxy catalog (longitudes and latitudes) in degrees.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
 <span class="target" id="module-decontamination.generator.generator_number_density"></span><dl class="py class">
 <dt class="sig sig-object py" id="decontamination.generator.generator_number_density.Generator_NumberDensity">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.generator.generator_number_density.</span></span><span class="sig-name descname"><span class="pre">Generator_NumberDensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lonlat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.generator.generator_number_density.Generator_NumberDensity" title="Link to this definition">¶</a></dt>
@@ -298,38 +245,6 @@
 </section>
 <section id="module-decontamination.generator">
 <span id="utilities"></span><h2>Utilities<a class="headerlink" href="#module-decontamination.generator" title="Link to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="decontamination.generator.healpix_rand_ang">
-<span class="sig-prename descclassname"><span class="pre">decontamination.generator.</span></span><span class="sig-name descname"><span class="pre">healpix_rand_ang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixels:</span> <span class="pre">~np.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lonlat=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng:</span> <span class="pre">~np.random._generator.Generator</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">~Type[~np.float32</span> <span class="pre">|</span> <span class="pre">~np.float64</span> <span class="pre">|</span> <span class="pre">float]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.generator.healpix_rand_ang" title="Link to this definition">¶</a></dt>
-<dd><p>Samples random spherical coordinates from the given HEALPix pixels. Nested ordering only. See:</p>
-<ul>
-<li><div class="line-block">
-<div class="line"><em>HEALPix</em>: a Framework for High Resolution Discretization, and Fast Analysis of Data Distributed on the Sphere</div>
-<div class="line">Górski K. M. et al.</div>
-<div class="line">The Astrophysical Journal, vol. 622 (2005)
-(<a class="reference external" href="https://iopscience.iop.org/article/10.1086/427976">iopscience</a>)</div>
-</div>
-</li>
-</ul>
-<a class="reference internal image-reference" href="_images/healpix_cartesian_plan.svg"><img alt="HEALPix Cartesian Plan" class="align-center" src="_images/healpix_cartesian_plan.svg" width="50%" /></a>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
-</dd>
-<dt><strong>pixels</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the region where coordinates are generated.</p>
-</dd>
-<dt><strong>lonlat</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.</p>
-</dd>
-<dt><strong>rng</strong><span class="classifier">Optional[np.random.Generator], default: <strong>None</strong> ≡ the default RNG</span></dt><dd><p>Random number generator.</p>
-</dd>
-<dt><strong>dtype</strong><span class="classifier">Type[Union[np.float32, np.float64, float]], default: <strong>np.float64</strong></span></dt><dd><p>Desired data-type for the new array.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 </section>
 
@@ -352,10 +267,6 @@
 <li><a class="reference internal" href="#decontamination.generator.generator_uniform.Generator_Uniform.generate"><code class="docutils literal notranslate"><span class="pre">Generator_Uniform.generate()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#decontamination.generator.generator_log_normal.Generator_LogNormal"><code class="docutils literal notranslate"><span class="pre">Generator_LogNormal</span></code></a><ul>
-<li><a class="reference internal" href="#decontamination.generator.generator_log_normal.Generator_LogNormal.generate"><code class="docutils literal notranslate"><span class="pre">Generator_LogNormal.generate()</span></code></a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#decontamination.generator.generator_number_density.Generator_NumberDensity"><code class="docutils literal notranslate"><span class="pre">Generator_NumberDensity</span></code></a><ul>
 <li><a class="reference internal" href="#decontamination.generator.generator_number_density.Generator_NumberDensity.generate"><code class="docutils literal notranslate"><span class="pre">Generator_NumberDensity.generate()</span></code></a></li>
 </ul>
@@ -369,10 +280,7 @@
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-decontamination.generator">Utilities</a><ul>
-<li><a class="reference internal" href="#decontamination.generator.healpix_rand_ang"><code class="docutils literal notranslate"><span class="pre">healpix_rand_ang()</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#module-decontamination.generator">Utilities</a></li>
 </ul>
 </li>
 </ul>

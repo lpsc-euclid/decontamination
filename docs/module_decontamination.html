@@ -74,7 +74,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.decontamination.decontamination_som.</span></span><span class="sig-name descname"><span class="pre">Decontamination_SOM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch:</span> <span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">'hexagonal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Decontamination_Abstract</span></code></p>
 <p>Systematics decontamination using the <em>Self Organizing Map</em> method.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -169,11 +169,15 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_gndm" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_gndm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_gndm</span></code></a>([show_progress_bar, ...])</p></td>
 <td><p>Compute the Galaxy Number Density Map from the SOM.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_histograms" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_histograms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_histograms</span></code></a>()</p></td>
-<td><p>TODO</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.train" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></a>(catalog_systematics, footprint_systematics)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.train" title="decontamination.decontamination.decontamination_som.Decontamination_SOM.train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></a>(catalog_systematics, footprint_systematics)</p></td>
 <td><p>Trains the neural network.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>compute_equal_sky_area_edges_and_stats</strong></p></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -429,12 +433,6 @@
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_histograms">
-<span class="sig-name descname"><span class="pre">compute_histograms</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_histograms" title="Link to this definition">¶</a></dt>
-<dd><p>TODO</p>
-</dd></dl>
-
 </dd></dl>
 
 </section>
@@ -443,9 +441,17 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.decontamination.decontamination_elasticnet.</span></span><span class="sig-name descname"><span class="pre">Decontamination_ElasticNet</span></span><a class="headerlink" href="#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Decontamination_Abstract</span></code></p>
 <p>Systematics decontamination using the <em>Elastic Net</em> method.</p>
 <p>TODO</p>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>compute_equal_sky_area_edges_and_stats</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </section>
@@ -454,9 +460,17 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="decontamination.decontamination.decontamination_isd.Decontamination_ISD">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.decontamination.decontamination_isd.</span></span><span class="sig-name descname"><span class="pre">Decontamination_ISD</span></span><a class="headerlink" href="#decontamination.decontamination.decontamination_isd.Decontamination_ISD" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Decontamination_Abstract</span></code></p>
 <p>Systematics decontamination using the <em>Iterative Systematics Decontamination</em> method.</p>
 <p>TODO</p>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>compute_equal_sky_area_edges_and_stats</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </section>
@@ -509,7 +523,6 @@
 <li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.train"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.train()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_gndm"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.compute_gndm()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_clustered_gndm"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.compute_clustered_gndm()</span></code></a></li>
-<li><a class="reference internal" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_histograms"><code class="docutils literal notranslate"><span class="pre">Decontamination_SOM.compute_histograms()</span></code></a></li>
 </ul>
 </li>
 </ul>

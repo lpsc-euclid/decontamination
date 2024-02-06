@@ -5,7 +5,9 @@ import typing
 
 import numpy as np
 
-from . import healpix_rand_ang, generator_abstract
+from ..hp import rand_ang
+
+from . import generator_abstract
 
 ########################################################################################################################
 
@@ -82,7 +84,7 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
 
         for central_pixels in self._iterator(galaxies_per_pixels, n_max_per_batch):
 
-            yield healpix_rand_ang(
+            yield rand_ang(
                 self._nside,
                 central_pixels,
                 lonlat = self._lonlat,

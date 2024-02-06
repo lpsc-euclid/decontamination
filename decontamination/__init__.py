@@ -12,6 +12,12 @@ from .jit import CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE, jit
 from .jit import DeviceArray, device_array_from, device_array_empty, device_array_zeros, device_array_full
 
 ########################################################################################################################
+# HP                                                                                                                   #
+########################################################################################################################
+
+from .hp import xyf2nest, nest2xyf, ang2pix, rand_ang
+
+########################################################################################################################
 # ALGOS                                                                                                                #
 ########################################################################################################################
 
@@ -44,8 +50,6 @@ from .plotting.healpix_map import display_healpix, display_catalog
 ########################################################################################################################
 
 from .generator.generator_uniform import Generator_Uniform
-
-from .generator.generator_log_normal import Generator_LogNormal
 
 from .generator.generator_number_density import Generator_NumberDensity
 
@@ -90,12 +94,13 @@ def array_to_string(arr):
 __all__ = [
     'CPU_OPTIMIZATION_AVAILABLE', 'GPU_OPTIMIZATION_AVAILABLE', 'jit',
     'DeviceArray', 'device_array_from', 'device_array_empty', 'device_array_zeros', 'device_array_full',
+    'xyf2nest', 'nest2xyf', 'ang2pix', 'rand_ang',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
     'Clustering',
     'catalog_to_number_density',
     'display_latent_space',
     'display_healpix', 'display_catalog',
-    'Generator_Uniform', 'Generator_LogNormal', 'Generator_NumberDensity', 'Generator_FullSkyUniform',
+    'Generator_Uniform', 'Generator_NumberDensity', 'Generator_FullSkyUniform',
     'apodization',
     'Correlation_PairCount', 'Correlation_PowerSpectrum',
     'Decontamination_Abstract', 'Decontamination_SOM', 'Decontamination_ElasticNet', 'Decontamination_ISD',

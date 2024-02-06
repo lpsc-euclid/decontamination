@@ -85,7 +85,7 @@
 <span class="target" id="module-decontamination.hp"></span><dl class="py function">
 <dt class="sig sig-object py" id="decontamination.hp.ang2pix">
 <span class="sig-prename descclassname"><span class="pre">decontamination.hp.</span></span><span class="sig-name descname"><span class="pre">ang2pix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">θ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">φ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lonlat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.hp.ang2pix" title="Link to this definition">¶</a></dt>
-<dd><p>Converts spherical coordinates to HEALPix pixel indices. Nested ordering only.</p>
+<dd><p>Converts spherical coordinates to HEALPix pixel indices. <strong>Nested ordering only.</strong></p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -95,7 +95,7 @@
 </dd>
 <dt><strong>ϕ</strong><span class="classifier">np.ndarray</span></dt><dd><p>The ϕ angular coordinates of a point on the sphere.</p>
 </dd>
-<dt><strong>lonlat</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.</p>
+<dt><strong>lonlat</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, in radians.</p>
 </dd>
 </dl>
 </dd>
@@ -105,7 +105,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.hp.rand_ang">
 <span class="sig-prename descclassname"><span class="pre">decontamination.hp.</span></span><span class="sig-name descname"><span class="pre">rand_ang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lonlat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Generator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.hp.rand_ang" title="Link to this definition">¶</a></dt>
-<dd><p>Samples random spherical coordinates from the given HEALPix pixels. Nested ordering only.</p>
+<dd><p>Samples random spherical coordinates from the given HEALPix pixels. <strong>Nested ordering only.</strong></p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -113,7 +113,7 @@
 </dd>
 <dt><strong>pixels</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the region where coordinates are generated.</p>
 </dd>
-<dt><strong>lonlat</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.</p>
+<dt><strong>lonlat</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, in radians.</p>
 </dd>
 <dt><strong>compat</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, assumes to be compatible with <cite>healpix.randang</cite>.</p>
 </dd>

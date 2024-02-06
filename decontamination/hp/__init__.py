@@ -102,7 +102,7 @@ def nest2xyf(nside: int, pixels: np.ndarray) -> typing.Tuple[np.ndarray, np.ndar
 def ang2pix(nside: int, θ: np.ndarray, ϕ: np.ndarray, lonlat: bool = False) -> np.ndarray:
 
     """
-    Converts spherical coordinates to HEALPix pixel indices. Nested ordering only.
+    Converts spherical coordinates to HEALPix pixel indices. **Nested ordering only.**
 
     Parameters
     ----------
@@ -113,7 +113,7 @@ def ang2pix(nside: int, θ: np.ndarray, ϕ: np.ndarray, lonlat: bool = False) ->
     ϕ : np.ndarray
         The ϕ angular coordinates of a point on the sphere.
     lonlat : bool, default: **False**
-        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.
+        If **True**, assumes longitude and latitude in degrees, otherwise, in radians.
     """
 
     ####################################################################################################################
@@ -226,7 +226,7 @@ def _modulo(v1, v2):
 def rand_ang(nside: int, pixels: np.ndarray, lonlat: bool = False, compat: bool = False, rng: typing.Optional[np.random.Generator] = None):
 
     """
-    Samples random spherical coordinates from the given HEALPix pixels. Nested ordering only.
+    Samples random spherical coordinates from the given HEALPix pixels. **Nested ordering only.**
 
     Parameters
     ----------
@@ -235,7 +235,7 @@ def rand_ang(nside: int, pixels: np.ndarray, lonlat: bool = False, compat: bool 
     pixels : np.ndarray
         HEALPix indices of the region where coordinates are generated.
     lonlat : bool, default: **False**
-        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.
+        If **True**, assumes longitude and latitude in degrees, otherwise, in radians.
     compat : bool, default: **False**
         If **True**, assumes to be compatible with `healpix.randang`.
     rng : np.random.Generator, default: **None** ≡ the default RNG

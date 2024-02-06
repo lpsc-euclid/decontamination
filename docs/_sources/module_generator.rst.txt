@@ -22,9 +22,3 @@ Galaxy generators - full-sky
 
 .. automodule:: decontamination.generator.generator_fullsky_uniform
    :members:
-
-Utilities
----------
-
-.. automodule:: decontamination.generator
-   :members:

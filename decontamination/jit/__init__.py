@@ -124,7 +124,7 @@ class DeviceArray(object):
         Desired shape for the new array.
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]
         Desired data-type for the new array.
-    content : typing.Optional[typing.Union[int, float, np.ndarray]]
+    content : typing.Union[int, float, np.ndarray], default: **None**
         Optional content, integer, floating ot Numpy ndarray.
     """
 

@@ -192,9 +192,9 @@
 <dd class="field-odd"><dl class="simple">
 <dt><strong>estimator</strong><span class="classifier">str</span></dt><dd><p>Estimator being considered (“dd”, “rr”, “dr”, “rd”, “peebles_hauser”, “landy_szalay_1”, “landy_szalay_2”).</p>
 </dd>
-<dt><strong>random_lon</strong><span class="classifier">np.ndarray, default: None</span></dt><dd><p>Random catalog longitudes (in degrees). For Peebles &amp; Hauser and Landy &amp; Szalay estimators only.</p>
+<dt><strong>random_lon</strong><span class="classifier">np.ndarray, default: None</span></dt><dd><p>Optional random catalog longitudes (in degrees). For Peebles &amp; Hauser and Landy &amp; Szalay estimators only.</p>
 </dd>
-<dt><strong>random_lat</strong><span class="classifier">np.ndarray, default: None</span></dt><dd><p>Random catalog latitudes (in degrees). For Peebles &amp; Hauser and Landy &amp; Szalay estimators only.</p>
+<dt><strong>random_lat</strong><span class="classifier">np.ndarray, default: None</span></dt><dd><p>Optional random catalog latitudes (in degrees). For Peebles &amp; Hauser and Landy &amp; Szalay estimators only.</p>
 </dd>
 </dl>
 </dd>
@@ -249,15 +249,15 @@ or a scalar field approach (≡ KK correlations) if a footprint is provided.</p>
 </dd>
 <dt><strong>n_bins</strong><span class="classifier">int</span></dt><dd><p>Number of angular bins.</p>
 </dd>
-<dt><strong>bin_slop</strong><span class="classifier">Optional[float]</span></dt><dd><p>Precision parameter for binning (see <a class="reference external" href="https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop">TreeCorr documentation</a>).</p>
+<dt><strong>bin_slop</strong><span class="classifier">float = <strong>None</strong></span></dt><dd><p>Optional precision parameter (see <a class="reference external" href="https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop">TreeCorr documentation</a>).</p>
 </dd>
-<dt><strong>n_threads</strong><span class="classifier">Optional[int], default: <strong>None</strong> ≡ the number of cpu cores</span></dt><dd><p>How many OpenMP threads to use during the calculation.</p>
+<dt><strong>n_threads</strong><span class="classifier">int, default: <strong>None</strong> ≡ the number of cpu cores</span></dt><dd><p>Optional number of OpenMP threads to use during the calculation.</p>
 </dd>
-<dt><strong>footprint</strong><span class="classifier">Optional[np.ndarray]</span></dt><dd><p>HEALPix indices of the region where correlation must be calculated (KK correlations only).</p>
+<dt><strong>footprint</strong><span class="classifier">np.ndarray, default: <strong>None</strong></span></dt><dd><p>Optional HEALPix indices of the region where correlation must be calculated (KK correlations only).</p>
 </dd>
-<dt><strong>coverage</strong><span class="classifier">Optional[np.ndarray]</span></dt><dd><p>Observed sky fraction for each of the aforementioned HEALPix pixels (KK correlations only).</p>
+<dt><strong>coverage</strong><span class="classifier">np.ndarray, default: <strong>None</strong></span></dt><dd><p>Optional observed sky fraction for each of the aforementioned HEALPix pixels (KK correlations only).</p>
 </dd>
-<dt><strong>nside</strong><span class="classifier">Optional[np.ndarray]</span></dt><dd><p>The HEALPix nside parameter (KK correlations only).</p>
+<dt><strong>nside</strong><span class="classifier">int, default: <strong>None</strong></span></dt><dd><p>Optional HEALPix nside parameter (KK correlations only).</p>
 </dd>
 <dt><strong>nest</strong><span class="classifier">bool, default: True</span></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering (KK correlations only).</p>
 </dd>
@@ -348,9 +348,9 @@ or a scalar field approach (≡ KK correlations) if a footprint is provided.</p>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>estimator</strong><span class="classifier">str</span></dt><dd><p>Estimator being considered (“dd”, “rr”, “dr”, “rd”, “peebles_hauser”, “landy_szalay_1”, “landy_szalay_2”).</p>
 </dd>
-<dt><strong>random_lon</strong><span class="classifier">np.ndarray, default: None</span></dt><dd><p>Random catalog longitudes (in degrees). For Peebles &amp; Hauser and Landy &amp; Szalay estimators only.</p>
+<dt><strong>random_lon</strong><span class="classifier">np.ndarray, default: None</span></dt><dd><p>Optional random catalog longitudes (in degrees). For Peebles &amp; Hauser and Landy &amp; Szalay estimators only.</p>
 </dd>
-<dt><strong>random_lat</strong><span class="classifier">np.ndarray, default: None</span></dt><dd><p>Random catalog latitudes (in degrees). For Peebles &amp; Hauser and Landy &amp; Szalay estimators only.</p>
+<dt><strong>random_lat</strong><span class="classifier">np.ndarray, default: None</span></dt><dd><p>Optional random catalog latitudes (in degrees). For Peebles &amp; Hauser and Landy &amp; Szalay estimators only.</p>
 </dd>
 </dl>
 </dd>

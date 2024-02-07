@@ -31,7 +31,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         Dimensionality of the input data.
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]], default: **np.float32**
         Neural network data type, either **np.float32** or **np.float64**.
-    topology : typing.Optional[str], default: **None** ≡ **'hexagonal'**
+    topology : str, default: **None** ≡ **'hexagonal'**
         Neural network topology, either **'square'** or **'hexagonal'**.
     """
 

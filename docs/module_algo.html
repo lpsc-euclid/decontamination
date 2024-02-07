@@ -93,7 +93,7 @@
 </dd>
 <dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;, default: <strong>np.float32</strong></span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong>.</p>
 </dd>
-<dt><strong>topology</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
+<dt><strong>topology</strong><span class="classifier">str, default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
 </dd>
 </dl>
 </dd>
@@ -124,16 +124,16 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.compute_errors" title="decontamination.algo.som_abstract.SOM_Abstract.compute_errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_errors</span></code></a>(dataset[, show_progress_bar, ...])</p></td>
-<td><p>Computes the quantization and topographic errors for the given input.</p></td>
+<td><p>For the given input, computes the quantization and topographic errors.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.get_activation_map" title="decontamination.algo.som_abstract.SOM_Abstract.get_activation_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code></a>(dataset[, ...])</p></td>
-<td><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p></td>
+<td><p>For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.get_distance_map" title="decontamination.algo.som_abstract.SOM_Abstract.get_distance_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code></a>([scaling])</p></td>
-<td><p>Returns a matrix of the distances between each weight.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.get_distance_map" title="decontamination.algo.som_abstract.SOM_Abstract.get_distance_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code></a>([normalization])</p></td>
+<td><p>Returns the distance map of the weights.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.get_winners" title="decontamination.algo.som_abstract.SOM_Abstract.get_winners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code></a>(dataset[, enable_gpu, ...])</p></td>
-<td><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p></td>
+<td><p>For the given input, returns a vector of the best matching unit indices <span class="math notranslate nohighlight">\(\in[0,m\times n-1]\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract.init_from" title="decontamination.algo.som_abstract.SOM_Abstract.init_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code></a>(other)</p></td>
 <td><p>Initializes the neural network from another one.</p></td>
@@ -156,7 +156,7 @@
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>seed</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Seed for random generator.</p>
+<dt><strong>seed</strong><span class="classifier">int, default: <strong>None</strong></span></dt><dd><p>Optional seed for random generator.</p>
 </dd>
 </dl>
 </dd>
@@ -273,12 +273,12 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.get_distance_map">
-<span class="sig-name descname"><span class="pre">get_distance_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scaling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.get_distance_map" title="Link to this definition">¶</a></dt>
-<dd><p>Returns a matrix of the distances between each weight.</p>
+<span class="sig-name descname"><span class="pre">get_distance_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normalization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.get_distance_map" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the distance map of the weights.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>scaling</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ ‘<strong>sum</strong>’</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’.</p>
+<dt><strong>normalization</strong><span class="classifier">str, default: <strong>None</strong> ≡ ‘<strong>sum</strong>’</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’.</p>
 </dd>
 </dl>
 </dd>
@@ -288,7 +288,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.compute_errors">
 <span class="sig-name descname"><span class="pre">compute_errors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.compute_errors" title="Link to this definition">¶</a></dt>
-<dd><p>Computes the quantization and topographic errors for the given input.</p>
+<dd><p>For the given input, computes the quantization and topographic errors.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -308,7 +308,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.get_activation_map">
 <span class="sig-name descname"><span class="pre">get_activation_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.get_activation_map" title="Link to this definition">¶</a></dt>
-<dd><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p>
+<dd><p>For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -328,7 +328,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract.get_winners">
 <span class="sig-name descname"><span class="pre">get_winners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract.get_winners" title="Link to this definition">¶</a></dt>
-<dd><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p>
+<dd><p>For the given input, returns a vector of the best matching unit indices <span class="math notranslate nohighlight">\(\in[0,m\times n-1]\)</span>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -365,7 +365,7 @@
 </dd>
 <dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;, default: <strong>np.float32</strong></span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong>.</p>
 </dd>
-<dt><strong>topology</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
+<dt><strong>topology</strong><span class="classifier">str, default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
 </dd>
 </dl>
 </dd>
@@ -404,16 +404,16 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.compute_errors" title="decontamination.algo.som_pca.SOM_PCA.compute_errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_errors</span></code></a>(dataset[, show_progress_bar, ...])</p></td>
-<td><p>Computes the quantization and topographic errors for the given input.</p></td>
+<td><p>For the given input, computes the quantization and topographic errors.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.get_activation_map" title="decontamination.algo.som_pca.SOM_PCA.get_activation_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code></a>(dataset[, ...])</p></td>
-<td><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p></td>
+<td><p>For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.get_distance_map" title="decontamination.algo.som_pca.SOM_PCA.get_distance_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code></a>([scaling])</p></td>
-<td><p>Returns a matrix of the distances between each weight.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.get_distance_map" title="decontamination.algo.som_pca.SOM_PCA.get_distance_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code></a>([normalization])</p></td>
+<td><p>Returns the distance map of the weights.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.get_winners" title="decontamination.algo.som_pca.SOM_PCA.get_winners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code></a>(dataset[, enable_gpu, ...])</p></td>
-<td><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p></td>
+<td><p>For the given input, returns a vector of the best matching unit indices <span class="math notranslate nohighlight">\(\in[0,m\times n-1]\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.init_from" title="decontamination.algo.som_pca.SOM_PCA.init_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code></a>(other)</p></td>
 <td><p>Initializes the neural network from another one.</p></td>
@@ -485,7 +485,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.compute_errors">
 <span class="sig-name descname"><span class="pre">compute_errors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.compute_errors" title="Link to this definition">¶</a></dt>
-<dd><p>Computes the quantization and topographic errors for the given input.</p>
+<dd><p>For the given input, computes the quantization and topographic errors.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -517,7 +517,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.get_activation_map">
 <span class="sig-name descname"><span class="pre">get_activation_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.get_activation_map" title="Link to this definition">¶</a></dt>
-<dd><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p>
+<dd><p>For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -536,12 +536,12 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.get_distance_map">
-<span class="sig-name descname"><span class="pre">get_distance_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scaling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.get_distance_map" title="Link to this definition">¶</a></dt>
-<dd><p>Returns a matrix of the distances between each weight.</p>
+<span class="sig-name descname"><span class="pre">get_distance_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normalization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.get_distance_map" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the distance map of the weights.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>scaling</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ ‘<strong>sum</strong>’</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’.</p>
+<dt><strong>normalization</strong><span class="classifier">str, default: <strong>None</strong> ≡ ‘<strong>sum</strong>’</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’.</p>
 </dd>
 </dl>
 </dd>
@@ -551,7 +551,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.get_winners">
 <span class="sig-name descname"><span class="pre">get_winners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.get_winners" title="Link to this definition">¶</a></dt>
-<dd><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p>
+<dd><p>For the given input, returns a vector of the best matching unit indices <span class="math notranslate nohighlight">\(\in[0,m\times n-1]\)</span>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -587,7 +587,7 @@
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>seed</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Seed for random generator.</p>
+<dt><strong>seed</strong><span class="classifier">int, default: <strong>None</strong></span></dt><dd><p>Optional seed for random generator.</p>
 </dd>
 </dl>
 </dd>
@@ -692,7 +692,7 @@
 </dd>
 <dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;, default: <strong>np.float32</strong></span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong>.</p>
 </dd>
-<dt><strong>topology</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
+<dt><strong>topology</strong><span class="classifier">str, default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
 </dd>
 <dt><strong>alpha</strong><span class="classifier">float, default: <strong>None</strong> ≡ <strong>0.3</strong></span></dt><dd><p>Starting value of the learning rate.</p>
 </dd>
@@ -731,16 +731,16 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_online.SOM_Online.compute_errors" title="decontamination.algo.som_online.SOM_Online.compute_errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_errors</span></code></a>(dataset[, show_progress_bar, ...])</p></td>
-<td><p>Computes the quantization and topographic errors for the given input.</p></td>
+<td><p>For the given input, computes the quantization and topographic errors.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.som_online.SOM_Online.get_activation_map" title="decontamination.algo.som_online.SOM_Online.get_activation_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code></a>(dataset[, ...])</p></td>
-<td><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p></td>
+<td><p>For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_online.SOM_Online.get_distance_map" title="decontamination.algo.som_online.SOM_Online.get_distance_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code></a>([scaling])</p></td>
-<td><p>Returns a matrix of the distances between each weight.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_online.SOM_Online.get_distance_map" title="decontamination.algo.som_online.SOM_Online.get_distance_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code></a>([normalization])</p></td>
+<td><p>Returns the distance map of the weights.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.som_online.SOM_Online.get_winners" title="decontamination.algo.som_online.SOM_Online.get_winners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code></a>(dataset[, enable_gpu, ...])</p></td>
-<td><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p></td>
+<td><p>For the given input, returns a vector of the best matching unit indices <span class="math notranslate nohighlight">\(\in[0,m\times n-1]\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_online.SOM_Online.init_from" title="decontamination.algo.som_online.SOM_Online.init_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code></a>(other)</p></td>
 <td><p>Initializes the neural network from another one.</p></td>
@@ -787,13 +787,13 @@
 <dd class="field-odd"><dl>
 <dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Training dataset array or generator builder.</p>
 </dd>
-<dt><strong>n_epochs</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Number of epochs to train for.</p>
+<dt><strong>n_epochs</strong><span class="classifier">int, default: <strong>None</strong></span></dt><dd><p>Optional number of epochs to train for.</p>
 </dd>
-<dt><strong>n_vectors</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Number of vectors to train for.</p>
+<dt><strong>n_vectors</strong><span class="classifier">int, default: <strong>None</strong></span></dt><dd><p>Optional number of vectors to train for.</p>
 </dd>
-<dt><strong>stop_quantization_error</strong><span class="classifier">Optional[float], default: <strong>None</strong></span></dt><dd><p>Stop the training if quantization_error &lt; stop_quantization_error.</p>
+<dt><strong>stop_quantization_error</strong><span class="classifier">float, default: <strong>None</strong></span></dt><dd><p>Stops the training if quantization_error &lt; stop_quantization_error.</p>
 </dd>
-<dt><strong>stop_topographic_error</strong><span class="classifier">Optional[float], default: <strong>None</strong></span></dt><dd><p>Stop the training if topographic_error &lt; stop_topographic_error.</p>
+<dt><strong>stop_topographic_error</strong><span class="classifier">float, default: <strong>None</strong></span></dt><dd><p>Stops the training if topographic_error &lt; stop_topographic_error.</p>
 </dd>
 <dt><strong>show_progress_bar</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
@@ -815,7 +815,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_online.SOM_Online.compute_errors">
 <span class="sig-name descname"><span class="pre">compute_errors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online.compute_errors" title="Link to this definition">¶</a></dt>
-<dd><p>Computes the quantization and topographic errors for the given input.</p>
+<dd><p>For the given input, computes the quantization and topographic errors.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -847,7 +847,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_online.SOM_Online.get_activation_map">
 <span class="sig-name descname"><span class="pre">get_activation_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online.get_activation_map" title="Link to this definition">¶</a></dt>
-<dd><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p>
+<dd><p>For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -866,12 +866,12 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_online.SOM_Online.get_distance_map">
-<span class="sig-name descname"><span class="pre">get_distance_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scaling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online.get_distance_map" title="Link to this definition">¶</a></dt>
-<dd><p>Returns a matrix of the distances between each weight.</p>
+<span class="sig-name descname"><span class="pre">get_distance_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normalization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online.get_distance_map" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the distance map of the weights.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>scaling</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ ‘<strong>sum</strong>’</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’.</p>
+<dt><strong>normalization</strong><span class="classifier">str, default: <strong>None</strong> ≡ ‘<strong>sum</strong>’</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’.</p>
 </dd>
 </dl>
 </dd>
@@ -881,7 +881,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_online.SOM_Online.get_winners">
 <span class="sig-name descname"><span class="pre">get_winners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online.get_winners" title="Link to this definition">¶</a></dt>
-<dd><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p>
+<dd><p>For the given input, returns a vector of the best matching unit indices <span class="math notranslate nohighlight">\(\in[0,m\times n-1]\)</span>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -917,7 +917,7 @@
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>seed</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Seed for random generator.</p>
+<dt><strong>seed</strong><span class="classifier">int, default: <strong>None</strong></span></dt><dd><p>Optional seed for random generator.</p>
 </dd>
 </dl>
 </dd>
@@ -1022,7 +1022,7 @@
 </dd>
 <dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;, default:  <strong>np.float32</strong></span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong>.</p>
 </dd>
-<dt><strong>topology</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
+<dt><strong>topology</strong><span class="classifier">str, default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
 </dd>
 <dt><strong>sigma</strong><span class="classifier">float, default: default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mathrm{max}(m,n)/2\)</span></span></dt><dd><p>Starting value of the neighborhood radius.</p>
 </dd>
@@ -1057,16 +1057,16 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_batch.SOM_Batch.compute_errors" title="decontamination.algo.som_batch.SOM_Batch.compute_errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_errors</span></code></a>(dataset[, show_progress_bar, ...])</p></td>
-<td><p>Computes the quantization and topographic errors for the given input.</p></td>
+<td><p>For the given input, computes the quantization and topographic errors.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.som_batch.SOM_Batch.get_activation_map" title="decontamination.algo.som_batch.SOM_Batch.get_activation_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code></a>(dataset[, ...])</p></td>
-<td><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p></td>
+<td><p>For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_batch.SOM_Batch.get_distance_map" title="decontamination.algo.som_batch.SOM_Batch.get_distance_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code></a>([scaling])</p></td>
-<td><p>Returns a matrix of the distances between each weight.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_batch.SOM_Batch.get_distance_map" title="decontamination.algo.som_batch.SOM_Batch.get_distance_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code></a>([normalization])</p></td>
+<td><p>Returns the distance map of the weights.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.som_batch.SOM_Batch.get_winners" title="decontamination.algo.som_batch.SOM_Batch.get_winners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code></a>(dataset[, enable_gpu, ...])</p></td>
-<td><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p></td>
+<td><p>For the given input, returns a vector of the best matching unit indices <span class="math notranslate nohighlight">\(\in[0,m\times n-1]\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_batch.SOM_Batch.init_from" title="decontamination.algo.som_batch.SOM_Batch.init_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code></a>(other)</p></td>
 <td><p>Initializes the neural network from another one.</p></td>
@@ -1111,13 +1111,13 @@
 <dd class="field-odd"><dl>
 <dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Training dataset array or generator builder.</p>
 </dd>
-<dt><strong>n_epochs</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Number of epochs to train for.</p>
+<dt><strong>n_epochs</strong><span class="classifier">int, default: <strong>None</strong></span></dt><dd><p>Optional number of epochs to train for.</p>
 </dd>
-<dt><strong>n_vectors</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Number of vectors to train for.</p>
+<dt><strong>n_vectors</strong><span class="classifier">int, default: <strong>None</strong></span></dt><dd><p>Optional number of vectors to train for.</p>
 </dd>
-<dt><strong>stop_quantization_error</strong><span class="classifier">Optional[float], default: <strong>None</strong></span></dt><dd><p>Stop the training if quantization_error &lt; stop_quantization_error.</p>
+<dt><strong>stop_quantization_error</strong><span class="classifier">float, default: <strong>None</strong></span></dt><dd><p>Stops the training if quantization_error &lt; stop_quantization_error.</p>
 </dd>
-<dt><strong>stop_topographic_error</strong><span class="classifier">Optional[float], default: <strong>None</strong></span></dt><dd><p>Stop the training if topographic_error &lt; stop_topographic_error.</p>
+<dt><strong>stop_topographic_error</strong><span class="classifier">float, default: <strong>None</strong></span></dt><dd><p>Stops the training if topographic_error &lt; stop_topographic_error.</p>
 </dd>
 <dt><strong>show_progress_bar</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
@@ -1139,7 +1139,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_batch.SOM_Batch.compute_errors">
 <span class="sig-name descname"><span class="pre">compute_errors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.algo.som_batch.SOM_Batch.compute_errors" title="Link to this definition">¶</a></dt>
-<dd><p>Computes the quantization and topographic errors for the given input.</p>
+<dd><p>For the given input, computes the quantization and topographic errors.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -1171,7 +1171,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_batch.SOM_Batch.get_activation_map">
 <span class="sig-name descname"><span class="pre">get_activation_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_batch.SOM_Batch.get_activation_map" title="Link to this definition">¶</a></dt>
-<dd><p>Returns a matrix containing the number of times each neuron have been activated for the given input.</p>
+<dd><p>For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -1190,12 +1190,12 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_batch.SOM_Batch.get_distance_map">
-<span class="sig-name descname"><span class="pre">get_distance_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scaling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_batch.SOM_Batch.get_distance_map" title="Link to this definition">¶</a></dt>
-<dd><p>Returns a matrix of the distances between each weight.</p>
+<span class="sig-name descname"><span class="pre">get_distance_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normalization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_batch.SOM_Batch.get_distance_map" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the distance map of the weights.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>scaling</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ ‘<strong>sum</strong>’</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’.</p>
+<dt><strong>normalization</strong><span class="classifier">str, default: <strong>None</strong> ≡ ‘<strong>sum</strong>’</span></dt><dd><p>Normalization method, either ‘<strong>sum</strong>’ or ‘<strong>mean</strong>’.</p>
 </dd>
 </dl>
 </dd>
@@ -1205,7 +1205,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_batch.SOM_Batch.get_winners">
 <span class="sig-name descname"><span class="pre">get_winners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.som_batch.SOM_Batch.get_winners" title="Link to this definition">¶</a></dt>
-<dd><p>Returns a vector of the best matching unit indices (shape m×n) for the given input.</p>
+<dd><p>For the given input, returns a vector of the best matching unit indices <span class="math notranslate nohighlight">\(\in[0,m\times n-1]\)</span>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -1241,7 +1241,7 @@
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>seed</strong><span class="classifier">Optional[int], default: <strong>None</strong></span></dt><dd><p>Seed for random generator.</p>
+<dt><strong>seed</strong><span class="classifier">int, default: <strong>None</strong></span></dt><dd><p>Optional seed for random generator.</p>
 </dd>
 </dl>
 </dd>

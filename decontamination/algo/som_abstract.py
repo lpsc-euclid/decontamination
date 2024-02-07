@@ -30,7 +30,7 @@ class SOM_Abstract(object):
         Dimensionality of the input data.
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]], default: **np.float32**
         Neural network data type, either **np.float32** or **np.float64**.
-    topology : typing.Optional[str], default: **None** ≡ **'hexagonal'**
+    topology : str, default: **None** ≡ **'hexagonal'**
         Neural network topology, either **'square'** or **'hexagonal'**.
     """
 
@@ -112,8 +112,8 @@ class SOM_Abstract(object):
 
         Parameters
         ----------
-        seed : typing.Optional[int], default: **None**
-            Seed for random generator.
+        seed : int, default: **None**
+            Optional seed for random generator.
         """
 
         ################################################################################################################
@@ -465,18 +465,18 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def get_distance_map(self, scaling: typing.Optional[str] = None) -> np.ndarray:
+    def get_distance_map(self, normalization: typing.Optional[str] = None) -> np.ndarray:
 
         """
-        Returns a matrix of the distances between each weight.
+        Returns the distance map of the weights.
 
         Parameters
         ----------
-        scaling : typing.Optional[str], default: **None** ≡ '**sum**'
+        normalization : str, default: **None** ≡ '**sum**'
             Normalization method, either '**sum**' or '**mean**'.
         """
 
-        scaling = scaling or 'sum'
+        normalization = normalization or 'sum'
 
         ################################################################################################################
 
@@ -494,14 +494,14 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        if scaling == 'sum':
+        if normalization == 'sum':
             result = np.nansum(result, axis = 2)
 
-        elif scaling == 'mean':
+        elif normalization == 'mean':
             result = np.nanmean(result, axis = 2)
 
         else:
-            raise ValueError(f'Invalid scaling method `{scaling}`')
+            raise ValueError(f'Invalid normalization method `{normalization}`')
 
         ################################################################################################################
 
@@ -512,7 +512,7 @@ class SOM_Abstract(object):
     def compute_errors(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> typing.Tuple[float, float]:
 
         """
-        Computes the quantization and topographic errors for the given input.
+        For the given input, computes the quantization and topographic errors.
 
         Parameters
         ----------
@@ -555,7 +555,7 @@ class SOM_Abstract(object):
     def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> np.ndarray:
 
         """
-        Returns a matrix containing the number of times each neuron have been activated for the given input.
+        For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.
 
         Parameters
         ----------
@@ -594,7 +594,7 @@ class SOM_Abstract(object):
     def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> np.ndarray:
 
         """
-        Returns a vector of the best matching unit indices (shape m×n) for the given input.
+        For the given input, returns a vector of the best matching unit indices :math:`\in[0,m\\times n-1]`.
 
         Parameters
         ----------

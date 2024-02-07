@@ -109,11 +109,11 @@ def ang2pix(nside: int, θ: np.ndarray, ϕ: np.ndarray, lonlat: bool = False) ->
     nside : int
         The HEALPix nside parameter.
     θ : np.ndarray
-        The θ angular coordinates of a point on the sphere.
+        The angular coordinate θ of the points on the sphere.
     ϕ : np.ndarray
-        The ϕ angular coordinates of a point on the sphere.
+        The angular coordinate ϕ of the points on the sphere.
     lonlat : bool, default: **False**
-        If **True**, assumes longitude and latitude in degrees, otherwise, in radians.
+        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.
     """
 
     ####################################################################################################################
@@ -235,7 +235,7 @@ def rand_ang(nside: int, pixels: np.ndarray, lonlat: bool = False, compat: bool 
     pixels : np.ndarray
         HEALPix indices of the region where coordinates are generated.
     lonlat : bool, default: **False**
-        If **True**, assumes longitude and latitude in degrees, otherwise, in radians.
+        If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.
     compat : bool, default: **False**
         If **True**, assumes to be compatible with `healpix.randang`.
     rng : np.random.Generator, default: **None** ≡ the default RNG

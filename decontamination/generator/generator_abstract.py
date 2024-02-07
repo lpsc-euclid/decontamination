@@ -25,8 +25,8 @@ class Generator_Abstract(object):
         If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering.
     lonlat : bool, default: **True**
         If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.
-    seed : typing.Optional[int], default: **None**
-        Seed for random generators.
+    seed : int, default: **None**
+        Optional seed for random generators.
     """
 
     ####################################################################################################################

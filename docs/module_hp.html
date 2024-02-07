@@ -72,7 +72,7 @@
             
   <section id="module-decontamination-hp">
 <h1>Module decontamination.hp<a class="headerlink" href="#module-decontamination-hp" title="Link to this heading">¶</a></h1>
-<p>This module provides a set of vectorized and standalone HEALPix primitive written with Numba.</p>
+<p>This module provides a set of fast, vectorized and standalone HEALPix primitive written with Numba.</p>
 <ul>
 <li><div class="line-block">
 <div class="line"><em>HEALPix</em>: a Framework for High Resolution Discretization, and Fast Analysis of Data Distributed on the Sphere</div>
@@ -91,11 +91,11 @@
 <dd class="field-odd"><dl>
 <dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
 </dd>
-<dt><strong>θ</strong><span class="classifier">np.ndarray</span></dt><dd><p>The θ angular coordinates of a point on the sphere.</p>
+<dt><strong>θ</strong><span class="classifier">np.ndarray</span></dt><dd><p>The angular coordinate θ of the points on the sphere.</p>
 </dd>
-<dt><strong>ϕ</strong><span class="classifier">np.ndarray</span></dt><dd><p>The ϕ angular coordinates of a point on the sphere.</p>
+<dt><strong>ϕ</strong><span class="classifier">np.ndarray</span></dt><dd><p>The angular coordinate ϕ of the points on the sphere.</p>
 </dd>
-<dt><strong>lonlat</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, in radians.</p>
+<dt><strong>lonlat</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.</p>
 </dd>
 </dl>
 </dd>
@@ -113,7 +113,7 @@
 </dd>
 <dt><strong>pixels</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the region where coordinates are generated.</p>
 </dd>
-<dt><strong>lonlat</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, in radians.</p>
+<dt><strong>lonlat</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.</p>
 </dd>
 <dt><strong>compat</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, assumes to be compatible with <cite>healpix.randang</cite>.</p>
 </dd>

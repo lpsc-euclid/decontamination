@@ -1,7 +1,7 @@
 Module decontamination.hp
 =========================
 
-This module provides a set of vectorized and standalone HEALPix primitive written with Numba.
+This module provides a set of fast, vectorized and standalone HEALPix primitive written with Numba.
 
 * | *HEALPix*: a Framework for High Resolution Discretization, and Fast Analysis of Data Distributed on the Sphere
   | Górski K. M. et al.

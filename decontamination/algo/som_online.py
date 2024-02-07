@@ -31,7 +31,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
         Dimensionality of the input data.
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]], default: **np.float32**
         Neural network data type, either **np.float32** or **np.float64**.
-    topology : typing.Optional[str], default: **None** ≡ **'hexagonal'**
+    topology : str, default: **None** ≡ **'hexagonal'**
         Neural network topology, either **'square'** or **'hexagonal'**.
     alpha : float, default: **None** ≡ **0.3**
         Starting value of the learning rate.
@@ -165,14 +165,14 @@ class SOM_Online(som_abstract.SOM_Abstract):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
-        n_epochs : typing.Optional[int], default: **None**
-            Number of epochs to train for.
-        n_vectors : typing.Optional[int], default: **None**
-            Number of vectors to train for.
-        stop_quantization_error : typing.Optional[float], default: **None**
-            Stop the training if quantization_error < stop_quantization_error.
-        stop_topographic_error : typing.Optional[float], default: **None**
-            Stop the training if topographic_error < stop_topographic_error.
+        n_epochs : int, default: **None**
+            Optional number of epochs to train for.
+        n_vectors : int, default: **None**
+            Optional number of vectors to train for.
+        stop_quantization_error : float, default: **None**
+            Stops the training if quantization_error < stop_quantization_error.
+        stop_topographic_error : float, default: **None**
+            Stops the training if topographic_error < stop_topographic_error.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**

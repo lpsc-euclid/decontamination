@@ -39,16 +39,16 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         Maximum galaxy separation being considered (in arcmins).
     n_bins : int
         Number of angular bins.
-    bin_slop : typing.Optional[float]
-        Precision parameter for binning (see `TreeCorr documentation <https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop>`_).
-    n_threads : typing.Optional[int], default: **None** ≡ the number of cpu cores
-        How many OpenMP threads to use during the calculation.
-    footprint : typing.Optional[np.ndarray]
-        HEALPix indices of the region where correlation must be calculated (KK correlations only).
-    coverage : typing.Optional[np.ndarray]
-        Observed sky fraction for each of the aforementioned HEALPix pixels (KK correlations only).
-    nside : typing.Optional[np.ndarray]
-        The HEALPix nside parameter (KK correlations only).
+    bin_slop : float = **None**
+        Optional precision parameter (see `TreeCorr documentation <https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop>`_).
+    n_threads : int, default: **None** ≡ the number of cpu cores
+        Optional number of OpenMP threads to use during the calculation.
+    footprint : np.ndarray, default: **None**
+        Optional HEALPix indices of the region where correlation must be calculated (KK correlations only).
+    coverage : np.ndarray, default: **None**
+        Optional observed sky fraction for each of the aforementioned HEALPix pixels (KK correlations only).
+    nside : int, default: **None**
+        Optional HEALPix nside parameter (KK correlations only).
     nest : bool, default: True
         If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering (KK correlations only).
     """

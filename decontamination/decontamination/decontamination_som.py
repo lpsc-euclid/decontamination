@@ -29,7 +29,7 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         Specifies whether to train parallel (**True**) or iterative (**False**).
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]], default: **np.float32**
         Neural network data type, either **np.float32** or **np.float64**.
-    topology : typing.Optional[str], default: **None** ≡ **'hexagonal'**
+    topology : str, default: **None** ≡ **'hexagonal'**
         Neural network topology, either **'square'** or **'hexagonal'**.
     alpha : float, default: **None** ≡ **0.3**, iterative training only
         Starting value of the learning rate.
@@ -409,13 +409,13 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
             Dataset array or generator builder of systematics for the catalog.
         footprint_systematics : typing.Union[np.ndarray, typing.Callable]
             Dataset array or generator builder of systematics for the footprint.
-        n_epochs : typing.Optional[int], default: **None**
-            Number of epochs to train for.
-        n_vectors : typing.Optional[int], default: **None**
-            Number of vectors to train for.
-        stop_quantization_error : typing.Optional[float], default: **None**
+        n_epochs : int, default: **None**
+            Optional number of epochs to train for.
+        n_vectors : int, default: **None**
+            Optional number of vectors to train for.
+        stop_quantization_error : float, default: **None**
             Stop the training if quantization_error < stop_quantization_error.
-        stop_topographic_error : typing.Optional[float], default: **None**
+        stop_topographic_error : float, default: **None**
             Stop the training if topographic_error < stop_topographic_error.
         show_progress_bar : bool, default: **True**
             Specifies whether to display a progress bar.

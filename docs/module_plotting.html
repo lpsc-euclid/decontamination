@@ -92,11 +92,11 @@
 </dd>
 <dt><strong>cmap</strong><span class="classifier">str, default: <strong>‘jet’</strong></span></dt><dd><p>Color map.</p>
 </dd>
-<dt><strong>norm</strong><span class="classifier">Optional[str], default: <strong>None</strong></span></dt><dd><p>Color normalization, <strong>‘hist’</strong> = histogram equalized color mapping, <strong>‘log’</strong> = logarithmic color mapping.</p>
+<dt><strong>norm</strong><span class="classifier">str, default: <strong>None</strong></span></dt><dd><p>Optional color normalization, <strong>‘hist’</strong> = histogram equalized color mapping, <strong>‘log’</strong> = logarithmic color mapping.</p>
 </dd>
-<dt><strong>v_min</strong><span class="classifier">float, default: <strong>None</strong> ≡ min(weights)</span></dt><dd><p>Minimum color scale.</p>
+<dt><strong>v_min</strong><span class="classifier">float, default: <strong>None</strong> ≡ min(weights)</span></dt><dd><p>Minimum range value.</p>
 </dd>
-<dt><strong>v_max</strong><span class="classifier">float, default: <strong>None</strong> ≡ max(weights)</span></dt><dd><p>Maximum color scale.</p>
+<dt><strong>v_max</strong><span class="classifier">float, default: <strong>None</strong> ≡ max(weights)</span></dt><dd><p>Maximum range value.</p>
 </dd>
 </dl>
 </dd>
@@ -122,11 +122,11 @@
 </dd>
 <dt><strong>cmap</strong><span class="classifier">str, default: <strong>‘jet’</strong></span></dt><dd><p>Color map.</p>
 </dd>
-<dt><strong>norm</strong><span class="classifier">Optional[str], default: <strong>‘hist’</strong></span></dt><dd><p>Color normalization, <strong>‘hist’</strong> = histogram equalized color mapping, <strong>‘log’</strong> = logarithmic color mapping.</p>
+<dt><strong>norm</strong><span class="classifier">str, default: <strong>‘hist’</strong></span></dt><dd><p>Color normalization, <strong>‘hist’</strong> = histogram equalized color mapping, <strong>‘log’</strong> = logarithmic color mapping.</p>
 </dd>
-<dt><strong>v_min</strong><span class="classifier">float, default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mu-n_\sigma\cdot\sigma\)</span></span></dt><dd><p>Minimum color scale.</p>
+<dt><strong>v_min</strong><span class="classifier">float, default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mu-n_\sigma\cdot\sigma\)</span></span></dt><dd><p>Minimum range value.</p>
 </dd>
-<dt><strong>v_max</strong><span class="classifier">float, default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mu+n_\sigma\cdot\sigma\)</span></span></dt><dd><p>Maximum color scale.</p>
+<dt><strong>v_max</strong><span class="classifier">float, default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mu+n_\sigma\cdot\sigma\)</span></span></dt><dd><p>Maximum range value.</p>
 </dd>
 </dl>
 </dd>
@@ -146,17 +146,17 @@
 <dd class="field-odd"><dl>
 <dt><strong>weights</strong><span class="classifier">np.ndarray</span></dt><dd><p>Weights of the map.</p>
 </dd>
-<dt><strong>topology</strong><span class="classifier">Optional[str], default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Topology of the map, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
+<dt><strong>topology</strong><span class="classifier">str, default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Topology of the map, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
 </dd>
-<dt><strong>v_min</strong><span class="classifier">float, default: <strong>None</strong> ≡ min(weights)</span></dt><dd><p>Minimum color scale.</p>
+<dt><strong>v_min</strong><span class="classifier">float, default: <strong>None</strong> ≡ min(weights)</span></dt><dd><p>Minimum range value.</p>
 </dd>
-<dt><strong>v_max</strong><span class="classifier">float, default: <strong>None</strong> ≡ max(weights)</span></dt><dd><p>Maximum color scale.</p>
+<dt><strong>v_max</strong><span class="classifier">float, default: <strong>None</strong> ≡ max(weights)</span></dt><dd><p>Maximum range value.</p>
 </dd>
 <dt><strong>cmap</strong><span class="classifier">str, default: <strong>‘viridis’</strong></span></dt><dd><p>Color map.</p>
 </dd>
 <dt><strong>n_hist_bins</strong><span class="classifier">int, default: <strong>100</strong></span></dt><dd><p>Number of histogram bins in the colorbar.</p>
 </dd>
-<dt><strong>cluster_ids</strong><span class="classifier">Optional[np.ndarray], default: <strong>None</strong></span></dt><dd><p>Array of cluster identifiers (see <a class="reference internal" href="module_algo.html#decontamination.algo.clustering.Clustering" title="decontamination.algo.clustering.Clustering"><code class="xref py py-class docutils literal notranslate"><span class="pre">Clustering</span></code></a>).</p>
+<dt><strong>cluster_ids</strong><span class="classifier">np.ndarray, default: <strong>None</strong></span></dt><dd><p>Optional array of cluster identifiers (see <a class="reference internal" href="module_algo.html#decontamination.algo.clustering.Clustering" title="decontamination.algo.clustering.Clustering"><code class="xref py py-class docutils literal notranslate"><span class="pre">Clustering</span></code></a>).</p>
 </dd>
 <dt><strong>log_scale</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>Specifies whether to enable the logarithm scaling.</p>
 </dd>

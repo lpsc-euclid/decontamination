@@ -113,12 +113,12 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
         If **True**, ordering scheme is *NESTED*.
     cmap : str, default: **'jet'**
         Color map.
-    norm : typing.Optional[str], default: **None**
-        Color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping.
+    norm : str, default: **None**
+        Optional color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping.
     v_min : float, default: **None** ≡ min(weights)
-        Minimum color scale.
+        Minimum range value.
     v_max : float, default: **None** ≡ max(weights)
-        Maximum color scale.
+        Maximum range value.
     """
 
     ####################################################################################################################
@@ -172,12 +172,12 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
         If **True**, ordering scheme is *NESTED*.
     cmap : str, default: **'jet'**
         Color map.
-    norm : typing.Optional[str], default: **'hist'**
+    norm : str, default: **'hist'**
         Color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping.
     v_min : float, default: **None** ≡ :math:`\\mu-n_\\sigma\\cdot\\sigma`
-        Minimum color scale.
+        Minimum range value.
     v_max : float, default: **None** ≡ :math:`\\mu+n_\\sigma\\cdot\\sigma`
-        Maximum color scale.
+        Maximum range value.
     """
 
     ####################################################################################################################

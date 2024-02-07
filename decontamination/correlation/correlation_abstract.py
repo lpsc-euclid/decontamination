@@ -76,9 +76,9 @@ class Correlation_Abstract(abc.ABC):
         estimator : str
             Estimator being considered ("dd", "rr", "dr", "rd", "peebles_hauser", "landy_szalay_1", "landy_szalay_2").
         random_lon : np.ndarray, default: None
-            Random catalog longitudes (in degrees). For Peebles & Hauser and Landy & Szalay estimators only.
+            Optional random catalog longitudes (in degrees). For Peebles & Hauser and Landy & Szalay estimators only.
         random_lat : np.ndarray, default: None
-            Random catalog latitudes (in degrees). For Peebles & Hauser and Landy & Szalay estimators only.
+            Optional random catalog latitudes (in degrees). For Peebles & Hauser and Landy & Szalay estimators only.
 
         Returns
         -------

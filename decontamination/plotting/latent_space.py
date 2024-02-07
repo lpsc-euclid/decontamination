@@ -186,18 +186,18 @@ def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = N
     ----------
     weights : np.ndarray
         Weights of the map.
-    topology : typing.Optional[str], default: **None** ≡ **'hexagonal'**
+    topology : str, default: **None** ≡ **'hexagonal'**
         Topology of the map, either **'square'** or **'hexagonal'**.
     v_min : float, default: **None** ≡ min(weights)
-        Minimum color scale.
+        Minimum range value.
     v_max : float, default: **None** ≡ max(weights)
-        Maximum color scale.
+        Maximum range value.
     cmap : str, default: **'viridis'**
         Color map.
     n_hist_bins : int, default: **100**
         Number of histogram bins in the colorbar.
-    cluster_ids : typing.Optional[np.ndarray], default: **None**
-        Array of cluster identifiers (see :class:`Clustering <decontamination.algo.clustering.Clustering>`).
+    cluster_ids : np.ndarray, default: **None**
+        Optional array of cluster identifiers (see :class:`Clustering <decontamination.algo.clustering.Clustering>`).
     log_scale : bool, default: **False**
         Specifies whether to enable the logarithm scaling.
     antialiased : bool, default: **False**

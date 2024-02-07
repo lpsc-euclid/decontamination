@@ -27,8 +27,8 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
         If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering.
     lonlat : bool, default: **True**
         If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.
-    seed : typing.Optional[int], default: **None**
-        Seed for random generators.
+    seed : int, default: **None**
+        Optional seed for random generators.
     """
 
     ####################################################################################################################
@@ -50,10 +50,10 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
         ----------
         number_density_map : np.ndarray
             Number of galaxies per HEALPix pixels.
-        mult_factor : typing.Optional[float], default: **10.0**
-            Statistics multiplication factor.
-        n_max_per_batch : typing.Optional[int], default: **None**
-            Maximum number of galaxy positions to yield in one batch.
+        mult_factor : float, default: **10.0**
+            Optional statistics multiplication factor.
+        n_max_per_batch : int, default: **None**
+            Optional maximum number of galaxy positions to yield in one batch.
 
         Returns
         -------

@@ -27,8 +27,8 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
         If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering.
     lonlat : bool, default: **True**
         If **True**, assumes longitude and latitude in degrees, otherwise, co-latitude and longitude in radians.
-    seed : typing.Optional[int], default: **None**
-        Seed for random generators.
+    seed : int, default: **None**
+        Optional seed for random generators.
     """
 
     ####################################################################################################################
@@ -50,8 +50,8 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
         ----------
         mean_density : float, default: **10.0**
             Mean number of galaxies per HEALPix pixel.
-        n_max_per_batch : typing.Optional[int], default: **None**
-            Maximum number of galaxy positions to yield in one batch.
+        n_max_per_batch : int, default: **None**
+            Optional maximum number of galaxy positions to yield in one batch.
 
         Returns
         -------

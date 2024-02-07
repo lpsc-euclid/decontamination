@@ -26,7 +26,7 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
     dim : int
         Dimensionality of the input data.
     batch : bool
-        Specifies whether to train parallel (**True**) or iterative (**False**).
+        Specifies whether to train in parallel (**True**) or iteratively (**False**).
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]], default: **np.float32**
         Neural network data type, either **np.float32** or **np.float64**.
     topology : str, default: **None** ≡ **'hexagonal'**

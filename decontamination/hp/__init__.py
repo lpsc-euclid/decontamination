@@ -7,7 +7,41 @@ import numpy as np
 import numba as nb
 
 ########################################################################################################################
+# CONSTANTS                                                                                                            #
+########################################################################################################################
+
+UNSEEN = -1.6375e+30
+
+########################################################################################################################
 # UTILITIES                                                                                                            #
+########################################################################################################################
+
+def nside2npix(nside: int) -> int:
+
+    return int(12 * nside * nside)
+
+########################################################################################################################
+
+def npix2nside(npix: int) -> int:
+
+    return int(np.sqrt(npix / 12.0))
+
+########################################################################################################################
+
+def nside2pixarea(nside: int, degrees: bool = False) -> float:
+
+    result = np.pi / (3.0 * nside * nside)
+
+    return np.rad2deg(np.rad2deg(result)) if degrees else result
+
+########################################################################################################################
+
+def nside2resol(nside: int, arcmins: bool = False) -> float:
+
+    result = np.sqrt(np.pi / 3.0) / nside
+
+    return 60.0 * np.rad2deg(result) if arcmins else result
+
 ########################################################################################################################
 
 @nb.njit
@@ -74,7 +108,7 @@ def xyf2nest(nside: int, x: np.ndarray, y: np.ndarray, f: np.ndarray) -> np.ndar
         +
         (_spread_bits(y) << 1)
         +
-        (f * nside ** 2)
+        (f * nside * nside)
     )
 
 ########################################################################################################################
@@ -84,14 +118,14 @@ def nest2xyf(nside: int, pixels: np.ndarray) -> typing.Tuple[np.ndarray, np.ndar
 
     # Convert nested HEALPix pixel indices to x, y, face (HEALPix Discrete) coordinates.
 
-    v = pixels & (nside ** 2 - 1)
+    v = pixels & (nside * nside - 1)
 
     return (
         _compress_bits(v >> 0)
         ,
         _compress_bits(v >> 1)
         ,
-        pixels // nside ** 2
+        pixels // (nside * nside)
     )
 
 ########################################################################################################################

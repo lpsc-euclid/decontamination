@@ -15,7 +15,11 @@ from .jit import DeviceArray, device_array_from, device_array_empty, device_arra
 # HP                                                                                                                   #
 ########################################################################################################################
 
-from .hp import xyf2nest, nest2xyf, ang2pix, rand_ang
+from .hp import nside2npix, npix2nside, nside2pixarea, nside2resol, xyf2nest, nest2xyf, ang2pix, rand_ang
+
+from .hp.wmoc import order_index_to_nuniq, nuniq_to_order_index, moc_to_healpix
+
+from .hp.mask import image2healpix
 
 ########################################################################################################################
 # ALGOS                                                                                                                #
@@ -94,7 +98,9 @@ def array_to_string(arr):
 __all__ = [
     'CPU_OPTIMIZATION_AVAILABLE', 'GPU_OPTIMIZATION_AVAILABLE', 'jit',
     'DeviceArray', 'device_array_from', 'device_array_empty', 'device_array_zeros', 'device_array_full',
-    'xyf2nest', 'nest2xyf', 'ang2pix', 'rand_ang',
+    'nside2npix', 'npix2nside', 'nside2pixarea', 'nside2resol', 'xyf2nest', 'nest2xyf', 'ang2pix', 'rand_ang',
+    'order_index_to_nuniq', 'nuniq_to_order_index', 'moc_to_healpix',
+    'image2healpix',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
     'Clustering',
     'catalog_to_number_density',

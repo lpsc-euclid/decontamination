@@ -57,7 +57,7 @@ def nuniq_to_order_index(nuniqs: np.ndarray) -> typing.Tuple[np.ndarray, np.ndar
 def moc_to_healpix(moc_orders: np.ndarray, moc_indices: np.ndarray, order_new: int) -> np.ndarray:
 
     """
-    Refine a given Multi-Order Coverage (MOC) to a specified order.
+    Refines a given Multi-Order Coverage (MOC) to a specified order.
 
     Parameters
     ----------
@@ -131,7 +131,7 @@ def moc_to_healpix(moc_orders: np.ndarray, moc_indices: np.ndarray, order_new: i
 def wmoc_to_healpix(moc_orders: np.ndarray, moc_indices: np.ndarray, moc_weights: np.ndarray, order_new: int) -> typing.Tuple[np.ndarray, np.ndarray]:
 
     """
-    Refine a given Weighted Multi-Order Coverage (WMOC) to a specified order, returning the HEALPix indices at the new order and the associated weights.
+    Refines a given Weighted Multi-Order Coverage (WMOC) to a specified order, returning the HEALPix indices at the new order and the associated weights.
 
     Parameters
     ----------

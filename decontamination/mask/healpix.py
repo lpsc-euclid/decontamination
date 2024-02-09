@@ -195,7 +195,7 @@ def _project2(result_rms: np.ndarray, result_bit: np.ndarray, result_cov: np.nda
         rms_i = valid_rms[i]
         bit_i = valid_bit[i]
 
-        if 0.0 < rms_i < rms_selection and (bit_i & bit_selection) == 0:
+        if (0.0 < rms_i < rms_selection) and (bit_i & bit_selection) == 0:
 
             result_rms[idx_i] += rms_i ** 2
 

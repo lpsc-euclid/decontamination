@@ -64,7 +64,7 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
     bit_image : np.ndarray, default: **None**
         2-d image containing the bit (aka. data quality) information.
     rms_selection : float, default: **1.0e4**
-        Reject the pixel if RMS == 0 or RMS > rms_selection.
+        Reject the pixel if RMS == 0 or RMS >= rms_selection.
     bit_selection : int, default: **0x00**
         Reject the pixel if (bit & bit_selection) != 0x00.
     show_progress_bar : bool, default = **False**

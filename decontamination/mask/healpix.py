@@ -49,7 +49,7 @@ def build_healpix_wcs(wcs: 'astropy.wcs.WCS') -> 'astropy.wcs.WCS':
 def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, rms_image: np.ndarray, bit_image: typing.Optional[np.ndarray] = None, rms_selection: float = 1.0e4, bit_selection: int = 0x00, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
     """
-    ???
+    Projects RMS (aka. noise) and bit (aka. data quality) image into HEALPix masks.
 
     Parameters
     ----------

@@ -72,11 +72,13 @@
             
   <section id="module-decontamination-mask">
 <h1>Module decontamination.mask<a class="headerlink" href="#module-decontamination-mask" title="Link to this heading">¶</a></h1>
-<p>This module provides …</p>
-<span class="target" id="module-decontamination.mask.healpix"></span><dl class="py function">
+<p>This module provides primitives to perform projection from image to HEALPix masks.</p>
+<section id="module-decontamination.mask.healpix">
+<span id="healpix-masks"></span><h2>HEALPix masks<a class="headerlink" href="#module-decontamination.mask.healpix" title="Link to this heading">¶</a></h2>
+<dl class="py function">
 <dt class="sig sig-object py" id="decontamination.mask.healpix.build_healpix_wcs">
 <span class="sig-prename descclassname"><span class="pre">decontamination.mask.healpix.</span></span><span class="sig-name descname"><span class="pre">build_healpix_wcs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wcs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">astropy.wcs.WCS</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">astropy.wcs.WCS</span></span></span><a class="headerlink" href="#decontamination.mask.healpix.build_healpix_wcs" title="Link to this definition">¶</a></dt>
-<dd><p>Adjusts the provided World Coordinate System (WCS) object to perform HEALPix projection.</p>
+<dd><p>Adjusts the provided World Coordinate System (WCS) object to perform proper HEALPix projections.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -100,34 +102,39 @@
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>wcs</strong><span class="classifier">WCS</span></dt><dd><p>???</p>
+<dt><strong>wcs</strong><span class="classifier">WCS</span></dt><dd><p>The modified WCS object (see <a class="reference internal" href="#decontamination.mask.healpix.build_healpix_wcs" title="decontamination.mask.healpix.build_healpix_wcs"><code class="xref py py-func docutils literal notranslate"><span class="pre">build_healpix_wcs()</span></code></a>).</p>
 </dd>
-<dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>???</p>
+<dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter. Must be less or equal to 16384.</p>
 </dd>
-<dt><strong>footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>???</p>
+<dt><strong>footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the observed region. <strong>Nested ordering only.</strong></p>
 </dd>
-<dt><strong>rms_image</strong><span class="classifier">np.ndarray</span></dt><dd><p>???</p>
+<dt><strong>rms_image</strong><span class="classifier">np.ndarray</span></dt><dd><p>2-d image containing the RMS (aka. noise) information.</p>
 </dd>
-<dt><strong>bit_image</strong><span class="classifier">np.ndarray, default: <strong>None</strong></span></dt><dd><p>???</p>
+<dt><strong>bit_image</strong><span class="classifier">np.ndarray, default: <strong>None</strong></span></dt><dd><p>2-d image containing the bit (aka. data quality) information.</p>
 </dd>
-<dt><strong>rms_selection</strong><span class="classifier">float, default: <strong>1.0e4</strong></span></dt><dd><p>???</p>
+<dt><strong>rms_selection</strong><span class="classifier">float, default: <strong>1.0e4</strong></span></dt><dd><p>Reject the pixel if RMS == 0 or RMS &gt; rms_selection.</p>
 </dd>
-<dt><strong>bit_selection</strong><span class="classifier">int, default: <strong>0x00</strong></span></dt><dd><p>???</p>
+<dt><strong>bit_selection</strong><span class="classifier">int, default: <strong>0x00</strong></span></dt><dd><p>Reject the pixel if (bit &amp; bit_selection) != 0x00.</p>
 </dd>
-<dt><strong>show_progress_bar</strong><span class="classifier">bool, default = <strong>False</strong></span></dt><dd><p>???</p>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool, default = <strong>False</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>Tuple[np.ndarray, np.ndarray, np.ndarray]</dt><dd><p>???</p>
+<dt>Tuple[np.ndarray, np.ndarray, np.ndarray]</dt><dd><p>First array contains the RMS (aka. noise) mask.
+Second array contains the bit (aka. data quality) mask.
+Third array contains the coverage (≡ fraction of observed sky) mask.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 </dd></dl>
 
-<span class="target" id="module-decontamination.mask.moc"></span><dl class="py function">
+</section>
+<section id="module-decontamination.mask.moc">
+<span id="multi-order-coverage-moc-masks"></span><h2>Multi-Order Coverage (MOC) masks<a class="headerlink" href="#module-decontamination.mask.moc" title="Link to this heading">¶</a></h2>
+<dl class="py function">
 <dt class="sig sig-object py" id="decontamination.mask.moc.order_index_to_nuniq">
 <span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">order_index_to_nuniq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orders</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.mask.moc.order_index_to_nuniq" title="Link to this definition">¶</a></dt>
 <dd><p>Encodes HEALPix orders and pixel indices to unique identifiers (nuniq).</p>
@@ -222,6 +229,7 @@ Second array contains the associated values/weights at the new order.</p>
 </dd></dl>
 
 </section>
+</section>
 
 
             <div class="clearer"></div>
@@ -237,12 +245,18 @@ Second array contains the associated values/weights at the new order.</p>
     <h3><a href="index.html">Page contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Module decontamination.mask</a><ul>
+<li><a class="reference internal" href="#module-decontamination.mask.healpix">HEALPix masks</a><ul>
 <li><a class="reference internal" href="#decontamination.mask.healpix.build_healpix_wcs"><code class="docutils literal notranslate"><span class="pre">build_healpix_wcs()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.mask.healpix.image_to_healpix"><code class="docutils literal notranslate"><span class="pre">image_to_healpix()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-decontamination.mask.moc">Multi-Order Coverage (MOC) masks</a><ul>
 <li><a class="reference internal" href="#decontamination.mask.moc.order_index_to_nuniq"><code class="docutils literal notranslate"><span class="pre">order_index_to_nuniq()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.mask.moc.nuniq_to_order_index"><code class="docutils literal notranslate"><span class="pre">nuniq_to_order_index()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.mask.moc.moc_to_healpix"><code class="docutils literal notranslate"><span class="pre">moc_to_healpix()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.mask.moc.wmoc_to_healpix"><code class="docutils literal notranslate"><span class="pre">wmoc_to_healpix()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

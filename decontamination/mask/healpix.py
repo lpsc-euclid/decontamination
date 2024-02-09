@@ -14,7 +14,7 @@ from ..hp import UNSEEN, ang2pix, nside2npix
 def build_healpix_wcs(wcs: 'astropy.wcs.WCS') -> 'astropy.wcs.WCS':
 
     """
-    Adjusts the provided World Coordinate System (WCS) object to perform HEALPix projection.
+    Adjusts the provided World Coordinate System (WCS) object to perform proper HEALPix projections.
 
     Parameters
     ----------
@@ -54,31 +54,33 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
     Parameters
     ----------
     wcs : WCS
-        ???
+        The modified WCS object (see :func:`build_healpix_wcs`).
     nside : int
-        ???
+        The HEALPix nside parameter. Must be less or equal to 16384.
     footprint : np.ndarray
-        ???
+        HEALPix indices of the observed region. **Nested ordering only.**
     rms_image : np.ndarray
-        ???
+        2-d image containing the RMS (aka. noise) information.
     bit_image : np.ndarray, default: **None**
-        ???
+        2-d image containing the bit (aka. data quality) information.
     rms_selection : float, default: **1.0e4**
-        ???
+        Reject the pixel if RMS == 0 or RMS > rms_selection.
     bit_selection : int, default: **0x00**
-        ???
+        Reject the pixel if (bit & bit_selection) != 0x00.
     show_progress_bar : bool, default = **False**
-        ???
+        Specifies whether to display a progress bar.
 
     Returns
     -------
     typing.Tuple[np.ndarray, np.ndarray, np.ndarray]
-        ???
+        First array contains the RMS (aka. noise) mask.
+        Second array contains the bit (aka. data quality) mask.
+        Third array contains the coverage (≡ fraction of observed sky) mask.
     """
 
     if nside > 16384:
 
-        raise ValueError('nside must be <= 16384')
+        raise ValueError('Nside must be <= 16384')
 
     ####################################################################################################################
     # BUILD INDEX TABLE                                                                                                #

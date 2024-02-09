@@ -11,6 +11,41 @@ from ..hp import UNSEEN, ang2pix, nside2npix
 
 ########################################################################################################################
 
+def build_healpix_wcs(wcs: 'astropy.wcs.WCS') -> 'astropy.wcs.WCS':
+
+    """
+    Adjusts the provided World Coordinate System (WCS) object to perform HEALPix projection.
+
+    Parameters
+    ----------
+    wcs : WCS
+        The original WCS object.
+
+    Returns
+    -------
+    WCS
+        The modified WCS object.
+    """
+
+    ################################################################################################################
+
+    result = wcs.copy()
+
+    ################################################################################################################
+
+    v = np.array([[
+        wcs.wcs.crpix[0] - 0.5,
+        wcs.wcs.crpix[1] - 0.5,
+    ]])
+
+    result.wcs.crval = wcs.all_pix2world(v, 0)[0]
+
+    ################################################################################################################
+
+    return result
+
+########################################################################################################################
+
 def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, rms_image: np.ndarray, bit_image: typing.Optional[np.ndarray] = None, rms_selection: float = 1.0e4, bit_selection: int = 0x00, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
     """
@@ -60,14 +95,14 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
     ####################################################################################################################
 
     if bit_image is None:
-        bit_dtype = np.int32
+        bit_image_dtype = np.int32
     else:
-        bit_dtype = bit_image.dtype
+        bit_image_dtype = bit_image.dtype
 
     ####################################################################################################################
 
     result_rms = np.zeros_like(footprint, dtype = rms_image.dtype)
-    result_bit = np.zeros_like(footprint, dtype = bit_dtype)
+    result_bit = np.zeros_like(footprint, dtype = bit_image_dtype)
     result_cov = np.zeros_like(footprint, dtype = rms_image.dtype)
     result_hit = np.zeros_like(footprint, dtype = rms_image.dtype)
 

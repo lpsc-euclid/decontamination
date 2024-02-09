@@ -64,7 +64,7 @@ def test_pix2world():
             bit_data.byteswap(inplace = True)
             bit_data = bit_data.newbyteorder()
 
-        wcs_ref = astropy_WCS(header)
+        wcs_ref = decontamination.build_healpix_wcs(astropy_WCS(header))
 
         t1 = time.perf_counter()
         #rms, bit, cov = decontamination.image2healpix(wcs_ref, nside, tile, rms_data, show_progress_bar = True)

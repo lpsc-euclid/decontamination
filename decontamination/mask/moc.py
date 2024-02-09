@@ -21,6 +21,7 @@ def order_index_to_nuniq(orders: np.ndarray, indices: np.ndarray) -> np.ndarray:
 
     Returns
     -------
+    np.ndarray
         Array of nuniq values for the given orders and pixel indices combinations.
     """
 

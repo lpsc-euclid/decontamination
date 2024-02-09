@@ -36,7 +36,7 @@
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Module decontamination.algo" href="module_algo.html" />
+    <link rel="next" title="Module decontamination.mask" href="module_mask.html" />
     <link rel="prev" title="Module decontamination.jit" href="module_jit.html" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
@@ -52,7 +52,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="module_algo.html" title="Module decontamination.algo"
+          <a href="module_mask.html" title="Module decontamination.mask"
              accesskey="N">next</a> &nbsp; &nbsp;</li>
         <li class="right" >
           <a href="module_jit.html" title="Module decontamination.jit"
@@ -72,7 +72,7 @@
             
   <section id="module-decontamination-hp">
 <h1>Module decontamination.hp<a class="headerlink" href="#module-decontamination-hp" title="Link to this heading">¶</a></h1>
-<p>This module provides a set of fast, vectorized and standalone HEALPix primitive written with Numba.</p>
+<p>This module provides a set of fast, vectorized and standalone HEALPix primitives written with Numba.</p>
 <ul>
 <li><div class="line-block">
 <div class="line"><em>HEALPix</em>: a Framework for High Resolution Discretization, and Fast Analysis of Data Distributed on the Sphere</div>
@@ -103,8 +103,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="decontamination.hp.rand_ang">
-<span class="sig-prename descclassname"><span class="pre">decontamination.hp.</span></span><span class="sig-name descname"><span class="pre">rand_ang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lonlat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Generator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.hp.rand_ang" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="decontamination.hp.randang">
+<span class="sig-prename descclassname"><span class="pre">decontamination.hp.</span></span><span class="sig-name descname"><span class="pre">randang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lonlat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Generator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.hp.randang" title="Link to this definition">¶</a></dt>
 <dd><p>Samples random spherical coordinates from the given HEALPix pixels. <strong>Nested ordering only.</strong></p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -141,7 +141,7 @@
     <ul>
 <li><a class="reference internal" href="#">Module decontamination.hp</a><ul>
 <li><a class="reference internal" href="#decontamination.hp.ang2pix"><code class="docutils literal notranslate"><span class="pre">ang2pix()</span></code></a></li>
-<li><a class="reference internal" href="#decontamination.hp.rand_ang"><code class="docutils literal notranslate"><span class="pre">rand_ang()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.hp.randang"><code class="docutils literal notranslate"><span class="pre">randang()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -153,6 +153,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="module_jit.html">Module decontamination.jit</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Module decontamination.hp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_mask.html">Module decontamination.mask</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_algo.html">Module decontamination.algo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_plotting.html">Module decontamination.plotting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_generator.html">Module decontamination.generator</a></li>
@@ -207,7 +208,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="module_algo.html" title="Module decontamination.algo"
+          <a href="module_mask.html" title="Module decontamination.mask"
              >next</a> &nbsp; &nbsp;</li>
         <li class="right" >
           <a href="module_jit.html" title="Module decontamination.jit"

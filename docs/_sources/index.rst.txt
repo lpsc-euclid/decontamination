@@ -36,6 +36,7 @@ Indices and tables
 
    module_jit
    module_hp
+   module_mask
    module_algo
    module_plotting
    module_generator

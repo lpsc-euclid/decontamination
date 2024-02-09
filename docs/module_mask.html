@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Module decontamination.mask &#8212; decontamination 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css?v=8edef7da" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=abce926a" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/custom.js?v=81cfe101"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Module decontamination.algo" href="module_algo.html" />
+    <link rel="prev" title="Module decontamination.hp" href="module_hp.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="module_algo.html" title="Module decontamination.algo"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="module_hp.html" title="Module decontamination.hp"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">decontamination 0.0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Module decontamination.mask</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-decontamination-mask">
+<h1>Module decontamination.mask<a class="headerlink" href="#module-decontamination-mask" title="Link to this heading">¶</a></h1>
+<p>This module provides …</p>
+<span class="target" id="module-decontamination.mask.healpix"></span><dl class="py function">
+<dt class="sig sig-object py" id="decontamination.mask.healpix.image_to_healpix">
+<span class="sig-prename descclassname"><span class="pre">decontamination.mask.healpix.</span></span><span class="sig-name descname"><span class="pre">image_to_healpix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wcs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">astropy.wcs.WCS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rms_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bit_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rms_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bit_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.mask.healpix.image_to_healpix" title="Link to this definition">¶</a></dt>
+<dd><p>???</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>wcs</strong><span class="classifier">WCS</span></dt><dd><p>???</p>
+</dd>
+<dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>???</p>
+</dd>
+<dt><strong>footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>???</p>
+</dd>
+<dt><strong>rms_image</strong><span class="classifier">np.ndarray</span></dt><dd><p>???</p>
+</dd>
+<dt><strong>bit_image</strong><span class="classifier">np.ndarray, default: <strong>None</strong></span></dt><dd><p>???</p>
+</dd>
+<dt><strong>rms_selection</strong><span class="classifier">float, default: <strong>1.0e4</strong></span></dt><dd><p>???</p>
+</dd>
+<dt><strong>bit_selection</strong><span class="classifier">int, default: <strong>0x00</strong></span></dt><dd><p>???</p>
+</dd>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool, default = <strong>False</strong></span></dt><dd><p>???</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>Tuple[np.ndarray, np.ndarray, np.ndarray]</dt><dd><p>???</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-decontamination.mask.moc"></span><dl class="py function">
+<dt class="sig sig-object py" id="decontamination.mask.moc.order_index_to_nuniq">
+<span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">order_index_to_nuniq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orders</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.mask.moc.order_index_to_nuniq" title="Link to this definition">¶</a></dt>
+<dd><p>Encodes HEALPix orders and pixel indices to unique identifiers (nuniq).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>orders</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of HEALPix orders.</p>
+</dd>
+<dt><strong>indices</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of HEALPix pixel indices.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>Array of nuniq values for the given orders and pixel indices combinations.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="decontamination.mask.moc.nuniq_to_order_index">
+<span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">nuniq_to_order_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nuniqs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.mask.moc.nuniq_to_order_index" title="Link to this definition">¶</a></dt>
+<dd><p>Decodes HEALPix nuniq identifiers to their corresponding orders and pixel indices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>nuniqs</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of HEALPix nuniq identifiers.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>Tuple[np.ndarray, np.ndarray]</dt><dd><p>First array represents the HEALPix orders for the given nuniq values.
+Second array represents the HEALPix pixel indices for the given nuniq values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="decontamination.mask.moc.moc_to_healpix">
+<span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">moc_to_healpix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moc_orders</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moc_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_new</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.mask.moc.moc_to_healpix" title="Link to this definition">¶</a></dt>
+<dd><p>Refine a given Multi-Order Coverage (MOC) to a specified order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>moc_orders</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of HEALPix orders for each MOC cell.</p>
+</dd>
+<dt><strong>moc_indices</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of HEALPix pixel indices for each MOC cell.</p>
+</dd>
+<dt><strong>order_new</strong><span class="classifier">int</span></dt><dd><p>The desired refinement order.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>np.ndarray</dt><dd><p>Array of HEALPix pixel indices at the new order.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="decontamination.mask.moc.wmoc_to_healpix">
+<span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">wmoc_to_healpix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moc_orders</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moc_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moc_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_new</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.mask.moc.wmoc_to_healpix" title="Link to this definition">¶</a></dt>
+<dd><p>Refine a given Weighted Multi-Order Coverage (WMOC) to a specified order, returning the HEALPix indices at the new order and the associated weights.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>moc_orders</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of HEALPix orders for each MOC cell.</p>
+</dd>
+<dt><strong>moc_indices</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of HEALPix pixel indices for each MOC cell.</p>
+</dd>
+<dt><strong>moc_weights</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of associated values/weights for each MOC cell.</p>
+</dd>
+<dt><strong>order_new</strong><span class="classifier">int</span></dt><dd><p>The desired refinement order.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>Tuple[np.ndarray, np.ndarray]</dt><dd><p>First array contains the HEALPix pixel indices at the new order.
+Second array contains the associated values/weights at the new order.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div style="text-align: center; margin-right: 1.0rem; margin-bottom: 1.0rem;">
+    <a href="index.html">
+        <img src="_static/logo.png" alt="" width="66.6%" />
+    </a>
+</div><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Module decontamination.mask</a><ul>
+<li><a class="reference internal" href="#decontamination.mask.healpix.image_to_healpix"><code class="docutils literal notranslate"><span class="pre">image_to_healpix()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.mask.moc.order_index_to_nuniq"><code class="docutils literal notranslate"><span class="pre">order_index_to_nuniq()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.mask.moc.nuniq_to_order_index"><code class="docutils literal notranslate"><span class="pre">nuniq_to_order_index()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.mask.moc.moc_to_healpix"><code class="docutils literal notranslate"><span class="pre">moc_to_healpix()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.mask.moc.wmoc_to_healpix"><code class="docutils literal notranslate"><span class="pre">wmoc_to_healpix()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+<div class="sphinx-toc sphinxglobaltoc">
+<h3><a href="index.html">Table of Contents</a></h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="module_jit.html">Module decontamination.jit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_hp.html">Module decontamination.hp</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Module decontamination.mask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_algo.html">Module decontamination.algo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_plotting.html">Module decontamination.plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_generator.html">Module decontamination.generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_correlation.html">Module decontamination.correlation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_decontamination.html">Module decontamination.decontamination</a></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script><div style="text-align: center; margin-right: 1.0rem; margin-top: 1rem;">
+    <a href="https://sonarqube.in2p3.fr/dashboard?id=decontamination-key" target="_blank">
+        <img src="https://sonarqube.in2p3.fr/api/project_badges/quality_gate?project=decontamination-key&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37" alt="Sonar" />
+    </a>
+</div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="module_algo.html" title="Module decontamination.algo"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="module_hp.html" title="Module decontamination.hp"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">decontamination 0.0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Module decontamination.mask</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2023, CNRS/LPSC, CNRS/IJCLab.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

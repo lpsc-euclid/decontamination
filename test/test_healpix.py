@@ -33,6 +33,8 @@ def test_npix():
 
         assert decontamination.nside2npix(nside) == hp.nside2npix(nside)
 
+        assert decontamination.npix2nside(decontamination.nside2npix(nside)) == nside
+
 ########################################################################################################################
 
 def test_pixarea():
@@ -92,7 +94,7 @@ def test_ang2pix():
 
 def test_rand_ang():
 
-    decontamination.rand_ang(1, np.arange(1))
+    decontamination.randang(1, np.arange(1))
 
     if healpix:
 
@@ -104,7 +106,7 @@ def test_rand_ang():
             pixels = np.arange(hp.nside2npix(nside))
 
             t1 = time.perf_counter()
-            θ_dec, ϕ_dec = decontamination.rand_ang(nside, pixels, lonlat = True, compat = True, rng = np.random.default_rng(seed = 33))
+            θ_dec, ϕ_dec = decontamination.randang(nside, pixels, lonlat = True, compat = True, rng = np.random.default_rng(seed = 33))
             t2 = time.perf_counter()
             θ_ref, ϕ_ref = healpix.randang(nside, pixels, lonlat = True, nest = True, rng = np.random.default_rng(seed = 33))
             t3 = time.perf_counter()

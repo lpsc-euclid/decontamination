@@ -257,7 +257,7 @@ def _modulo(v1, v2):
 # FAST RAND_ANG                                                                                                        #
 ########################################################################################################################
 
-def rand_ang(nside: int, pixels: np.ndarray, lonlat: bool = False, compat: bool = False, rng: typing.Optional[np.random.Generator] = None):
+def randang(nside: int, pixels: np.ndarray, lonlat: bool = False, compat: bool = False, rng: typing.Optional[np.random.Generator] = None):
 
     """
     Samples random spherical coordinates from the given HEALPix pixels. **Nested ordering only.**

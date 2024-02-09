@@ -7,11 +7,39 @@ import typing
 import numpy as np
 import numba as nb
 
-from . import UNSEEN, ang2pix, nside2npix
+from ..hp import UNSEEN, ang2pix, nside2npix
 
 ########################################################################################################################
 
-def image2healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, rms: np.ndarray, bit: typing.Optional[np.ndarray] = None, rms_selection: float = 1.0e4, bit_selection: int = 0x00, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, rms_image: np.ndarray, bit_image: typing.Optional[np.ndarray] = None, rms_selection: float = 1.0e4, bit_selection: int = 0x00, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+
+    """
+    ???
+
+    Parameters
+    ----------
+    wcs : WCS
+        ???
+    nside : int
+        ???
+    footprint : np.ndarray
+        ???
+    rms_image : np.ndarray
+        ???
+    bit_image : np.ndarray, default: **None**
+        ???
+    rms_selection : float, default: **1.0e4**
+        ???
+    bit_selection : int, default: **0x00**
+        ???
+    show_progress_bar : bool, default = **False**
+        ???
+
+    Returns
+    -------
+    typing.Tuple[np.ndarray, np.ndarray, np.ndarray]
+        ???
+    """
 
     if nside > 16384:
 
@@ -31,27 +59,27 @@ def image2healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, rms
     # BUILD MASKS                                                                                                      #
     ####################################################################################################################
 
-    if bit is None:
+    if bit_image is None:
         bit_dtype = np.int32
     else:
-        bit_dtype = bit.dtype
+        bit_dtype = bit_image.dtype
 
     ####################################################################################################################
 
-    result_rms = np.zeros_like(footprint, dtype = rms.dtype)
+    result_rms = np.zeros_like(footprint, dtype = rms_image.dtype)
     result_bit = np.zeros_like(footprint, dtype = bit_dtype)
-    result_cov = np.zeros_like(footprint, dtype = rms.dtype)
-    result_hit = np.zeros_like(footprint, dtype = rms.dtype)
+    result_cov = np.zeros_like(footprint, dtype = rms_image.dtype)
+    result_hit = np.zeros_like(footprint, dtype = rms_image.dtype)
 
     ####################################################################################################################
 
-    x = np.arange(rms.shape[1], dtype = np.int64)
+    x = np.arange(rms_image.shape[1], dtype = np.int64)
 
-    y = np.empty(rms.shape[1], dtype = np.int64)
+    y = np.empty(rms_image.shape[1], dtype = np.int64)
 
     ####################################################################################################################
 
-    for j in tqdm.tqdm(range(rms.shape[0]), disable = not show_progress_bar):
+    for j in tqdm.tqdm(range(rms_image.shape[0]), disable = not show_progress_bar):
 
         ################################################################################################################
 
@@ -63,10 +91,10 @@ def image2healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, rms
 
         ################################################################################################################
 
-        if bit is None:
-            _project1(result_rms, result_cov, result_hit, index_table, pixels, rms[j], rms_selection)
+        if bit_image is None:
+            _project1(result_rms, result_cov, result_hit, index_table, pixels, rms_image[j], rms_selection)
         else:
-            _project2(result_rms, result_bit, result_cov, result_hit, index_table, pixels, rms[j], bit[j], rms_selection, bit_selection)
+            _project2(result_rms, result_bit, result_cov, result_hit, index_table, pixels, rms_image[j], bit_image[j], rms_selection, bit_selection)
 
     ####################################################################################################################
 

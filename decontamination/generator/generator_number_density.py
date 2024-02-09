@@ -5,7 +5,7 @@ import typing
 
 import numpy as np
 
-from ..hp import rand_ang
+from ..hp import randang
 
 from . import generator_abstract
 
@@ -84,7 +84,7 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
 
         for central_pixels in self._iterator(galaxies_per_pixels, n_max_per_batch):
 
-            yield rand_ang(
+            yield randang(
                 self._nside,
                 central_pixels,
                 lonlat = self._lonlat,

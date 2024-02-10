@@ -77,10 +77,10 @@ def test_pix2world():
 
         decontamination.display_healpix(nside, tile, rms)
         plt.show()
-        decontamination.display_healpix(nside, tile, bit)
-        plt.show()
-        decontamination.display_healpix(nside, tile, cov)
-        plt.show()
+        #decontamination.display_healpix(nside, tile, bit)
+        #plt.show()
+        #decontamination.display_healpix(nside, tile, cov)
+        #plt.show()
 
 ########################################################################################################################
 

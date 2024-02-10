@@ -137,7 +137,7 @@ Third array contains the coverage (≡ fraction of observed sky) mask.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.mask.moc.order_index_to_nuniq">
 <span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">order_index_to_nuniq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orders</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.mask.moc.order_index_to_nuniq" title="Link to this definition">¶</a></dt>
-<dd><p>Encodes HEALPix orders and pixel indices to unique identifiers (nuniq).</p>
+<dd><p>Encodes HEALPix orders and pixel indices to unique identifiers (nuniq). <strong>Nested ordering only.</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -159,7 +159,7 @@ Third array contains the coverage (≡ fraction of observed sky) mask.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.mask.moc.nuniq_to_order_index">
 <span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">nuniq_to_order_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nuniqs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.mask.moc.nuniq_to_order_index" title="Link to this definition">¶</a></dt>
-<dd><p>Decodes HEALPix nuniq identifiers to their corresponding orders and pixel indices.</p>
+<dd><p>Decodes HEALPix nuniq identifiers to their corresponding orders and pixel indices. <strong>Nested ordering only.</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -180,7 +180,7 @@ Second array represents the HEALPix pixel indices for the given nuniq values.</p
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.mask.moc.moc_to_healpix">
 <span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">moc_to_healpix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moc_orders</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moc_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_new</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.mask.moc.moc_to_healpix" title="Link to this definition">¶</a></dt>
-<dd><p>Refines a given Multi-Order Coverage (MOC) to a specified order.</p>
+<dd><p>Refines a given Multi-Order Coverage (MOC) to a specified order. <strong>Nested ordering only.</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -204,7 +204,7 @@ Second array represents the HEALPix pixel indices for the given nuniq values.</p
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.mask.moc.wmoc_to_healpix">
 <span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">wmoc_to_healpix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moc_orders</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moc_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moc_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_new</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.mask.moc.wmoc_to_healpix" title="Link to this definition">¶</a></dt>
-<dd><p>Refines a given Weighted Multi-Order Coverage (WMOC) to a specified order, returning the HEALPix indices at the new order and the associated weights.</p>
+<dd><p>Refines a given Weighted Multi-Order Coverage (WMOC) to a specified order. <strong>Nested ordering only.</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">

@@ -10,7 +10,7 @@ import numpy as np
 def order_index_to_nuniq(orders: np.ndarray, indices: np.ndarray) -> np.ndarray:
 
     """
-    Encodes HEALPix orders and pixel indices to unique identifiers (nuniq).
+    Encodes HEALPix orders and pixel indices to unique identifiers (nuniq). **Nested ordering only.**
 
     Parameters
     ----------
@@ -32,7 +32,7 @@ def order_index_to_nuniq(orders: np.ndarray, indices: np.ndarray) -> np.ndarray:
 def nuniq_to_order_index(nuniqs: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray]:
 
     """
-    Decodes HEALPix nuniq identifiers to their corresponding orders and pixel indices.
+    Decodes HEALPix nuniq identifiers to their corresponding orders and pixel indices. **Nested ordering only.**
 
     Parameters
     ----------
@@ -57,7 +57,7 @@ def nuniq_to_order_index(nuniqs: np.ndarray) -> typing.Tuple[np.ndarray, np.ndar
 def moc_to_healpix(moc_orders: np.ndarray, moc_indices: np.ndarray, order_new: int) -> np.ndarray:
 
     """
-    Refines a given Multi-Order Coverage (MOC) to a specified order.
+    Refines a given Multi-Order Coverage (MOC) to a specified order. **Nested ordering only.**
 
     Parameters
     ----------
@@ -112,7 +112,15 @@ def moc_to_healpix(moc_orders: np.ndarray, moc_indices: np.ndarray, order_new: i
     #         \  /
     #          \/
 
-    result = []
+    ####################################################################################################################
+
+    size = np.sum(4 ** (order_new - moc_orders))
+
+    result = np.empty(size, dtype = moc_indices.dtype)
+
+    ####################################################################################################################
+
+    cur_position = 0
 
     for order, index in zip(moc_orders, moc_indices):
 
@@ -120,18 +128,20 @@ def moc_to_healpix(moc_orders: np.ndarray, moc_indices: np.ndarray, order_new: i
 
         base_index = index * factor
 
-        result.extend(range(base_index, base_index + factor))
+        end_position = cur_position + factor
+        result[cur_position: end_position] = np.arange(base_index, base_index + factor)
+        cur_position = end_position
 
     ####################################################################################################################
 
-    return np.array(result, dtype = moc_indices.dtype)
+    return result
 
 ########################################################################################################################
 
 def wmoc_to_healpix(moc_orders: np.ndarray, moc_indices: np.ndarray, moc_weights: np.ndarray, order_new: int) -> typing.Tuple[np.ndarray, np.ndarray]:
 
     """
-    Refines a given Weighted Multi-Order Coverage (WMOC) to a specified order, returning the HEALPix indices at the new order and the associated weights.
+    Refines a given Weighted Multi-Order Coverage (WMOC) to a specified order. **Nested ordering only.**
 
     Parameters
     ----------
@@ -189,8 +199,16 @@ def wmoc_to_healpix(moc_orders: np.ndarray, moc_indices: np.ndarray, moc_weights
     #         \  /
     #          \/
 
-    result_indices = []
-    result_weights = []
+    ####################################################################################################################
+
+    size = np.sum(4 ** (order_new - moc_orders))
+
+    result_indices = np.empty(size, dtype = moc_indices.dtype)
+    result_weights = np.empty(size, dtype = moc_weights.dtype)
+
+    ####################################################################################################################
+
+    cur_position = 0
 
     for order, index, weight in zip(moc_orders, moc_indices, moc_weights):
 
@@ -198,14 +216,13 @@ def wmoc_to_healpix(moc_orders: np.ndarray, moc_indices: np.ndarray, moc_weights
 
         base_index = index * factor
 
-        result_indices.extend(range(base_index, base_index + factor))
-        result_weights.extend(          [weight] * factor           )
+        end_position = cur_position + factor
+        result_indices[cur_position: end_position] = np.arange(base_index, base_index + factor)
+        result_weights[cur_position: end_position] = weight
+        cur_position = end_position
 
     ####################################################################################################################
 
-    return (
-        np.array(result_indices, dtype = np.int64),
-        np.array(result_weights, dtype = moc_weights.dtype),
-    )
+    return result_indices, result_weights
 
 ########################################################################################################################

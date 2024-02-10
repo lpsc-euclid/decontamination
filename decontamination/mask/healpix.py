@@ -146,18 +146,18 @@ def _project1(result_rms: np.ndarray, result_cov: np.ndarray, result_hit: np.nda
 
     sorted_indices = np.searchsorted(sorted_footprint_pixels, pixels)
 
-    valid_idx_mask = sorted_footprint_pixels[sorted_indices] == pixels
+    selected_idx_mask = sorted_footprint_pixels[sorted_indices] == pixels
 
-    valid_idx = sorted_footprint_indices[sorted_indices[valid_idx_mask]]
+    selected_idx = sorted_footprint_indices[sorted_indices[selected_idx_mask]]
 
-    valid_rms = rms[valid_idx_mask]
+    selected_rms = rms[selected_idx_mask]
 
     ####################################################################################################################
 
-    for i in range(valid_idx.size):
+    for i in range(selected_idx.size):
 
-        idx_i = valid_idx[i]
-        rms_i = valid_rms[i]
+        idx_i = selected_idx[i]
+        rms_i = selected_rms[i]
 
         if 0.0 < rms_i < rms_selection:
 
@@ -176,20 +176,20 @@ def _project2(result_rms: np.ndarray, result_bit: np.ndarray, result_cov: np.nda
 
     sorted_indices = np.searchsorted(sorted_footprint_pixels, pixels)
 
-    valid_idx_mask = sorted_footprint_pixels[sorted_indices] == pixels
+    selected_idx_mask = sorted_footprint_pixels[sorted_indices] == pixels
 
-    valid_idx = sorted_footprint_indices[sorted_indices[valid_idx_mask]]
+    selected_idx = sorted_footprint_indices[sorted_indices[selected_idx_mask]]
 
-    valid_rms = rms[valid_idx_mask]
-    valid_bit = bit[valid_idx_mask]
+    selected_rms = rms[selected_idx_mask]
+    selected_bit = bit[selected_idx_mask]
 
     ####################################################################################################################
 
-    for i in range(valid_idx.size):
+    for i in range(selected_idx.size):
 
-        idx_i = valid_idx[i]
-        rms_i = valid_rms[i]
-        bit_i = valid_bit[i]
+        idx_i = selected_idx[i]
+        rms_i = selected_rms[i]
+        bit_i = selected_bit[i]
 
         if 0.0 < rms_i < rms_selection:
 

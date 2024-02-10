@@ -7,7 +7,7 @@ import typing
 import numpy as np
 import numba as nb
 
-from ..hp import UNSEEN, ang2pix, nside2npix
+from ..hp import UNSEEN, ang2pix
 
 ########################################################################################################################
 
@@ -49,16 +49,16 @@ def build_healpix_wcs(wcs: 'astropy.wcs.WCS') -> 'astropy.wcs.WCS':
 def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, rms_image: np.ndarray, bit_image: typing.Optional[np.ndarray] = None, rms_selection: float = 1.0e4, bit_selection: int = 0x00, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
     """
-    Projects RMS (aka. noise) and bit (aka. data quality) image into HEALPix masks.
+    Projects RMS (aka. noise) and bit (aka. data quality) image into HEALPix masks. **Nested ordering only.**
 
     Parameters
     ----------
     wcs : WCS
         The modified WCS object (see :func:`build_healpix_wcs`).
     nside : int
-        The HEALPix nside parameter. Must be less or equal to 16384.
+        The HEALPix nside parameter.
     footprint : np.ndarray
-        HEALPix indices of the observed region. **Nested ordering only.**
+        HEALPix indices of the observed sky region.
     rms_image : np.ndarray
         2d image containing the RMS (aka. noise) information.
     bit_image : np.ndarray, default: **None**
@@ -78,19 +78,13 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
         Third array contains the coverage (≡ fraction of observed sky) mask.
     """
 
-    if nside > 16384:
-
-        raise ValueError('Nside must be <= 16384')
-
     ####################################################################################################################
     # BUILD INDEX TABLE                                                                                                #
     ####################################################################################################################
 
-    npix = nside2npix(nside)
+    sorted_footprint_pixels = np.sort(footprint)
 
-    index_table = np.full(npix, 0xFFFFFFFF, dtype = np.uint32)
-
-    index_table[footprint] = np.arange(footprint.shape[0], dtype = np.uint32)
+    sorted_footprint_indices = np.argsort(footprint)
 
     ####################################################################################################################
     # BUILD MASKS                                                                                                      #
@@ -129,9 +123,9 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
         ################################################################################################################
 
         if bit_image is None:
-            _project1(result_rms, result_cov, result_hit, index_table, pixels, rms_image[j], rms_selection)
+            _project1(result_rms, result_cov, result_hit, sorted_footprint_pixels, sorted_footprint_indices, pixels, rms_image[j], rms_selection)
         else:
-            _project2(result_rms, result_bit, result_cov, result_hit, index_table, pixels, rms_image[j], bit_image[j], rms_selection, bit_selection)
+            _project2(result_rms, result_bit, result_cov, result_hit, sorted_footprint_pixels, sorted_footprint_indices, pixels, rms_image[j], bit_image[j], rms_selection, bit_selection)
 
     ####################################################################################################################
 
@@ -146,15 +140,16 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
 ########################################################################################################################
 
 @nb.njit(fastmath = True)
-def _project1(result_rms: np.ndarray, result_cov: np.ndarray, result_hit: np.ndarray, table: np.ndarray, pix: np.ndarray, rms: np.ndarray, rms_selection: float) -> None:
+def _project1(result_rms: np.ndarray, result_cov: np.ndarray, result_hit: np.ndarray, sorted_footprint_pixels: np.ndarray, sorted_footprint_indices: np.ndarray, pixels: np.ndarray, rms: np.ndarray, rms_selection: float) -> None:
 
     ####################################################################################################################
 
-    idx = table[pix]
+    sorted_indices = np.searchsorted(sorted_footprint_pixels, pixels)
 
-    valid_idx_mask = idx != 0xFFFFFFFF
+    valid_idx_mask = sorted_footprint_pixels[sorted_indices] == pixels
 
-    valid_idx = idx[valid_idx_mask]
+    valid_idx = sorted_footprint_indices[sorted_indices[valid_idx_mask]]
+
     valid_rms = rms[valid_idx_mask]
 
     ####################################################################################################################
@@ -175,15 +170,16 @@ def _project1(result_rms: np.ndarray, result_cov: np.ndarray, result_hit: np.nda
 ########################################################################################################################
 
 @nb.njit(fastmath = True)
-def _project2(result_rms: np.ndarray, result_bit: np.ndarray, result_cov: np.ndarray, result_hit: np.ndarray, table: np.ndarray, pix: np.ndarray, rms: np.ndarray, bit: np.ndarray, rms_selection: float, bit_selection: int) -> None:
+def _project2(result_rms: np.ndarray, result_bit: np.ndarray, result_cov: np.ndarray, result_hit: np.ndarray, sorted_footprint_pixels: np.ndarray, sorted_footprint_indices: np.ndarray, pixels: np.ndarray, rms: np.ndarray, bit: np.ndarray, rms_selection: float, bit_selection: int) -> None:
 
     ####################################################################################################################
 
-    idx = table[pix]
+    sorted_indices = np.searchsorted(sorted_footprint_pixels, pixels)
 
-    valid_idx_mask = idx != 0xFFFFFFFF
+    valid_idx_mask = sorted_footprint_pixels[sorted_indices] == pixels
 
-    valid_idx = idx[valid_idx_mask]
+    valid_idx = sorted_footprint_indices[sorted_indices[valid_idx_mask]]
+
     valid_rms = rms[valid_idx_mask]
     valid_bit = bit[valid_idx_mask]
 

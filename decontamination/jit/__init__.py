@@ -19,12 +19,12 @@ __pdoc__ = {}
 
 ########################################################################################################################
 
-CPU_OPTIMIZATION_AVAILABLE = os.environ.get('USE_NUMBA_CPU', '1') != '0'
+CPU_OPTIMIZATION_AVAILABLE = os.environ.get('NUMBA_DISABLE_JIT', '0') == '0'
 __pdoc__['CPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba CPU optimization is available.'
 
 ########################################################################################################################
 
-GPU_OPTIMIZATION_AVAILABLE = os.environ.get('USE_NUMBA_GPU', '1') != '0'
+GPU_OPTIMIZATION_AVAILABLE = os.environ.get('NUMBA_DISABLE_CUDA', '0') == '0'
 __pdoc__['GPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba GPU optimization is available.'
 
 ########################################################################################################################

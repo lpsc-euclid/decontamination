@@ -78,9 +78,9 @@ def test_ang2pix():
         ϕ = np.random.uniform(0.0, 2.0 * np.pi, 1000)
 
         t1 = time.perf_counter()
-        pix_dec = decontamination.ang2pix(nside, θ, ϕ, lonlat = False)
+        pix_dec = decontamination.ang2pix(nside, θ, ϕ, lonlat = True)
         t2 = time.perf_counter()
-        pix_hp = hp.ang2pix(nside, θ, ϕ, nest = True, lonlat = False)
+        pix_hp = hp.ang2pix(nside, θ, ϕ, nest = True, lonlat = True)
         t3 = time.perf_counter()
 
         time_dec = t2 - t1

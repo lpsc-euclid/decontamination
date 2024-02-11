@@ -1,18 +1,16 @@
 {
     "name": "decontamination",
     "version": "0.0.1",
-    "credits": "CNRS/LPSC, CNRS/IJCLab",
+    "credits": "CNRS/LPSC",
     "author_names": [
         "Jérôme ODIER",
         "Gaël ALGUERO",
-        "Juan MACIAS-PEREZ",
-        "Martìn RODRIGUEZ-MONROY"
+        "Juan MACIAS-PEREZ"
     ],
     "author_emails": [
         "jerome.odier@lpsc.in2p3.fr",
         "gael.alguero@lpsc.in2p3.fr",
-        "juan.macias-perez@lpsc.in2p3.fr",
-        "martin.rodriguez-monroy@ijclab.in2p3.fr"
+        "juan.macias-perez@lpsc.in2p3.fr"
     ],
     "url": "https://gitlab.in2p3.fr/lpsc-euclid/decontamination/"
 }

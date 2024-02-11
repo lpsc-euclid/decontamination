@@ -18,7 +18,7 @@ import healpy as hp
 
 ########################################################################################################################
 
-@pytest.mark.parametrize('n_max_per_batch', [None])
+@pytest.mark.parametrize('n_max_per_batch', [None, 10])
 def test_number_density_generator(n_max_per_batch):
 
     expected_lon = np.array([
@@ -75,7 +75,7 @@ def test_number_density_generator(n_max_per_batch):
 
 ########################################################################################################################
 
-@pytest.mark.parametrize('n_max_per_batch', [None])
+@pytest.mark.parametrize('n_max_per_batch', [None, 10])
 def test_uniform_generator(n_max_per_batch):
 
     expected_lon = np.array([
@@ -115,7 +115,7 @@ def test_uniform_generator(n_max_per_batch):
 
 ########################################################################################################################
 
-@pytest.mark.parametrize('n_max_per_batch', [None])
+@pytest.mark.parametrize('n_max_per_batch', [None, 10])
 def test_full_sky_generator(n_max_per_batch):
 
     expected_lon = np.array([

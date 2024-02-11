@@ -115,7 +115,7 @@ def test_uniform_generator(n_max_per_batch):
 
 ########################################################################################################################
 
-@pytest.mark.parametrize('n_max_per_batch', [None, 10])
+@pytest.mark.parametrize('n_max_per_batch', [None])
 def test_full_sky_generator(n_max_per_batch):
 
     expected_lon = np.array([

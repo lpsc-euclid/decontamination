@@ -594,7 +594,7 @@ class SOM_Abstract(object):
     def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> np.ndarray:
 
         """
-        For the given input, returns a vector of the best matching unit indices :math:`\in[0,m\\times n-1]`.
+        For the given input, returns a vector of the best matching unit indices :math:`\\in[0,m\\times n-1]`.
 
         Parameters
         ----------

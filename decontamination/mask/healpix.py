@@ -172,7 +172,7 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
 
     if xxx_image_scale < 1.0:
 
-        raise ValueError('The image scale must be greater than or equal to 1')
+        raise ValueError('The image scale must be greater than or equal to 1.0')
 
     ####################################################################################################################
     # BUILD INDEX TABLE                                                                                                #

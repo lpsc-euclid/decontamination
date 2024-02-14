@@ -160,7 +160,7 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
     xxx_image : np.ndarray
         2d image to be projected into the footprint.
     xxx_image_scale : int, default: **1.0**
-        Scale so that the image size coincides with the WCS (<= 1.0).
+        Scale so that the image size coincides with the WCS (>= 1.0).
     show_progress_bar : bool, default = **False**
         Specifies whether to display a progress bar.
 
@@ -170,9 +170,9 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
         The resulting HEALPix mask.
     """
 
-    if xxx_image_scale > 1.0:
+    if xxx_image_scale < 1.0:
 
-        raise ValueError('The image scale must be smaller than or equal to 1')
+        raise ValueError('The image scale must be greater than or equal to 1')
 
     ####################################################################################################################
     # BUILD INDEX TABLE                                                                                                #

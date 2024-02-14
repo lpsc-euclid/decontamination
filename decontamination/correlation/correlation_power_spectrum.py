@@ -205,7 +205,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
 
             if xpol is None:
 
-                raise ImportError('Xpol is not installed.')
+                raise ImportError('Xpol module is not installed')
 
             ####
 
@@ -269,7 +269,7 @@ class Correlation_PowerSpectrum(correlation_abstract.Correlation_Abstract):
            or                \
            random_lat is None:
 
-            raise ValueError(f'Parameters `random_lon` and `random_lat` have be provided with estimator `{estimator}`.')
+            raise ValueError(f'Parameters `random_lon` and `random_lat` have be provided with estimator `{estimator}`')
 
         ################################################################################################################
 

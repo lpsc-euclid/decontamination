@@ -231,7 +231,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
            or                \
            random_lat is None:
 
-            raise ValueError(f'Parameters `random_lon` and `random_lat` have to be provided with estimator `{estimator}`.')
+            raise ValueError(f'Parameters `random_lon` and `random_lat` have to be provided with estimator `{estimator}`')
 
         ################################################################################################################
 

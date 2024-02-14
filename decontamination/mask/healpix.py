@@ -38,6 +38,8 @@ def build_healpix_wcs(wcs: 'astropy.wcs.WCS') -> 'astropy.wcs.WCS':
 
     ################################################################################################################
 
+    # On HEALPix, we want the value at the pixel center.
+
     v = np.array([[
         wcs.wcs.crpix[0] - 0.5,
         wcs.wcs.crpix[1] - 0.5,
@@ -51,10 +53,10 @@ def build_healpix_wcs(wcs: 'astropy.wcs.WCS') -> 'astropy.wcs.WCS':
 
 ########################################################################################################################
 
-def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, rms_image: np.ndarray, bit_image: typing.Optional[np.ndarray] = None, rms_selection: float = 1.0e4, bit_selection: int = 0x00, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+def rms_bit_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, rms_image: np.ndarray, bit_image: typing.Optional[np.ndarray] = None, rms_selection: float = 1.0e4, bit_selection: int = 0x00, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
     """
-    Projects RMS (aka. noise) and bit (aka. data quality) image into HEALPix masks. **Nested ordering only.**
+    Projects RMS (aka. noise) and bit (aka. data quality) images into a HEALPix footprint. **Nested ordering only.**
 
     Parameters
     ----------
@@ -134,13 +136,86 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
 
     ####################################################################################################################
 
-    result_rms = np.where(result_hit != 0.0, result_rms / result_hit, UNSEEN)
+    result_rms = np.where(result_cov != 0.0, result_rms / result_cov, UNSEEN)
 
     result_cov = np.where(result_hit != 0.0, result_cov / result_hit, 0.0000)
 
+    return np.sqrt(result_rms), result_bit, result_cov
+
+########################################################################################################################
+
+def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, xxx_image: np.ndarray, xxx_image_scale: float = 1.0, show_progress_bar: bool = False) -> np.ndarray:
+
+    """
+    Projects the given image into a HEALPix footprint. **Nested ordering only.**
+
+    Parameters
+    ----------
+    wcs : WCS
+        The modified WCS object (see :func:`build_healpix_wcs`).
+    nside : int
+        The HEALPix nside parameter.
+    footprint : np.ndarray
+        HEALPix indices of the observed sky region.
+    xxx_image : np.ndarray
+        2d image to be projected into the footprint.
+    xxx_image_scale : int, default: **1.0**
+        Scale so that the image size coincides with the WCS (<= 1.0).
+    show_progress_bar : bool, default = **False**
+        Specifies whether to display a progress bar.
+
+    Returns
+    -------
+    np.ndarray
+        The resulting HEALPix mask.
+    """
+
+    if xxx_image_scale > 1.0:
+
+        raise ValueError('The image scale must be smaller than or equal to 1')
+
+    ####################################################################################################################
+    # BUILD INDEX TABLE                                                                                                #
     ####################################################################################################################
 
-    return np.sqrt(result_rms), result_bit, result_cov
+    sorted_footprint_pixels = np.sort(footprint)
+
+    sorted_footprint_indices = np.argsort(footprint)
+
+    ####################################################################################################################
+    # BUILD MASKS                                                                                                      #
+    ####################################################################################################################
+
+    x = np.arange(xxx_image.shape[1], dtype = np.float64)
+
+    y = np.empty(xxx_image.shape[1], dtype = np.float64)
+
+    x = np.round(xxx_image_scale * x)
+
+    ####################################################################################################################
+
+    result_xxx = np.zeros_like(footprint, dtype = xxx_image.dtype)
+    result_hit = np.zeros_like(footprint, dtype = xxx_image.dtype)
+
+    ####################################################################################################################
+
+    for j in tqdm.tqdm(range(xxx_image.shape[0]), disable = not show_progress_bar):
+
+        ################################################################################################################
+
+        y.fill(np.round(xxx_image_scale * j))
+
+        ra, dec = wcs.all_pix2world(x.astype(np.int64), y.astype(np.int64), 0, ra_dec_order = True)
+
+        pixels = ang2pix(nside, ra, dec, lonlat = True)
+
+        ################################################################################################################
+
+        _project3(result_xxx, result_hit, sorted_footprint_pixels, sorted_footprint_indices, pixels, xxx_image[j])
+
+    ####################################################################################################################
+
+    return np.where(result_hit != 0.0, result_xxx / result_hit, UNSEEN)
 
 ########################################################################################################################
 
@@ -168,9 +243,9 @@ def _project1(result_rms: np.ndarray, result_cov: np.ndarray, result_hit: np.nda
 
             result_rms[idx_i] += rms_i ** 2
 
-            result_cov[idx_i] += 1.0
+            result_cov[idx_i] += 1.000
 
-        result_hit[idx_i] += 1.0
+        result_hit[idx_i] += 1.000
 
 ########################################################################################################################
 
@@ -202,10 +277,36 @@ def _project2(result_rms: np.ndarray, result_bit: np.ndarray, result_cov: np.nda
 
                 result_rms[idx_i] += rms_i ** 2
 
-                result_cov[idx_i] += 1.0
+                result_cov[idx_i] += 1.000
 
             result_bit[idx_i] |= bit_i
 
-        result_hit[idx_i] += 1.0
+        result_hit[idx_i] += 1.000
+
+########################################################################################################################
+
+@nb.njit(fastmath = True)
+def _project3(result_xxx: np.ndarray, result_cov: np.ndarray, sorted_footprint_pixels: np.ndarray, sorted_footprint_indices: np.ndarray, pixels: np.ndarray, xxx: np.ndarray) -> None:
+
+    ####################################################################################################################
+
+    sorted_indices = np.searchsorted(sorted_footprint_pixels, pixels)
+
+    selected_idx_mask = sorted_footprint_pixels[sorted_indices] == pixels
+
+    selected_idx = sorted_footprint_indices[sorted_indices[selected_idx_mask]]
+
+    selected_xxx = xxx[selected_idx_mask]
+
+    ####################################################################################################################
+
+    for i in range(selected_idx.size):
+
+        idx_i = selected_idx[i]
+        xxx_i = selected_xxx[i]
+
+        result_xxx[idx_i] += xxx_i
+
+        result_cov[idx_i] += 1.000
 
 ########################################################################################################################

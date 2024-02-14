@@ -67,8 +67,8 @@ def test_pix2world():
         wcs_ref = decontamination.build_healpix_wcs(astropy_WCS(header))
 
         t1 = time.perf_counter()
-        #rms, bit, cov = decontamination.image2healpix(wcs_ref, nside, tile, rms_data, show_progress_bar = True)
-        rms, bit, cov = decontamination.image_to_healpix(wcs_ref, nside, tile, rms_data, bit_data, show_progress_bar = True)
+        #rms, bit, cov = decontamination.rms_bit_to_healpix(wcs_ref, nside, tile, rms_data, show_progress_bar = True)
+        rms, bit, cov = decontamination.rms_bit_to_healpix(wcs_ref, nside, tile, rms_data, bit_data, show_progress_bar = True)
         t2 = time.perf_counter()
 
         delta_time = t2 - t1

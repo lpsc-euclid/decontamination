@@ -43,7 +43,7 @@ def build_healpix_wcs(wcs: 'astropy.wcs.WCS') -> 'astropy.wcs.WCS':
     v = np.array([[
         wcs.wcs.crpix[0] - 0.5,
         wcs.wcs.crpix[1] - 0.5,
-    ]])
+    ]], dtype = wcs.wcs.crpix.dtype)
 
     result.wcs.crval = wcs.all_pix2world(v, 0)[0]
 

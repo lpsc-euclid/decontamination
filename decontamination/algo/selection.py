@@ -55,7 +55,7 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def tokenize(expression: str) -> typing.Generator[Token, typing.Any, typing.Any]:
+    def _tokenize(expression: str) -> typing.Generator[Token, typing.Any, typing.Any]:
 
         for comparison_op, boolean_op, grouping, number, column, blank in Selection.TOKEN_REGEX.findall(expression):
 
@@ -210,9 +210,9 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def parse(tokens: typing.Generator[Token, typing.Any, typing.Any]) -> typing.Union[BinaryOpNode, NumberNode, ColumnNode]:
+    def parse(expression: str) -> typing.Union[BinaryOpNode, NumberNode, ColumnNode]:
 
-        token_list = list(tokens)
+        token_list = list(Selection._tokenize(expression))
 
         result = Selection._parse_boolean_op(token_list)
 
@@ -278,7 +278,7 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def stringify(node: typing.Union[BinaryOpNode, NumberNode, ColumnNode], is_root: bool = True) -> str:
+    def ast_to_string(node: typing.Union[BinaryOpNode, NumberNode, ColumnNode], is_root: bool = True) -> str:
 
         ################################################################################################################
         # BINARY OP                                                                                                    #
@@ -286,8 +286,8 @@ class Selection(object):
 
         if isinstance(node, Selection.BinaryOpNode):
 
-            left_expr = Selection.stringify(node.left, is_root = False)
-            right_expr = Selection.stringify(node.right, is_root = False)
+            left_expr = Selection.ast_to_string(node.left, is_root = False)
+            right_expr = Selection.ast_to_string(node.right, is_root = False)
 
             expr = f'{left_expr} {node.op} {right_expr}'
 
@@ -348,11 +348,11 @@ class Selection(object):
 
         else:
 
-            ast = Selection.parse(Selection.tokenize(expression))
+            ast = Selection.parse(expression)
 
             mask = Selection._evaluate(table, ast)
 
-            expression = Selection.stringify(ast)
+            expression = Selection.ast_to_string(ast)
 
             return mask, expression
 

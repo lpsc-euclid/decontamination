@@ -133,6 +133,7 @@ def before_process_signature(app, obj, bound_method):
     numeric_value = typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]
 
     ast_node = typing.Union[
+        selection.Selection.UnaryOpNode,
         selection.Selection.BinaryOpNode,
         selection.Selection.NumberNode,
         selection.Selection.ColumnNode,
@@ -184,8 +185,8 @@ def process_docstring(app, what, name, obj, options, lines):
     numeric_value1 = 'np.float32 | np.float64 | float | np.int32 | np.int64 | int'
     numeric_value2 = 'Union[np.float32, np.float64, float, np.int32, np.int64, int]'
 
-    ast_node1 = 'BinaryOpNode | NumberNode | ColumnNode'
-    ast_node2 = 'Union[BinaryOpNode, NumberNode, ColumnNode]'
+    ast_node1 = 'UnaryOpNode | BinaryOpNode | NumberNode | ColumnNode'
+    ast_node2 = 'Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]'
 
     for index, line in enumerate(lines):
 

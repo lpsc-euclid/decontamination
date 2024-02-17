@@ -17,6 +17,22 @@ class Selection(object):
 
     """
     Data selection.
+
+    .. code-block::
+
+        expression       ::= boolean_expr
+
+        boolean_expr     ::= comparison_expr (BOOLEAN_OP comparison_expr)*
+
+        comparison_expr  ::= not_expr (COMPARISON_OP not_expr)*
+
+        not_expr         ::= NOT_OP? term
+
+        term             ::= '(' boolean_expr ')' | NUMBER | COLUMN
+
+        COMPARISON_OP    ::= '==' | '!=' | '<=' | '>=' | '<' | '>'
+        BOOLEAN_OP       ::= '&' | '|'
+        NOT_OP           ::= '~‘
     """
 
     ####################################################################################################################
@@ -36,6 +52,8 @@ class Selection(object):
         r'(==|!=|<=|>=|<|>)'
         r'|'
         r'([&|])'
+        r'|'
+        r'(~)'
         r'|'
         r'([()])'
         r'|'
@@ -57,12 +75,14 @@ class Selection(object):
     @staticmethod
     def _tokenize(expression: str) -> typing.Generator[Token, typing.Any, typing.Any]:
 
-        for comparison_op, boolean_op, grouping, number, column, blank in Selection._TOKEN_REGEX.findall(expression):
+        for comparison_op, boolean_op, not_op, grouping, number, column, blank in Selection._TOKEN_REGEX.findall(expression):
 
             if   comparison_op:
                 yield Selection.Token('COMPARISON_OP', comparison_op)
             elif boolean_op:
                 yield Selection.Token('BOOLEAN_OP', boolean_op)
+            elif not_op:
+                yield Selection.Token('NOT_OP', not_op)
             elif grouping:
                 yield Selection.Token('GROUPING', grouping)
             elif number:
@@ -77,6 +97,15 @@ class Selection(object):
 
     ####################################################################################################################
     # PARSER                                                                                                           #
+    ####################################################################################################################
+
+    class UnaryOpNode:
+
+        def __init__(self, _op: str, _right):
+
+            self.op: str = _op
+            self.right = _right
+
     ####################################################################################################################
 
     class BinaryOpNode:
@@ -119,7 +148,7 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def _parse_term(token_list: typing.List[Token]) -> typing.Union[BinaryOpNode, NumberNode, ColumnNode]:
+    def _parse_term(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]:
 
         ################################################################################################################
 
@@ -164,11 +193,26 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def _parse_comparison_op(token_list: typing.List[Token]) -> typing.Union[BinaryOpNode, NumberNode, ColumnNode]:
+    def _parse_not_op(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]:
+
+        if token_list and token_list[0].type == 'NOT_OP':
+
+            op = token_list.pop(0).value
+
+            right_node = Selection._parse_term(token_list)
+
+            return Selection.UnaryOpNode(op, right_node)
+
+        return Selection._parse_term(token_list)
+
+    ####################################################################################################################
+
+    @staticmethod
+    def _parse_comparison_op(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]:
 
         ################################################################################################################
 
-        left_node = Selection._parse_term(token_list)
+        left_node = Selection._parse_not_op(token_list)
 
         ################################################################################################################
 
@@ -176,7 +220,7 @@ class Selection(object):
 
             op = token_list.pop(0).value
 
-            right_node = Selection._parse_term(token_list)
+            right_node = Selection._parse_not_op(token_list)
 
             left_node = Selection.BinaryOpNode(left_node, op, right_node)
 
@@ -187,7 +231,7 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def _parse_boolean_op(token_list: typing.List[Token]) -> typing.Union[BinaryOpNode, NumberNode, ColumnNode]:
+    def _parse_boolean_op(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]:
 
         ################################################################################################################
 
@@ -210,7 +254,7 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def parse(expression: str) -> typing.Union[BinaryOpNode, NumberNode, ColumnNode]:
+    def parse(expression: str) -> typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]:
 
         """
         Evaluates the specified expression and returns the associated Abstract Syntax Tree (AST).
@@ -236,7 +280,18 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def _evaluate(node: typing.Union[BinaryOpNode, NumberNode, ColumnNode], table: np.ndarray) -> typing.Union[np.ndarray, float]:
+    def _evaluate(node: typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode], table: np.ndarray) -> typing.Union[np.ndarray, float]:
+
+        ################################################################################################################
+        # UNARY OP                                                                                                     #
+        ################################################################################################################
+
+        if isinstance(node, Selection.UnaryOpNode):
+
+            right_value = Selection._evaluate(node.right, table)
+
+            if node.op == '~':
+                return ~right_value
 
         ################################################################################################################
         # BINARY OP                                                                                                    #
@@ -287,18 +342,34 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def to_string(node: typing.Union[BinaryOpNode, NumberNode, ColumnNode], is_root: bool = True) -> str:
+    def to_string(node: typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode], is_root: bool = True) -> str:
 
         """
         Converts the specified Abstract Syntax Tree (AST) into the associated expression.
 
         Parameters
         ----------
-        node : typing.Union[BinaryOpNode, NumberNode, ColumnNode]
-            A Abstract Syntax Tree node.
+        node : typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]
+            An Abstract Syntax Tree node.
         is_root : bool, default: True
             Internal, don't use.
         """
+
+        ################################################################################################################
+        # UNARY OP                                                                                                     #
+        ################################################################################################################
+
+        if isinstance(node, Selection.UnaryOpNode):
+
+            right_expr = Selection.to_string(node.right, is_root = False)
+
+            expr = f'{node.op}{right_expr}'
+
+            if not is_root:
+
+                expr = f'({expr})'
+
+            return expr
 
         ################################################################################################################
         # BINARY OP                                                                                                    #

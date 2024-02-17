@@ -1392,6 +1392,21 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.selection.</span></span><span class="sig-name descname"><span class="pre">Selection</span></span><a class="headerlink" href="#decontamination.algo.selection.Selection" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Data selection.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>expression       ::= boolean_expr
+
+boolean_expr     ::= comparison_expr (BOOLEAN_OP comparison_expr)*
+
+comparison_expr  ::= not_expr (COMPARISON_OP not_expr)*
+
+not_expr         ::= NOT_OP? term
+
+term             ::= &#39;(&#39; boolean_expr &#39;)&#39; | NUMBER | COLUMN
+
+COMPARISON_OP    ::= &#39;==&#39; | &#39;!=&#39; | &#39;&lt;=&#39; | &#39;&gt;=&#39; | &#39;&lt;&#39; | &#39;&gt;&#39;
+BOOLEAN_OP       ::= &#39;&amp;&#39; | &#39;|&#39;
+NOT_OP           ::= &#39;~‘
+</pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -1420,11 +1435,14 @@
 <tr class="row-even"><td><p><strong>Token</strong></p></td>
 <td></td>
 </tr>
+<tr class="row-odd"><td><p><strong>UnaryOpNode</strong></p></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.selection.Selection.parse">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">&lt;ast</span> <span class="pre">node&gt;</span></span></span><a class="headerlink" href="#decontamination.algo.selection.Selection.parse" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">UnaryOpNode</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryOpNode</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">NumberNode</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ColumnNode</span></span></span><a class="headerlink" href="#decontamination.algo.selection.Selection.parse" title="Link to this definition">¶</a></dt>
 <dd><p>Evaluates the specified expression and returns the associated Abstract Syntax Tree (AST).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1438,12 +1456,12 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.selection.Selection.to_string">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node:</span> <span class="pre">&lt;ast</span> <span class="pre">node&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_root:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#decontamination.algo.selection.Selection.to_string" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">UnaryOpNode</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryOpNode</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">NumberNode</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ColumnNode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#decontamination.algo.selection.Selection.to_string" title="Link to this definition">¶</a></dt>
 <dd><p>Converts the specified Abstract Syntax Tree (AST) into the associated expression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>node</strong><span class="classifier">&lt;ast node&gt;</span></dt><dd><p>A Abstract Syntax Tree node.</p>
+<dt><strong>node</strong><span class="classifier">Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]</span></dt><dd><p>An Abstract Syntax Tree node.</p>
 </dd>
 <dt><strong>is_root</strong><span class="classifier">bool, default: True</span></dt><dd><p>Internal, don’t use.</p>
 </dd>

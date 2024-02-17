@@ -37,4 +37,8 @@ def test_selection():
     assert expression == '(foo == 1.0) & ((bar == 4.0) | (qux >= 3.5))'
     assert np.array_equal(mask, [True, False, True])
 
+    expression, mask = decontamination.Selection.filter_table('~(foo == 1.0 & (bar == 4.0 | qux >= 3.5))', table)
+    assert expression == '~((foo == 1.0) & ((bar == 4.0) | (qux >= 3.5)))'
+    assert np.array_equal(mask, [False, True, False])
+
 ########################################################################################################################

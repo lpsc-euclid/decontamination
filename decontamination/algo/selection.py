@@ -300,7 +300,7 @@ class Selection(object):
 
         elif isinstance(node, Selection.NumberNode):
 
-            return float(node.value)
+            return node.value
 
         ################################################################################################################
         # COLUMN                                                                                                       #
@@ -308,7 +308,7 @@ class Selection(object):
 
         elif isinstance(node, Selection.ColumnNode):
 
-            return str(node.value)
+            return node.value
 
         ################################################################################################################
 

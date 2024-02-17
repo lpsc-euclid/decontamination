@@ -1395,8 +1395,14 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.selection.Selection.evaluate" title="decontamination.algo.selection.Selection.evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaluate</span></code></a>(table, expression)</p></td>
-<td><p>Evaluates the specified expression and applies it to the table.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.selection.Selection.filter_data" title="decontamination.algo.selection.Selection.filter_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_data</span></code></a>(expression, table)</p></td>
+<td><p>Evaluates the specified expression and filters the table.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.selection.Selection.parse" title="decontamination.algo.selection.Selection.parse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code></a>(expression)</p></td>
+<td><p>Evaluates the specified expression and returns the associated Abstract Syntax Tree (AST).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.selection.Selection.to_string" title="decontamination.algo.selection.Selection.to_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_string</span></code></a>(node[, is_root])</p></td>
+<td><p>Converts the specified Abstract Syntax Tree (AST) into the associated expression.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1414,37 +1420,56 @@
 <tr class="row-even"><td><p><strong>Token</strong></p></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><p><strong>ast_to_string</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><strong>parse</strong></p></td>
-<td></td>
-</tr>
 </tbody>
 </table>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="decontamination.algo.selection.Selection.TOKEN_REGEX">
-<span class="sig-name descname"><span class="pre">TOKEN_REGEX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('(==|!=|&lt;=|&gt;=|&lt;|&gt;)|([&amp;|])|([()])|([-+]?(?:\\d+\\.\\d*(?:[eE][-+]?\\d+)?|\\.\\d+(?:[eE][-+]?\\d+)?|\\d+(?:[eE][-+]?\\d+)?))|(\\w+)|(\\s+)')</span></em><a class="headerlink" href="#decontamination.algo.selection.Selection.TOKEN_REGEX" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
-<dt class="sig sig-object py" id="decontamination.algo.selection.Selection.evaluate">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.algo.selection.Selection.evaluate" title="Link to this definition">¶</a></dt>
-<dd><p>Evaluates the specified expression and applies it to the table.</p>
+<dt class="sig sig-object py" id="decontamination.algo.selection.Selection.parse">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">&lt;ast</span> <span class="pre">node&gt;</span></span></span><a class="headerlink" href="#decontamination.algo.selection.Selection.parse" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluates the specified expression and returns the associated Abstract Syntax Tree (AST).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>table</strong><span class="classifier">np.ndarray</span></dt><dd><p>The table to be filtered.</p>
-</dd>
 <dt><strong>expression</strong><span class="classifier">str</span></dt><dd><p>The expression to be evaluated.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.selection.Selection.to_string">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node:</span> <span class="pre">&lt;ast</span> <span class="pre">node&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_root:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#decontamination.algo.selection.Selection.to_string" title="Link to this definition">¶</a></dt>
+<dd><p>Converts the specified Abstract Syntax Tree (AST) into the associated expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>node</strong><span class="classifier">&lt;ast node&gt;</span></dt><dd><p>A Abstract Syntax Tree node.</p>
+</dd>
+<dt><strong>is_root</strong><span class="classifier">bool, default: True</span></dt><dd><p>Internal, don’t use.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.selection.Selection.filter_data">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.algo.selection.Selection.filter_data" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluates the specified expression and filters the table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>expression</strong><span class="classifier">str</span></dt><dd><p>The expression to be evaluated.</p>
+</dd>
+<dt><strong>table</strong><span class="classifier">np.ndarray</span></dt><dd><p>The table to be filtered with the expression.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>np.ndarray</dt><dd><p>The generate the selection mask.</p>
-</dd>
 <dt>str</dt><dd><p>The reformatted expression.</p>
+</dd>
+<dt>np.ndarray</dt><dd><p>The generate the selection mask.</p>
 </dd>
 </dl>
 </dd>
@@ -1573,8 +1598,9 @@
 </li>
 <li><a class="reference internal" href="#module-decontamination.algo.selection">Data selection</a><ul>
 <li><a class="reference internal" href="#decontamination.algo.selection.Selection"><code class="docutils literal notranslate"><span class="pre">Selection</span></code></a><ul>
-<li><a class="reference internal" href="#decontamination.algo.selection.Selection.TOKEN_REGEX"><code class="docutils literal notranslate"><span class="pre">Selection.TOKEN_REGEX</span></code></a></li>
-<li><a class="reference internal" href="#decontamination.algo.selection.Selection.evaluate"><code class="docutils literal notranslate"><span class="pre">Selection.evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.selection.Selection.parse"><code class="docutils literal notranslate"><span class="pre">Selection.parse()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.selection.Selection.to_string"><code class="docutils literal notranslate"><span class="pre">Selection.to_string()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.algo.selection.Selection.filter_data"><code class="docutils literal notranslate"><span class="pre">Selection.filter_data()</span></code></a></li>
 </ul>
 </li>
 </ul>

@@ -29,12 +29,12 @@ def test_selection():
         (1.0, 4.0, 3.2),
     ], dtype = dtype)
 
-    mask, expression = decontamination.Selection.evaluate(table, '')
-    assert np.array_equal(mask, [True, True, True])
+    expression, mask = decontamination.Selection.filter_data('', table)
     assert expression == ''
+    assert np.array_equal(mask, [True, True, True])
 
-    mask, expression = decontamination.Selection.evaluate(table, 'foo == 1.0 & (bar == 4.0 | qux >= 3.5)')
-    assert np.array_equal(mask, [True, False, True])
+    expression, mask = decontamination.Selection.filter_data('foo == 1.0 & (bar == 4.0 | qux >= 3.5)', table)
     assert expression == '(foo == 1.0) & ((bar == 4.0) | (qux >= 3.5))'
+    assert np.array_equal(mask, [True, False, True])
 
 ########################################################################################################################

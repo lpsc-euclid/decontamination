@@ -2,13 +2,18 @@
 
 import os
 import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+########################################################################################################################
+
 import json
 import typing
 import inspect
 
 import numpy as np
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import decontamination.algo.selection as selection
 
 ########################################################################################################################
 
@@ -127,6 +132,12 @@ def before_process_signature(app, obj, bound_method):
 
     numeric_value = typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]
 
+    ast_node = typing.Union[
+        selection.Selection.BinaryOpNode,
+        selection.Selection.NumberNode,
+        selection.Selection.ColumnNode,
+    ]
+
     if callable(obj):
 
         for param, annotation in obj.__annotations__.items():
@@ -135,6 +146,8 @@ def before_process_signature(app, obj, bound_method):
                 obj.__annotations__[param] = '<numeric type>'
             if annotation == numeric_value:
                 obj.__annotations__[param] = '<numeric value>'
+            if annotation == ast_node:
+                obj.__annotations__[param] = '<ast node>'
 
         if 'return' in obj.__annotations__:
 
@@ -142,6 +155,8 @@ def before_process_signature(app, obj, bound_method):
                 obj.__annotations__['return'] = '<numeric type>'
             if obj.__annotations__['return'] == numeric_value:
                 obj.__annotations__['return'] = '<numeric value>'
+            if obj.__annotations__['return'] == ast_node:
+                obj.__annotations__['return'] = '<ast node>'
 
 ########################################################################################################################
 
@@ -169,6 +184,9 @@ def process_docstring(app, what, name, obj, options, lines):
     numeric_value1 = 'np.float32 | np.float64 | float | np.int32 | np.int64 | int'
     numeric_value2 = 'Union[np.float32, np.float64, float, np.int32, np.int64, int]'
 
+    ast_node1 = 'BinaryOpNode | NumberNode | ColumnNode'
+    ast_node2 = 'Union[BinaryOpNode, NumberNode, ColumnNode]'
+
     for index, line in enumerate(lines):
 
         lines[index] = (
@@ -179,6 +197,8 @@ def process_docstring(app, what, name, obj, options, lines):
             .replace(numeric_type2, '<numeric type>')
             .replace(numeric_value1, '<numeric value>')
             .replace(numeric_value2, '<numeric value>')
+            .replace(ast_node1, '<ast node>')
+            .replace(ast_node2, '<ast node>')
         )
 
 ########################################################################################################################

@@ -32,7 +32,7 @@ class Selection(object):
 
     ####################################################################################################################
 
-    TOKEN_REGEX = re.compile(
+    _TOKEN_REGEX = re.compile(
         r'(==|!=|<=|>=|<|>)'
         r'|'
         r'([&|])'
@@ -57,7 +57,7 @@ class Selection(object):
     @staticmethod
     def _tokenize(expression: str) -> typing.Generator[Token, typing.Any, typing.Any]:
 
-        for comparison_op, boolean_op, grouping, number, column, blank in Selection.TOKEN_REGEX.findall(expression):
+        for comparison_op, boolean_op, grouping, number, column, blank in Selection._TOKEN_REGEX.findall(expression):
 
             if   comparison_op:
                 yield Selection.Token('COMPARISON_OP', comparison_op)
@@ -212,6 +212,15 @@ class Selection(object):
     @staticmethod
     def parse(expression: str) -> typing.Union[BinaryOpNode, NumberNode, ColumnNode]:
 
+        """
+        Evaluates the specified expression and returns the associated Abstract Syntax Tree (AST).
+
+        Parameters
+        ----------
+        expression : str
+            The expression to be evaluated.
+        """
+
         token_list = list(Selection._tokenize(expression))
 
         result = Selection._parse_boolean_op(token_list)
@@ -227,7 +236,7 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def _evaluate(table: np.ndarray, node: typing.Union[BinaryOpNode, NumberNode, ColumnNode]) -> typing.Union[np.ndarray, float]:
+    def _evaluate(node: typing.Union[BinaryOpNode, NumberNode, ColumnNode], table: np.ndarray) -> typing.Union[np.ndarray, float]:
 
         ################################################################################################################
         # BINARY OP                                                                                                    #
@@ -235,8 +244,8 @@ class Selection(object):
 
         if isinstance(node, Selection.BinaryOpNode):
 
-            left_value = Selection._evaluate(table, node.left)
-            right_value = Selection._evaluate(table, node.right)
+            left_value = Selection._evaluate(node.left, table)
+            right_value = Selection._evaluate(node.right, table)
 
             if   node.op == '==':
                 return left_value == right_value
@@ -278,7 +287,18 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def ast_to_string(node: typing.Union[BinaryOpNode, NumberNode, ColumnNode], is_root: bool = True) -> str:
+    def to_string(node: typing.Union[BinaryOpNode, NumberNode, ColumnNode], is_root: bool = True) -> str:
+
+        """
+        Converts the specified Abstract Syntax Tree (AST) into the associated expression.
+
+        Parameters
+        ----------
+        node : typing.Union[BinaryOpNode, NumberNode, ColumnNode]
+            A Abstract Syntax Tree node.
+        is_root : bool, default: True
+            Internal, don't use.
+        """
 
         ################################################################################################################
         # BINARY OP                                                                                                    #
@@ -286,8 +306,8 @@ class Selection(object):
 
         if isinstance(node, Selection.BinaryOpNode):
 
-            left_expr = Selection.ast_to_string(node.left, is_root = False)
-            right_expr = Selection.ast_to_string(node.right, is_root = False)
+            left_expr = Selection.to_string(node.left, is_root = False)
+            right_expr = Selection.to_string(node.right, is_root = False)
 
             expr = f'{left_expr} {node.op} {right_expr}'
 
@@ -320,40 +340,39 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def evaluate(table: np.ndarray, expression: str) -> typing.Tuple[np.ndarray, str]:
+    def filter_data(expression: str, table: np.ndarray) -> typing.Tuple[str, np.ndarray]:
 
         """
-        Evaluates the specified expression and applies it to the table.
+        Evaluates the specified expression and filters the table.
 
         Parameters
         ----------
-        table : np.ndarray
-            The table to be filtered.
         expression : str
             The expression to be evaluated.
+        table : np.ndarray
+            The table to be filtered with the expression.
 
         Returns
         -------
-        np.ndarray
-            The generate the selection mask.
         str
             The reformatted expression.
+        np.ndarray
+            The generate the selection mask.
         """
 
         expression = expression.strip()
 
         if not expression:
 
-            return np.full_like(table, 1, dtype = bool), expression
+            return expression, np.full_like(table, 1, dtype = bool)
 
         else:
 
             ast = Selection.parse(expression)
 
-            mask = Selection._evaluate(table, ast)
-
-            expression = Selection.ast_to_string(ast)
-
-            return mask, expression
+            return (
+                Selection.to_string(ast),
+                Selection._evaluate(ast, table),
+            )
 
 ########################################################################################################################

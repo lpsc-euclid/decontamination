@@ -1395,14 +1395,7 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.selection.Selection.Token" title="decontamination.algo.selection.Selection.Token"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Token</span></code></a>(type, value)</p></td>
-<td><p><dl class="field-list simple">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.selection.Selection.evaluate" title="decontamination.algo.selection.Selection.evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaluate</span></code></a>(table, expression)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.selection.Selection.evaluate" title="decontamination.algo.selection.Selection.evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaluate</span></code></a>(table, expression)</p></td>
 <td><p>Evaluates the specified expression and applies it to the table.</p></td>
 </tr>
 </tbody>
@@ -1418,69 +1411,20 @@
 <tr class="row-odd"><td><p><strong>NumberNode</strong></p></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><p><strong>parse</strong></p></td>
+<tr class="row-even"><td><p><strong>Token</strong></p></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><p><strong>stringify</strong></p></td>
+<tr class="row-odd"><td><p><strong>parse</strong></p></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><p><strong>tokenize</strong></p></td>
+<tr class="row-even"><td><p><strong>stringify</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>tokenize</strong></p></td>
 <td></td>
 </tr>
 </tbody>
 </table>
-<dl class="py class">
-<dt class="sig sig-object py" id="decontamination.algo.selection.Selection.Token">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.selection.Selection.Token" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>type</strong></dt><dd><p>Alias for field number 0</p>
-</dd>
-<dt><strong>value</strong></dt><dd><p>Alias for field number 1</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.selection.Selection.Token.count" title="decontamination.algo.selection.Selection.Token.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a>(value, /)</p></td>
-<td><p>Return number of occurrences of value.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.selection.Selection.Token.index" title="decontamination.algo.selection.Selection.Token.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a>(value[, start, stop])</p></td>
-<td><p>Return first index of value.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.algo.selection.Selection.Token.count">
-<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.selection.Selection.Token.count" title="Link to this definition">¶</a></dt>
-<dd><p>Return number of occurrences of value.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.algo.selection.Selection.Token.index">
-<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">sys.maxsize</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.selection.Selection.Token.index" title="Link to this definition">¶</a></dt>
-<dd><p>Return first index of value.</p>
-<p>Raises ValueError if the value is not present.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="decontamination.algo.selection.Selection.Token.type">
-<span class="sig-name descname"><span class="pre">type</span></span><a class="headerlink" href="#decontamination.algo.selection.Selection.Token.type" title="Link to this definition">¶</a></dt>
-<dd><p>Alias for field number 0</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="decontamination.algo.selection.Selection.Token.value">
-<span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#decontamination.algo.selection.Selection.Token.value" title="Link to this definition">¶</a></dt>
-<dd><p>Alias for field number 1</p>
-</dd></dl>
-
-</dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="decontamination.algo.selection.Selection.TOKEN_REGEX">
 <span class="sig-name descname"><span class="pre">TOKEN_REGEX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('(==|!=|&lt;=|&gt;=|&lt;|&gt;)|([&amp;|])|([()])|([-+]?(?:\\d+\\.\\d*(?:[eE][-+]?\\d+)?|\\.\\d+(?:[eE][-+]?\\d+)?|\\d+(?:[eE][-+]?\\d+)?))|(\\w+)|(\\s+)')</span></em><a class="headerlink" href="#decontamination.algo.selection.Selection.TOKEN_REGEX" title="Link to this definition">¶</a></dt>
@@ -1632,13 +1576,6 @@
 </li>
 <li><a class="reference internal" href="#module-decontamination.algo.selection">Data selection</a><ul>
 <li><a class="reference internal" href="#decontamination.algo.selection.Selection"><code class="docutils literal notranslate"><span class="pre">Selection</span></code></a><ul>
-<li><a class="reference internal" href="#decontamination.algo.selection.Selection.Token"><code class="docutils literal notranslate"><span class="pre">Selection.Token</span></code></a><ul>
-<li><a class="reference internal" href="#decontamination.algo.selection.Selection.Token.count"><code class="docutils literal notranslate"><span class="pre">Selection.Token.count()</span></code></a></li>
-<li><a class="reference internal" href="#decontamination.algo.selection.Selection.Token.index"><code class="docutils literal notranslate"><span class="pre">Selection.Token.index()</span></code></a></li>
-<li><a class="reference internal" href="#decontamination.algo.selection.Selection.Token.type"><code class="docutils literal notranslate"><span class="pre">Selection.Token.type</span></code></a></li>
-<li><a class="reference internal" href="#decontamination.algo.selection.Selection.Token.value"><code class="docutils literal notranslate"><span class="pre">Selection.Token.value</span></code></a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#decontamination.algo.selection.Selection.TOKEN_REGEX"><code class="docutils literal notranslate"><span class="pre">Selection.TOKEN_REGEX</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.algo.selection.Selection.evaluate"><code class="docutils literal notranslate"><span class="pre">Selection.evaluate()</span></code></a></li>
 </ul>

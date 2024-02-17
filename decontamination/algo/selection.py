@@ -86,7 +86,7 @@ class Selection(object):
 
         def __init__(self, value):
 
-            self.value: float = value
+            self.value: str = value
 
     ####################################################################################################################
 
@@ -296,7 +296,7 @@ class Selection(object):
 
         elif isinstance(node, Selection.NumberNode):
 
-            return str(node.value)
+            return float(node.value)
 
         ################################################################################################################
         # COLUMN                                                                                                       #
@@ -304,7 +304,7 @@ class Selection(object):
 
         elif isinstance(node, Selection.ColumnNode):
 
-            return node.value
+            return str(node.value)
 
         ################################################################################################################
 
@@ -313,22 +313,38 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def evaluate(table: np.ndarray, selection: str) -> typing.Tuple[np.ndarray, str]:
+    def evaluate(table: np.ndarray, expression: str) -> typing.Tuple[np.ndarray, str]:
 
-        selection = selection.strip()
+        """
+        Evaluates the specified expression and applies it to the table.
 
-        if not selection:
+        Parameters
+        ----------
+        table : np.ndarray
+            The table to be filtered.
+        expression : str
+            The expression to be evaluated.
 
-            return np.full_like(table, 1, dtype = bool), selection
+        Returns
+        -------
+        typing.Tuple[np.ndarray, str]
+            The generate the selection mask and the reformatted expression.
+        """
+
+        expression = expression.strip()
+
+        if not expression:
+
+            return np.full_like(table, 1, dtype = bool), expression
 
         else:
 
-            ast = Selection.parse(Selection.tokenize(selection))
+            ast = Selection.parse(Selection.tokenize(expression))
 
             mask = Selection._evaluate(table, ast)
 
-            selection = Selection.stringify(ast)
+            expression = Selection.stringify(ast)
 
-            return mask, selection
+            return mask, expression
 
 ########################################################################################################################

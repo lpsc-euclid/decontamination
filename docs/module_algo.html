@@ -1391,22 +1391,7 @@
 <dt class="sig sig-object py" id="decontamination.algo.selection.Selection">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.selection.</span></span><span class="sig-name descname"><span class="pre">Selection</span></span><a class="headerlink" href="#decontamination.algo.selection.Selection" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Data selection.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>expression       ::= boolean_expr
-
-boolean_expr     ::= comparison_expr (BOOLEAN_OP comparison_expr)*
-
-comparison_expr  ::= not_expr (COMPARISON_OP not_expr)*
-
-not_expr         ::= NOT_OP? term
-
-term             ::= &#39;(&#39; boolean_expr &#39;)&#39; | NUMBER | COLUMN
-
-COMPARISON_OP    ::= &#39;==&#39; | &#39;!=&#39; | &#39;&lt;=&#39; | &#39;&gt;=&#39; | &#39;&lt;&#39; | &#39;&gt;&#39;
-BOOLEAN_OP       ::= &#39;&amp;&#39; | &#39;|&#39;
-NOT_OP           ::= &#39;~‘
-</pre></div>
-</div>
+<p>Data selection from expression string.</p>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -1444,6 +1429,21 @@ NOT_OP           ::= &#39;~‘
 <dt class="sig sig-object py" id="decontamination.algo.selection.Selection.parse">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">&lt;ast</span> <span class="pre">node&gt;</span></span></span><a class="headerlink" href="#decontamination.algo.selection.Selection.parse" title="Link to this definition">¶</a></dt>
 <dd><p>Evaluates the specified expression and returns the associated Abstract Syntax Tree (AST).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>expression       ::= boolean_expr
+
+boolean_expr     ::= comparison_expr (BOOLEAN_OP comparison_expr)*
+
+comparison_expr  ::= not_expr (COMPARISON_OP not_expr)*
+
+not_expr         ::= NOT_OP? term
+
+term             ::= &#39;(&#39; boolean_expr &#39;)&#39; | NUMBER | COLUMN
+
+COMPARISON_OP    ::= &#39;==&#39; | &#39;!=&#39; | &#39;&lt;=&#39; | &#39;&gt;=&#39; | &#39;&lt;&#39; | &#39;&gt;&#39;
+BOOLEAN_OP       ::= &#39;&amp;&#39; | &#39;|&#39;
+NOT_OP           ::= &#39;~‘
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">

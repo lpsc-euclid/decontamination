@@ -16,23 +16,7 @@ import numpy as np
 class Selection(object):
 
     """
-    Data selection.
-
-    .. code-block::
-
-        expression       ::= boolean_expr
-
-        boolean_expr     ::= comparison_expr (BOOLEAN_OP comparison_expr)*
-
-        comparison_expr  ::= not_expr (COMPARISON_OP not_expr)*
-
-        not_expr         ::= NOT_OP? term
-
-        term             ::= '(' boolean_expr ')' | NUMBER | COLUMN
-
-        COMPARISON_OP    ::= '==' | '!=' | '<=' | '>=' | '<' | '>'
-        BOOLEAN_OP       ::= '&' | '|'
-        NOT_OP           ::= '~‘
+    Data selection from expression string.
     """
 
     ####################################################################################################################
@@ -258,6 +242,22 @@ class Selection(object):
 
         """
         Evaluates the specified expression and returns the associated Abstract Syntax Tree (AST).
+
+        .. code-block::
+
+            expression       ::= boolean_expr
+
+            boolean_expr     ::= comparison_expr (BOOLEAN_OP comparison_expr)*
+
+            comparison_expr  ::= not_expr (COMPARISON_OP not_expr)*
+
+            not_expr         ::= NOT_OP? term
+
+            term             ::= '(' boolean_expr ')' | NUMBER | COLUMN
+
+            COMPARISON_OP    ::= '==' | '!=' | '<=' | '>=' | '<' | '>'
+            BOOLEAN_OP       ::= '&' | '|'
+            NOT_OP           ::= '~‘
 
         Parameters
         ----------

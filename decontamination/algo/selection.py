@@ -25,10 +25,10 @@ class Selection(object):
 
     class Token:
 
-        def __init__(self, type: str, value: str):
+        def __init__(self, _type: str, _value: str):
 
-            self.type: str = type
-            self.value: str = value
+            self.type: str = _type
+            self.value: str = _value
 
     ####################################################################################################################
 
@@ -81,27 +81,27 @@ class Selection(object):
 
     class BinaryOpNode:
 
-        def __init__(self, left, op: str, right):
+        def __init__(self, _left, _op: str, _right):
 
-            self.left = left
-            self.op: str = op
-            self.right = right
+            self.left = _left
+            self.op: str = _op
+            self.right = _right
 
     ####################################################################################################################
 
     class NumberNode:
 
-        def __init__(self, value: str):
+        def __init__(self, _value: str):
 
-            self.value: str = value
+            self.value: str = _value
 
     ####################################################################################################################
 
     class ColumnNode:
 
-        def __init__(self, value: str):
+        def __init__(self, _value: str):
 
-            self.value: str = value
+            self.value: str = _value
 
     ####################################################################################################################
 

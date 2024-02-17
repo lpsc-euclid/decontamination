@@ -31,6 +31,7 @@ div.sphinxsidebarwrapper {
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
+table.docutils,
 table.autosummary {
     display: none !important;
 }

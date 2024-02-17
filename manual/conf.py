@@ -118,11 +118,11 @@ def skip_member(app, what, name, obj, skip, options):
 
     ####################################################################################################################
 
-    if not name.startswith('_') and getattr(obj, '__doc__', ''):
+    if name.startswith('_') or not getattr(obj, '__doc__', ''):
 
-        return False
+        return True
 
-    return True
+    return False
 
 ########################################################################################################################
 

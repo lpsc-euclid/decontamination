@@ -87,8 +87,12 @@ class Correlation_Abstract(abc.ABC):
 
         Returns
         -------
-        typing.Tuple[np.ndarray, np.ndarray]
-            The bin of angles :math:`\\theta` (in arcmins), the angular correlations :math:`\\xi(\\theta)` and the angular correlation errors :math:`\\sigma_\\xi(\\theta)`.
+        np.ndarray
+            The bin of angles :math:`\\theta` (in arcmins).
+        np.ndarray
+            The angular correlations function :math:`\\xi(\\theta)`.
+        np.ndarray
+            The angular correlation function errors :math:`\\sigma_\\xi(\\theta)`.
         """
 
         return (

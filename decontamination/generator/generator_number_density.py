@@ -62,8 +62,10 @@ class Generator_NumberDensity(generator_abstract.Generator_Abstract):
 
         Returns
         -------
-        typing.Tuple[np.ndarray, np.ndarray]
-            Galaxy catalog (longitudes and latitudes) in degrees.
+        np.ndarray
+            Galaxy catalog longitudes (in degrees).
+        np.ndarray
+            Galaxy catalog latitudes (in degrees).
         """
 
         if self._footprint.shape != number_density_map.shape:

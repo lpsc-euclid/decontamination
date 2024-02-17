@@ -232,25 +232,25 @@ class Selection(object):
 
         if isinstance(node, Selection.BinaryOpNode):
 
-            left_val = Selection._evaluate(table, node.left)
-            right_val = Selection._evaluate(table, node.right)
+            left_value = Selection._evaluate(table, node.left)
+            right_value = Selection._evaluate(table, node.right)
 
             if node.op == '==':
-                return left_val == right_val
+                return left_value == right_value
             elif node.op == '!=':
-                return left_val != right_val
+                return left_value != right_value
             elif node.op == '<=':
-                return left_val <= right_val
+                return left_value <= right_value
             elif node.op == '>=':
-                return left_val >= right_val
+                return left_value >= right_value
             elif node.op == '<':
-                return left_val < right_val
+                return left_value < right_value
             elif node.op == '>':
-                return left_val > right_val
+                return left_value > right_value
             elif node.op == '&':
-                return left_val & right_val
+                return left_value & right_value
             elif node.op == '|':
-                return left_val | right_val
+                return left_value | right_value
 
         ################################################################################################################
         # NUMBER                                                                                                       #

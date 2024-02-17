@@ -52,8 +52,10 @@ class Generator_FullSkyUniform(object):
 
         Returns
         -------
-        typing.Tuple[np.ndarray, np.ndarray]
-            Galaxy position (longitudes and latitudes) in degrees.
+        np.ndarray
+            Galaxy catalog longitudes (in degrees).
+        np.ndarray
+            Galaxy catalog latitudes (in degrees).
         """
 
         ################################################################################################################

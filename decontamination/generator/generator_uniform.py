@@ -60,8 +60,10 @@ class Generator_Uniform(generator_abstract.Generator_Abstract):
 
         Returns
         -------
-        typing.Tuple[np.ndarray, np.ndarray]
-            Galaxy catalog (longitudes and latitudes) in degrees.
+        np.ndarray
+            Galaxy catalog longitudes (in degrees).
+        np.ndarray
+            Galaxy catalog latitudes (in degrees).
         """
 
         ################################################################################################################

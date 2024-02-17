@@ -63,6 +63,7 @@ class Selection(object):
             elif column:
                 yield Selection.Token('COLUMN', column)
             elif blank:
+                # IGNORE #
                 pass
             else:
                 raise ValueError('Invalid token')

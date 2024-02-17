@@ -44,6 +44,8 @@ from .algo.som_online import SOM_Online
 
 from .algo.clustering import Clustering
 
+from .algo.selection import Selection
+
 ########################################################################################################################
 # PLOTTING                                                                                                             #
 ########################################################################################################################
@@ -112,6 +114,7 @@ __all__ = [
     'order_index_to_nuniq', 'nuniq_to_order_index', 'moc_to_healpix', 'wmoc_to_healpix',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
     'Clustering',
+    'Selection',
     'catalog_to_number_density',
     'display_latent_space',
     'display_healpix', 'display_catalog',

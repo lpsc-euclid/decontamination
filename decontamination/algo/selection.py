@@ -340,7 +340,7 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def filter_data(expression: str, table: np.ndarray) -> typing.Tuple[str, np.ndarray]:
+    def filter_table(expression: str, table: np.ndarray) -> typing.Tuple[str, np.ndarray]:
 
         """
         Evaluates the specified expression and filters the table.

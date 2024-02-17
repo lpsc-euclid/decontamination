@@ -29,11 +29,11 @@ def test_selection():
         (1.0, 4.0, 3.2),
     ], dtype = dtype)
 
-    expression, mask = decontamination.Selection.filter_data('', table)
+    expression, mask = decontamination.Selection.filter_table('', table)
     assert expression == ''
     assert np.array_equal(mask, [True, True, True])
 
-    expression, mask = decontamination.Selection.filter_data('foo == 1.0 & (bar == 4.0 | qux >= 3.5)', table)
+    expression, mask = decontamination.Selection.filter_table('foo == 1.0 & (bar == 4.0 | qux >= 3.5)', table)
     assert expression == '(foo == 1.0) & ((bar == 4.0) | (qux >= 3.5))'
     assert np.array_equal(mask, [True, False, True])
 

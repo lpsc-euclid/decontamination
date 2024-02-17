@@ -238,7 +238,7 @@ class Selection(object):
             left_value = Selection._evaluate(table, node.left)
             right_value = Selection._evaluate(table, node.right)
 
-            if node.op == '==':
+            if   node.op == '==':
                 return left_value == right_value
             elif node.op == '!=':
                 return left_value != right_value

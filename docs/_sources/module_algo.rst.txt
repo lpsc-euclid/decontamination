@@ -29,8 +29,8 @@ Clustering
 .. automodule:: decontamination.algo.clustering
    :members:
 
-Selection
----------
+Data selection
+--------------
 
 .. automodule:: decontamination.algo.selection
    :members:

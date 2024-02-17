@@ -46,8 +46,9 @@ def nuniq_to_order_index(nuniqs: np.ndarray) -> typing.Tuple[np.ndarray, np.ndar
 
     Returns
     -------
-    typing.Tuple[np.ndarray, np.ndarray]
+    np.ndarray
         First array represents the HEALPix orders for the given nuniq values.
+    np.ndarray
         Second array represents the HEALPix pixel indices for the given nuniq values.
     """
 
@@ -161,8 +162,9 @@ def wmoc_to_healpix(moc_orders: np.ndarray, moc_indices: np.ndarray, moc_weights
 
     Returns
     -------
-    typing.Tuple[np.ndarray, np.ndarray]
+    np.ndarray
         First array contains the HEALPix pixel indices at the new order.
+    np.ndarray
         Second array contains the associated values/weights at the new order.
     """
 

@@ -79,9 +79,11 @@ def rms_bit_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray
 
     Returns
     -------
-    typing.Tuple[np.ndarray, np.ndarray, np.ndarray]
+    np.ndarray
         First array contains the RMS (aka. noise) mask.
+    np.ndarray
         Second array contains the bit (aka. data quality) mask.
+    np.ndarray
         Third array contains the coverage (≡ fraction of observed sky) mask.
     """
 

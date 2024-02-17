@@ -331,8 +331,10 @@ class Selection(object):
 
         Returns
         -------
-        typing.Tuple[np.ndarray, str]
-            The generate the selection mask and the reformatted expression.
+        np.ndarray
+            The generate the selection mask.
+        str
+            The reformatted expression.
         """
 
         expression = expression.strip()

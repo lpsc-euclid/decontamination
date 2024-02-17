@@ -81,7 +81,7 @@ class Selection(object):
 
     class BinaryOpNode:
 
-        def __init__(self, left, op, right):
+        def __init__(self, left, op: str, right):
 
             self.left = left
             self.op: str = op
@@ -91,7 +91,7 @@ class Selection(object):
 
     class NumberNode:
 
-        def __init__(self, value):
+        def __init__(self, value: str):
 
             self.value: str = value
 
@@ -99,7 +99,7 @@ class Selection(object):
 
     class ColumnNode:
 
-        def __init__(self, value):
+        def __init__(self, value: str):
 
             self.value: str = value
 

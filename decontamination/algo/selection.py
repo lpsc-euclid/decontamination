@@ -11,8 +11,6 @@ import typing
 
 import numpy as np
 
-from collections import namedtuple
-
 ########################################################################################################################
 
 class Selection(object):
@@ -25,7 +23,12 @@ class Selection(object):
     # TOKENIZER                                                                                                        #
     ####################################################################################################################
 
-    Token = namedtuple('Token', ['type', 'value'])
+    class Token:
+
+        def __init__(self, type: str, value: str):
+
+            self.type: str = type
+            self.value: str = value
 
     ####################################################################################################################
 

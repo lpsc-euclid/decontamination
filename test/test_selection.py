@@ -30,9 +30,11 @@ def test_selection():
     ], dtype = dtype)
 
     mask, string = decontamination.Selection.evaluate(table, '')
+    assert np.array_equal(mask, [True, True, True])
     assert (string == '')
 
     mask, string = decontamination.Selection.evaluate(table, 'foo == 1.0 & (bar == 4.0 | qux >= 3.5)')
-    assert (string == '(foo == 1.0) & ((bar == 4.0) | (qux >= 3.5))')
+    assert np.array_equal(mask, [True, False, True])
+    assert string == '(foo == 1.0) & ((bar == 4.0) | (qux >= 3.5))'
 
 ########################################################################################################################

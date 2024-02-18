@@ -243,21 +243,24 @@ class Selection(object):
         """
         Evaluates the specified expression and returns the associated Abstract Syntax Tree (AST).
 
-        .. code-block::
+        .. code-block:: ebnf
 
-            expression       ::= boolean_expr
+            expression       = boolean_expr ;
 
-            boolean_expr     ::= comparison_expr (BOOLEAN_OP comparison_expr)*
+            boolean_expr     = comparison_expr { BOOLEAN_OP comparison_expr } ;
 
-            comparison_expr  ::= not_expr (COMPARISON_OP not_expr)*
+            comparison_expr  = not_expr { COMPARISON_OP not_expr } ;
 
-            not_expr         ::= NOT_OP? term
+            not_expr         = [ NOT_OP ] term ;
 
-            term             ::= '(' boolean_expr ')' | NUMBER | COLUMN
+            term             = "(" boolean_expr ")"
+                             | NUMBER
+                             | COLUMN
+                             ;
 
-            COMPARISON_OP    ::= '==' | '!=' | '<=' | '>=' | '<' | '>'
-            BOOLEAN_OP       ::= '&' | '|'
-            NOT_OP           ::= '~‘
+            COMPARISON_OP    = "==" | "!=" | "<=" | ">=" | "<" | ">" ;
+            BOOLEAN_OP       = "&" | "|" ;
+            NOT_OP           = "~" ;
 
         Parameters
         ----------

@@ -1429,19 +1429,22 @@
 <dt class="sig sig-object py" id="decontamination.algo.selection.Selection.parse">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">&lt;ast</span> <span class="pre">node&gt;</span></span></span><a class="headerlink" href="#decontamination.algo.selection.Selection.parse" title="Link to this definition">¶</a></dt>
 <dd><p>Evaluates the specified expression and returns the associated Abstract Syntax Tree (AST).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>expression       ::= boolean_expr
+<div class="highlight-ebnf notranslate"><div class="highlight"><pre><span></span><span class="k">expression       </span><span class="o">=</span> <span class="k">boolean_expr </span><span class="p">;</span>
 
-boolean_expr     ::= comparison_expr (BOOLEAN_OP comparison_expr)*
+<span class="k">boolean_expr     </span><span class="o">=</span> <span class="k">comparison_expr </span><span class="p">{</span> <span class="k">BOOLEAN_OP comparison_expr </span><span class="p">}</span> <span class="p">;</span>
 
-comparison_expr  ::= not_expr (COMPARISON_OP not_expr)*
+<span class="k">comparison_expr  </span><span class="o">=</span> <span class="k">not_expr </span><span class="p">{</span> <span class="k">COMPARISON_OP not_expr </span><span class="p">}</span> <span class="p">;</span>
 
-not_expr         ::= NOT_OP? term
+<span class="k">not_expr         </span><span class="o">=</span> <span class="p">[</span> <span class="k">NOT_OP </span><span class="p">]</span> <span class="k">term </span><span class="p">;</span>
 
-term             ::= &#39;(&#39; boolean_expr &#39;)&#39; | NUMBER | COLUMN
+<span class="k">term             </span><span class="o">=</span> <span class="s2">&quot;(&quot;</span> <span class="k">boolean_expr </span><span class="s2">&quot;)&quot;</span>
+                 <span class="p">|</span> <span class="k">NUMBER</span>
+                 <span class="p">|</span> <span class="k">COLUMN</span>
+                 <span class="p">;</span>
 
-COMPARISON_OP    ::= &#39;==&#39; | &#39;!=&#39; | &#39;&lt;=&#39; | &#39;&gt;=&#39; | &#39;&lt;&#39; | &#39;&gt;&#39;
-BOOLEAN_OP       ::= &#39;&amp;&#39; | &#39;|&#39;
-NOT_OP           ::= &#39;~‘
+<span class="k">COMPARISON_OP    </span><span class="o">=</span> <span class="s2">&quot;==&quot;</span> <span class="p">|</span> <span class="s2">&quot;!=&quot;</span> <span class="p">|</span> <span class="s2">&quot;&lt;=&quot;</span> <span class="p">|</span> <span class="s2">&quot;&gt;=&quot;</span> <span class="p">|</span> <span class="s2">&quot;&lt;&quot;</span> <span class="p">|</span> <span class="s2">&quot;&gt;&quot;</span> <span class="p">;</span>
+<span class="k">BOOLEAN_OP       </span><span class="o">=</span> <span class="s2">&quot;&amp;&quot;</span> <span class="p">|</span> <span class="s2">&quot;|&quot;</span> <span class="p">;</span>
+<span class="k">NOT_OP           </span><span class="o">=</span> <span class="s2">&quot;~&quot;</span> <span class="p">;</span>
 </pre></div>
 </div>
 <dl class="field-list simple">

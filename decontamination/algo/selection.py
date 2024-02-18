@@ -263,6 +263,11 @@ class Selection(object):
         ----------
         expression : str
             The expression to be evaluated.
+
+        Returns
+        -------
+        Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]
+            The Abstract Syntax Tree (AST).
         """
 
         token_list = list(Selection._tokenize(expression))
@@ -353,6 +358,11 @@ class Selection(object):
             An Abstract Syntax Tree node.
         is_root : bool, default: True
             Internal, don't use.
+
+        Returns
+        -------
+        str
+            The reformatted expression.
         """
 
         ################################################################################################################

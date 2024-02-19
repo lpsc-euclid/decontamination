@@ -175,9 +175,9 @@ class SOM_Online(som_abstract.SOM_Abstract):
         n_vectors : int, default: **None**
             Optional number of vectors to train for.
         stop_quantization_error : float, default: **None**
-            Stops the training if quantization_error < stop_quantization_error.
+            Stops training if quantization_error < stop_quantization_error.
         stop_topographic_error : float, default: **None**
-            Stops the training if topographic_error < stop_topographic_error.
+            Stops training if topographic_error < stop_topographic_error.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**

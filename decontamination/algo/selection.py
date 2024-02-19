@@ -407,7 +407,7 @@ class Selection(object):
 
         elif isinstance(node, Selection.NumberNode):
 
-            return node.value
+            return str(float(node.value))
 
         ################################################################################################################
         # COLUMN                                                                                                       #

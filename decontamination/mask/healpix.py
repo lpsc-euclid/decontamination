@@ -138,9 +138,9 @@ def rms_bit_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray
 
     ####################################################################################################################
 
-    result_rms = np.where(result_cov != 0.0, result_rms / result_cov, UNSEEN)
-    result_bit = np.where(result_cov != 0.0, result_bit, 0xFFFFFFFF)
-    result_cov = np.where(result_hit != 0.0, result_cov / result_hit, 0.0000)
+    result_rms = np.where(result_cov > 0.0, result_rms / result_cov, UNSEEN)
+    result_bit = np.where(result_cov > 0.0, result_bit, 0xFFFFFFFF)
+    result_cov = np.where(result_hit > 0.0, result_cov / result_hit, 0.0000)
 
     ####################################################################################################################
 
@@ -219,7 +219,7 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
 
     ####################################################################################################################
 
-    return np.where(result_hit != 0.0, result_xxx / result_hit, UNSEEN)
+    return np.where(result_hit > 0.0, result_xxx / result_hit, UNSEEN)
 
 ########################################################################################################################
 

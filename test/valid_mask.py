@@ -75,10 +75,10 @@ def test_pix2world():
 
         print(f'\ndelta_time: {delta_time:.4e}')
 
-        decontamination.display_healpix(nside, tile, rms)
-        plt.show()
-        #decontamination.display_healpix(nside, tile, bit)
+        #decontamination.display_healpix(nside, tile, rms)
         #plt.show()
+        decontamination.display_healpix(nside, tile, np.where(bit > 0, np.log2(bit), 0))
+        plt.show()
         #decontamination.display_healpix(nside, tile, cov)
         #plt.show()
 

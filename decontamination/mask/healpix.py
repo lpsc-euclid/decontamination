@@ -100,7 +100,7 @@ def rms_bit_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray
     ####################################################################################################################
 
     if bit_image is None:
-        bit_image_dtype = np.int32
+        bit_image_dtype = np.uint32
     else:
         bit_image_dtype = bit_image.dtype
 

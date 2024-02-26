@@ -11,3 +11,4 @@ __pycache__
 /coverage.xml
 
 *.hdf5
+*.png

@@ -303,8 +303,6 @@ def _worker1(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
 
 def _worker2(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_footprint_indices, j1, j2, xxx_image, xxx_image_scale, show_progress_bar):
 
-    print(j1, j2)
-
     ####################################################################################################################
 
     result_xxx = np.zeros_like(footprint, dtype = xxx_image.dtype)
@@ -316,13 +314,13 @@ def _worker2(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
 
     y = np.empty(xxx_image.shape[1], dtype = np.int64)
 
-    x = np.round(xxx_image_scale * x).astype(np.int64)
+    x = xxx_image_scale * x
 
     for j in tqdm.tqdm(range(j1, j2), disable = not show_progress_bar):
 
         ################################################################################################################
 
-        y.fill(np.round(xxx_image_scale * j).astype(np.int64))
+        y.fill(xxx_image_scale * j)
 
         ra, dec = wcs.all_pix2world(x, y, 0, ra_dec_order = True)
 

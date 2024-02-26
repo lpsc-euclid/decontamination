@@ -48,7 +48,7 @@ def test_pix2world():
         bit_data.byteswap(inplace = True)
         bit_data = bit_data.newbyteorder()
 
-    wcs = decontamination.WCS.from_fits_header(header, healpix_convention = True)
+    wcs = decontamination.WCS(header, healpix_convention = True)
 
     n_threads = 4
 

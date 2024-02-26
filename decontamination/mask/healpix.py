@@ -258,7 +258,7 @@ def _worker1(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
 
         y.fill(j)
 
-        ra, dec = wcs.all_pix2world(x, y, ra_dec_order = True)
+        ra, dec = wcs.all_pix2world(x, y, 0, ra_dec_order = True)
 
         pixels = ang2pix(nside, ra, dec, lonlat = True)
 
@@ -296,7 +296,7 @@ def _worker2(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
 
         y.fill(np.round(xxx_image_scale * j))
 
-        ra, dec = wcs.all_pix2world(x, y, ra_dec_order = True)
+        ra, dec = wcs.all_pix2world(x, y, 0, ra_dec_order = True)
 
         pixels = ang2pix(nside, ra, dec, lonlat = True)
 

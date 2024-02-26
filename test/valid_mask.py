@@ -66,7 +66,7 @@ def test_pix2world():
     ####################################################################################################################
 
     t1 = time.perf_counter()
-    img = decontamination.image_to_healpix(wcs, nside, tile, img_data, quadratic = True, n_threads = n_threads, show_progress_bar = True)
+    img = decontamination.image_to_healpix(wcs, nside, tile, img_data, quadratic = False, n_threads = n_threads, show_progress_bar = True)
     t2 = time.perf_counter()
 
     print(f'\ndelta_time: {t2 - t1:.4e}')

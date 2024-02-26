@@ -116,22 +116,30 @@ def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: n
             result_hit += tmp_hit
 
     ####################################################################################################################
+    # NORMALIZE RMS, BIT AND COVERAGE MASKS                                                                            #
+    ####################################################################################################################
+
+    has_cov = result_cov > 0.0
+
+    ####################################################################################################################
 
     old_settings = np.seterr(divide = 'ignore', invalid = 'ignore')
 
-    result_rms = np.where(result_cov > 0.0, result_rms / result_cov, UNSEEN)
-    result_bit = np.where(result_cov > 0.0, result_bit, 0xFFFFFFFF)
-    result_cov = np.where(result_hit > 0.0, result_cov / result_hit, 0.0000)
+    result_rms = np.where(has_cov, result_rms / result_cov, UNSEEN)
+    result_bit = np.where(has_cov, result_bit, 0xFFFFFFFF)
+    result_cov = np.where(has_cov, result_cov / result_hit, 0.0000)
+
+    result_rms[has_cov] = np.sqrt(result_rms[has_cov])
 
     np.seterr(**old_settings)
 
     ####################################################################################################################
 
-    return np.sqrt(result_rms), result_bit, result_cov
+    return result_rms, result_bit, result_cov
 
 ########################################################################################################################
 
-def image_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, xxx_image: np.ndarray, xxx_image_scale: float = 1.0, n_threads: int = 1, show_progress_bar: bool = False) -> np.ndarray:
+def image_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, xxx_image: np.ndarray, xxx_image_scale: float = 1.0, quadratic: bool = False, n_threads: int = 1, show_progress_bar: bool = False) -> np.ndarray:
 
     """
     Projects the given image into a HEALPix footprint. **Nested ordering only.**
@@ -148,6 +156,8 @@ def image_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, xxx_image: np.
         2d image to be projected into the footprint.
     xxx_image_scale : int, default: **1.0**
         Scale so that the image size coincides with the WCS (>= 1.0).
+    quadratic : bool, default: False
+        ???.
     n_threads : int, default: 1
         Number of threads.
     show_progress_bar : bool, default = **False**
@@ -173,6 +183,12 @@ def image_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, xxx_image: np.
 
     ####################################################################################################################
     # BUILD MASKS                                                                                                      #
+    ####################################################################################################################
+
+    if quadratic:
+
+        xxx_image = np.square(xxx_image)
+
     ####################################################################################################################
 
     result_xxx = np.zeros_like(footprint, dtype = xxx_image.dtype)
@@ -213,10 +229,20 @@ def image_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, xxx_image: np.
             result_hit += tmp_hit
 
     ####################################################################################################################
+    # NORMALIZE MASKS                                                                                                  #
+    ####################################################################################################################
+
+    has_hit = result_hit > 0.0
+
+    ####################################################################################################################
 
     old_settings = np.seterr(divide = 'ignore', invalid = 'ignore')
 
-    result_xxx = np.where(result_hit > 0.0, result_xxx / result_hit, UNSEEN)
+    result_xxx = np.where(has_hit, result_xxx / result_hit, UNSEEN)
+
+    if quadratic:
+
+        result_xxx[has_hit] = np.sqrt(result_xxx[has_hit])
 
     np.seterr(**old_settings)
 
@@ -250,7 +276,7 @@ def _worker1(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
 
     y = np.empty(rms_image.shape[1], dtype = np.int64)
 
-    # = np.round(1.0000000000000 * x)
+    # = 1.0000000000000 * x
 
     for j in tqdm.tqdm(range(j1, j2), disable = not show_progress_bar):
 
@@ -277,6 +303,8 @@ def _worker1(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
 
 def _worker2(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_footprint_indices, j1, j2, xxx_image, xxx_image_scale, show_progress_bar):
 
+    print(j1, j2)
+
     ####################################################################################################################
 
     result_xxx = np.zeros_like(footprint, dtype = xxx_image.dtype)
@@ -288,13 +316,13 @@ def _worker2(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
 
     y = np.empty(xxx_image.shape[1], dtype = np.int64)
 
-    x = np.round(xxx_image_scale * x)
+    x = np.round(xxx_image_scale * x).astype(np.int64)
 
     for j in tqdm.tqdm(range(j1, j2), disable = not show_progress_bar):
 
         ################################################################################################################
 
-        y.fill(np.round(xxx_image_scale * j))
+        y.fill(np.round(xxx_image_scale * j).astype(np.int64))
 
         ra, dec = wcs.all_pix2world(x, y, 0, ra_dec_order = True)
 

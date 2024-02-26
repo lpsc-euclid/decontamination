@@ -53,6 +53,7 @@ Dependencies
 * [numba](https://numba.pydata.org/)
 * [scipy](https://scipy.org/)
 * [healpy](https://healpy.readthedocs.io/)
+* [astropy](https://www.astropy.org/)
 * [matplotlib](https://matplotlib.org/)
 
 And optionally:

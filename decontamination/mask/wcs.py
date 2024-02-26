@@ -17,9 +17,13 @@ from astropy.wcs import WCS as AstropyWCS
 
 class WCS:
 
+    """Thread-safe and HEALPix compliant World Coordinate System (WCS)"""
+
     ####################################################################################################################
 
     def __init__(self, ctype1: str, ctype2: str, cunit1: str, cunit2: str, crpix1: int, crpix2: int, crval1: float, crval2: float, cd1_1: float, cd1_2: float, cd2_1: float, cd2_2: float, healpix_convention: bool = True):
+
+        """???"""
 
         ################################################################################################################
 
@@ -58,6 +62,8 @@ class WCS:
     @staticmethod
     def from_fits_header(header, healpix_convention: bool = True) -> 'WCS':
 
+        """???"""
+
         return WCS(
             header['CTYPE1'], header['CTYPE2'],
             header['CUNIT1'], header['CUNIT2'],
@@ -73,11 +79,15 @@ class WCS:
     @property
     def wcs(self):
 
+        """???"""
+
         return self._astropy_wcs.wcs
 
     ####################################################################################################################
 
     def all_pix2world(self, x: np.ndarray, y: np.ndarray, ra_dec_order: bool = False) -> typing.Tuple[np.ndarray, np.ndarray]:
+
+        """???"""
 
         with self._mutex:
 
@@ -86,6 +96,8 @@ class WCS:
     ####################################################################################################################
 
     def all_world2pix(self, θ: np.ndarray, ϕ: np.ndarray, ra_dec_order: bool = False) -> typing.Tuple[np.ndarray, np.ndarray]:
+
+        """???"""
 
         with self._mutex:
 

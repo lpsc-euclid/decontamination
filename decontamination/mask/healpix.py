@@ -12,48 +12,14 @@ import typing
 import numpy as np
 import numba as nb
 
+import concurrent.futures
+
+from .wcs import WCS
 from ..hp import UNSEEN, ang2pix
 
 ########################################################################################################################
 
-def build_healpix_wcs(wcs: 'astropy.wcs.WCS') -> 'astropy.wcs.WCS':
-
-    """
-    Adjusts the provided World Coordinate System (WCS) object to perform proper HEALPix projections.
-
-    Parameters
-    ----------
-    wcs : WCS
-        The original WCS object.
-
-    Returns
-    -------
-    WCS
-        The modified WCS object.
-    """
-
-    ################################################################################################################
-
-    result = wcs.copy()
-
-    ################################################################################################################
-
-    # On HEALPix, we want the value at the pixel center.
-
-    v = np.array([[
-        wcs.wcs.crpix[0] - 0.5,
-        wcs.wcs.crpix[1] - 0.5,
-    ]], dtype = wcs.wcs.crval.dtype)
-
-    result.wcs.crval = wcs.all_pix2world(v, 0)[0]
-
-    ################################################################################################################
-
-    return result
-
-########################################################################################################################
-
-def rms_bit_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, rms_image: np.ndarray, bit_image: typing.Optional[np.ndarray] = None, rms_selection: float = 1.0e4, bit_selection: int = 0x00, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: np.ndarray, bit_image: typing.Optional[np.ndarray] = None, rms_selection: float = 1.0e4, bit_selection: int = 0, n_threads: int = 1, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
     """
     Projects RMS (aka. noise) and bit (aka. data quality) images into a HEALPix footprint. **Nested ordering only.**
@@ -61,7 +27,7 @@ def rms_bit_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray
     Parameters
     ----------
     wcs : WCS
-        The modified WCS object (see :func:`build_healpix_wcs`).
+        The WCS in HEALPix mode.
     nside : int
         The HEALPix nside parameter.
     footprint : np.ndarray
@@ -74,6 +40,8 @@ def rms_bit_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray
         Reject the pixel if RMS == 0 or RMS >= rms_selection.
     bit_selection : int, default: **0x00**
         Reject the pixel if (bit & bit_selection) != 0x00.
+    n_threads : int, default: 1
+        Number of threads.
     show_progress_bar : bool, default = **False**
         Specifies whether to display a progress bar.
 
@@ -96,7 +64,7 @@ def rms_bit_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray
     sorted_footprint_indices = np.argsort(footprint)
 
     ####################################################################################################################
-    # BUILD MASKS                                                                                                      #
+    # BUILD RMS, BIT AND COVERAGE MASKS                                                                                #
     ####################################################################################################################
 
     if bit_image is None:
@@ -104,7 +72,7 @@ def rms_bit_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray
     else:
         bit_image_dtype = bit_image.dtype
 
-    ####################################################################################################################
+    ################################################################################################################
 
     result_rms = np.zeros_like(footprint, dtype = rms_image.dtype)
     result_bit = np.zeros_like(footprint, dtype = bit_image_dtype)
@@ -113,34 +81,49 @@ def rms_bit_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray
 
     ####################################################################################################################
 
-    x = np.arange(rms_image.shape[1], dtype = np.int64)
+    rows_per_thread = rms_image.shape[0] // n_threads
 
-    y = np.empty(rms_image.shape[1], dtype = np.int64)
+    with concurrent.futures.ThreadPoolExecutor(max_workers = n_threads) as executor:
+
+        futures = []
+
+        for i in range(n_threads):
+
+            j2 = (i + 1) * rows_per_thread \
+                if i < n_threads - 1 else rms_image.shape[0]
+            j1 = (i + 0) * rows_per_thread
+
+            futures.append(executor.submit(
+                _worker1,
+                wcs,
+                nside,
+                footprint,
+                sorted_footprint_pixels,
+                sorted_footprint_indices,
+                j1, j2,
+                rms_image, bit_image,
+                rms_selection, bit_selection,
+                show_progress_bar
+            ))
+
+        for future in concurrent.futures.as_completed(futures):
+
+            tmp_rms, tmp_bit, tmp_cov, tmp_hit = future.result()
+
+            result_rms += tmp_rms
+            result_bit |= tmp_bit
+            result_cov += tmp_cov
+            result_hit += tmp_hit
 
     ####################################################################################################################
 
-    for j in tqdm.tqdm(range(rms_image.shape[0]), disable = not show_progress_bar):
-
-        ################################################################################################################
-
-        y.fill(j)
-
-        ra, dec = wcs.all_pix2world(x, y, 0, ra_dec_order = True)
-
-        pixels = ang2pix(nside, ra, dec, lonlat = True)
-
-        ################################################################################################################
-
-        if bit_image is None:
-            _project1(result_rms, result_cov, result_hit, sorted_footprint_pixels, sorted_footprint_indices, pixels, rms_image[j], rms_selection)
-        else:
-            _project2(result_rms, result_bit, result_cov, result_hit, sorted_footprint_pixels, sorted_footprint_indices, pixels, rms_image[j], bit_image[j], rms_selection, bit_selection)
-
-    ####################################################################################################################
+    old_settings = np.seterr(divide = 'ignore', invalid = 'ignore')
 
     result_rms = np.where(result_cov > 0.0, result_rms / result_cov, UNSEEN)
     result_bit = np.where(result_cov > 0.0, result_bit, 0xFFFFFFFF)
     result_cov = np.where(result_hit > 0.0, result_cov / result_hit, 0.0000)
+
+    np.seterr(**old_settings)
 
     ####################################################################################################################
 
@@ -148,7 +131,7 @@ def rms_bit_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray
 
 ########################################################################################################################
 
-def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, xxx_image: np.ndarray, xxx_image_scale: float = 1.0, show_progress_bar: bool = False) -> np.ndarray:
+def image_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, xxx_image: np.ndarray, xxx_image_scale: float = 1.0, n_threads: int = 1, show_progress_bar: bool = False) -> np.ndarray:
 
     """
     Projects the given image into a HEALPix footprint. **Nested ordering only.**
@@ -156,7 +139,7 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
     Parameters
     ----------
     wcs : WCS
-        The modified WCS object (see :func:`build_healpix_wcs`).
+        The WCS in HEALPix mode.
     nside : int
         The HEALPix nside parameter.
     footprint : np.ndarray
@@ -165,6 +148,8 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
         2d image to be projected into the footprint.
     xxx_image_scale : int, default: **1.0**
         Scale so that the image size coincides with the WCS (>= 1.0).
+    n_threads : int, default: 1
+        Number of threads.
     show_progress_bar : bool, default = **False**
         Specifies whether to display a progress bar.
 
@@ -190,11 +175,107 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
     # BUILD MASKS                                                                                                      #
     ####################################################################################################################
 
-    x = np.arange(xxx_image.shape[1], dtype = np.float64)
+    result_xxx = np.zeros_like(footprint, dtype = xxx_image.dtype)
+    result_hit = np.zeros_like(footprint, dtype = xxx_image.dtype)
 
-    y = np.empty(xxx_image.shape[1], dtype = np.float64)
+    ####################################################################################################################
 
-    x = np.round(xxx_image_scale * x)
+    rows_per_thread = xxx_image.shape[0] // n_threads
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers = n_threads) as executor:
+
+        futures = []
+
+        for i in range(n_threads):
+
+            j2 = (i + 1) * rows_per_thread \
+                if i < n_threads - 1 else xxx_image.shape[0]
+            j1 = (i + 0) * rows_per_thread
+
+            futures.append(executor.submit(
+                _worker2,
+                wcs,
+                nside,
+                footprint,
+                sorted_footprint_pixels,
+                sorted_footprint_indices,
+                j1, j2,
+                xxx_image,
+                xxx_image_scale,
+                show_progress_bar
+            ))
+
+        for future in concurrent.futures.as_completed(futures):
+
+            tmp_xxx, tmp_hit = future.result()
+
+            result_xxx += tmp_xxx
+            result_hit += tmp_hit
+
+    ####################################################################################################################
+
+    old_settings = np.seterr(divide = 'ignore', invalid = 'ignore')
+
+    result_xxx = np.where(result_hit > 0.0, result_xxx / result_hit, UNSEEN)
+
+    np.seterr(**old_settings)
+
+    ####################################################################################################################
+
+    return result_xxx
+
+########################################################################################################################
+# WORKERS                                                                                                              #
+########################################################################################################################
+
+def _worker1(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_footprint_indices, j1, j2, rms_image, bit_image, rms_selection, bit_selection, show_progress_bar):
+
+    ####################################################################################################################
+
+    if bit_image is None:
+        bit_image_dtype = np.uint32
+    else:
+        bit_image_dtype = bit_image.dtype
+
+    ####################################################################################################################
+
+    result_rms = np.zeros_like(footprint, dtype = rms_image.dtype)
+    result_bit = np.zeros_like(footprint, dtype = bit_image_dtype)
+    result_cov = np.zeros_like(footprint, dtype = rms_image.dtype)
+    result_hit = np.zeros_like(footprint, dtype = rms_image.dtype)
+
+    ####################################################################################################################
+
+    x = np.arange(rms_image.shape[1], dtype = np.int64)
+
+    y = np.empty(rms_image.shape[1], dtype = np.int64)
+
+    # = np.round(1.0000000000000 * x)
+
+    for j in tqdm.tqdm(range(j1, j2), disable = not show_progress_bar):
+
+        ################################################################################################################
+
+        y.fill(j)
+
+        ra, dec = wcs.all_pix2world(x, y, ra_dec_order = True)
+
+        pixels = ang2pix(nside, ra, dec, lonlat = True)
+
+        ################################################################################################################
+
+        if bit_image is None:
+            _project1(result_rms, result_cov, result_hit, sorted_footprint_pixels, sorted_footprint_indices, pixels, rms_image[j], rms_selection)
+        else:
+            _project2(result_rms, result_bit, result_cov, result_hit, sorted_footprint_pixels, sorted_footprint_indices, pixels, rms_image[j], bit_image[j], rms_selection, bit_selection)
+
+    ################################################################################################################
+
+    return result_rms, result_bit, result_cov, result_hit
+
+########################################################################################################################
+
+def _worker2(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_footprint_indices, j1, j2, xxx_image, xxx_image_scale, show_progress_bar):
 
     ####################################################################################################################
 
@@ -203,13 +284,19 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
 
     ####################################################################################################################
 
-    for j in tqdm.tqdm(range(xxx_image.shape[0]), disable = not show_progress_bar):
+    x = np.arange(xxx_image.shape[1], dtype = np.int64)
+
+    y = np.empty(xxx_image.shape[1], dtype = np.int64)
+
+    x = np.round(xxx_image_scale * x)
+
+    for j in tqdm.tqdm(range(j1, j2), disable = not show_progress_bar):
 
         ################################################################################################################
 
         y.fill(np.round(xxx_image_scale * j))
 
-        ra, dec = wcs.all_pix2world(x.astype(np.int64), y.astype(np.int64), 0, ra_dec_order = True)
+        ra, dec = wcs.all_pix2world(x, y, ra_dec_order = True)
 
         pixels = ang2pix(nside, ra, dec, lonlat = True)
 
@@ -217,10 +304,12 @@ def image_to_healpix(wcs: 'astropy.wcs.WCS', nside: int, footprint: np.ndarray, 
 
         _project3(result_xxx, result_hit, sorted_footprint_pixels, sorted_footprint_indices, pixels, xxx_image[j])
 
-    ####################################################################################################################
+    ################################################################################################################
 
-    return np.where(result_hit > 0.0, result_xxx / result_hit, UNSEEN)
+    return result_xxx, result_hit
 
+########################################################################################################################
+# PROJECTORS                                                                                                           #
 ########################################################################################################################
 
 @nb.njit(fastmath = True)

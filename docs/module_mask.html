@@ -76,33 +76,13 @@
 <section id="module-decontamination.mask.healpix">
 <span id="healpix-masks"></span><h2>HEALPix masks<a class="headerlink" href="#module-decontamination.mask.healpix" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="decontamination.mask.healpix.build_healpix_wcs">
-<span class="sig-prename descclassname"><span class="pre">decontamination.mask.healpix.</span></span><span class="sig-name descname"><span class="pre">build_healpix_wcs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wcs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">astropy.wcs.WCS</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">astropy.wcs.WCS</span></span></span><a class="headerlink" href="#decontamination.mask.healpix.build_healpix_wcs" title="Link to this definition">¶</a></dt>
-<dd><p>Adjusts the provided World Coordinate System (WCS) object to perform proper HEALPix projections.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>wcs</strong><span class="classifier">WCS</span></dt><dd><p>The original WCS object.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>WCS</dt><dd><p>The modified WCS object.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="decontamination.mask.healpix.rms_bit_to_healpix">
-<span class="sig-prename descclassname"><span class="pre">decontamination.mask.healpix.</span></span><span class="sig-name descname"><span class="pre">rms_bit_to_healpix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wcs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">astropy.wcs.WCS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rms_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bit_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rms_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bit_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.mask.healpix.rms_bit_to_healpix" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">decontamination.mask.healpix.</span></span><span class="sig-name descname"><span class="pre">rms_bit_to_healpix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wcs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">WCS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rms_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bit_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rms_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bit_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.mask.healpix.rms_bit_to_healpix" title="Link to this definition">¶</a></dt>
 <dd><p>Projects RMS (aka. noise) and bit (aka. data quality) images into a HEALPix footprint. <strong>Nested ordering only.</strong></p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>wcs</strong><span class="classifier">WCS</span></dt><dd><p>The modified WCS object (see <a class="reference internal" href="#decontamination.mask.healpix.build_healpix_wcs" title="decontamination.mask.healpix.build_healpix_wcs"><code class="xref py py-func docutils literal notranslate"><span class="pre">build_healpix_wcs()</span></code></a>).</p>
+<dt><strong>wcs</strong><span class="classifier">WCS</span></dt><dd><p>The WCS in HEALPix mode.</p>
 </dd>
 <dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
 </dd>
@@ -115,6 +95,8 @@
 <dt><strong>rms_selection</strong><span class="classifier">float, default: <strong>1.0e4</strong></span></dt><dd><p>Reject the pixel if RMS == 0 or RMS &gt;= rms_selection.</p>
 </dd>
 <dt><strong>bit_selection</strong><span class="classifier">int, default: <strong>0x00</strong></span></dt><dd><p>Reject the pixel if (bit &amp; bit_selection) != 0x00.</p>
+</dd>
+<dt><strong>n_threads</strong><span class="classifier">int, default: 1</span></dt><dd><p>Number of threads.</p>
 </dd>
 <dt><strong>show_progress_bar</strong><span class="classifier">bool, default = <strong>False</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
@@ -135,12 +117,12 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.mask.healpix.image_to_healpix">
-<span class="sig-prename descclassname"><span class="pre">decontamination.mask.healpix.</span></span><span class="sig-name descname"><span class="pre">image_to_healpix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wcs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">astropy.wcs.WCS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xxx_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xxx_image_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.mask.healpix.image_to_healpix" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">decontamination.mask.healpix.</span></span><span class="sig-name descname"><span class="pre">image_to_healpix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wcs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">WCS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xxx_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xxx_image_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.mask.healpix.image_to_healpix" title="Link to this definition">¶</a></dt>
 <dd><p>Projects the given image into a HEALPix footprint. <strong>Nested ordering only.</strong></p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>wcs</strong><span class="classifier">WCS</span></dt><dd><p>The modified WCS object (see <a class="reference internal" href="#decontamination.mask.healpix.build_healpix_wcs" title="decontamination.mask.healpix.build_healpix_wcs"><code class="xref py py-func docutils literal notranslate"><span class="pre">build_healpix_wcs()</span></code></a>).</p>
+<dt><strong>wcs</strong><span class="classifier">WCS</span></dt><dd><p>The WCS in HEALPix mode.</p>
 </dd>
 <dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
 </dd>
@@ -149,6 +131,8 @@
 <dt><strong>xxx_image</strong><span class="classifier">np.ndarray</span></dt><dd><p>2d image to be projected into the footprint.</p>
 </dd>
 <dt><strong>xxx_image_scale</strong><span class="classifier">int, default: <strong>1.0</strong></span></dt><dd><p>Scale so that the image size coincides with the WCS (&gt;= 1.0).</p>
+</dd>
+<dt><strong>n_threads</strong><span class="classifier">int, default: 1</span></dt><dd><p>Number of threads.</p>
 </dd>
 <dt><strong>show_progress_bar</strong><span class="classifier">bool, default = <strong>False</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
@@ -263,6 +247,9 @@
 </dd></dl>
 
 </section>
+<section id="module-decontamination.mask.wcs">
+<span id="world-coordinate-system-wcs"></span><h2>World Coordinate System (WCS)<a class="headerlink" href="#module-decontamination.mask.wcs" title="Link to this heading">¶</a></h2>
+</section>
 </section>
 
 
@@ -280,7 +267,6 @@
     <ul>
 <li><a class="reference internal" href="#">Module decontamination.mask</a><ul>
 <li><a class="reference internal" href="#module-decontamination.mask.healpix">HEALPix masks</a><ul>
-<li><a class="reference internal" href="#decontamination.mask.healpix.build_healpix_wcs"><code class="docutils literal notranslate"><span class="pre">build_healpix_wcs()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.mask.healpix.rms_bit_to_healpix"><code class="docutils literal notranslate"><span class="pre">rms_bit_to_healpix()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.mask.healpix.image_to_healpix"><code class="docutils literal notranslate"><span class="pre">image_to_healpix()</span></code></a></li>
 </ul>
@@ -292,6 +278,7 @@
 <li><a class="reference internal" href="#decontamination.mask.moc.wmoc_to_healpix"><code class="docutils literal notranslate"><span class="pre">wmoc_to_healpix()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#module-decontamination.mask.wcs">World Coordinate System (WCS)</a></li>
 </ul>
 </li>
 </ul>

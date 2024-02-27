@@ -108,35 +108,11 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.generator.generator_uniform.Generator_Uniform.generate" title="decontamination.generator.generator_uniform.Generator_Uniform.generate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate</span></code></a>([mean_density, n_max_per_batch])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate</span></code>([mean_density, n_max_per_batch])</p></td>
 <td><p>Iterator that yields uniform galaxy positions.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.generator.generator_uniform.Generator_Uniform.generate">
-<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean_density</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max_per_batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.generator.generator_uniform.Generator_Uniform.generate" title="Link to this definition">¶</a></dt>
-<dd><p>Iterator that yields uniform galaxy positions.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>mean_density</strong><span class="classifier">float, default: <strong>10.0</strong></span></dt><dd><p>Mean number of galaxies per HEALPix pixel.</p>
-</dd>
-<dt><strong>n_max_per_batch</strong><span class="classifier">int, default: <strong>None</strong></span></dt><dd><p>Optional maximum number of galaxy positions to yield in one batch.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>np.ndarray</dt><dd><p>Galaxy catalog longitudes (in degrees).</p>
-</dd>
-<dt>np.ndarray</dt><dd><p>Galaxy catalog latitudes (in degrees).</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <span class="target" id="module-decontamination.generator.generator_number_density"></span><dl class="py class">
@@ -163,37 +139,11 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.generator.generator_number_density.Generator_NumberDensity.generate" title="decontamination.generator.generator_number_density.Generator_NumberDensity.generate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate</span></code></a>(number_density_map[, mult_factor, ...])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate</span></code>(number_density_map[, mult_factor, ...])</p></td>
 <td><p>Iterator that yields galaxy positions from a density map.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.generator.generator_number_density.Generator_NumberDensity.generate">
-<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_density_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mult_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max_per_batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.generator.generator_number_density.Generator_NumberDensity.generate" title="Link to this definition">¶</a></dt>
-<dd><p>Iterator that yields galaxy positions from a density map.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>number_density_map</strong><span class="classifier">np.ndarray</span></dt><dd><p>Number of galaxies per HEALPix pixels.</p>
-</dd>
-<dt><strong>mult_factor</strong><span class="classifier">float, default: <strong>10.0</strong></span></dt><dd><p>Optional statistics multiplication factor.</p>
-</dd>
-<dt><strong>n_max_per_batch</strong><span class="classifier">int, default: <strong>None</strong></span></dt><dd><p>Optional maximum number of galaxy positions to yield in one batch.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>np.ndarray</dt><dd><p>Galaxy catalog longitudes (in degrees).</p>
-</dd>
-<dt>np.ndarray</dt><dd><p>Galaxy catalog latitudes (in degrees).</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 </section>
@@ -217,35 +167,11 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.generator.generator_fullsky_uniform.Generator_FullSkyUniform.generate" title="decontamination.generator.generator_fullsky_uniform.Generator_FullSkyUniform.generate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate</span></code></a>(mean_density[, n_max_per_batch])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate</span></code>(mean_density[, n_max_per_batch])</p></td>
 <td><p>Iterator that yields uniform galaxy positions.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.generator.generator_fullsky_uniform.Generator_FullSkyUniform.generate">
-<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean_density</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max_per_batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.generator.generator_fullsky_uniform.Generator_FullSkyUniform.generate" title="Link to this definition">¶</a></dt>
-<dd><p>Iterator that yields uniform galaxy positions.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>mean_density</strong><span class="classifier">float, default: <strong>10.0</strong></span></dt><dd><p>Mean number of galaxies per HEALPix pixel.</p>
-</dd>
-<dt><strong>n_max_per_batch</strong><span class="classifier">int, default: <strong>None</strong></span></dt><dd><p>Optional maximum number of galaxy positions to yield in one batch.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>np.ndarray</dt><dd><p>Galaxy catalog longitudes (in degrees).</p>
-</dd>
-<dt>np.ndarray</dt><dd><p>Galaxy catalog latitudes (in degrees).</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 </section>
@@ -266,21 +192,12 @@
     <ul>
 <li><a class="reference internal" href="#">Module decontamination.generator</a><ul>
 <li><a class="reference internal" href="#module-decontamination.generator.generator_uniform">Galaxy generators - footprint</a><ul>
-<li><a class="reference internal" href="#decontamination.generator.generator_uniform.Generator_Uniform"><code class="docutils literal notranslate"><span class="pre">Generator_Uniform</span></code></a><ul>
-<li><a class="reference internal" href="#decontamination.generator.generator_uniform.Generator_Uniform.generate"><code class="docutils literal notranslate"><span class="pre">Generator_Uniform.generate()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#decontamination.generator.generator_number_density.Generator_NumberDensity"><code class="docutils literal notranslate"><span class="pre">Generator_NumberDensity</span></code></a><ul>
-<li><a class="reference internal" href="#decontamination.generator.generator_number_density.Generator_NumberDensity.generate"><code class="docutils literal notranslate"><span class="pre">Generator_NumberDensity.generate()</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#decontamination.generator.generator_uniform.Generator_Uniform"><code class="docutils literal notranslate"><span class="pre">Generator_Uniform</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.generator.generator_number_density.Generator_NumberDensity"><code class="docutils literal notranslate"><span class="pre">Generator_NumberDensity</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-decontamination.generator.generator_fullsky_uniform">Galaxy generators - full-sky</a><ul>
-<li><a class="reference internal" href="#decontamination.generator.generator_fullsky_uniform.Generator_FullSkyUniform"><code class="docutils literal notranslate"><span class="pre">Generator_FullSkyUniform</span></code></a><ul>
-<li><a class="reference internal" href="#decontamination.generator.generator_fullsky_uniform.Generator_FullSkyUniform.generate"><code class="docutils literal notranslate"><span class="pre">Generator_FullSkyUniform.generate()</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#decontamination.generator.generator_fullsky_uniform.Generator_FullSkyUniform"><code class="docutils literal notranslate"><span class="pre">Generator_FullSkyUniform</span></code></a></li>
 </ul>
 </li>
 </ul>

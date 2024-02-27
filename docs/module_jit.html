@@ -73,6 +73,11 @@
   <section id="module-decontamination.jit">
 <span id="module-decontamination-jit"></span><h1>Module decontamination.jit<a class="headerlink" href="#module-decontamination.jit" title="Link to this heading">¶</a></h1>
 <dl class="py function">
+<dt class="sig sig-object py" id="decontamination.jit.nb_to_device">
+<span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">nb_to_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.nb_to_device" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="decontamination.jit.device_array_from">
 <span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">device_array_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.device_array_from" title="Link to this definition">¶</a></dt>
 <dd><p>New device array (see <a class="reference internal" href="#decontamination.jit.DeviceArray" title="decontamination.jit.DeviceArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeviceArray</span></code></a>), initialized from a Numpy ndarray.</p>
@@ -155,9 +160,9 @@
 </dd>
 <dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference internal" href="#decontamination.jit.DeviceArray.dtype" title="decontamination.jit.DeviceArray.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></dt><dd><p>Data-type of the array.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></dt><dd><p>Data-type of the array.</p>
 </dd>
-<dt><a class="reference internal" href="#decontamination.jit.DeviceArray.shape" title="decontamination.jit.DeviceArray.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></dt><dd><p>Shape of the array.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></dt><dd><p>Shape of the array.</p>
 </dd>
 </dl>
 </dd>
@@ -165,29 +170,22 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.jit.DeviceArray.copy_to_host" title="decontamination.jit.DeviceArray.copy_to_host"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_to_host</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_to_host</span></code>()</p></td>
 <td><p>Create a new Numpy ndarray from the underlying device ndarray.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.jit.DeviceArray.shape">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#decontamination.jit.DeviceArray.shape" title="Link to this definition">¶</a></dt>
-<dd><p>Shape of the array.</p>
 </dd></dl>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.jit.DeviceArray.dtype">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dtype</span></span><a class="headerlink" href="#decontamination.jit.DeviceArray.dtype" title="Link to this definition">¶</a></dt>
-<dd><p>Data-type of the array.</p>
-</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="decontamination.jit.dont_call">
+<span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">dont_call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.dont_call" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.jit.DeviceArray.copy_to_host">
-<span class="sig-name descname"><span class="pre">copy_to_host</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.jit.DeviceArray.copy_to_host" title="Link to this definition">¶</a></dt>
-<dd><p>Create a new Numpy ndarray from the underlying device ndarray.</p>
-</dd></dl>
-
+<dl class="py class">
+<dt class="sig sig-object py" id="decontamination.jit.Kernel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">Kernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cpu_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fastmath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.Kernel" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd></dl>
 
 <dl class="py class">
@@ -215,115 +213,37 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(funct)</p></td>
 <td><p>Call self as a function.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.jit.jit.atomic_add" title="decontamination.jit.jit.atomic_add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atomic_add</span></code></a>(array, idx, val)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">atomic_add</span></code>(array, idx, val)</p></td>
 <td><p>Performs atomic <cite>array[idx] += val</cite> and returns the old value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.jit.jit.atomic_sub" title="decontamination.jit.jit.atomic_sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atomic_sub</span></code></a>(array, idx, val)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">atomic_sub</span></code>(array, idx, val)</p></td>
 <td><p>Performs atomic <cite>array[idx] -= val</cite> and returns the old value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.jit.jit.grid" title="decontamination.jit.jit.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code></a>(ndim)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code>(ndim)</p></td>
 <td><p>Return the absolute position of the current thread in the entire grid of blocks.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.jit.jit.local_empty" title="decontamination.jit.jit.local_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_empty</span></code></a>(shape[, dtype])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_empty</span></code>(shape[, dtype])</p></td>
 <td><p>Allocate an empty device ndarray in the local memory.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.jit.jit.shared_empty" title="decontamination.jit.jit.shared_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shared_empty</span></code></a>(shape[, dtype])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">shared_empty</span></code>(shape[, dtype])</p></td>
 <td><p>Allocate an empty device ndarray in the shared memory.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.jit.jit.syncthreads" title="decontamination.jit.jit.syncthreads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">syncthreads</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">syncthreads</span></code>()</p></td>
 <td><p>Synchronize all threads in the same thread block.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.jit.jit.grid">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ndim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span></span><a class="headerlink" href="#decontamination.jit.jit.grid" title="Link to this definition">¶</a></dt>
-<dd><p>Return the absolute position of the current thread in the entire grid of blocks. Use on GPU only.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>ndim</strong><span class="classifier">int</span></dt><dd><p>Number of dimensions.</p>
-</dd>
-</dl>
-</dd>
-</dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.jit.jit.local_empty">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_empty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape:</span> <span class="pre">tuple</span> <span class="pre">|</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.jit.jit.local_empty" title="Link to this definition">¶</a></dt>
-<dd><p>Allocate an empty device ndarray in the local memory. Similar to <cite>np.empty()</cite> on CPU.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>shape</strong><span class="classifier">Union[tuple, int]</span></dt><dd><p>Desired shape for the new array.</p>
-</dd>
-<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Desired data-type for the new array.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="decontamination.jit.atomic_add_vector_gpu">
+<span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">atomic_add_vector_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.atomic_add_vector_gpu" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.jit.jit.shared_empty">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shared_empty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape:</span> <span class="pre">tuple</span> <span class="pre">|</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.jit.jit.shared_empty" title="Link to this definition">¶</a></dt>
-<dd><p>Allocate an empty device ndarray in the shared memory. Similar to <cite>np.empty()</cite> on CPU.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>shape</strong><span class="classifier">Union[tuple, int]</span></dt><dd><p>Desired shape for the new array.</p>
-</dd>
-<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;</span></dt><dd><p>Desired data-type for the new array.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.jit.jit.syncthreads">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">syncthreads</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.jit.jit.syncthreads" title="Link to this definition">¶</a></dt>
-<dd><p>Synchronize all threads in the same thread block. Ignored on CPU.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.jit.jit.atomic_add">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">atomic_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array:</span> <span class="pre">~np.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val:</span> <span class="pre">&lt;numeric</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">&lt;numeric</span> <span class="pre">value&gt;</span></span></span><a class="headerlink" href="#decontamination.jit.jit.atomic_add" title="Link to this definition">¶</a></dt>
-<dd><p>Performs atomic <cite>array[idx] += val</cite> and returns the old value. Supported on int32/64 and float32/64 operands only.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>array</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array to be modified.</p>
-</dd>
-<dt><strong>idx</strong><span class="classifier">int</span></dt><dd><p>Index in the array.</p>
-</dd>
-<dt><strong>val</strong><span class="classifier">&lt;numeric value&gt;</span></dt><dd><p>New value.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.jit.jit.atomic_sub">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">atomic_sub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array:</span> <span class="pre">~np.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val:</span> <span class="pre">&lt;numeric</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">&lt;numeric</span> <span class="pre">value&gt;</span></span></span><a class="headerlink" href="#decontamination.jit.jit.atomic_sub" title="Link to this definition">¶</a></dt>
-<dd><p>Performs atomic <cite>array[idx] -= val</cite> and returns the old value. Supported on int32/64 and float32/64 operands only.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>array</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array to be modified.</p>
-</dd>
-<dt><strong>idx</strong><span class="classifier">int</span></dt><dd><p>Index in the array.</p>
-</dd>
-<dt><strong>val</strong><span class="classifier">&lt;numeric value&gt;</span></dt><dd><p>New value.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="decontamination.jit.square_distance_gpu">
+<span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">square_distance_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.square_distance_gpu" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
@@ -384,25 +304,17 @@
     <h3><a href="index.html">Page contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Module decontamination.jit</a><ul>
+<li><a class="reference internal" href="#decontamination.jit.nb_to_device"><code class="docutils literal notranslate"><span class="pre">nb_to_device()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.jit.device_array_from"><code class="docutils literal notranslate"><span class="pre">device_array_from()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.jit.device_array_empty"><code class="docutils literal notranslate"><span class="pre">device_array_empty()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.jit.device_array_zeros"><code class="docutils literal notranslate"><span class="pre">device_array_zeros()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.jit.device_array_full"><code class="docutils literal notranslate"><span class="pre">device_array_full()</span></code></a></li>
-<li><a class="reference internal" href="#decontamination.jit.DeviceArray"><code class="docutils literal notranslate"><span class="pre">DeviceArray</span></code></a><ul>
-<li><a class="reference internal" href="#decontamination.jit.DeviceArray.shape"><code class="docutils literal notranslate"><span class="pre">DeviceArray.shape</span></code></a></li>
-<li><a class="reference internal" href="#decontamination.jit.DeviceArray.dtype"><code class="docutils literal notranslate"><span class="pre">DeviceArray.dtype</span></code></a></li>
-<li><a class="reference internal" href="#decontamination.jit.DeviceArray.copy_to_host"><code class="docutils literal notranslate"><span class="pre">DeviceArray.copy_to_host()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#decontamination.jit.jit"><code class="docutils literal notranslate"><span class="pre">jit</span></code></a><ul>
-<li><a class="reference internal" href="#decontamination.jit.jit.grid"><code class="docutils literal notranslate"><span class="pre">jit.grid()</span></code></a></li>
-<li><a class="reference internal" href="#decontamination.jit.jit.local_empty"><code class="docutils literal notranslate"><span class="pre">jit.local_empty()</span></code></a></li>
-<li><a class="reference internal" href="#decontamination.jit.jit.shared_empty"><code class="docutils literal notranslate"><span class="pre">jit.shared_empty()</span></code></a></li>
-<li><a class="reference internal" href="#decontamination.jit.jit.syncthreads"><code class="docutils literal notranslate"><span class="pre">jit.syncthreads()</span></code></a></li>
-<li><a class="reference internal" href="#decontamination.jit.jit.atomic_add"><code class="docutils literal notranslate"><span class="pre">jit.atomic_add()</span></code></a></li>
-<li><a class="reference internal" href="#decontamination.jit.jit.atomic_sub"><code class="docutils literal notranslate"><span class="pre">jit.atomic_sub()</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#decontamination.jit.DeviceArray"><code class="docutils literal notranslate"><span class="pre">DeviceArray</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.dont_call"><code class="docutils literal notranslate"><span class="pre">dont_call()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.Kernel"><code class="docutils literal notranslate"><span class="pre">Kernel</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.jit"><code class="docutils literal notranslate"><span class="pre">jit</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.atomic_add_vector_gpu"><code class="docutils literal notranslate"><span class="pre">atomic_add_vector_gpu()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.square_distance_gpu"><code class="docutils literal notranslate"><span class="pre">square_distance_gpu()</span></code></a></li>
 <li><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>

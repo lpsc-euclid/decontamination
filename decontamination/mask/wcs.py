@@ -17,13 +17,11 @@ from astropy.wcs import WCS as AstropyWCS
 
 class WCS(AstropyWCS):
 
-    """Thread-safe and HEALPix compliant World Coordinate System (WCS)"""
+    """Thread-safe and HEALPix compliant World Coordinate System (WCS) inherited from `astropy.wcs.WCS`."""
 
     ####################################################################################################################
 
     def __init__(self, *args, healpix_convention: bool = True, **kwargs):
-
-        """???"""
 
         ################################################################################################################
 
@@ -37,15 +35,16 @@ class WCS(AstropyWCS):
 
         if healpix_convention:
 
-            # On HEALPix, we want the value at the pixel center.
-
-            self.wcs.crval = self.all_pix2world([[self.wcs.crpix[0] - 0.5, self.wcs.crpix[1] - 0.5]], 0)[0]
+            self.wcs.crval = self.all_pix2world([[
+                self.wcs.crpix[0] - 0.5,
+                self.wcs.crpix[1] - 0.5,
+            ]], 0)[0]
 
     ####################################################################################################################
 
     def all_pix2world(self, *args, **kwargs) -> typing.Tuple[np.ndarray, np.ndarray]:
 
-        """???"""
+        """Thread-safe version of `astropy.wcs.WCS.all_pix2world`."""
 
         with self._mutex:
 
@@ -55,7 +54,7 @@ class WCS(AstropyWCS):
 
     def all_world2pix(self, *args, **kwargs) -> typing.Tuple[np.ndarray, np.ndarray]:
 
-        """???"""
+        """Thread-safe version of `astropy.wcs.WCS.all_world2pix`."""
 
         with self._mutex:
 

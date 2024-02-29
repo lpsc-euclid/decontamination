@@ -61,7 +61,7 @@ def test_pix2world():
 
     ####################################################################################################################
 
-    wcs = decontamination.WCS(rms_hdu.header, healpix_convention = True)
+    wcs = decontamination.WCS(rms_hdu.header, astropy = False, thread_safe = True, healpix_convention = True)
 
     ####################################################################################################################
 
@@ -75,7 +75,7 @@ def test_pix2world():
 
     print('Plotting img')
     fig, _ = decontamination.display_healpix(nside, tile, img, cmap = 'viridis')
-    fig.savefig('mask_img.png')
+    fig.savefig('mask_img_new.png')
 
     ####################################################################################################################
 
@@ -90,15 +90,15 @@ def test_pix2world():
 
     print('Plotting rms')
     fig, _ = decontamination.display_healpix(nside, tile, rms, cmap = 'rainbow')
-    fig.savefig('mask_rms.png')
+    fig.savefig('mask_rms_new.png')
 
     print('Plotting bit')
     fig, _ = decontamination.display_healpix(nside, tile, np.where(bit > 0, np.log2(bit), 0), cmap = 'rainbow')
-    fig.savefig('mask_bit.png')
+    fig.savefig('mask_bit_new.png')
 
     print('Plotting cov')
     fig, _ = decontamination.display_healpix(nside, tile, cov, cmap = 'viridis')
-    fig.savefig('mask_cov.png')
+    fig.savefig('mask_cov_new.png')
 
 ########################################################################################################################
 

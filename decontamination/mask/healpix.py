@@ -303,7 +303,7 @@ def _worker1(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
 
     ####################################################################################################################
 
-    return result_rms, result_bit, result_cov, result_hit
+    return result_rms, result_cov, result_bit, result_hit
 
 ########################################################################################################################
 

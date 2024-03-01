@@ -68,16 +68,15 @@ def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: n
     ####################################################################################################################
 
     if bit_image is None:
-        bit_image_dtype = np.uint32
-    else:
-        bit_image_dtype = bit_image.dtype
+
+        bit_image = np.zeros_like(rms_image, dtype = np.uint32)
 
     ################################################################################################################
 
     result_rms = np.zeros_like(footprint, dtype = rms_image.dtype)
-    result_bit = np.zeros_like(footprint, dtype = bit_image_dtype)
     result_cov = np.zeros_like(footprint, dtype = rms_image.dtype)
     result_hit = np.zeros_like(footprint, dtype = rms_image.dtype)
+    result_bit = np.zeros_like(footprint, dtype = bit_image.dtype)
 
     ####################################################################################################################
 
@@ -108,11 +107,11 @@ def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: n
 
         for future in concurrent.futures.as_completed(futures):
 
-            tmp_rms, tmp_bit, tmp_cov, tmp_hit = future.result()
+            tmp_rms, tmp_cov, tmp_hit, tmp_bit = future.result()
 
             result_rms += tmp_rms
-            result_bit |= tmp_bit
             result_cov += tmp_cov
+            result_bit |= tmp_bit
             result_hit += tmp_hit
 
     ####################################################################################################################
@@ -129,9 +128,11 @@ def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: n
     result_bit = np.where(has_cov, result_bit, 0xFFFFFFFF)
     result_cov = np.where(has_cov, result_cov / result_hit, 0.0000)
 
-    result_rms[has_cov] = np.sqrt(result_rms[has_cov])
-
     np.seterr(**old_settings)
+
+    ####################################################################################################################
+
+    result_rms[has_cov] = np.sqrt(result_rms[has_cov])
 
     ####################################################################################################################
 
@@ -240,11 +241,13 @@ def image_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, xxx_image: np.
 
     result_xxx = np.where(has_hit, result_xxx / result_hit, UNSEEN)
 
+    np.seterr(**old_settings)
+
+    ####################################################################################################################
+
     if quadratic:
 
         result_xxx[has_hit] = np.sqrt(result_xxx[has_hit])
-
-    np.seterr(**old_settings)
 
     ####################################################################################################################
 
@@ -254,20 +257,14 @@ def image_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, xxx_image: np.
 # WORKERS                                                                                                              #
 ########################################################################################################################
 
+# noinspection DuplicatedCode
 def _worker1(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_footprint_indices, j1, j2, rms_image, bit_image, rms_selection, bit_selection, show_progress_bar):
 
     ####################################################################################################################
 
-    if bit_image is None:
-        bit_image_dtype = np.uint32
-    else:
-        bit_image_dtype = bit_image.dtype
-
-    ####################################################################################################################
-
     result_rms = np.zeros_like(footprint, dtype = rms_image.dtype)
-    result_bit = np.zeros_like(footprint, dtype = bit_image_dtype)
     result_cov = np.zeros_like(footprint, dtype = rms_image.dtype)
+    result_bit = np.zeros_like(footprint, dtype = bit_image.dtype)
     result_hit = np.zeros_like(footprint, dtype = rms_image.dtype)
 
     ####################################################################################################################
@@ -290,17 +287,27 @@ def _worker1(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
 
         ################################################################################################################
 
-        if bit_image is None:
-            _project1(result_rms, result_cov, result_hit, sorted_footprint_pixels, sorted_footprint_indices, pixels, rms_image[j], rms_selection)
-        else:
-            _project2(result_rms, result_bit, result_cov, result_hit, sorted_footprint_pixels, sorted_footprint_indices, pixels, rms_image[j], bit_image[j], rms_selection, bit_selection)
+        _project1(
+            result_rms,
+            result_cov,
+            result_bit,
+            result_hit,
+            sorted_footprint_pixels,
+            sorted_footprint_indices,
+            pixels,
+            rms_image[j],
+            bit_image[j],
+            rms_selection,
+            bit_selection
+        )
 
-    ################################################################################################################
+    ####################################################################################################################
 
     return result_rms, result_bit, result_cov, result_hit
 
 ########################################################################################################################
 
+# noinspection DuplicatedCode
 def _worker2(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_footprint_indices, j1, j2, xxx_image, xxx_image_scale, show_progress_bar):
 
     ####################################################################################################################
@@ -328,9 +335,16 @@ def _worker2(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
 
         ################################################################################################################
 
-        _project3(result_xxx, result_hit, sorted_footprint_pixels, sorted_footprint_indices, pixels, xxx_image[j])
+        _project2(
+            result_xxx,
+            result_hit,
+            sorted_footprint_pixels,
+            sorted_footprint_indices,
+            pixels,
+            xxx_image[j]
+        )
 
-    ################################################################################################################
+    ####################################################################################################################
 
     return result_xxx, result_hit
 
@@ -339,37 +353,7 @@ def _worker2(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
 ########################################################################################################################
 
 @nb.njit(fastmath = True)
-def _project1(result_rms: np.ndarray, result_cov: np.ndarray, result_hit: np.ndarray, sorted_footprint_pixels: np.ndarray, sorted_footprint_indices: np.ndarray, pixels: np.ndarray, rms: np.ndarray, rms_selection: float) -> None:
-
-    ####################################################################################################################
-
-    sorted_indices = np.searchsorted(sorted_footprint_pixels, pixels)
-
-    selected_idx_mask = sorted_footprint_pixels[sorted_indices] == pixels
-
-    selected_idx = sorted_footprint_indices[sorted_indices[selected_idx_mask]]
-
-    selected_rms = rms[selected_idx_mask]
-
-    ####################################################################################################################
-
-    for i in range(selected_idx.size):
-
-        idx_i = selected_idx[i]
-        rms_i = selected_rms[i]
-
-        if 0.0 < rms_i < rms_selection:
-
-            result_rms[idx_i] += rms_i ** 2
-
-            result_cov[idx_i] += 1.000
-
-        result_hit[idx_i] += 1.000
-
-########################################################################################################################
-
-@nb.njit(fastmath = True)
-def _project2(result_rms: np.ndarray, result_bit: np.ndarray, result_cov: np.ndarray, result_hit: np.ndarray, sorted_footprint_pixels: np.ndarray, sorted_footprint_indices: np.ndarray, pixels: np.ndarray, rms: np.ndarray, bit: np.ndarray, rms_selection: float, bit_selection: int) -> None:
+def _project1(result_rms: np.ndarray, result_cov: np.ndarray, result_bit: np.ndarray, result_hit: np.ndarray, sorted_footprint_pixels: np.ndarray, sorted_footprint_indices: np.ndarray, pixels: np.ndarray, rms: np.ndarray, bit: np.ndarray, rms_selection: float, bit_selection: int) -> None:
 
     ####################################################################################################################
 
@@ -405,7 +389,7 @@ def _project2(result_rms: np.ndarray, result_bit: np.ndarray, result_cov: np.nda
 ########################################################################################################################
 
 @nb.njit(fastmath = True)
-def _project3(result_xxx: np.ndarray, result_cov: np.ndarray, sorted_footprint_pixels: np.ndarray, sorted_footprint_indices: np.ndarray, pixels: np.ndarray, xxx: np.ndarray) -> None:
+def _project2(result_xxx: np.ndarray, result_cov: np.ndarray, sorted_footprint_pixels: np.ndarray, sorted_footprint_indices: np.ndarray, pixels: np.ndarray, xxx: np.ndarray) -> None:
 
     ####################################################################################################################
 

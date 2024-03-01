@@ -18,7 +18,7 @@ from astropy.wcs import WCS as ASTROPY_WCS
 class WCS(ASTROPY_WCS):
 
     """
-    Thread-safe and HEALPix compliant World Coordinate System (WCS) inherited from `astropy.wcs.WCS`.
+    Thread-safe and HEALPix compliant World Coordinate System (WCS) inherited from `astropy.wcs.WCS` with additional features.
 
     Parameters
     ----------

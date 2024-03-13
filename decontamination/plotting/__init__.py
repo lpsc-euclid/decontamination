@@ -12,6 +12,12 @@ import numpy as np
 
 import healpy as hp
 
+import matplotlib.pyplot as plt
+import matplotlib.image as image
+import matplotlib.colors as colors
+
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+
 ########################################################################################################################
 
 def get_bounding_box(nside: int, footprint: np.ndarray, nest: bool = True) -> typing.Tuple[float, float, float, float]:
@@ -92,5 +98,68 @@ def catalog_to_number_density(nside: int, footprint: np.ndarray, full_sky: np.nd
     full_sky[footprint] = 0.0
 
     np.add.at(full_sky, catalog_pixels, 1.0)
+
+########################################################################################################################
+
+def _build_colorbar(
+    ax: plt.Axes,
+    weights: typing.Union[np.ndarray, image.AxesImage],
+    v_min: float,
+    v_max: float,
+    cmap: colors.Colormap,
+    norm: colors.Normalize,
+    n_hist_bins: int = 100,
+    show_histogram: bool = True,
+    position: str = 'right',
+    size: typing.Optional[typing.Union[float, str]] = None,
+    pad: typing.Optional[typing.Union[float, str]] = None
+) -> plt.colorbar:
+
+    ####################################################################################################################
+
+    if isinstance(weights, image.AxesImage):
+
+        weights = weights.get_array()
+
+    ####################################################################################################################
+
+    if not size:
+        size = '8%'
+
+    if position in ['left', 'right']:
+        orientation = 'vertical'
+        if not pad:
+            pad = 0.05
+    elif position in ['top', 'bottom']:
+        orientation = 'horizontal'
+        if not pad:
+            pad = 0.55
+    else:
+        orientation = 'vertical'
+
+    ####################################################################################################################
+
+    ad = make_axes_locatable(ax)
+
+    result = plt.colorbar(
+        mappable = plt.cm.ScalarMappable(cmap = cmap, norm = norm),
+        cax = ad.append_axes(position, size, pad = pad),
+        orientation = orientation,
+    )
+
+    ####################################################################################################################
+
+    if show_histogram:
+
+        hist, bins = np.histogram(weights[np.isfinite(weights)], bins = np.logspace(np.log10(v_min), np.log10(v_max), n_hist_bins) if isinstance(norm, colors.LogNorm) else n_hist_bins)
+
+        if position in ['left', 'right']:
+            result.ax.plot(hist.astype(float) / hist.max(), bins[: -1], linewidth = 0.75, color = 'k')
+        if position in ['top', 'bottom']:
+            result.ax.plot(bins[: -1], hist.astype(float) / hist.max(), linewidth = 0.75, color = 'k')
+
+    ####################################################################################################################
+
+    return result
 
 ########################################################################################################################

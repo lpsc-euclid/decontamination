@@ -14,9 +14,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import matplotlib.patches as patches
 
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-
-from . import clustering
+from . import _build_colorbar, clustering
 
 ########################################################################################################################
 
@@ -66,11 +64,9 @@ def _init_plot(weights: np.ndarray, v_min: float, v_max: float, cmap: str, log_s
     ####################################################################################################################
 
     if v_min is None:
-
         v_min = np.nanmin(values)
 
     if v_max is None:
-
         v_max = np.nanmax(values)
 
     ####################################################################################################################
@@ -78,11 +74,8 @@ def _init_plot(weights: np.ndarray, v_min: float, v_max: float, cmap: str, log_s
     ####################################################################################################################
 
     if log_scale:
-
         norm = colors.LogNorm(vmin = v_min, vmax = v_max)
-
     else:
-
         norm = colors.Normalize(vmin = v_min, vmax = v_max)
 
     ####################################################################################################################
@@ -96,31 +89,6 @@ def _init_plot(weights: np.ndarray, v_min: float, v_max: float, cmap: str, log_s
     ####################################################################################################################
 
     return fig, ax, v_min, v_max, norm, cmap
-
-########################################################################################################################
-
-def _build_colorbar(ax: plt.Axes, weights: np.ndarray, v_min: float, v_max: float, cmap: colors.Colormap, norm: colors.Normalize, log_scale: bool, n_hist_bins: int, show_histogram: bool) -> None:
-
-    ####################################################################################################################
-
-    ad = make_axes_locatable(ax)
-
-    colorbar = plt.colorbar(
-        mappable = plt.cm.ScalarMappable(cmap = cmap, norm = norm),
-        cax = ad.append_axes('right', '7.5%', pad = 0.05)
-    )
-
-    ####################################################################################################################
-
-    if show_histogram:
-
-        hist, bins = np.histogram(weights[np.isfinite(weights)], bins = np.logspace(np.log10(v_min), np.log10(v_max), n_hist_bins) if log_scale else n_hist_bins)
-
-        colorbar.ax.plot(hist.astype(float) / hist.max(), bins[: -1], linewidth = 0.75, color = 'k')
-
-        if log_scale:
-
-            colorbar.ax.set_yscale('log')
 
 ########################################################################################################################
 
@@ -173,7 +141,7 @@ def _display_latent_space_hexagonal(ax: plt.Axes, weights: np.ndarray, cmap: col
 
                 x += 0.5 * V_LENGTH
 
-            ax.add_patch(patches.RegularPolygon((y, x), numVertices = 6, radius = 1.0, orientation = np.pi / 6, facecolor = cmap(norm(weights[i, j])), edgecolor = 'none', antialiased = antialiased))
+            ax.add_patch(patches.RegularPolygon((y, x), numVertices = 6, radius = 1.0, orientation = np.pi / 6.0, facecolor = cmap(norm(weights[i, j])), edgecolor = 'none', antialiased = antialiased))
 
     ####################################################################################################################
 
@@ -212,7 +180,7 @@ def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = N
     show_colorbar : bool, default: **True**
         Specifies whether to display the colorbar.
     show_histogram : bool, default: **True**
-        Specifies whether to display the histogram.
+        Specifies whether to display the colorbar histogram.
     show_cluster_labels : bool, default: **False**
         Specifies whether to display the cluster labels.
     """
@@ -247,7 +215,7 @@ def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = N
 
     if show_colorbar:
 
-        _build_colorbar(ax, weights, v_min, v_max, cmap, norm, log_scale, n_hist_bins, show_histogram)
+        _build_colorbar(ax, weights, v_min, v_max, cmap, norm, n_hist_bins, show_histogram, position = 'right')
 
     ####################################################################################################################
 

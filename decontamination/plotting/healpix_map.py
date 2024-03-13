@@ -13,8 +13,9 @@ import numpy as np
 import healpy as hp
 
 import matplotlib.pyplot as plt
+import matplotlib.colors as colors
 
-from . import get_bounding_box, catalog_to_number_density
+from . import get_bounding_box, catalog_to_number_density, _build_colorbar
 
 ########################################################################################################################
 
@@ -46,8 +47,26 @@ def _get_full_sky(nside: int, pixels: np.ndarray) -> np.ndarray:
 
 ########################################################################################################################
 
-def _get_limits_and_label(values: np.ndarray, v_min: typing.Optional[float], v_max: typing.Optional[float], n_sigma: float, assume_positive: bool = False, label: str = 'value') -> typing.Tuple[float, float, str]:
+def _get_limits_norm_label(values: np.ndarray, v_min: typing.Optional[float], v_max: typing.Optional[float], n_sigma: float, log_scale: bool, assume_positive: bool, label: str) -> typing.Tuple[float, float, colors.Normalize, str]:
 
+    ####################################################################################################################
+    # LOG SCALE                                                                                                        #
+    ####################################################################################################################
+
+    if log_scale:
+
+        values = values[values > 0.0]
+
+        if v_min is None:
+            v_min = np.min(values)
+
+        if v_max is None:
+            v_max = np.max(values)
+
+        return v_min, v_max, colors.LogNorm(vmin = v_min, vmax = v_max), f'log({label})'
+
+    ####################################################################################################################
+    # LINEAR SCALE                                                                                                        #
     ####################################################################################################################
 
     _max = np.nanmax(values)
@@ -82,15 +101,30 @@ def _get_limits_and_label(values: np.ndarray, v_min: typing.Optional[float], v_m
 
         ################################################################################################################
 
-        return v_min, v_max, label
-
     else:
 
-        return 0.0, 0.0, label
+        v_min = 0.0
+        v_max = 0.0
+
+    ####################################################################################################################
+
+    return v_min, v_max, colors.Normalize(vmin = v_min, vmax = v_max), label
 
 ########################################################################################################################
 
-def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool, cmap: str, norm: typing.Optional[str], v_min: float, v_max: float, label: str) -> typing.Tuple[plt.Figure, plt.Axes]:
+def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool, cmap: str, v_min: float, v_max: float, n_sigma: float, n_hist_bins: int, log_scale: bool, show_colorbar: bool, show_histogram: bool, assume_positive: bool, label: str) -> typing.Tuple[plt.Figure, plt.Axes]:
+
+    ####################################################################################################################
+
+    v_min, v_max, norm, label = _get_limits_norm_label(
+        full_sky[footprint],
+        v_min,
+        v_max,
+        n_sigma,
+        log_scale,
+        assume_positive,
+        label
+    )
 
     ####################################################################################################################
 
@@ -117,14 +151,16 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
     fig, ax = plt.subplots(figsize = (8, 8))
 
-    img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), origin = 'lower', aspect = 1.0, cmap = cmap, vmin = v_min, vmax = v_max)
+    img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), origin = 'lower', aspect = 1.0, cmap = cmap, norm = norm)
 
     ax.set_xlabel('Longitude (deg)')
     ax.set_ylabel('Latitude (deg)')
 
-    bar = fig.colorbar(img, ax = ax, orientation = 'horizontal', pad = 0.1, fraction = 0.08)
+    if show_colorbar:
 
-    bar.set_label(label)
+        bar = _build_colorbar(ax, img, v_min, v_max, cmap, norm, n_hist_bins = n_hist_bins, show_histogram = show_histogram, position = 'bottom')
+
+        bar.set_label(label)
 
     fig.tight_layout()
 
@@ -134,7 +170,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
 ########################################################################################################################
 
-def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None, n_sigma: float = 2.5, assume_positive: bool = False, label: str = 'value') -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: float = 2.5, n_hist_bins: int = 100, log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = False, label: str = 'value') -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Displays a HEALPix map.
@@ -151,18 +187,24 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
         If **True**, ordering scheme is *NESTED*, otherwise, *RING*.
     cmap : str, default: **'jet'**
         Color map.
-    norm : str, default: **None**
-        Optional color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping.
-    v_min : float, default: **None** ≡ :math:`\\mu-n_\\sigma\\cdot\\sigma)
+    v_min : float, default: **None** ≡ :math:`\\mu-n_\\sigma\\cdot\\sigma`
         Minimum range value.
-    v_max : float, default: **None** ≡ :math:`\\mu+n_\\sigma\\cdot\\sigma)
+    v_max : float, default: **None** ≡ :math:`\\mu+n_\\sigma\\cdot\\sigma`
         Maximum range value.
     n_sigma : float, default: **2.5**
-        Multiplier for standard deviations to set the resulting v_min and v_max bounds.
+        Multiplier for standard deviations.
+    n_hist_bins : int, default: **100**
+        Number of histogram bins in the colorbar.
+    log_scale : bool, default: **False**
+        Specifies whether to enable the logarithm scaling.
+    show_colorbar : bool, default: **True**
+        Specifies whether to display the colorbar.
+    show_histogram : bool, default: **True**
+        Specifies whether to display the colorbar histogram.
     assume_positive : bool, default: **False**
         If True, the input arrays are both assumed to be positive or null values.
     label : str, default **'value'**
-        Label of the color bar.
+        Colorbar label.
     """
 
     ####################################################################################################################
@@ -175,13 +217,7 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
 
     full_sky = _get_full_sky(nside, pixels)
 
-    ####################################################################################################################
-
     full_sky[pixels] = np.where(weights != hp.UNSEEN, weights, np.nan)
-
-    ####################################################################################################################
-
-    v_min, v_max, label = _get_limits_and_label(full_sky[pixels], v_min, v_max, n_sigma, assume_positive = assume_positive, label = label)
 
     ####################################################################################################################
 
@@ -189,17 +225,22 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
         nside,
         pixels,
         full_sky,
-        nest = nest,
-        cmap = cmap,
-        norm = norm,
-        v_min = v_min,
-        v_max = v_max,
-        label = label
+        nest,
+        cmap,
+        v_min,
+        v_max,
+        n_sigma,
+        n_hist_bins,
+        log_scale,
+        show_colorbar,
+        show_histogram,
+        assume_positive,
+        label
     )
 
 ########################################################################################################################
 
-def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None, n_sigma: float = 2.5, assume_positive: bool = True, label: str = 'number') -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: float = 2.5, n_hist_bins: int = 100, log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = True, label: str = 'number') -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Displays a catalog.
@@ -218,18 +259,24 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
         If **True**, ordering scheme is *NESTED*, otherwise, *RING*.
     cmap : str, default: **'jet'**
         Color map.
-    norm : str, default: **'hist'**
-        Color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping.
     v_min : float, default: **None** ≡ :math:`\\mu-n_\\sigma\\cdot\\sigma`
         Minimum range value.
     v_max : float, default: **None** ≡ :math:`\\mu+n_\\sigma\\cdot\\sigma`
         Maximum range value.
     n_sigma : float, default: **2.5**
-        Multiplier for standard deviations to set the resulting v_min and v_max bounds.
+        Multiplier for standard deviations.
+    n_hist_bins : int, default: **100**
+        Number of histogram bins in the colorbar.
+    log_scale : bool, default: **False**
+        Specifies whether to enable the logarithm scaling.
+    show_colorbar : bool, default: **True**
+        Specifies whether to display the colorbar.
+    show_histogram : bool, default: **True**
+        Specifies whether to display the colorbar histogram.
     assume_positive : bool, default: **True**
         If True, the input arrays are both assumed to be positive or null values.
     label : str, default **'number'**
-        Label for the color bar.
+        Colorbar label.
     """
 
     ####################################################################################################################
@@ -242,13 +289,7 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
 
     full_sky = _get_full_sky(nside, pixels)
 
-    ####################################################################################################################
-
     catalog_to_number_density(nside, pixels, full_sky, lon, lat, nest = nest, lonlat = True)
-
-    ####################################################################################################################
-
-    v_min, v_max, label = _get_limits_and_label(full_sky[pixels], v_min, v_max, n_sigma, assume_positive = assume_positive, label = label)
 
     ####################################################################################################################
 
@@ -256,12 +297,17 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
         nside,
         pixels,
         full_sky,
-        nest = nest,
-        cmap = cmap,
-        norm = norm,
-        v_min = v_min,
-        v_max = v_max,
-        label = label
+        nest,
+        cmap,
+        v_min,
+        v_max,
+        n_sigma,
+        n_hist_bins,
+        log_scale,
+        show_colorbar,
+        show_histogram,
+        assume_positive,
+        label
     )
 
 ########################################################################################################################

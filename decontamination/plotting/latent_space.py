@@ -215,7 +215,7 @@ def display_latent_space(weights: np.ndarray, topology: typing.Optional[str] = N
 
     if show_colorbar:
 
-        _build_colorbar(ax, weights, v_min, v_max, cmap, norm, n_hist_bins, show_histogram, position = 'right')
+        _build_colorbar(ax, weights, cmap, norm, n_hist_bins, show_histogram, position = 'right')
 
     ####################################################################################################################
 

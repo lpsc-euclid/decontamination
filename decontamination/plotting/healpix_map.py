@@ -48,7 +48,7 @@ def _get_full_sky(nside: int, footprint: np.ndarray) -> np.ndarray:
 
 ########################################################################################################################
 
-def _get_limits_norm_label(values: np.ndarray, v_min: typing.Optional[float], v_max: typing.Optional[float], n_sigma: float, colorbar_label: str, log_scale: bool, assume_positive: bool) -> typing.Tuple[float, float, colors.Normalize, str]:
+def _get_norm_label(values: np.ndarray, v_min: typing.Optional[float], v_max: typing.Optional[float], n_sigma: float, colorbar_label: str, log_scale: bool, assume_positive: bool) -> typing.Tuple[colors.Normalize, str]:
 
     if log_scale:
 
@@ -68,7 +68,7 @@ def _get_limits_norm_label(values: np.ndarray, v_min: typing.Optional[float], v_
 
         ################################################################################################################
 
-        return v_min, v_max, colors.LogNorm(vmin = v_min, vmax = v_max), f'log({colorbar_label})'
+        return colors.LogNorm(vmin = v_min, vmax = v_max), f'log({colorbar_label})'
 
         ################################################################################################################
 
@@ -117,7 +117,7 @@ def _get_limits_norm_label(values: np.ndarray, v_min: typing.Optional[float], v_
 
         ################################################################################################################
 
-        return v_min, v_max, colors.Normalize(vmin = v_min, vmax = v_max), colorbar_label
+        return colors.Normalize(vmin = v_min, vmax = v_max), colorbar_label
 
 ########################################################################################################################
 
@@ -126,7 +126,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
     ####################################################################################################################
 
-    v_min, v_max, norm, label = _get_limits_norm_label(
+    norm, label = _get_norm_label(
         full_sky[footprint],
         v_min,
         v_max,
@@ -168,7 +168,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
     if show_colorbar:
 
-        bar = _build_colorbar(ax, img, v_min, v_max, cmap, norm, n_hist_bins = n_hist_bins, show_histogram = show_histogram, position = 'bottom')
+        bar = _build_colorbar(ax, img, cmap, norm, n_hist_bins = n_hist_bins, show_histogram = show_histogram, position = 'bottom')
 
         bar.set_label(label)
 

@@ -104,8 +104,6 @@ def catalog_to_number_density(nside: int, footprint: np.ndarray, full_sky: np.nd
 def _build_colorbar(
     ax: plt.Axes,
     weights: typing.Union[np.ndarray, image.AxesImage],
-    v_min: float,
-    v_max: float,
     cmap: colors.Colormap,
     norm: colors.Normalize,
     n_hist_bins: int = 100,
@@ -151,7 +149,7 @@ def _build_colorbar(
 
     if show_histogram:
 
-        hist, bins = np.histogram(weights[np.isfinite(weights)], bins = np.logspace(np.log10(v_min), np.log10(v_max), n_hist_bins) if isinstance(norm, colors.LogNorm) else n_hist_bins)
+        hist, bins = np.histogram(weights[np.isfinite(weights)], bins = np.logspace(np.log10(norm.vmin), np.log10(norm.vmax), n_hist_bins) if isinstance(norm, colors.LogNorm) else n_hist_bins)
 
         if position in ['left', 'right']:
             result.ax.plot(hist.astype(float) / hist.max(), bins[: -1], linewidth = 0.75, color = 'k')

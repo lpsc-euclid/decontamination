@@ -47,7 +47,7 @@ def _get_full_sky(nside: int, pixels: np.ndarray) -> np.ndarray:
 
 ########################################################################################################################
 
-def _get_limits_norm_label(values: np.ndarray, v_min: typing.Optional[float], v_max: typing.Optional[float], n_sigma: float, log_scale: bool, assume_positive: bool, label: str) -> typing.Tuple[float, float, colors.Normalize, str]:
+def _get_limits_norm_label(values: np.ndarray, v_min: typing.Optional[float], v_max: typing.Optional[float], n_sigma: float, colorbar_label: str, log_scale: bool, assume_positive: bool) -> typing.Tuple[float, float, colors.Normalize, str]:
 
     ####################################################################################################################
     # LOG SCALE                                                                                                        #
@@ -63,7 +63,7 @@ def _get_limits_norm_label(values: np.ndarray, v_min: typing.Optional[float], v_
         if v_max is None:
             v_max = np.max(values)
 
-        return v_min, v_max, colors.LogNorm(vmin = v_min, vmax = v_max), f'log({label})'
+        return v_min, v_max, colors.LogNorm(vmin = v_min, vmax = v_max), f'log({colorbar_label})'
 
     ####################################################################################################################
     # LINEAR SCALE                                                                                                        #
@@ -84,7 +84,7 @@ def _get_limits_norm_label(values: np.ndarray, v_min: typing.Optional[float], v_
             v_min = _mean - n_sigma * _std
 
             if not assume_positive or v_min >= 0.0:
-                label = 'µ - {}σ < {}'.format(n_sigma, label)
+                colorbar_label = 'µ - {}σ < {}'.format(n_sigma, colorbar_label)
             else:
                 v_min = 0.0
 
@@ -95,7 +95,7 @@ def _get_limits_norm_label(values: np.ndarray, v_min: typing.Optional[float], v_
             v_max = _mean + n_sigma * _std
 
             if not assume_positive or v_max >= 0.0:
-                label = '{} < µ + {}σ'.format(label, n_sigma)
+                colorbar_label = '{} < µ + {}σ'.format(colorbar_label, n_sigma)
             else:
                 v_max = 0.0
 
@@ -108,11 +108,11 @@ def _get_limits_norm_label(values: np.ndarray, v_min: typing.Optional[float], v_
 
     ####################################################################################################################
 
-    return v_min, v_max, colors.Normalize(vmin = v_min, vmax = v_max), label
+    return v_min, v_max, colors.Normalize(vmin = v_min, vmax = v_max), colorbar_label
 
 ########################################################################################################################
 
-def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool, cmap: str, v_min: float, v_max: float, n_sigma: float, n_hist_bins: int, log_scale: bool, show_colorbar: bool, show_histogram: bool, assume_positive: bool, label: str) -> typing.Tuple[plt.Figure, plt.Axes]:
+def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool, cmap: str, v_min: float, v_max: float, n_sigma: float, n_hist_bins: int, colorbar_label: str, log_scale: bool, show_colorbar: bool, show_histogram: bool, assume_positive: bool) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     ####################################################################################################################
 
@@ -121,9 +121,9 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
         v_min,
         v_max,
         n_sigma,
+        colorbar_label,
         log_scale,
-        assume_positive,
-        label
+        assume_positive
     )
 
     ####################################################################################################################
@@ -170,7 +170,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
 ########################################################################################################################
 
-def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: float = 2.5, n_hist_bins: int = 100, log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = False, label: str = 'value') -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: float = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = False) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Displays a HEALPix map.
@@ -195,6 +195,8 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
         Multiplier for standard deviations.
     n_hist_bins : int, default: **100**
         Number of histogram bins in the colorbar.
+    colorbar_label : str, default **'number'**
+        Colorbar label.
     log_scale : bool, default: **False**
         Specifies whether to enable the logarithm scaling.
     show_colorbar : bool, default: **True**
@@ -203,8 +205,6 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
         Specifies whether to display the colorbar histogram.
     assume_positive : bool, default: **False**
         If True, the input arrays are both assumed to be positive or null values.
-    label : str, default **'value'**
-        Colorbar label.
     """
 
     ####################################################################################################################
@@ -231,16 +231,16 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
         v_max,
         n_sigma,
         n_hist_bins,
+        colorbar_label,
         log_scale,
         show_colorbar,
         show_histogram,
-        assume_positive,
-        label
+        assume_positive
     )
 
 ########################################################################################################################
 
-def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: float = 2.5, n_hist_bins: int = 100, log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = True, label: str = 'number') -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: float = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = True) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Displays a catalog.
@@ -267,6 +267,8 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
         Multiplier for standard deviations.
     n_hist_bins : int, default: **100**
         Number of histogram bins in the colorbar.
+    colorbar_label : str, default **'number'**
+        Colorbar label.
     log_scale : bool, default: **False**
         Specifies whether to enable the logarithm scaling.
     show_colorbar : bool, default: **True**
@@ -275,8 +277,6 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
         Specifies whether to display the colorbar histogram.
     assume_positive : bool, default: **True**
         If True, the input arrays are both assumed to be positive or null values.
-    label : str, default **'number'**
-        Colorbar label.
     """
 
     ####################################################################################################################
@@ -303,11 +303,11 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
         v_max,
         n_sigma,
         n_hist_bins,
+        colorbar_label,
         log_scale,
         show_colorbar,
         show_histogram,
-        assume_positive,
-        label
+        assume_positive
     )
 
 ########################################################################################################################

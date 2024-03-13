@@ -113,6 +113,7 @@ def _get_limits_norm_label(values: np.ndarray, v_min: typing.Optional[float], v_
 
 ########################################################################################################################
 
+# noinspection PyUnresolvedReferences
 def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool, cmap: str, v_min: float, v_max: float, n_sigma: float, n_hist_bins: int, colorbar_label: str, log_scale: bool, show_colorbar: bool, show_histogram: bool, assume_positive: bool) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     ####################################################################################################################

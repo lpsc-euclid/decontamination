@@ -14,44 +14,35 @@ import healpy as hp
 
 import matplotlib.pyplot as plt
 
-from . import catalog_to_number_density
+from . import get_bounding_box, catalog_to_number_density, get_limits_and_label
 
 ########################################################################################################################
 
-def get_bounding_box(nside: int, footprint: np.ndarray, nest: bool) -> typing.Tuple[float, float, float, float]:
+_pixels: typing.Optional[np.ndarray] = None
+_full_sky: typing.Optional[np.ndarray] = None
 
-    ####################################################################################################################
-    # PIXELS TO ANGLES                                                                                                 #
-    ####################################################################################################################
+########################################################################################################################
 
-    lon, lat = hp.pix2ang(nside, footprint, nest, lonlat = True)
+def _get_full_sky(nside: int, pixels: np.ndarray) -> np.ndarray:
 
-    ####################################################################################################################
-    # COMPUTE BOUNDING BOX                                                                                             #
-    ####################################################################################################################
-
-    lon %= 360
-
-    lon_rad = np.deg2rad(lon)
-    lat_rad = np.deg2rad(lat)
-
-    x_mean = np.mean(np.cos(lat_rad) * np.cos(lon_rad))
-    y_mean = np.mean(np.cos(lat_rad) * np.sin(lon_rad))
+    global _pixels
+    global _full_sky
 
     ####################################################################################################################
 
-    lon_center = np.rad2deg(np.arctan2(y_mean, x_mean)) % 360
-
-    d_lon = (lon - lon_center + 180) % 360 - 180
+    npix = hp.nside2npix(nside)
 
     ####################################################################################################################
 
-    return (
-        (lon_center + np.min(d_lon) + 360) % 360,
-        (lon_center + np.max(d_lon) + 360) % 360,
-        np.min(lat),
-        np.max(lat),
-    )
+    if not np.array_equal(_pixels, pixels) or _full_sky is None or _full_sky.shape[0] != npix:
+
+        _pixels = pixels
+
+        _full_sky = np.full(npix, np.nan, dtype = np.float32)
+
+    ####################################################################################################################
+
+    return _full_sky
 
 ########################################################################################################################
 
@@ -62,8 +53,6 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
     cmap = plt.get_cmap(cmap)
 
     cmap.set_bad(color = '#808080')
-
-    full_sky[full_sky == hp.UNSEEN] = np.nan
 
     ####################################################################################################################
 
@@ -101,7 +90,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
 ########################################################################################################################
 
-def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None) -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None, n_sigma: float = 2.5, assume_positive: bool = False, label: str = 'value') -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Displays a HEALPix map.
@@ -115,15 +104,21 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
     weights : np.ndarray
         HEALPix weights of the region to display.
     nest : bool, default: **True**
-        If **True**, ordering scheme is *NESTED*.
+        If **True**, ordering scheme is *NESTED*, otherwise, *RING*.
     cmap : str, default: **'jet'**
         Color map.
     norm : str, default: **None**
         Optional color normalization, **'hist'** = histogram equalized color mapping, **'log'** = logarithmic color mapping.
-    v_min : float, default: **None** ≡ min(weights)
+    v_min : float, default: **None** ≡ :math:`\\mu-n_\\sigma\\cdot\\sigma)
         Minimum range value.
-    v_max : float, default: **None** ≡ max(weights)
+    v_max : float, default: **None** ≡ :math:`\\mu+n_\\sigma\\cdot\\sigma)
         Maximum range value.
+    n_sigma : float, default: **2.5**
+        Multiplier for standard deviations to set the resulting v_min and v_max bounds.
+    assume_positive : bool, default: **False**
+        If True, the input arrays are both assumed to be positive or null values.
+    label : str, default **'value'**
+        Label of the color bar.
     """
 
     ####################################################################################################################
@@ -134,13 +129,19 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
 
     ####################################################################################################################
 
-    full_sky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
-
-    full_sky[pixels] = weights
+    full_sky = _get_full_sky(nside, pixels)
 
     ####################################################################################################################
 
-    fig, ax = _display(
+    full_sky[pixels] = np.where(weights != hp.UNSEEN, weights, np.nan)
+
+    ####################################################################################################################
+
+    v_min, v_max, label = get_limits_and_label(full_sky[pixels], v_min, v_max, n_sigma, assume_positive = assume_positive, label = label)
+
+    ####################################################################################################################
+
+    return _display(
         nside,
         pixels,
         full_sky,
@@ -149,16 +150,12 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
         norm = norm,
         v_min = v_min,
         v_max = v_max,
-        label = 'value'
+        label = label
     )
-
-    ####################################################################################################################
-
-    return fig, ax
 
 ########################################################################################################################
 
-def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None) -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', norm: typing.Optional[str] = None, v_min: float = None, v_max: float = None, n_sigma: float = 2.5, assume_positive: bool = True, label: str = 'number') -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Displays a catalog.
@@ -174,7 +171,7 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
     lat : np.ndarray
         Array of latitudes.
     nest : bool, default: **True**
-        If **True**, ordering scheme is *NESTED*.
+        If **True**, ordering scheme is *NESTED*, otherwise, *RING*.
     cmap : str, default: **'jet'**
         Color map.
     norm : str, default: **'hist'**
@@ -183,6 +180,12 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
         Minimum range value.
     v_max : float, default: **None** ≡ :math:`\\mu+n_\\sigma\\cdot\\sigma`
         Maximum range value.
+    n_sigma : float, default: **2.5**
+        Multiplier for standard deviations to set the resulting v_min and v_max bounds.
+    assume_positive : bool, default: **True**
+        If True, the input arrays are both assumed to be positive or null values.
+    label : str, default **'number'**
+        Label for the color bar.
     """
 
     ####################################################################################################################
@@ -193,26 +196,28 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
 
     ####################################################################################################################
 
-    full_sky = np.full(hp.nside2npix(nside), hp.UNSEEN, dtype = np.float32)
-
-    default_v_min, default_v_max = catalog_to_number_density(nside, pixels, full_sky, lon, lat, nest)
+    full_sky = _get_full_sky(nside, pixels)
 
     ####################################################################################################################
 
-    fig, ax = _display(
+    catalog_to_number_density(nside, pixels, full_sky, lon, lat, nest = nest, lonlat = True)
+
+    ####################################################################################################################
+
+    v_min, v_max, label = get_limits_and_label(full_sky[pixels], v_min, v_max, n_sigma, assume_positive = assume_positive, label = label)
+
+    ####################################################################################################################
+
+    return _display(
         nside,
         pixels,
         full_sky,
         nest = nest,
         cmap = cmap,
         norm = norm,
-        v_min = v_min or default_v_min,
-        v_max = v_max or default_v_max,
-        label = 'Number of galaxies'
+        v_min = v_min,
+        v_max = v_max,
+        label = label
     )
-
-    ####################################################################################################################
-
-    return fig, ax
 
 ########################################################################################################################

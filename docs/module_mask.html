@@ -253,12 +253,22 @@
 <span id="world-coordinate-system-wcs"></span><h2>World Coordinate System (WCS)<a class="headerlink" href="#module-decontamination.mask.wcs" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.mask.wcs.</span></span><span class="sig-name descname"><span class="pre">WCS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">healpix_convention</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.mask.wcs.</span></span><span class="sig-name descname"><span class="pre">WCS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">astropy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thread_safe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">healpix_convention</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">WCS</span></code></p>
-<p>Thread-safe and HEALPix compliant World Coordinate System (WCS) inherited from <cite>astropy.wcs.WCS</cite>.</p>
+<p>Thread-safe and HEALPix compliant World Coordinate System (WCS) inherited from <cite>astropy.wcs.WCS</cite> with additional features.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
+<dt><strong>astropy</strong><span class="classifier">bool, default: False</span></dt><dd><p>???</p>
+</dd>
+<dt><strong>thread_safe</strong><span class="classifier">bool, default: False</span></dt><dd><p>???</p>
+</dd>
+<dt><strong>healpix_convention</strong><span class="classifier">bool, default: False</span></dt><dd><p>???</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">array_shape</span></code></dt><dd><p>The shape of the data that the WCS applies to as a tuple of length <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite> in <code class="docutils literal notranslate"><span class="pre">(row,</span> <span class="pre">column)</span></code> order (the convention for arrays in Python).</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_correlation_matrix</span></code></dt><dd><p>Returns an (<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_n_dim</cite>, <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite>) matrix that indicates using booleans whether a given world coordinate depends on a given pixel coordinate.</p>
@@ -434,6 +444,11 @@
 </tr>
 </tbody>
 </table>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.MUTEX">
+<span class="sig-name descname"><span class="pre">MUTEX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;unlocked</span> <span class="pre">_thread.lock</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#decontamination.mask.wcs.WCS.MUTEX" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.all_pix2world">
 <span class="sig-name descname"><span class="pre">all_pix2world</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.all_pix2world" title="Link to this definition">¶</a></dt>
@@ -479,6 +494,7 @@
 </li>
 <li><a class="reference internal" href="#module-decontamination.mask.wcs">World Coordinate System (WCS)</a><ul>
 <li><a class="reference internal" href="#decontamination.mask.wcs.WCS"><code class="docutils literal notranslate"><span class="pre">WCS</span></code></a><ul>
+<li><a class="reference internal" href="#decontamination.mask.wcs.WCS.MUTEX"><code class="docutils literal notranslate"><span class="pre">WCS.MUTEX</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.mask.wcs.WCS.all_pix2world"><code class="docutils literal notranslate"><span class="pre">WCS.all_pix2world()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.mask.wcs.WCS.all_world2pix"><code class="docutils literal notranslate"><span class="pre">WCS.all_world2pix()</span></code></a></li>
 </ul>

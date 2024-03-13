@@ -32,7 +32,7 @@ class Selection(object):
 
     ####################################################################################################################
 
-    _TOKEN_REGEX = re.compile(
+    _TOKEN_PATTERN = re.compile(
         r'(==|!=|<=|>=|<|>)'
         r'|'
         r'([&|])'
@@ -59,7 +59,7 @@ class Selection(object):
     @staticmethod
     def _tokenize(expression: str) -> typing.Generator[Token, typing.Any, typing.Any]:
 
-        for comparison_op, boolean_op, not_op, grouping, number, column, blank in Selection._TOKEN_REGEX.findall(expression):
+        for comparison_op, boolean_op, not_op, grouping, number, column, blank in Selection._TOKEN_PATTERN.findall(expression):
 
             if   comparison_op:
                 yield Selection.Token('COMPARISON_OP', comparison_op)

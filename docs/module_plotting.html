@@ -233,39 +233,6 @@
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="decontamination.plotting.get_limits_and_label">
-<span class="sig-prename descclassname"><span class="pre">decontamination.plotting.</span></span><span class="sig-name descname"><span class="pre">get_limits_and_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assume_positive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'value'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.plotting.get_limits_and_label" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>values</strong><span class="classifier">np.ndarray</span></dt><dd><p>???</p>
-</dd>
-<dt><strong>v_min</strong><span class="classifier">float, default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mu-n_\sigma\cdot\sigma\)</span></span></dt><dd><p>Minimum range value.</p>
-</dd>
-<dt><strong>v_max</strong><span class="classifier">float, default: <strong>None</strong> ≡ <span class="math notranslate nohighlight">\(\mu+n_\sigma\cdot\sigma\)</span></span></dt><dd><p>Maximum range value.</p>
-</dd>
-<dt><strong>n_sigma</strong><span class="classifier">float, default: <strong>2.5</strong></span></dt><dd><p>Multiplier for standard deviations to set the resulting v_min and v_max bounds.</p>
-</dd>
-<dt><strong>assume_positive</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If True, the input arrays are both assumed to be positive or null values.</p>
-</dd>
-<dt><strong>label</strong><span class="classifier">str, default: <strong>‘value’</strong></span></dt><dd><p>Label of the color bar.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>float</dt><dd><p>Lower bound for number density (<span class="math notranslate nohighlight">\(\mu-n_\sigma\cdot\sigma)\)</span>.</p>
-</dd>
-<dt>float</dt><dd><p>Upper bound for number density (<span class="math notranslate nohighlight">\(\mu+n_\sigma\cdot\sigma\)</span>).</p>
-</dd>
-<dt>str</dt><dd><p>Updated label of the color bar.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 </section>
 
@@ -295,7 +262,6 @@
 <li><a class="reference internal" href="#module-decontamination.plotting">Utilities</a><ul>
 <li><a class="reference internal" href="#decontamination.plotting.get_bounding_box"><code class="docutils literal notranslate"><span class="pre">get_bounding_box()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.plotting.catalog_to_number_density"><code class="docutils literal notranslate"><span class="pre">catalog_to_number_density()</span></code></a></li>
-<li><a class="reference internal" href="#decontamination.plotting.get_limits_and_label"><code class="docutils literal notranslate"><span class="pre">get_limits_and_label()</span></code></a></li>
 </ul>
 </li>
 </ul>

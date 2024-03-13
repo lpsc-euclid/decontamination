@@ -14,7 +14,7 @@ import healpy as hp
 
 import matplotlib.pyplot as plt
 
-from . import get_bounding_box, catalog_to_number_density, get_limits_and_label
+from . import get_bounding_box, catalog_to_number_density
 
 ########################################################################################################################
 
@@ -43,6 +43,50 @@ def _get_full_sky(nside: int, pixels: np.ndarray) -> np.ndarray:
     ####################################################################################################################
 
     return _full_sky
+
+########################################################################################################################
+
+def _get_limits_and_label(values: np.ndarray, v_min: typing.Optional[float], v_max: typing.Optional[float], n_sigma: float, assume_positive: bool = False, label: str = 'value') -> typing.Tuple[float, float, str]:
+
+    ####################################################################################################################
+
+    _max = np.nanmax(values)
+    _mean = np.nanmean(values)
+    _std = np.nanstd(values)
+
+    ####################################################################################################################
+
+    if not assume_positive or _max >= 0.0:
+
+        ################################################################################################################
+
+        if v_min is None:
+
+            v_min = _mean - n_sigma * _std
+
+            if not assume_positive or v_min >= 0.0:
+                label = 'µ - {}σ < {}'.format(n_sigma, label)
+            else:
+                v_min = 0.0
+
+        ################################################################################################################
+
+        if v_max is None:
+
+            v_max = _mean + n_sigma * _std
+
+            if not assume_positive or v_max >= 0.0:
+                label = '{} < µ + {}σ'.format(label, n_sigma)
+            else:
+                v_max = 0.0
+
+        ################################################################################################################
+
+        return v_min, v_max, label
+
+    else:
+
+        return 0.0, 0.0, label
 
 ########################################################################################################################
 
@@ -137,7 +181,7 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
 
     ####################################################################################################################
 
-    v_min, v_max, label = get_limits_and_label(full_sky[pixels], v_min, v_max, n_sigma, assume_positive = assume_positive, label = label)
+    v_min, v_max, label = _get_limits_and_label(full_sky[pixels], v_min, v_max, n_sigma, assume_positive = assume_positive, label = label)
 
     ####################################################################################################################
 
@@ -204,7 +248,7 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
 
     ####################################################################################################################
 
-    v_min, v_max, label = get_limits_and_label(full_sky[pixels], v_min, v_max, n_sigma, assume_positive = assume_positive, label = label)
+    v_min, v_max, label = _get_limits_and_label(full_sky[pixels], v_min, v_max, n_sigma, assume_positive = assume_positive, label = label)
 
     ####################################################################################################################
 

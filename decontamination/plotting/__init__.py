@@ -125,33 +125,42 @@ def get_limits_and_label(values: np.ndarray, v_min: typing.Optional[float], v_ma
 
     ####################################################################################################################
 
-    mean = np.nanmean(values)
-    std = np.nanstd(values)
+    _max = np.nanmax(values)
+    _mean = np.nanmean(values)
+    _std = np.nanstd(values)
 
     ####################################################################################################################
 
-    if v_min is None:
+    if not assume_positive or _max >= 0.0:
 
-        v_min = mean - n_sigma * std
+        ################################################################################################################
 
-        if not assume_positive or v_min > 0.0:
-            label = 'µ - {}σ < {}'.format(n_sigma, label)
-        else:
-            v_min = 0.0
+        if v_min is None:
 
-    ####################################################################################################################
+            v_min = _mean - n_sigma * _std
 
-    if v_max is None:
+            if not assume_positive or v_min >= 0.0:
+                label = 'µ - {}σ < {}'.format(n_sigma, label)
+            else:
+                v_min = 0.0
 
-        v_max = mean + n_sigma * std
+        ################################################################################################################
 
-        if not assume_positive or v_max > 0.0:
-            label = '{} < µ + {}σ'.format(label, n_sigma)
-        else:
-            v_max = 0.0
+        if v_max is None:
 
-    ####################################################################################################################
+            v_max = _mean + n_sigma * _std
 
-    return v_min, v_max, label
+            if not assume_positive or v_max >= 0.0:
+                label = '{} < µ + {}σ'.format(label, n_sigma)
+            else:
+                v_max = 0.0
+
+        ################################################################################################################
+
+        return v_min, v_max, label
+
+    else:
+
+        return 0.0, 0.0, label
 
 ########################################################################################################################

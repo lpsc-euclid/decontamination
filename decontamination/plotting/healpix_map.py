@@ -19,14 +19,14 @@ from . import get_bounding_box, catalog_to_number_density, _build_colorbar
 
 ########################################################################################################################
 
-_pixels: typing.Optional[np.ndarray] = None
+_footprint: typing.Optional[np.ndarray] = None
 _full_sky: typing.Optional[np.ndarray] = None
 
 ########################################################################################################################
 
-def _get_full_sky(nside: int, pixels: np.ndarray) -> np.ndarray:
+def _get_full_sky(nside: int, footprint: np.ndarray) -> np.ndarray:
 
-    global _pixels
+    global _footprint
     global _full_sky
 
     ####################################################################################################################
@@ -35,11 +35,12 @@ def _get_full_sky(nside: int, pixels: np.ndarray) -> np.ndarray:
 
     ####################################################################################################################
 
-    if not np.array_equal(_pixels, pixels) or _full_sky is None or _full_sky.shape[0] != npix:
+    if not np.array_equal(_footprint, footprint) or _full_sky is None or _full_sky.shape[0] != npix:
 
-        _pixels = pixels
+        full_sky = np.full(npix, np.nan, dtype = np.float32)
 
-        _full_sky = np.full(npix, np.nan, dtype = np.float32)
+        _footprint = footprint
+        _full_sky = full_sky
 
     ####################################################################################################################
 
@@ -170,7 +171,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
 ########################################################################################################################
 
-def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: float = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = False) -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: float = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = False) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Displays a HEALPix map.
@@ -179,7 +180,7 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
     ----------
     nside : int
         The HEALPix nside parameter.
-    pixels : np.ndarray
+    footprint : np.ndarray
         HEALPix indices of the region to display.
     weights : np.ndarray
         HEALPix weights of the region to display.
@@ -209,21 +210,21 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
 
     ####################################################################################################################
 
-    if pixels.shape != weights.shape:
+    if footprint.shape != weights.shape:
 
         raise ValueError('Invalid shapes')
 
     ####################################################################################################################
 
-    full_sky = _get_full_sky(nside, pixels)
+    full_sky = _get_full_sky(nside, footprint)
 
-    full_sky[pixels] = np.where(weights != hp.UNSEEN, weights, np.nan)
+    full_sky[footprint] = np.where(weights != hp.UNSEEN, weights, np.nan)
 
     ####################################################################################################################
 
     return _display(
         nside,
-        pixels,
+        footprint,
         full_sky,
         nest,
         cmap,
@@ -240,7 +241,7 @@ def display_healpix(nside: int, pixels: np.ndarray, weights: np.ndarray, nest: b
 
 ########################################################################################################################
 
-def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: float = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = True) -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: float = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = True) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Displays a catalog.
@@ -249,7 +250,7 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
     ----------
     nside : int
         The HEALPix nside parameter.
-    pixels : np.ndarray
+    footprint : np.ndarray
         HEALPix indices of the region to display.
     lon : np.ndarray
         Array of longitudes.
@@ -287,15 +288,15 @@ def display_catalog(nside: int, pixels: np.ndarray, lon: np.ndarray, lat: np.nda
 
     ####################################################################################################################
 
-    full_sky = _get_full_sky(nside, pixels)
+    full_sky = _get_full_sky(nside, footprint)
 
-    catalog_to_number_density(nside, pixels, full_sky, lon, lat, nest = nest, lonlat = True)
+    catalog_to_number_density(nside, footprint, full_sky, lon, lat, nest = nest, lonlat = True)
 
     ####################################################################################################################
 
     return _display(
         nside,
-        pixels,
+        footprint,
         full_sky,
         nest,
         cmap,

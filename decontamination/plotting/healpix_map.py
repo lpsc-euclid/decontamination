@@ -90,19 +90,18 @@ def _get_norm_cmap_label(values: np.ndarray, v_min: typing.Optional[float], v_ma
         # LINEAR SCALE                                                                                                 #
         ################################################################################################################
 
-        _max = np.nanmax(values)
-        _mean = np.nanmean(values)
-        _std = np.nanstd(values)
+        if not assume_positive or np.nanmax(values) >= 0.0:
 
-        ################################################################################################################
+            ############################################################################################################
 
-        if not assume_positive or _max >= 0.0:
+            v_mean = np.nanmean(values)
+            v_std = np.nanstd(values)
 
             ############################################################################################################
 
             if v_min is None:
 
-                v_min = _mean - n_sigma * _std
+                v_min = v_mean - n_sigma * v_std
 
                 if not assume_positive or v_min >= 0.0:
                     colorbar_label = 'µ - {}σ < {}'.format(n_sigma, colorbar_label)
@@ -113,7 +112,7 @@ def _get_norm_cmap_label(values: np.ndarray, v_min: typing.Optional[float], v_ma
 
             if v_max is None:
 
-                v_max = _mean + n_sigma * _std
+                v_max = v_mean + n_sigma * v_std
 
                 if not assume_positive or v_max >= 0.0:
                     colorbar_label = '{} < µ + {}σ'.format(colorbar_label, n_sigma)

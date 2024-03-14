@@ -48,7 +48,15 @@ def _get_full_sky(nside: int, footprint: np.ndarray) -> np.ndarray:
 
 ########################################################################################################################
 
-def _get_norm_label(values: np.ndarray, v_min: typing.Optional[float], v_max: typing.Optional[float], n_sigma: float, colorbar_label: str, log_scale: bool, assume_positive: bool) -> typing.Tuple[colors.Normalize, str]:
+def _get_norm_cmap_label(values: np.ndarray, v_min: typing.Optional[float], v_max: typing.Optional[float], n_sigma: float, cmap: str, colorbar_label: str, log_scale: bool, assume_positive: bool) -> typing.Tuple[colors.Normalize, colors.Colormap, str]:
+
+    ####################################################################################################################
+
+    cmap = plt.get_cmap(cmap)
+
+    cmap.set_bad(color = '#808080')
+
+    ####################################################################################################################
 
     if log_scale:
 
@@ -68,7 +76,11 @@ def _get_norm_label(values: np.ndarray, v_min: typing.Optional[float], v_max: ty
 
         ################################################################################################################
 
-        return colors.LogNorm(vmin = v_min, vmax = v_max), f'log({colorbar_label})'
+        colorbar_label = f'log({colorbar_label})'
+
+        ################################################################################################################
+
+        return colors.LogNorm(vmin = v_min, vmax = v_max), cmap, colorbar_label
 
         ################################################################################################################
 
@@ -110,14 +122,11 @@ def _get_norm_label(values: np.ndarray, v_min: typing.Optional[float], v_max: ty
 
             ############################################################################################################
 
+            return colors.Normalize(vmin = v_min, vmax = v_max), cmap, colorbar_label
+
         else:
 
-            v_min = 0.0
-            v_max = 0.0
-
-        ################################################################################################################
-
-        return colors.Normalize(vmin = v_min, vmax = v_max), colorbar_label
+            return colors.Normalize(vmin = None, vmax = None), cmap, colorbar_label
 
 ########################################################################################################################
 
@@ -126,21 +135,16 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
     ####################################################################################################################
 
-    norm, label = _get_norm_label(
+    norm, cmap, label = _get_norm_cmap_label(
         full_sky[footprint],
         v_min,
         v_max,
         n_sigma,
+        cmap,
         colorbar_label,
         log_scale,
         assume_positive
     )
-
-    ####################################################################################################################
-
-    cmap = plt.get_cmap(cmap)
-
-    cmap.set_bad(color = '#808080')
 
     ####################################################################################################################
 

@@ -161,14 +161,14 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
     fig, ax = plt.subplots(figsize = (8, 8))
 
-    img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), origin = 'lower', aspect = 1.0, cmap = cmap, norm = norm)
+    img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), norm = norm, cmap = cmap, origin = 'lower', aspect = 'equal')
 
     ax.set_xlabel('Longitude (deg)')
     ax.set_ylabel('Latitude (deg)')
 
     if show_colorbar:
 
-        bar = _build_colorbar(ax, img, cmap, norm, n_hist_bins = n_hist_bins, show_histogram = show_histogram, position = 'bottom')
+        bar = _build_colorbar(ax, img, norm, cmap, n_hist_bins = n_hist_bins, show_histogram = show_histogram, position = 'bottom')
 
         bar.set_label(label)
 

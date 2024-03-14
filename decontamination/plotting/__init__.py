@@ -104,8 +104,8 @@ def catalog_to_number_density(nside: int, footprint: np.ndarray, full_sky: np.nd
 def _build_colorbar(
     ax: plt.Axes,
     weights: typing.Union[np.ndarray, image.AxesImage],
-    cmap: colors.Colormap,
     norm: colors.Normalize,
+    cmap: colors.Colormap,
     n_hist_bins: int = 100,
     show_histogram: bool = True,
     position: str = 'right',

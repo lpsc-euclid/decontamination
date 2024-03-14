@@ -180,7 +180,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
 ########################################################################################################################
 
-def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: float = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = False) -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: float = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'value', log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = False) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Displays a HEALPix map.
@@ -202,10 +202,10 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
     v_max : float, default: **None** ≡ :math:`\\mu+n_\\sigma\\cdot\\sigma`
         Maximum range value.
     n_sigma : float, default: **2.5**
-        Multiplier for standard deviations.
+        Multiplier for standard deviation.
     n_hist_bins : int, default: **100**
         Number of histogram bins in the colorbar.
-    colorbar_label : str, default **'number'**
+    colorbar_label : str, default **'value'**
         Colorbar label.
     log_scale : bool, default: **False**
         Specifies whether to enable the logarithm scaling.
@@ -274,7 +274,7 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
     v_max : float, default: **None** ≡ :math:`\\mu+n_\\sigma\\cdot\\sigma`
         Maximum range value.
     n_sigma : float, default: **2.5**
-        Multiplier for standard deviations.
+        Multiplier for standard deviation.
     n_hist_bins : int, default: **100**
         Number of histogram bins in the colorbar.
     colorbar_label : str, default **'number'**

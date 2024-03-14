@@ -48,7 +48,7 @@ def _get_full_sky(nside: int, footprint: np.ndarray) -> np.ndarray:
 
 ########################################################################################################################
 
-def _get_norm_cmap_label(values: np.ndarray, v_min: typing.Optional[float], v_max: typing.Optional[float], n_sigma: float, cmap: str, colorbar_label: str, log_scale: bool, assume_positive: bool) -> typing.Tuple[colors.Normalize, colors.Colormap, str]:
+def _get_norm_cmap_label(values: np.ndarray, v_min: typing.Optional[float], v_max: typing.Optional[float], n_sigma: typing.Optional[float], cmap: str, colorbar_label: str, log_scale: bool, assume_positive: bool) -> typing.Tuple[colors.Normalize, colors.Colormap, str]:
 
     ####################################################################################################################
 
@@ -90,7 +90,7 @@ def _get_norm_cmap_label(values: np.ndarray, v_min: typing.Optional[float], v_ma
         # LINEAR SCALE                                                                                                 #
         ################################################################################################################
 
-        if not assume_positive or np.nanmax(values) >= 0.0:
+        if (n_sigma > 0.0) and not (assume_positive and np.nanmax(values) <= 0.0):
 
             ############################################################################################################
 
@@ -119,13 +119,9 @@ def _get_norm_cmap_label(values: np.ndarray, v_min: typing.Optional[float], v_ma
                 else:
                     v_max = 0.0
 
-            ############################################################################################################
+        ################################################################################################################
 
-            return colors.Normalize(vmin = v_min, vmax = v_max), cmap, colorbar_label
-
-        else:
-
-            return colors.Normalize(vmin = None, vmax = None), cmap, colorbar_label
+        return colors.Normalize(vmin = v_min, vmax = v_max), cmap, colorbar_label
 
 ########################################################################################################################
 
@@ -183,7 +179,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
 ########################################################################################################################
 
-def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: float = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'value', log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = False) -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'value', log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = False) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Displays a HEALPix map.
@@ -253,7 +249,7 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
 
 ########################################################################################################################
 
-def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: float = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = True) -> typing.Tuple[plt.Figure, plt.Axes]:
+def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, assume_positive: bool = True) -> typing.Tuple[plt.Figure, plt.Axes]:
 
     """
     Displays a catalog.

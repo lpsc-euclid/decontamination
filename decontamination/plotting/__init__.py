@@ -124,16 +124,24 @@ def _build_colorbar(
     if not size:
         size = '8%'
 
-    if position in ['left', 'right']:
+    if position == 'left':
+        orientation = 'vertical'
+        if not pad:
+            pad = 0.55
+    elif position == 'right':
         orientation = 'vertical'
         if not pad:
             pad = 0.05
-    elif position in ['top', 'bottom']:
+    elif position == 'top':
+        orientation = 'horizontal'
+        if not pad:
+            pad = 0.05
+    elif position == 'bottom':
         orientation = 'horizontal'
         if not pad:
             pad = 0.55
     else:
-        orientation = 'vertical'
+        raise ValueError('Invalid colorbar position')
 
     ####################################################################################################################
 

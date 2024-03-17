@@ -39,7 +39,7 @@ class Selection(object):
         r'|'
         r'(==|!=|<=|>=|<|>)'
         r'|'
-        r'(&{2})|(\|{2})'
+        r'(&{2}|and)|(\|{2}|or)'
         r'|'
         r'(&)|(\|)'
         r'|'
@@ -214,7 +214,7 @@ class Selection(object):
 
             ############################################################################################################
 
-            if token_list and token_list[0].type in ['LOGICAL_OR_OP', 'LOGICAL_AND_OP']:
+            if token_list and token_list[0].type in ['LOGICAL_AND_OP', 'LOGICAL_OR_OP']:
 
                 op = token_list.pop(0).value
 
@@ -343,8 +343,8 @@ class Selection(object):
 
             NOT_OP           = "~" ;
             COMPARISON_OP    = "==" | "!=" | "<=" | ">=" | "<" | ">" ;
-            LOGICAL_AND_OP   = "&&" ;
-            LOGICAL_OR_OP    = "||" ;
+            LOGICAL_AND_OP   = "&&" | "and" ;
+            LOGICAL_OR_OP    = "||" | "or" ;
             BITWISE_AND_OP   = "&" ;
             BITWISE_OR_OP    = "|" ;
 
@@ -385,7 +385,7 @@ class Selection(object):
             right_value = Selection._evaluate(node.right, table)
 
             if node.op == '~':
-                return ~right_value
+                return np.logical_not(right_value)
 
         ################################################################################################################
         # BINARY OP                                                                                                    #
@@ -409,9 +409,9 @@ class Selection(object):
             elif node.op == '>':
                 return left_value > right_value
             elif node.op == '&&':
-                return left_value & right_value
+                return np.logical_and(left_value, right_value)
             elif node.op == '||':
-                return left_value | right_value
+                return np.logical_or(left_value, right_value)
             elif node.op == '&':
                 return np.bitwise_and(left_value, right_value)
             elif node.op == '|':
@@ -550,7 +550,11 @@ class Selection(object):
             The generate the selection mask.
         """
 
+        ################################################################################################################
+
         expression = expression.strip()
+
+        ################################################################################################################
 
         if not expression:
 

@@ -418,9 +418,9 @@ class Selection(object):
                 return left_value < right_value
             elif node.op == '>':
                 return left_value > right_value
-            elif node.op == '&&':
+            elif node.op == '&&' or node.op == 'and':
                 return np.logical_and(left_value, right_value)
-            elif node.op == '||':
+            elif node.op == '||' or node.op == 'or':
                 return np.logical_or(left_value, right_value)
             elif node.op == '&':
                 return np.bitwise_and(left_value, right_value)

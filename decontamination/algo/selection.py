@@ -101,7 +101,9 @@ class Selection(object):
     # PARSER                                                                                                           #
     ####################################################################################################################
 
-    class UnaryOpNode:
+    class UnaryOpNode(object):
+
+        """An unary operator node"""
 
         def __init__(self, _op: str, _right):
 
@@ -110,7 +112,9 @@ class Selection(object):
 
     ####################################################################################################################
 
-    class BinaryOpNode:
+    class BinaryOpNode(object):
+
+        """A binary operator node"""
 
         def __init__(self, _left, _op: str, _right):
 
@@ -120,7 +124,9 @@ class Selection(object):
 
     ####################################################################################################################
 
-    class FloatNumNode:
+    class FloatNumNode(object):
+
+        """A floating number node"""
 
         def __init__(self, _value: str):
 
@@ -128,7 +134,9 @@ class Selection(object):
 
     ####################################################################################################################
 
-    class IntNumNode:
+    class IntNumNode(object):
+
+        """An integer number node"""
 
         def __init__(self, _value: str):
 
@@ -136,7 +144,9 @@ class Selection(object):
 
     ####################################################################################################################
 
-    class ColNameNode:
+    class ColNameNode(object):
+
+        """A column name node"""
 
         def __init__(self, _value: str):
 

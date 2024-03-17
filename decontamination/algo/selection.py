@@ -33,20 +33,30 @@ class Selection(object):
     ####################################################################################################################
 
     _TOKEN_PATTERN = re.compile(
-        r'(==|!=|<=|>=|<|>)'
-        r'|'
-        r'([&|])'
+        r'([()])'
         r'|'
         r'(~)'
         r'|'
-        r'([()])'
+        r'(==|!=|<=|>=|<|>)'
+        r'|'
+        r'(&{2})|(\|{2})'
+        r'|'
+        r'(&)|(\|)'
         r'|'
         r'([-+]?(?:'
             r'\d+\.\d*(?:[eE][-+]?\d+)?'
             r'|'
             r'\.\d+(?:[eE][-+]?\d+)?'
             r'|'
-            r'\d+(?:[eE][-+]?\d+)?'
+            r'\d+[eE][-+]?\d+'
+        r'))'
+        r'|'
+        r'([-+]?(?:'
+            r'0x[0-9a-fA-F]+'
+            r'|'
+            r'Ob[01]+'
+            r'|'
+            r'\d+'
         r'))'
         r'|'
         r'(\w+)'
@@ -59,20 +69,28 @@ class Selection(object):
     @staticmethod
     def _tokenize(expression: str) -> typing.Generator[Token, typing.Any, typing.Any]:
 
-        for comparison_op, boolean_op, not_op, grouping, number, column, blank in Selection._TOKEN_PATTERN.findall(expression):
+        for grouping, not_op, comparison_op, logical_and_op, logical_or_op, bitwise_and_op, bitwise_or_op, float_num, int_num, col_name, blank in Selection._TOKEN_PATTERN.findall(expression):
 
-            if   comparison_op:
-                yield Selection.Token('COMPARISON_OP', comparison_op)
-            elif boolean_op:
-                yield Selection.Token('BOOLEAN_OP', boolean_op)
+            if grouping:
+                yield Selection.Token('GROUPING', grouping)
             elif not_op:
                 yield Selection.Token('NOT_OP', not_op)
-            elif grouping:
-                yield Selection.Token('GROUPING', grouping)
-            elif number:
-                yield Selection.Token('NUMBER', number)
-            elif column:
-                yield Selection.Token('COLUMN', column)
+            elif comparison_op:
+                yield Selection.Token('COMPARISON_OP', comparison_op)
+            elif logical_and_op:
+                yield Selection.Token('LOGICAL_AND_OP', logical_and_op)
+            elif logical_or_op:
+                yield Selection.Token('LOGICAL_OR_OP', logical_or_op)
+            elif bitwise_and_op:
+                yield Selection.Token('BITWISE_AND_OP', bitwise_and_op)
+            elif bitwise_or_op:
+                yield Selection.Token('BITWISE_OR_OP', bitwise_or_op)
+            elif float_num:
+                yield Selection.Token('FLOAT_NUM', float_num)
+            elif int_num:
+                yield Selection.Token('INT_NUM', int_num)
+            elif col_name:
+                yield Selection.Token('COL_NAME', col_name)
             elif blank:
                 # IGNORE #
                 pass
@@ -102,7 +120,7 @@ class Selection(object):
 
     ####################################################################################################################
 
-    class NumberNode:
+    class FloatNumNode:
 
         def __init__(self, _value: str):
 
@@ -110,7 +128,15 @@ class Selection(object):
 
     ####################################################################################################################
 
-    class ColumnNode:
+    class IntNumNode:
+
+        def __init__(self, _value: str):
+
+            self.value: str = _value
+
+    ####################################################################################################################
+
+    class ColNameNode:
 
         def __init__(self, _value: str):
 
@@ -119,20 +145,30 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def _pick_token(token_list: typing.List[Token]) -> typing.Optional[Token]:
+    def _pick_token(
+        token_list: typing.List[Token],
+        expected_type: typing.Optional[str] = None,
+        expected_value: typing.Optional[str] = None,
+    ) -> typing.Optional[Token]:
 
-        if token_list:
+        if not token_list:
 
-            return token_list.pop(0)
+            raise ValueError('Syntax error: truncated expression')
 
-        else:
+        if expected_type and token_list[0].type != expected_type:
 
-            raise ValueError('Syntax error')
+            raise ValueError(f'Syntax error: expected token type `{expected_type}` but `{token_list[0].type}` found')
+
+        if expected_value and token_list[0].value != expected_value:
+
+            raise ValueError(f'Syntax error: expected token value `{expected_value}` but `{token_list[0].value}` found')
+
+        return token_list.pop(0)
 
     ####################################################################################################################
 
     @staticmethod
-    def _parse_term(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]:
+    def _parse_term(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode]:
 
         ################################################################################################################
 
@@ -144,40 +180,62 @@ class Selection(object):
 
         if token.value == '(':
 
-            node = Selection._parse_boolean_op(token_list)
+            node = Selection._parse_logical_or_expr(token_list)
 
-            token = Selection._pick_token(token_list)
-
-            if token.value != ')':
-
-                raise ValueError('Syntax error')
+            Selection._pick_token(token_list, expected_value = ')')
 
             return node
 
         ################################################################################################################
-        # NUMBER                                                                                                       #
+        # FLOAT_NUM                                                                                                    #
         ################################################################################################################
 
-        elif token.type == 'NUMBER':
+        elif token.type == 'FLOAT_NUM':
 
-            return Selection.NumberNode(token.value)
-
-        ################################################################################################################
-        # COLUMN                                                                                                       #
-        ################################################################################################################
-
-        elif token.type == 'COLUMN':
-
-            return Selection.ColumnNode(token.value)
+            return Selection.FloatNumNode(token.value)
 
         ################################################################################################################
+        # INT_NUM                                                                                                      #
+        ################################################################################################################
 
-        raise ValueError('Syntax error')
+        elif token.type == 'INT_NUM':
+
+            return Selection.IntNumNode(token.value)
+
+        ################################################################################################################
+        # COL_NAME                                                                                                     #
+        ################################################################################################################
+
+        elif token.type == 'COL_NAME':
+
+            ############################################################################################################
+
+            left_node = Selection.ColNameNode(token.value)
+
+            ############################################################################################################
+
+            if token_list and token_list[0].type in ['LOGICAL_OR_OP', 'LOGICAL_AND_OP']:
+
+                op = token_list.pop(0).value
+
+                token = Selection._pick_token(token_list, expected_type = 'INT_NUM')
+
+                right_node = Selection.FloatNumNode(token.value)
+
+                left_node = Selection.BinaryOpNode(left_node, op, right_node)
+
+            ############################################################################################################
+
+            return left_node
+
+        ################################################################################################################
+
+        raise ValueError(f'Syntax error: unexpected token type `{token.type}`')
 
     ####################################################################################################################
 
     @staticmethod
-    def _parse_not_op(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]:
+    def _parse_not_op(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode]:
 
         if token_list and token_list[0].type == 'NOT_OP':
 
@@ -192,7 +250,7 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def _parse_comparison_op(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]:
+    def _parse_comparison_op(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode]:
 
         ################################################################################################################
 
@@ -215,7 +273,7 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def _parse_boolean_op(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]:
+    def _parse_logical_and_expr(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode]:
 
         ################################################################################################################
 
@@ -223,7 +281,7 @@ class Selection(object):
 
         ################################################################################################################
 
-        while token_list and token_list[0].type == 'BOOLEAN_OP':
+        while token_list and token_list[0].type == 'LOGICAL_AND_OP':
 
             op = token_list.pop(0).value
 
@@ -238,29 +296,57 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def parse(expression: str) -> typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]:
+    def _parse_logical_or_expr(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode]:
+
+        ################################################################################################################
+
+        left_node = Selection._parse_logical_and_expr(token_list)
+
+        ################################################################################################################
+
+        while token_list and token_list[0].type == 'LOGICAL_OR_OP':
+
+            op = token_list.pop(0).value
+
+            right_node = Selection._parse_logical_and_expr(token_list)
+
+            left_node = Selection.BinaryOpNode(left_node, op, right_node)
+
+        ################################################################################################################
+
+        return left_node
+
+    ####################################################################################################################
+
+    @staticmethod
+    def parse(expression: str) -> typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode]:
 
         """
         Evaluates the specified expression and returns the associated Abstract Syntax Tree (AST).
 
         .. code-block:: ebnf
 
-            expression       = boolean_expr ;
+            expression       = logical_or_expr ;
 
-            boolean_expr     = comparison_expr { BOOLEAN_OP comparison_expr } ;
+            logical_or_expr  = logical_and_expr { LOGICAL_OR_OP logical_and_expr } ;
+            logical_and_expr = comparison_expr { LOGICAL_AND_OP comparison_expr } ;
 
             comparison_expr  = not_expr { COMPARISON_OP not_expr } ;
 
             not_expr         = [ NOT_OP ] term ;
 
             term             = "(" boolean_expr ")"
-                             | NUMBER
-                             | COLUMN
+                             | FLOAT_NUM
+                             | INT_NUM
+                             | COL_NAME [(BITWISE_OR_OP | LOGICAL_AND_OP) INT_NUM]
                              ;
 
-            COMPARISON_OP    = "==" | "!=" | "<=" | ">=" | "<" | ">" ;
-            BOOLEAN_OP       = "&" | "|" ;
             NOT_OP           = "~" ;
+            COMPARISON_OP    = "==" | "!=" | "<=" | ">=" | "<" | ">" ;
+            LOGICAL_AND_OP   = "&&" ;
+            LOGICAL_OR_OP    = "||" ;
+            BITWISE_AND_OP   = "&" ;
+            BITWISE_OR_OP    = "|" ;
 
         Parameters
         ----------
@@ -269,17 +355,17 @@ class Selection(object):
 
         Returns
         -------
-        Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]
+        typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode]
             The Abstract Syntax Tree (AST).
         """
 
         token_list = list(Selection._tokenize(expression))
 
-        result = Selection._parse_boolean_op(token_list)
+        result = Selection._parse_logical_or_expr(token_list)
 
         if token_list:
 
-            raise ValueError('Syntax error')
+            raise ValueError(f'Syntax error: unexpected token type `{token_list[0].type}`')
 
         return result
 
@@ -288,7 +374,7 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def _evaluate(node: typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode], table: np.ndarray) -> typing.Union[np.ndarray, float]:
+    def _evaluate(node: typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode], table: np.ndarray) -> typing.Union[np.ndarray, float]:
 
         ################################################################################################################
         # UNARY OP                                                                                                     #
@@ -322,42 +408,54 @@ class Selection(object):
                 return left_value < right_value
             elif node.op == '>':
                 return left_value > right_value
-            elif node.op == '&':
+            elif node.op == '&&':
                 return left_value & right_value
-            elif node.op == '|':
+            elif node.op == '||':
                 return left_value | right_value
+            elif node.op == '&':
+                return np.bitwise_and(left_value, right_value)
+            elif node.op == '|':
+                return np.bitwise_or(left_value, right_value)
 
         ################################################################################################################
-        # NUMBER                                                                                                       #
+        # FLOAT NUM                                                                                                    #
         ################################################################################################################
 
-        if isinstance(node, Selection.NumberNode):
+        if isinstance(node, Selection.FloatNumNode):
 
             return float(node.value)
 
         ################################################################################################################
-        # COLUMN                                                                                                       #
+        # INT NUM                                                                                                      #
         ################################################################################################################
 
-        if isinstance(node, Selection.ColumnNode):
+        if isinstance(node, Selection.IntNumNode):
+
+            return int(node.value)
+
+        ################################################################################################################
+        # COL_NAME                                                                                                     #
+        ################################################################################################################
+
+        if isinstance(node, Selection.ColNameNode):
 
             return table[node.value]
 
         ################################################################################################################
 
-        raise ValueError('Internal error')
+        raise ValueError('Internal error, please contact the LE3 VMPZ-ID team')
 
     ####################################################################################################################
 
     @staticmethod
-    def to_string(node: typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode], is_root: bool = True) -> str:
+    def to_string(node: typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode], is_root: bool = True) -> str:
 
         """
         Converts the specified Abstract Syntax Tree (AST) into the associated expression.
 
         Parameters
         ----------
-        node : typing.Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]
+        node : typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode]
             An Abstract Syntax Tree node.
         is_root : bool, default: True
             Internal, don't use.
@@ -402,24 +500,32 @@ class Selection(object):
             return expr
 
         ################################################################################################################
-        # NUMBER                                                                                                       #
+        # FLOAT NUM                                                                                                    #
         ################################################################################################################
 
-        elif isinstance(node, Selection.NumberNode):
+        elif isinstance(node, Selection.FloatNumNode):
 
             return str(float(node.value))
 
         ################################################################################################################
-        # COLUMN                                                                                                       #
+        # INT NUM                                                                                                      #
         ################################################################################################################
 
-        elif isinstance(node, Selection.ColumnNode):
+        elif isinstance(node, Selection.IntNumNode):
+
+            return str(int(node.value))
+
+        ################################################################################################################
+        # COL_NAME                                                                                                     #
+        ################################################################################################################
+
+        elif isinstance(node, Selection.ColNameNode):
 
             return node.value
 
         ################################################################################################################
 
-        raise ValueError('Internal error')
+        raise ValueError('Internal error, please contact the LE3 VMPZ-ID team')
 
     ####################################################################################################################
 

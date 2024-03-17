@@ -23,7 +23,7 @@ class Selection(object):
     # TOKENIZER                                                                                                        #
     ####################################################################################################################
 
-    class Token:
+    class Token(object):
 
         def __init__(self, _type: str, _value: str):
 

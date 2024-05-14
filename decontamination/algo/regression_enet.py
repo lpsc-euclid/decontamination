@@ -57,13 +57,26 @@ class Regression_ENet(regression_abstract.Regression_Abstract):
 
     ####################################################################################################################
 
-    def _update_weights(self, errors, vectors):
+    def _update_weights_with_st(self, errors, vectors):
 
         m = vectors.shape[0]
 
         dw = -2.0 * (vectors.T @ errors) / m \
-             + self._l1_ratio * self._rho * np.sign(self._weights) \
              + 2.0 * (1.0 - self._l1_ratio) * self._rho * self._weights / m
+        di = -2.0 * np.sum(errors) / m
+
+        self._weights -= self._alpha * dw
+        self._weights = np.sign(self._weights) * np.maximum(np.abs(self._weights) - self._alpha * self._l1_ratio * self._rho, 0.0)
+        self._intercept -= self._alpha * di
+
+    ####################################################################################################################
+
+    def _update_weights_without_st(self, errors, vectors):
+
+        m = vectors.shape[0]
+
+        dw = -2.0 * (vectors.T @ errors) / m \
+             + self._l1_ratio * self._rho * np.sign(self._weights) + 2.0 * (1.0 - self._l1_ratio) * self._rho * self._weights / m
         di = -2.0 * np.sum(errors) / m
 
         self._weights -= self._alpha * dw
@@ -71,7 +84,7 @@ class Regression_ENet(regression_abstract.Regression_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = 1000, show_progress_bar: bool = False) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = 1000, soft_thresholding: bool = True, show_progress_bar: bool = False) -> None:
 
         ################################################################################################################
 
@@ -99,11 +112,21 @@ class Regression_ENet(regression_abstract.Regression_Abstract):
 
             ############################################################################################################
 
-            for vectors, y in generator():
+            if soft_thresholding:
 
-                errors = y - self.predict(vectors)
+                for vectors, y in generator():
 
-                self._update_weights(errors, vectors)
+                    errors = y - self.predict(vectors)
+
+                    self._update_weights_with_st(errors, vectors)
+
+            else:
+
+                for vectors, y in generator():
+
+                    errors = y - self.predict(vectors)
+
+                    self._update_weights_without_st(errors, vectors)
 
             ############################################################################################################
 

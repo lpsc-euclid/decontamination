@@ -100,7 +100,7 @@ class ElasticNet(object):
 
             ############################################################################################################
 
-            for y, vectors in generator():
+            for vectors, y in generator():
 
                 errors = y - self.predict(vectors)
 

@@ -44,6 +44,8 @@ from .algo.som_batch import SOM_Batch
 
 from .algo.som_online import SOM_Online
 
+from .algo.elasticnet import ElasticNet
+
 from .algo.clustering import Clustering
 
 from .algo.selection import Selection
@@ -115,6 +117,7 @@ __all__ = [
     'WCS', 'rms_bit_to_healpix', 'image_to_healpix',
     'order_index_to_nuniq', 'nuniq_to_order_index', 'moc_to_healpix', 'wmoc_to_healpix',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
+    'ElasticNet',
     'Clustering',
     'Selection',
     'catalog_to_number_density',

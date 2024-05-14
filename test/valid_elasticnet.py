@@ -40,10 +40,10 @@ def test_regression():
     Y_pred_sklearn = model_sklearn.predict(X_test)
 
     model_basic = decontamination.Regression_Basic(10, dtype = np.float32, alpha = 0.01, tolerance = None)
+    model_basic.train((X_train, Y_train), n_epochs = 1000, analytic = True)
+    Y_pred_ana = model_basic.predict(X_test)
     model_basic.train((X_train, Y_train), n_epochs = 1000, analytic = False)
     Y_pred_basic = model_basic.predict(X_test)
-    model_basic.train((X_train, Y_train), n_epochs = 1000, analytic = True)
-    Y_pred_analytic = model_basic.predict(X_test)
 
     model_enet = decontamination.Regression_ENet(10, dtype = np.float32, rho = 0.1, l1_ratio = 0.5, alpha = 0.01, tolerance = None)
     model_enet.train((X_train, Y_train), n_epochs = 1000)
@@ -52,8 +52,8 @@ def test_regression():
     plt.figure(figsize = (14, 7))
     plt.plot(Y_test, label = 'Actual values', color = 'blue', marker = 'o')
     plt.plot(Y_pred_sklearn, label = 'sklearn model predictions', color = 'green', linestyle = '--', marker = '+')
-    plt.plot(Y_pred_basic, label = 'decontamination basic model predictions', color = 'red', linestyle = '--', marker = 'x')
-    plt.plot(Y_pred_analytic, label = 'decontamination analytic model predictions', color = 'yellow', linestyle = '--', marker = 'x')
+    plt.plot(Y_pred_ana, label = 'decontamination ana model predictions', color = 'yellow', linestyle = '--', marker = 'x')
+    plt.plot(Y_pred_basic + 0.01, label = 'decontamination basic model predictions', color = 'red', linestyle = '--', marker = 'x')
     plt.plot(Y_pred_enet, label = 'decontamination enet model predictions', color = 'blue', linestyle = '--', marker = 'x')
     plt.xlabel('Test Sample Index')
     plt.ylabel('Output Value')

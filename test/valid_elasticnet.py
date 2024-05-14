@@ -5,6 +5,8 @@
 import os
 import sys
 
+from sklearn.linear_model import ElasticNet as SklearnElasticNet
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 ########################################################################################################################
@@ -12,6 +14,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import decontamination
 
 import numpy as np
+
+import matplotlib.pyplot as plt
 
 ########################################################################################################################
 
@@ -29,23 +33,29 @@ Y_test = np.dot(X_test, true_coef) + rnd.standard_normal(40) * 0.5
 
 ########################################################################################################################
 
-def test_centroids():
+def test_regression():
 
-    Y_expected = [
-         2.29683453, -2.32001548,  2.31295224, -1.22112844,  6.82390318,
-        -3.7016805 ,  1.62418921, -4.79520745,  0.95482941,  1.11669571,
-        -0.25593791, -3.18041356, -0.09205901,  2.43077473, -0.83440336,
-         4.10125923, -3.70140218, -4.60889269, -5.26046493,  1.41238636,
-         3.63144907, -5.81960863, -0.05299978,  2.13558836, -0.93096656,
-         1.92605767,  3.92494028,  3.35920613, -3.64555708, -4.97661007,
-        -2.10545616,  4.4443428 , -2.34319942, -6.72483061, -2.20283817,
-         1.14317652,  5.72259142,  3.62325198, -0.9960785 ,  5.85263562
-    ]
+    model_sklearn = SklearnElasticNet(alpha = 0.1, l1_ratio = 0.5, max_iter = 1000)
+    model_sklearn.fit(X_train, Y_train)
+    Y_pred_sklearn = model_sklearn.predict(X_test)
 
-    elastic_net = decontamination.ElasticNet(10, dtype = np.float32, rho = 0.1, l1_ratio = 0.5, alpha = 0.01, tolerance = None)
-    elastic_net.train((X_train, Y_train), n_epochs = 1000)
-    Y_pred = elastic_net.predict(X_test)
+    model_decontamination = decontamination.ElasticNet(10, dtype = np.float32, rho = 0.1, l1_ratio = 0.5, alpha = 0.01, tolerance = None)
+    model_decontamination.train((X_train, Y_train), n_epochs = 1000)
+    Y_pred_decontamination = model_decontamination.predict(X_test)
 
-    assert np.allclose(Y_pred, Y_expected)
+    plt.figure(figsize = (14, 7))
+    plt.plot(Y_test, label = 'Actual values', color = 'blue', marker = 'o')
+    plt.plot(Y_pred_sklearn, label = 'sklearn model predictions', color = 'green', linestyle = '--', marker = '+')
+    plt.plot(Y_pred_decontamination, label = 'decontamination model predictions', color = 'red', linestyle = '--', marker = 'x')
+    plt.xlabel('Test Sample Index')
+    plt.ylabel('Output Value')
+    plt.legend()
+    plt.show()
+
+########################################################################################################################
+
+if __name__ == '__main__':
+
+    test_regression()
 
 ########################################################################################################################

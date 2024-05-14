@@ -34,13 +34,13 @@ class ElasticNet(object):
         Mixing parameter, with 0 <= l1_ratio <= 1. For l1_ratio = 0 the penalty is an L2 penalty. For l1_ratio = 1 it is an L1 penalty. For 0 < l1_ratio < 1, the penalty is a combination of L1 and L2.
     alpha : float = 0.01
         Learning rate.
-    tolerance : float = 1.0e-4
+    tolerance : float = **None**
         The tolerance for the optimization.
     """
 
     ####################################################################################################################
 
-    def __init__(self, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, rho: float = 1.0, l1_ratio: float = 0.5, alpha: float = 0.01, tolerance: typing.Optional[float] = 1.0e-4):
+    def __init__(self, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, rho: float = 1.0, l1_ratio: float = 0.5, alpha: float = 0.01, tolerance: typing.Optional[float] = None):
 
         ################################################################################################################
 

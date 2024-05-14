@@ -19,6 +19,10 @@ class Decontamination_ElasticNet(decontamination_abstract.Decontamination_Abstra
     TODO
     """
 
-    pass
+    def __init__(self, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, beta: float = 1.0, l1: float = 0.5, alpha: float = 0.01, tolerance: float = 1e-4):
+
+        self._dim = dim
+
+
 
 ########################################################################################################################

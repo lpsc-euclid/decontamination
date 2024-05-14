@@ -13,11 +13,12 @@ import numpy as np
 
 from numpy.linalg import norm
 
-from decontamination.algo import dataset_to_generator_builder
+from . import regression_abstract, dataset_to_generator_builder
 
 ########################################################################################################################
 
-class ElasticNet(object):
+# noinspection PyPep8Naming
+class Regression_ENet(regression_abstract.Regression_Abstract):
 
     """
     ElasticNet regression.
@@ -44,19 +45,15 @@ class ElasticNet(object):
 
         ################################################################################################################
 
-        self._dim = dim
-        self._dtype = dtype
+        super().__init__(dim, dtype)
+
+        ################################################################################################################
 
         self._rho = rho
         self._l1_ratio = l1_ratio
 
         self._alpha = alpha
         self._tolerance = tolerance
-
-        ################################################################################################################
-
-        self._weights = None
-        self._intercept = None
 
     ####################################################################################################################
 
@@ -110,12 +107,12 @@ class ElasticNet(object):
 
             if self._tolerance is not None:
 
-                ############################################################################################################
+                ########################################################################################################
 
                 weight_change = norm(self._weights - previous_weights)
                 intercept_change = abs(self._intercept - previous_intercept)
 
-                ############################################################################################################
+                ########################################################################################################
 
                 if weight_change < self._tolerance and intercept_change < self._tolerance:
 
@@ -123,15 +120,9 @@ class ElasticNet(object):
 
                     break
 
-                ############################################################################################################
+                ########################################################################################################
 
                 previous_weights = self._weights.copy()
                 previous_intercept = self._intercept
-
-    ####################################################################################################################
-
-    def predict(self, vectors: np.ndarray):
-
-        return (vectors @ self._weights) + self._intercept
 
 ########################################################################################################################

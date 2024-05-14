@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 -m pytest
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
@@ -39,7 +39,7 @@ def test_regression():
     model_sklearn.fit(X_train, Y_train)
     Y_pred_sklearn = model_sklearn.predict(X_test)
 
-    model_decontamination = decontamination.ElasticNet(10, dtype = np.float32, rho = 0.1, l1_ratio = 0.5, alpha = 0.01, tolerance = None)
+    model_decontamination = decontamination.Regression_ENet(10, dtype = np.float32, rho = 0.1, l1_ratio = 0.5, alpha = 0.01, tolerance = None)
     model_decontamination.train((X_train, Y_train), n_epochs = 1000)
     Y_pred_decontamination = model_decontamination.predict(X_test)
 

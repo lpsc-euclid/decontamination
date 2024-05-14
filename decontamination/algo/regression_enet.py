@@ -77,17 +77,19 @@ class Regression_ENet(regression_abstract.Regression_Abstract):
 
         self._weights = np.zeros(self._dim, dtype = self._dtype)
 
-        self._intercept = 0.00000000000000000000000000000000000000
+        self._intercept = 0.0
 
         ################################################################################################################
 
-        previous_weights = np.inf * self._weights
+        previous_weights = np.full(self._dim, np.inf, dtype = self._dtype)
 
-        previous_intercept = np.inf * self._intercept
+        previous_intercept = np.inf
 
         ################################################################################################################
 
         generator_builder = dataset_to_generator_builder(dataset)
+
+        ################################################################################################################
 
         for epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
 

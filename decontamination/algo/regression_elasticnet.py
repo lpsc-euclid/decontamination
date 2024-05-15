@@ -13,12 +13,12 @@ import numpy as np
 
 from numpy.linalg import norm
 
-from . import regression_abstract, dataset_to_generator_builder
+from . import regression_basic, dataset_to_generator_builder
 
 ########################################################################################################################
 
 # noinspection PyPep8Naming
-class Regression_ElasticNet(regression_abstract.Regression_Abstract):
+class Regression_ElasticNet(regression_basic.Regression_Basic):
 
     """
     ElasticNet regression.
@@ -47,42 +47,12 @@ class Regression_ElasticNet(regression_abstract.Regression_Abstract):
 
         ################################################################################################################
 
-        super().__init__(dim, dtype)
+        super().__init__(dim, dtype, alpha, tolerance)
 
         ################################################################################################################
 
         self._rho = rho
         self._l1_ratio = l1_ratio
-
-        self._alpha = alpha
-        self._tolerance = tolerance
-
-    ####################################################################################################################
-
-    def _update_weights_with_st(self, errors, vectors):
-
-        m = vectors.shape[0]
-
-        dw = -2.0 * (vectors.T @ errors) / m \
-             + 2.0 * (1.0 - self._l1_ratio) * self._rho * self._weights / m
-        di = -2.0 * np.sum(errors) / m
-
-        self._weights -= self._alpha * dw
-        self._weights = np.sign(self._weights) * np.maximum(np.abs(self._weights) - self._alpha * self._l1_ratio * self._rho, 0.0)
-        self._intercept -= self._alpha * di
-
-    ####################################################################################################################
-
-    def _update_weights_without_st(self, errors, vectors):
-
-        m = vectors.shape[0]
-
-        dw = -2.0 * (vectors.T @ errors) / m \
-             + self._l1_ratio * self._rho * np.sign(self._weights) + 2.0 * (1.0 - self._l1_ratio) * self._rho * self._weights / m
-        di = -2.0 * np.sum(errors) / m
-
-        self._weights -= self._alpha * dw
-        self._intercept -= self._alpha * di
 
     ####################################################################################################################
 
@@ -114,21 +84,35 @@ class Regression_ElasticNet(regression_abstract.Regression_Abstract):
 
             ############################################################################################################
 
+            dw = 0
+            di = 0
+
+            n_vectors = 0
+
+            sign = np.sign(self._weights)
+
+            for vectors, y in generator():
+
+                n_vectors += vectors.shape[0]
+
+                errors = y - self.predict(vectors)
+
+                _dw, _di = self._update_weights(errors, vectors)
+
+                dw += _dw
+                di += _di
+
+            # L2 penalty
+            dw += 2.0 * (1.0 - self._l1_ratio) * self._rho * self._weights
+
+            self._weights -= self._alpha * dw / n_vectors
+            self._intercept -= self._alpha * di / n_vectors
+
+            # L1 penalty
             if soft_thresholding:
-
-                for vectors, y in generator():
-
-                    errors = y - self.predict(vectors)
-
-                    self._update_weights_with_st(errors, vectors)
-
+                self._weights = np.sign(self._weights) * np.maximum(np.abs(self._weights) - self._alpha * self._l1_ratio * self._rho, 0.0)
             else:
-
-                for vectors, y in generator():
-
-                    errors = y - self.predict(vectors)
-
-                    self._update_weights_without_st(errors, vectors)
+                self._weights -= sign * self._alpha * self._l1_ratio * self._rho
 
             ############################################################################################################
 

@@ -97,8 +97,6 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
             xtx = None
             xty = None
 
-            n_samples = 0
-
             for x, y in generator():
 
                 x_bias = np.hstack((np.ones((x.shape[0], 1)), x))
@@ -109,8 +107,6 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
                 else:
                     xtx += x_bias.T @ x_bias
                     xty += x_bias.T @ y
-
-                n_samples += x.shape[0]
 
             ############################################################################################################
 

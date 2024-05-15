@@ -54,13 +54,11 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
     def _update_weights(self, errors, vectors):
 
-        m = vectors.shape[0]
+        dw = -2.0 * (vectors.T @ errors)
 
-        dw = -2.0 * (vectors.T @ errors) / m
-        di = -2.0 * np.sum(errors) / m
+        di = -2.0 * np.sum(errors)
 
-        self._weights -= self._alpha * dw
-        self._intercept -= self._alpha * di
+        return dw, di
 
     ####################################################################################################################
 
@@ -131,11 +129,24 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
                 ########################################################################################################
 
+                dw = 0
+                di = 0
+
+                n_vectors = 0
+
                 for vectors, y in generator():
+
+                    n_vectors += vectors.shape[0]
 
                     errors = y - self.predict(vectors)
 
-                    self._update_weights(errors, vectors)
+                    _dw, _di = self._update_weights(errors, vectors)
+
+                    dw += _dw
+                    di += _di
+
+                self._weights -= self._alpha * dw / n_vectors
+                self._intercept -= self._alpha * di / n_vectors
 
                 ########################################################################################################
 

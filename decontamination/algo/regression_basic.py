@@ -64,7 +64,7 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = 1000, analytic: bool = False, show_progress_bar: bool = False) -> None:
+    def train(self, dataset: typing.Union[typing.Tuple[np.ndarray, np.ndarray], typing.Callable], n_epochs: typing.Optional[int] = 1000, analytic: bool = True, show_progress_bar: bool = False) -> None:
 
         ################################################################################################################
 
@@ -94,22 +94,27 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
             ############################################################################################################
 
-            X_list = []
-            y_list = []
+            xtx = None
+            xty = None
+
+            n_samples = 0
 
             for x, y in generator():
 
-                X_list.append(x)
-                y_list.append(y)
+                x_bias = np.hstack((np.ones((x.shape[0], 1)), x))
 
-            X = np.vstack(X_list)
-            y = np.hstack(y_list)
+                if xtx is None:
+                    xtx = x_bias.T @ x_bias
+                    xty = x_bias.T @ y
+                else:
+                    xtx += x_bias.T @ x_bias
+                    xty += x_bias.T @ y
+
+                n_samples += x.shape[0]
 
             ############################################################################################################
 
-            X_bias = np.hstack((np.ones((X.shape[0], 1)), X))
-
-            theta = inv(X_bias.T @ X_bias) @ X_bias.T @ y
+            theta = inv(xtx) @ xty
 
             self._weights = theta[1:]
             self._intercept = theta[0]

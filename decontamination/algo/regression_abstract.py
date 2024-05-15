@@ -10,6 +10,8 @@ import typing
 
 import numpy as np
 
+from . import dataset_to_generator_builder
+
 ########################################################################################################################
 
 # noinspection PyPep8Naming
@@ -45,8 +47,52 @@ class Regression_Abstract(object):
 
     ####################################################################################################################
 
-    def predict(self, vectors: np.ndarray):
+    @property
+    def dim(self) -> int:
 
-        return (vectors @ self._weights) + self._intercept
+        """Dimensionality of the input data."""
+
+        return self._dim
+
+    ####################################################################################################################
+
+    @property
+    def dtype(self) -> typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]]:
+
+        """Regression data type."""
+
+        return self._dtype
+
+    ####################################################################################################################
+
+    @property
+    def weights(self):
+
+        return self._weights
+
+    ####################################################################################################################
+
+    @property
+    def intercept(self):
+
+        return self._intercept
+
+    ####################################################################################################################
+
+    def predict(self, dataset: np.ndarray):
+
+        return (dataset @ self._weights) + self._intercept
+
+    ####################################################################################################################
+
+    def predict_generator(self, dataset: typing.Union[np.ndarray, typing.Callable]):
+
+        generator_builder = dataset_to_generator_builder(dataset)
+
+        generator = generator_builder()
+
+        for vectors, y in generator():
+
+            yield (vectors @ self._weights) + self._intercept
 
 ########################################################################################################################

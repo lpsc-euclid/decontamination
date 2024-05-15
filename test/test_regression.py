@@ -42,7 +42,7 @@ def test_centroids():
          1.14317652,  5.72259142,  3.62325198, -0.9960785 ,  5.85263562
     ]
 
-    elastic_net = decontamination.ElasticNet(10, dtype = np.float32, rho = 0.1, l1_ratio = 0.5, alpha = 0.01, tolerance = None)
+    elastic_net = decontamination.Regression_ElasticNet(10, dtype = np.float32, rho = 0.1, l1_ratio = 0.5, alpha = 0.01, tolerance = None)
     elastic_net.train((X_train, Y_train), n_epochs = 1000)
     Y_pred = elastic_net.predict(X_test)
 

@@ -45,7 +45,7 @@ def test_regression():
     model_basic.train((X_train, Y_train), n_epochs = 1000, analytic = False)
     Y_pred_basic = model_basic.predict(X_test)
 
-    model_enet = decontamination.Regression_ENet(10, dtype = np.float32, rho = 0.1, l1_ratio = 0.5, alpha = 0.01, tolerance = None)
+    model_enet = decontamination.Regression_ElasticNet(10, dtype = np.float32, rho = 0.1, l1_ratio = 0.5, alpha = 0.01, tolerance = None)
     model_enet.train((X_train, Y_train), n_epochs = 1000)
     Y_pred_enet = model_enet.predict(X_test)
 

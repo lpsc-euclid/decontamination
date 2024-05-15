@@ -18,7 +18,7 @@ from . import regression_abstract, dataset_to_generator_builder
 ########################################################################################################################
 
 # noinspection PyPep8Naming
-class Regression_ENet(regression_abstract.Regression_Abstract):
+class Regression_ElasticNet(regression_abstract.Regression_Abstract):
 
     """
     ElasticNet regression.
@@ -38,6 +38,8 @@ class Regression_ENet(regression_abstract.Regression_Abstract):
     tolerance : float = **None**
         The tolerance for the optimization.
     """
+
+    __MODE__ = 'elasticnet'
 
     ####################################################################################################################
 

@@ -26,6 +26,8 @@ class Regression_Abstract(object):
         Neural network data type, either **np.float32** or **np.float64**.
     """
 
+    __MODE__ = 'abstract'
+
     ####################################################################################################################
 
     def __init__(self, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32):

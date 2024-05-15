@@ -35,6 +35,8 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
         The tolerance for the optimization.
     """
 
+    __MODE__ = 'basic'
+
     ####################################################################################################################
 
     def __init__(self, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, alpha: float = 0.01, tolerance: typing.Optional[float] = None):

@@ -118,8 +118,8 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
                 # GRADIENT DESCENT METHOD                                                                              #
                 ########################################################################################################
 
-                dw = 0
-                di = 0
+                dw = 0.0
+                di = 0.0
 
                 n_vectors = 0
 

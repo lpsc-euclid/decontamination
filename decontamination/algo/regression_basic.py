@@ -158,8 +158,8 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
                     # GRADIENT DESCENT METHOD                                                                          #
                     ####################################################################################################
 
-                    dw = 0
-                    di = 0
+                    dw = 0.0
+                    di = 0.0
 
                     n_vectors = 0
 

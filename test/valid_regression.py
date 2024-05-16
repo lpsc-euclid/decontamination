@@ -60,11 +60,14 @@ def do_regressions(use_generator_builder):
     model_basic.train(generator_builder if use_generator_builder else (X_train, Y_train), n_epochs = 1000, analytic = True)
     Y_pred_ana = model_basic.predict(X_test)
     model_basic.train(generator_builder if use_generator_builder else (X_train, Y_train), n_epochs = 1000, analytic = False)
+    print('basic, analytic = True', model_basic.error)
     Y_pred_basic = model_basic.predict(X_test)
+    print('basic, analytic = False', model_basic.error)
 
     model_enet = decontamination.Regression_ElasticNet(10, dtype = np.float32, rho = 0.1, l1_ratio = 0.5, alpha = 0.01, tolerance = None)
     model_enet.train(generator_builder if use_generator_builder else (X_train, Y_train), n_epochs = 1000, soft_thresholding = True)
     Y_pred_enet = model_enet.predict(X_test)
+    print('elastic net', model_enet.error)
 
     print(model_enet.weights)
 

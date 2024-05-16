@@ -63,7 +63,7 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[typing.Tuple[np.ndarray, np.ndarray], typing.Callable], n_epochs: typing.Optional[int] = 1000, analytic: bool = True, show_progress_bar: bool = False) -> None:
+    def train(self, dataset: typing.Union[typing.Tuple[np.ndarray, np.ndarray], typing.Callable], n_epochs: typing.Optional[int] = 1000, analytic: bool = True, compute_error: bool = True, show_progress_bar: bool = False) -> None:
 
         ################################################################################################################
 
@@ -170,5 +170,11 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
                     previous_weights = self._weights.copy()
                     previous_intercept = self._intercept
+
+        ################################################################################################################
+
+        if compute_error:
+
+            self._error = self._compute_error(generator_builder)
 
 ########################################################################################################################

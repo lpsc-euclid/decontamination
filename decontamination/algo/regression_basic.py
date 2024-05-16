@@ -39,7 +39,7 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
     ####################################################################################################################
 
-    def __init__(self, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, alpha: float = 0.01, tolerance: typing.Optional[float] = None):
+    def __init__(self, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, alpha: typing.Optional[float] = 0.01, tolerance: typing.Optional[float] = None):
 
         ################################################################################################################
 
@@ -119,7 +119,7 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
         else:
 
             ############################################################################################################
-            # ITERATIVE METHOD                                                                                         #
+            # ITERATIVE METHODS                                                                                        #
             ############################################################################################################
 
             for epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
@@ -130,24 +130,52 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
                 ########################################################################################################
 
-                dw = 0
-                di = 0
+                if self._alpha is None or self._alpha == 0.0:
 
-                n_vectors = 0
+                    ####################################################################################################
+                    # COORDINATE DESCENT METHOD                                                                        #
+                    ####################################################################################################
 
-                for x, y in generator():
+                    for vectors, y in generator():
 
-                    n_vectors += x.shape[0]
+                        for j in range(self._dim):
 
-                    errors = y - self.predict(x)
+                            residual = y - (self._intercept + np.dot(vectors, self._weights))
 
-                    _dw, _di = Regression_Basic._update_weights(errors, x)
+                            self._weights[j] = (
+                               np.dot(vectors[:, j], residual + vectors[:, j] * self._weights[j])
+                               /
+                               np.dot(vectors[:, j], vectors[:, j]) + 0.0000000000000000000000000000000
+                            )
 
-                    dw += _dw
-                    di += _di
+                        self._intercept = np.mean(y - np.dot(vectors, self._weights))
 
-                self._weights -= self._alpha * dw / n_vectors
-                self._intercept -= self._alpha * di / n_vectors
+                    ####################################################################################################
+
+                else:
+
+                    ####################################################################################################
+                    # GRADIENT DESCENT METHOD                                                                          #
+                    ####################################################################################################
+
+                    dw = 0
+                    di = 0
+
+                    n_vectors = 0
+
+                    for x, y in generator():
+
+                        n_vectors += x.shape[0]
+
+                        errors = y - self.predict(x)
+
+                        _dw, _di = Regression_Basic._update_weights(errors, x)
+
+                        dw += _dw
+                        di += _di
+
+                    self._weights -= self._alpha * dw / n_vectors
+                    self._intercept -= self._alpha * di / n_vectors
 
                 ########################################################################################################
 

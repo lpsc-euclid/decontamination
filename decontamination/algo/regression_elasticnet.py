@@ -47,7 +47,7 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
         ################################################################################################################
 
-        super().__init__(dim, dtype, 0.0 if alpha is None else alpha, tolerance)
+        super().__init__(dim, dtype, alpha, tolerance)
 
         ################################################################################################################
 
@@ -102,9 +102,11 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
                         residual = y - (self._intercept + np.dot(vectors, self._weights))
 
-                        rho_j = np.dot(vectors[:, j], residual + vectors[:, j] * self._weights[j])
-
-                        self._weights[j] = rho_j / (np.dot(vectors[:, j], vectors[:, j]) + self._rho * (1 - self._l1_ratio))
+                        self._weights[j] = (
+                            np.dot(vectors[:, j], residual + vectors[:, j] * self._weights[j])
+                            /
+                            (np.dot(vectors[:, j], vectors[:, j]) + self._rho * (1 - self._l1_ratio))
+                        )
 
                     self._intercept = np.mean(y - np.dot(vectors, self._weights))
 

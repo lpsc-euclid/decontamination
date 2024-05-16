@@ -97,7 +97,7 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
                 errors = y - self.predict(vectors)
 
-                _dw, _di = self._update_weights(errors, vectors)
+                _dw, _di = regression_basic.Regression_Basic._update_weights(errors, vectors)
 
                 dw += _dw
                 di += _di

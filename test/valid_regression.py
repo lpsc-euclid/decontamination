@@ -21,17 +21,17 @@ import matplotlib.pyplot as plt
 
 ########################################################################################################################
 
-true_coef = np.array([1.5, -2.0, 3.0, 0, 0, 0, 0, 0, 0, 0])
+true_coef = np.array([1.5, -2.0, 3.0, 0, 0, 0, 0, 0, 0, 0], dtype = np.float64)
 
 ########################################################################################################################
 
 rnd = np.random.default_rng(seed = 0)
 
-X_train = rnd.standard_normal((160, 10))
-Y_train = np.dot(X_train, true_coef) + rnd.standard_normal(160) * 0.5
+X_train = rnd.standard_normal((160, 10), dtype = np.float64)
+Y_train = np.dot(X_train, true_coef) + rnd.standard_normal(160, dtype = np.float64) * 0.5
 
-X_test = rnd.standard_normal((40, 10))
-Y_test = np.dot(X_test, true_coef) + rnd.standard_normal(40) * 0.5
+X_test = rnd.standard_normal((40, 10), dtype = np.float64)
+Y_test = np.dot(X_test, true_coef) + rnd.standard_normal(40, dtype = np.float64) * 0.5
 
 ########################################################################################################################
 

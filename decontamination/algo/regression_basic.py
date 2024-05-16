@@ -52,7 +52,8 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
     ####################################################################################################################
 
-    def _update_weights(self, errors, vectors):
+    @staticmethod
+    def _update_weights(errors: np.ndarray, vectors: np.ndarray) -> typing.Tuple[np.ndarray, float]:
 
         dw = -2.0 * (vectors.T @ errors)
 
@@ -97,7 +98,7 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
             for x, y in generator():
 
-                x_bias = np.hstack((np.ones((x.shape[0], 1)), x))
+                x_bias = np.hstack((np.ones((x.shape[0], 1), dtype = self._dtype), x))
 
                 if xtx is None:
                     xtx = x_bias.T @ x_bias
@@ -134,13 +135,13 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
                 n_vectors = 0
 
-                for vectors, y in generator():
+                for x, y in generator():
 
-                    n_vectors += vectors.shape[0]
+                    n_vectors += x.shape[0]
 
-                    errors = y - self.predict(vectors)
+                    errors = y - self.predict(x)
 
-                    _dw, _di = self._update_weights(errors, vectors)
+                    _dw, _di = Regression_Basic._update_weights(errors, x)
 
                     dw += _dw
                     di += _di

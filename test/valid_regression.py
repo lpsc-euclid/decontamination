@@ -52,23 +52,26 @@ def generator_builder():
 
 def do_regressions(use_generator_builder):
 
-    model_sklearn = SklearnElasticNet(alpha = 0.1, l1_ratio = 0.5, max_iter = 1000)
+    iter = 500
+
+    model_sklearn = SklearnElasticNet(alpha = 0.1, l1_ratio = 0.5, max_iter = iter)
     model_sklearn.fit(X_train, Y_train)
     Y_pred_sklearn = model_sklearn.predict(X_test)
 
     model_basic = decontamination.Regression_Basic(10, dtype = np.float32, alpha = 0.01, tolerance = None)
-    model_basic.train(generator_builder if use_generator_builder else (X_train, Y_train), n_epochs = 1000, analytic = True)
+    model_basic.train(generator_builder if use_generator_builder else (X_train, Y_train), n_epochs = iter, analytic = True)
     Y_pred_ana = model_basic.predict(X_test)
-    model_basic.train(generator_builder if use_generator_builder else (X_train, Y_train), n_epochs = 1000, analytic = False)
+    model_basic.train(generator_builder if use_generator_builder else (X_train, Y_train), n_epochs = iter, analytic = False)
     print('basic, analytic = True', model_basic.error)
     Y_pred_basic = model_basic.predict(X_test)
     print('basic, analytic = False', model_basic.error)
 
-    model_enet = decontamination.Regression_ElasticNet(10, dtype = np.float32, rho = 0.1, l1_ratio = 0.5, alpha = 0.01, tolerance = None)
-    model_enet.train(generator_builder if use_generator_builder else (X_train, Y_train), n_epochs = 1000, soft_thresholding = True)
+    model_enet = decontamination.Regression_ElasticNet(10, dtype = np.float32, rho = 0.1, l1_ratio = 0.5, alpha = 0.01 * 0, tolerance = None)
+    model_enet.train(generator_builder if use_generator_builder else (X_train, Y_train), n_epochs = iter, soft_thresholding = True)
     Y_pred_enet = model_enet.predict(X_test)
     print('elastic net', model_enet.error)
 
+    print(model_sklearn.sparse_coef_)
     print(model_enet.weights)
 
     return Y_pred_sklearn, Y_pred_ana, Y_pred_basic, Y_pred_enet
@@ -79,22 +82,22 @@ def test_regression():
 
     Y_pred_sklearn_nmb, Y_pred_ana_nmb, Y_pred_basic_nmb, Y_pred_enet_nmb = do_regressions(False)
 
-    Y_pred_sklearn_mb, Y_pred_ana_mb, Y_pred_basic_mb, Y_pred_enet_mb = do_regressions(True)
-
     if True:
 
         plt.figure(figsize = (14, 7))
         plt.plot(Y_test, label = 'Actual values', color = 'blue', marker = 'o')
         plt.plot(Y_pred_sklearn_nmb, label = 'sklearn model predictions', color = 'green', linestyle = '--', marker = '+')
-        plt.plot(Y_pred_basic_nmb, label = 'decontamination ana model predictions', color = 'yellow', linestyle = '--', marker = 'x')
-        plt.plot(Y_pred_basic_nmb + 0.01, label = 'decontamination basic model predictions', color = 'red', linestyle = '--', marker = 'x')
+        #plt.plot(Y_pred_ana_nmb, label = 'decontamination ana model predictions', color = 'yellow', linestyle = '--', marker = 'x')
+        #plt.plot(Y_pred_basic_nmb + 0.01, label = 'decontamination basic model predictions', color = 'red', linestyle = '--', marker = 'x')
         plt.plot(Y_pred_enet_nmb + 0.01, label = 'decontamination enet model predictions', color = 'blue', linestyle = '--', marker = 'x')
         plt.xlabel('Test Sample Index')
         plt.ylabel('Output Value')
         plt.legend()
         plt.show()
 
-    if True:
+    if False:
+
+        Y_pred_sklearn_mb, Y_pred_ana_mb, Y_pred_basic_mb, Y_pred_enet_mb = do_regressions(True)
 
         plt.figure(figsize = (14, 7))
         plt.plot((Y_pred_sklearn_nmb - Y_pred_sklearn_mb) / Y_pred_sklearn_nmb, label = 'sklearn model predictions', color = 'green', linestyle = '--', marker = '+')

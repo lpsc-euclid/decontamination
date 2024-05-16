@@ -151,6 +151,7 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
                 ########################################################################################################
 
+                # noinspection DuplicatedCode
                 if self._tolerance is not None:
 
                     ####################################################################################################

@@ -43,11 +43,11 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
     ####################################################################################################################
 
-    def __init__(self, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, rho: float = 1.0, l1_ratio: float = 0.5, alpha: float = 0.01, tolerance: typing.Optional[float] = None):
+    def __init__(self, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, rho: float = 1.0, l1_ratio: float = 0.5, alpha: typing.Optional[float] = 0.01, tolerance: typing.Optional[float] = None):
 
         ################################################################################################################
 
-        super().__init__(dim, dtype, alpha, tolerance)
+        super().__init__(dim, dtype, 0.0 if alpha is None else alpha, tolerance)
 
         ################################################################################################################
 
@@ -76,7 +76,7 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
         ################################################################################################################
 
-        for epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
+        for epoch in tqdm.trange(n_epochs, disable=not show_progress_bar):
 
             ############################################################################################################
 
@@ -84,38 +84,73 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
             ############################################################################################################
 
-            dw = 0
-            di = 0
-
-            n_vectors = 0
-
             sign = np.sign(self._weights)
-
-            for vectors, y in generator():
-
-                n_vectors += vectors.shape[0]
-
-                errors = y - self.predict(vectors)
-
-                _dw, _di = regression_basic.Regression_Basic._update_weights(errors, vectors)
-
-                dw += _dw
-                di += _di
-
-            # L2 penalty
-            dw += 2.0 * (1.0 - self._l1_ratio) * self._rho * self._weights
-
-            self._weights -= self._alpha * dw / n_vectors
-            self._intercept -= self._alpha * di / n_vectors
-
-            # L1 penalty
-            if soft_thresholding:
-                self._weights = np.sign(self._weights) * np.maximum(np.abs(self._weights) - self._alpha * self._l1_ratio * self._rho, 0.0)
-            else:
-                self._weights -= sign * self._alpha * self._l1_ratio * self._rho
 
             ############################################################################################################
 
+            if self._alpha is None or self._alpha == 0.0:
+
+                ########################################################################################################
+                # COORDINATE DESCENT METHOD                                                                            #
+                ########################################################################################################
+
+                alpha = 1.0
+
+                for vectors, y in generator():
+
+                    for j in range(self._dim):
+
+                        residual = y - (self._intercept + np.dot(vectors, self._weights))
+
+                        rho_j = np.dot(vectors[:, j], residual + vectors[:, j] * self._weights[j])
+
+                        self._weights[j] = rho_j / (np.dot(vectors[:, j], vectors[:, j]) + self._rho * (1 - self._l1_ratio))
+
+                    self._intercept = np.mean(y - np.dot(vectors, self._weights))
+
+                ########################################################################################################
+
+            else:
+
+                ########################################################################################################
+                # GRADIENT DESCENT METHOD                                                                              #
+                ########################################################################################################
+
+                dw = 0
+                di = 0
+
+                n_vectors = 0
+
+                alpha = self._alpha
+
+                for vectors, y in generator():
+
+                    n_vectors += vectors.shape[0]
+
+                    errors = y - self.predict(vectors)
+
+                    _dw, _di = regression_basic.Regression_Basic._update_weights(errors, vectors)
+
+                    dw += _dw
+                    di += _di
+
+                # L2 penalty
+                dw += 2.0 * (1.0 - self._l1_ratio) * self._rho * self._weights
+
+                self._weights -= alpha * dw / n_vectors
+                self._intercept -= alpha * di / n_vectors
+
+            ############################################################################################################
+
+            # L1 penalty
+            if soft_thresholding:
+                self._weights = np.sign(self._weights) * np.maximum(np.abs(self._weights) - alpha * self._l1_ratio * self._rho, 0.0)
+            else:
+                self._weights -= sign * alpha * self._l1_ratio * self._rho
+
+            ############################################################################################################
+
+            # noinspection DuplicatedCode
             if self._tolerance is not None:
 
                 ########################################################################################################

@@ -136,19 +136,15 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
                     # COORDINATE DESCENT METHOD                                                                        #
                     ####################################################################################################
 
-                    for vectors, y in generator():
+                    for x, y in generator():
 
                         for j in range(self._dim):
 
-                            residual = y - (self._intercept + np.dot(vectors, self._weights))
+                            residual = y - (self._intercept + np.dot(x, self._weights))
 
-                            self._weights[j] = (
-                               np.dot(vectors[:, j], residual + vectors[:, j] * self._weights[j])
-                               /
-                               np.dot(vectors[:, j], vectors[:, j]) + 0.0000000000000000000000000000000
-                            )
+                            self._weights[j] = np.dot(x[:, j], residual + x[:, j] * self._weights[j]) / np.dot(x[:, j], x[:, j])
 
-                        self._intercept = np.mean(y - np.dot(vectors, self._weights))
+                        self._intercept = np.mean(y - np.dot(x, self._weights))
 
                     ####################################################################################################
 
@@ -173,6 +169,8 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
                         dw += _dw
                         di += _di
+
+                    ########################################################################################################
 
                     self._weights -= self._alpha * dw / n_vectors
                     self._intercept -= self._alpha * di / n_vectors

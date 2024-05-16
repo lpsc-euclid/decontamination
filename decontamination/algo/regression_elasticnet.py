@@ -76,6 +76,8 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
         ################################################################################################################
 
+        l2_penality = self._rho * (1 - self._l1_ratio)
+
         for epoch in tqdm.trange(n_epochs, disable=not show_progress_bar):
 
             ############################################################################################################
@@ -96,19 +98,15 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
                 alpha = 1.0
 
-                for vectors, y in generator():
+                for x, y in generator():
 
                     for j in range(self._dim):
 
-                        residual = y - (self._intercept + np.dot(vectors, self._weights))
+                        residual = y - (self._intercept + np.dot(x, self._weights))
 
-                        self._weights[j] = (
-                            np.dot(vectors[:, j], residual + vectors[:, j] * self._weights[j])
-                            /
-                            (np.dot(vectors[:, j], vectors[:, j]) + self._rho * (1 - self._l1_ratio))
-                        )
+                        self._weights[j] = np.dot(x[:, j], residual + x[:, j] * self._weights[j]) / (np.dot(x[:, j], x[:, j]) + l2_penality)
 
-                    self._intercept = np.mean(y - np.dot(vectors, self._weights))
+                    self._intercept = np.mean(y - np.dot(x, self._weights))
 
                 ########################################################################################################
 
@@ -125,19 +123,21 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
                 alpha = self._alpha
 
-                for vectors, y in generator():
+                for x, y in generator():
 
-                    n_vectors += vectors.shape[0]
+                    n_vectors += x.shape[0]
 
-                    errors = y - self.predict(vectors)
+                    errors = y - self.predict(x)
 
-                    _dw, _di = regression_basic.Regression_Basic._update_weights(errors, vectors)
+                    _dw, _di = regression_basic.Regression_Basic._update_weights(errors, x)
 
                     dw += _dw
                     di += _di
 
+                ########################################################################################################
+
                 # L2 penalty
-                dw += 2.0 * (1.0 - self._l1_ratio) * self._rho * self._weights
+                dw += 2.0 * l2_penality * self._weights
 
                 self._weights -= alpha * dw / n_vectors
                 self._intercept -= alpha * di / n_vectors

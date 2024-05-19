@@ -148,7 +148,7 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
                     dw += _dw
                     di += _di
 
-                ####################################################################################################
+                ########################################################################################################
 
                 self._weights -= self._alpha * dw / n_vectors
                 self._intercept -= self._alpha * di / n_vectors

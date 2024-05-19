@@ -47,7 +47,7 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
         ################################################################################################################
 
-        self._alpha = alpha
+        self._alpha = alpha or 0.01
         self._tolerance = tolerance
 
     ####################################################################################################################
@@ -129,51 +129,29 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
                 generator = generator_builder()
 
                 ########################################################################################################
+                # GRADIENT DESCENT METHOD                                                                              #
+                ########################################################################################################
 
-                if self._alpha is None or self._alpha == 0.0:
+                dw = 0.0
+                di = 0.0
 
-                    ####################################################################################################
-                    # COORDINATE DESCENT METHOD                                                                        #
-                    ####################################################################################################
+                n_vectors = 0
 
-                    for x, y in generator():
+                for x, y in generator():
 
-                        for j in range(self._dim):
+                    n_vectors += x.shape[0]
 
-                            residual = y - (self._intercept + np.dot(x, self._weights))
+                    errors = y - self.predict(x)
 
-                            self._weights[j] = np.dot(x[:, j], residual + x[:, j] * self._weights[j]) / np.dot(x[:, j], x[:, j])
+                    _dw, _di = Regression_Basic._update_weights(errors, x)
 
-                        self._intercept = np.mean(y - np.dot(x, self._weights))
+                    dw += _dw
+                    di += _di
 
-                    ####################################################################################################
+                ####################################################################################################
 
-                else:
-
-                    ####################################################################################################
-                    # GRADIENT DESCENT METHOD                                                                          #
-                    ####################################################################################################
-
-                    dw = 0.0
-                    di = 0.0
-
-                    n_vectors = 0
-
-                    for x, y in generator():
-
-                        n_vectors += x.shape[0]
-
-                        errors = y - self.predict(x)
-
-                        _dw, _di = Regression_Basic._update_weights(errors, x)
-
-                        dw += _dw
-                        di += _di
-
-                    ########################################################################################################
-
-                    self._weights -= self._alpha * dw / n_vectors
-                    self._intercept -= self._alpha * di / n_vectors
+                self._weights -= self._alpha * dw / n_vectors
+                self._intercept -= self._alpha * di / n_vectors
 
                 ########################################################################################################
 
@@ -182,12 +160,7 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
                     ####################################################################################################
 
-                    weight_change = norm(self._weights - previous_weights)
-                    intercept_change = abs(self._intercept - previous_intercept)
-
-                    ####################################################################################################
-
-                    if weight_change < self._tolerance and intercept_change < self._tolerance:
+                    if norm(self._weights - previous_weights) < self._tolerance and abs(self._intercept - previous_intercept) < self._tolerance:
 
                         print(f'Convergence reached at epoch {epoch}. Stopping early.')
 

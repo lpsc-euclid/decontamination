@@ -76,7 +76,9 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
         ################################################################################################################
 
-        l2_penality = self._rho * (1 - self._l1_ratio)
+        lambda1 = self._rho * self._l1_ratio
+
+        lambda2 = self._rho * (1.0 - self._l1_ratio)
 
         for epoch in tqdm.trange(n_epochs, disable=not show_progress_bar):
 
@@ -85,70 +87,42 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
             generator = generator_builder()
 
             ############################################################################################################
+            # GRADIENT DESCENT METHOD                                                                                  #
+            ############################################################################################################
+
+            dw = 0.0
+            di = 0.0
+
+            n_vectors = 0
 
             sign = np.sign(self._weights)
 
+            for x, y in generator():
+
+                n_vectors += x.shape[0]
+
+                errors = y - self.predict(x)
+
+                _dw, _di = regression_basic.Regression_Basic._update_weights(errors, x)
+
+                dw += _dw
+                di += _di
+
             ############################################################################################################
 
-            if self._alpha is None or self._alpha == 0.0:
+            # L2 penalty
+            dw += 2.0 * lambda2 * self._weights
 
-                ########################################################################################################
-                # COORDINATE DESCENT METHOD                                                                            #
-                ########################################################################################################
-
-                alpha = 1.0
-
-                for x, y in generator():
-
-                    for j in range(self._dim):
-
-                        residual = y - (self._intercept + np.dot(x, self._weights))
-
-                        self._weights[j] = np.dot(x[:, j], residual + x[:, j] * self._weights[j]) / (np.dot(x[:, j], x[:, j]) + l2_penality)
-
-                    self._intercept = np.mean(y - np.dot(x, self._weights))
-
-                ########################################################################################################
-
-            else:
-
-                ########################################################################################################
-                # GRADIENT DESCENT METHOD                                                                              #
-                ########################################################################################################
-
-                dw = 0.0
-                di = 0.0
-
-                n_vectors = 0
-
-                alpha = self._alpha
-
-                for x, y in generator():
-
-                    n_vectors += x.shape[0]
-
-                    errors = y - self.predict(x)
-
-                    _dw, _di = regression_basic.Regression_Basic._update_weights(errors, x)
-
-                    dw += _dw
-                    di += _di
-
-                ########################################################################################################
-
-                # L2 penalty
-                dw += 2.0 * l2_penality * self._weights
-
-                self._weights -= alpha * dw / n_vectors
-                self._intercept -= alpha * di / n_vectors
+            self._weights -= self._alpha * dw / n_vectors
+            self._intercept -= self._alpha * di / n_vectors
 
             ############################################################################################################
 
             # L1 penalty
             if soft_thresholding:
-                self._weights = np.sign(self._weights) * np.maximum(np.abs(self._weights) - alpha * self._l1_ratio * self._rho, 0.0)
+                self._weights = np.sign(self._weights) * np.maximum(np.abs(self._weights) - self._alpha * lambda1, 0.0)
             else:
-                self._weights -= sign * alpha * self._l1_ratio * self._rho
+                self._weights -= sign * self._alpha * lambda1
 
             ############################################################################################################
 
@@ -157,12 +131,7 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
                 ########################################################################################################
 
-                weight_change = norm(self._weights - previous_weights)
-                intercept_change = abs(self._intercept - previous_intercept)
-
-                ########################################################################################################
-
-                if weight_change < self._tolerance and intercept_change < self._tolerance:
+                if norm(self._weights - previous_weights) < self._tolerance and abs(self._intercept - previous_intercept) < self._tolerance:
 
                     print(f'Convergence reached at epoch {epoch}. Stopping early.')
 

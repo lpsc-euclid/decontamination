@@ -50,6 +50,8 @@ from .algo.regression_basic import Regression_Basic
 
 from .algo.regression_elasticnet import Regression_ElasticNet
 
+from .algo.regression_elasticnetcv import Regression_ElasticNetCV
+
 from .algo.clustering import Clustering
 
 from .algo.selection import Selection
@@ -121,7 +123,7 @@ __all__ = [
     'WCS', 'rms_bit_to_healpix', 'image_to_healpix',
     'order_index_to_nuniq', 'nuniq_to_order_index', 'moc_to_healpix', 'wmoc_to_healpix',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
-    'Regression_Abstract', 'Regression_Basic', 'Regression_ElasticNet',
+    'Regression_Abstract', 'Regression_Basic', 'Regression_ElasticNet', 'Regression_ElasticNetCV',
     'Clustering',
     'Selection',
     'catalog_to_number_density',

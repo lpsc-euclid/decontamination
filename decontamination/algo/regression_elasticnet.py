@@ -56,7 +56,7 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[typing.Tuple[np.ndarray, np.ndarray], typing.Callable], n_epochs: typing.Optional[int] = 1000, soft_thresholding: bool = True, compute_error: bool = True, show_progress_bar: bool = False) -> None:
+    def train(self, dataset: typing.Union[typing.Tuple[np.ndarray, np.ndarray], typing.Callable], n_epochs: typing.Optional[int] = 1000, fold_indices: typing.Optional[typing.List[int]] = None, cv: int = 5, soft_thresholding: bool = True, compute_error: bool = True, show_progress_bar: bool = False) -> None:
 
         ################################################################################################################
 
@@ -80,7 +80,7 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
         lambda2 = self._rho * (1.0 - self._l1_ratio)
 
-        for epoch in tqdm.trange(n_epochs, disable=not show_progress_bar):
+        for epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
 
             ############################################################################################################
 
@@ -97,16 +97,43 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
             sign = np.sign(self._weights)
 
-            for x, y in generator():
+            if fold_indices is None:
 
-                n_vectors += x.shape[0]
+                ########################################################################################################
+                # STANDARD GRADIENT DESCENT                                                                            #
+                ########################################################################################################
 
-                errors = y - self.predict(x)
+                for x, y in generator():
 
-                _dw, _di = regression_basic.Regression_Basic._update_weights(errors, x)
+                    n_vectors += x.shape[0]
 
-                dw += _dw
-                di += _di
+                    errors = y - self.predict(x)
+
+                    _dw, _di = regression_basic.Regression_Basic._update_weights(errors, x)
+
+                    dw += _dw
+                    di += _di
+
+                ########################################################################################################
+
+            else:
+
+                ########################################################################################################
+                # CROSS VALIDATION GRADIENT DESCENT                                                                    #
+                ########################################################################################################
+
+                for i, (x, y) in enumerate(generator()):
+
+                    if i % cv in fold_indices:
+
+                        n_vectors += x.shape[0]
+
+                        errors = y - self.predict(x)
+
+                        _dw, _di = regression_basic.Regression_Basic._update_weights(errors, x)
+
+                        dw += _dw
+                        di += _di
 
             ############################################################################################################
 
@@ -146,6 +173,6 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
         if compute_error:
 
-            self._error = self._compute_error(generator_builder)
+            self._error = self._compute_error(generator_builder, fold_indices = fold_indices, cv = cv)
 
 ########################################################################################################################

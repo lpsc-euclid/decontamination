@@ -56,9 +56,6 @@ def do_regressions(use_generator_builder):
 
     print('USE GENERATOR BUILDER', use_generator_builder)
 
-    #model_enetcv = decontamination.Regression_ElasticNetCV(dim = 10, max_iter = 10, l1_ratios = [0.1, 0.5, 0.9], n_rhos = 20, eps = 1e-4, cv = 5)
-    #model_enetcv.train(generator_builder if use_generator_builder else (X_train, Y_train), n_epochs = iter, soft_thresholding = True)
-
     model_basic = decontamination.Regression_Basic(10, dtype = np.float32, alpha = 0.01, tolerance = None)
     model_basic.train(generator_builder if use_generator_builder else (X_train, Y_train), n_epochs = iter, analytic = True)
     Y_pred_ana = model_basic.predict(X_test)

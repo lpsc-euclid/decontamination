@@ -46,38 +46,48 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
 
     def _compute_rho_range(self, generator_builder):
 
-        count = 0
+        ################################################################################################################
+
         max_value = 0
 
         generator = generator_builder()
 
-        for x, y in generator():
+        for i, (x, y) in enumerate(generator()):
 
             max_value = max(max_value, np.max(np.abs(np.dot(x.T, y))))
 
-            if count < self._max_iter:
-                count += 1
-            else:
+            if i >= self._max_iter:
+
                 break
 
+        ################################################################################################################
+
         min_value = max_value * self._eps
+
+        ################################################################################################################
 
         return np.logspace(np.log10(min_value), np.log10(max_value), self._n_rhos)
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[typing.Tuple[np.ndarray, np.ndarray], typing.Callable], n_epochs: typing.Optional[int] = 1000, soft_thresholding: bool = True, show_progress_bar: bool = False) -> typing.Optional[typing.Dict[str, float]]:
+    def find_hyper_parameters(self, dataset: typing.Union[typing.Tuple[np.ndarray, np.ndarray], typing.Callable], n_epochs: typing.Optional[int] = 1000, soft_thresholding: bool = True, show_progress_bar: bool = False) -> typing.Optional[typing.Dict[str, float]]:
 
         result = None
+
+        best_score = np.inf
 
         ################################################################################################################
 
         generator_builder = dataset_to_generator_builder(dataset)
 
         ################################################################################################################
+        # COMPUTE RHO RANGE                                                                                            #
+        ################################################################################################################
 
         rhos = self._compute_rho_range(generator_builder)
 
+        ################################################################################################################
+        # COMPUTE FOLDS                                                                                                #
         ################################################################################################################
 
         indices = np.arange(self._cv)
@@ -87,10 +97,10 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
         folds = [indices[i::self._cv] for i in range(self._cv)]
 
         ################################################################################################################
+        # FIND HYPER PARAMETERS                                                                                        #
+        ################################################################################################################
 
-        best_score = np.inf
-
-        for rho in tqdm.tqdm(rhos):
+        for rho in tqdm.tqdm(rhos, disable = not show_progress_bar):
 
             for l1_ratio in self._l1_ratios:
 
@@ -109,15 +119,7 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
                     self._rho = rho
                     self._l1_ratio = l1_ratio
 
-                    super().train(
-                        dataset,
-                        n_epochs = n_epochs,
-                        fold_indices = fold_indices,
-                        cv = self._cv,
-                        soft_thresholding = soft_thresholding,
-                        compute_error = True,
-                        show_progress_bar = False
-                    )
+                    self.train(dataset, n_epochs = n_epochs, fold_indices = fold_indices, cv = self._cv, soft_thresholding = soft_thresholding, compute_error = True, show_progress_bar = False)
 
                     scores.append(self.error)
 
@@ -136,6 +138,20 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
 
         ################################################################################################################
 
+        if result is not None:
+
+            self._rho = result['rho']
+            self._l1_ratio = result['l1_ratio']
+
+        ################################################################################################################
+
         return result
+
+    ####################################################################################################################
+
+    def set_hyper_parameters(self, rho, l1_ratio) -> None:
+
+        self._rho = rho
+        self._l1_ratio = l1_ratio
 
 ########################################################################################################################

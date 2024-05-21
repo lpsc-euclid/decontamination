@@ -56,7 +56,7 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[typing.Tuple[np.ndarray, np.ndarray], typing.Callable], n_epochs: typing.Optional[int] = 1000, fold_indices: typing.Optional[typing.List[int]] = None, cv: int = 5, soft_thresholding: bool = True, compute_error: bool = True, show_progress_bar: bool = False) -> None:
+    def train(self, dataset: typing.Union[typing.Tuple[np.ndarray, np.ndarray], typing.Callable], n_epochs: typing.Optional[int] = 1000, fold_indices: typing.Optional[np.ndarray] = None, cv: int = 5, soft_thresholding: bool = True, compute_error: bool = True, show_progress_bar: bool = False) -> None:
 
         ################################################################################################################
 

@@ -22,7 +22,7 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
 
     ####################################################################################################################
 
-    def __init__(self, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, max_iter: int = 1000, l1_ratios: typing.Union[float, typing.List[float]] = 0.5, n_rhos: int = 100, eps: float = 1.0e-3, cv: int = 5, alpha: typing.Optional[float] = 0.01, tolerance: typing.Optional[float] = None):
+    def __init__(self, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, max_batch_iter: int = 1000, l1_ratios: typing.Union[float, typing.List[float]] = 0.5, n_rhos: int = 100, eps: float = 1.0e-3, cv: int = 5, alpha: typing.Optional[float] = 0.01, tolerance: typing.Optional[float] = None):
 
         ################################################################################################################
 
@@ -36,7 +36,7 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
 
         ################################################################################################################
 
-        self._max_iter = max_iter
+        self._max_batch_iter = max_batch_iter
         self._l1_ratios = l1_ratios
         self._n_rhos = n_rhos
         self._eps = eps
@@ -56,7 +56,7 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
 
             max_value = max(max_value, np.max(np.abs(np.dot(x.T, y))))
 
-            if i >= self._max_iter:
+            if i >= self._max_batch_iter:
 
                 break
 
@@ -120,6 +120,8 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
                     self._l1_ratio = l1_ratio
 
                     self.train(dataset, n_epochs = n_epochs, fold_indices = fold_indices, cv = self._cv, soft_thresholding = soft_thresholding, compute_error = True, show_progress_bar = False)
+
+                    ####################################################################################################
 
                     scores.append(self.error)
 

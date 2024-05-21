@@ -50,7 +50,7 @@ def generator_builder():
 
 def test_cross_validation():
 
-    model_enetcv = decontamination.CrossValidation_ElasticNet(dim = 10, max_iter = 10, l1_ratios = [0.1, 0.5, 0.9], n_rhos = 20, eps = 1e-4, cv = 5)
+    model_enetcv = decontamination.CrossValidation_ElasticNet(dim = 10, max_batch_iter= 100, l1_ratios = [0.1, 0.5, 0.9], n_rhos = 20, eps = 1e-4, cv = 5)
 
     result = model_enetcv.find_hyper_parameters(generator_builder, n_epochs = 100, soft_thresholding = True, show_progress_bar = True)
 

@@ -97,7 +97,7 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
         folds = [indices[i::self._cv] for i in range(self._cv)]
 
         ################################################################################################################
-        # FIND HYPER PARAMETERS                                                                                        #
+        # FIND BEST HYPER PARAMETERS                                                                                   #
         ################################################################################################################
 
         for rho in tqdm.tqdm(rhos, disable = not show_progress_bar):

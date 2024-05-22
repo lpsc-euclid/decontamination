@@ -44,7 +44,7 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
 
     ####################################################################################################################
 
-    def _compute_rho_range(self, generator_builder):
+    def _compute_rho_range(self, generator_builder: typing.Callable) -> np.ndarray:
 
         ################################################################################################################
 

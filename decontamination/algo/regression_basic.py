@@ -162,8 +162,6 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
                     if norm(self._weights - previous_weights) < self._tolerance and abs(self._intercept - previous_intercept) < self._tolerance:
 
-                        print(f'Convergence reached at epoch {epoch}. Stopping early.')
-
                         break
 
                     ####################################################################################################

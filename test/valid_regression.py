@@ -54,6 +54,9 @@ def do_regressions(use_generator_builder):
 
     iter = 1000
 
+    rho = 0.02
+    l1_ratio = 0.9
+
     print('USE GENERATOR BUILDER', use_generator_builder)
 
     model_basic = decontamination.Regression_Basic(10, dtype = np.float32, alpha = 0.01, tolerance = None)
@@ -64,7 +67,7 @@ def do_regressions(use_generator_builder):
     Y_pred_basic = model_basic.predict(X_test)
     print('basic grad. descent', model_basic.error)
 
-    model_enet = decontamination.Regression_ElasticNet(10, dtype = np.float32, rho = 0.1, l1_ratio = 0.5, alpha = 0.01, tolerance = None)
+    model_enet = decontamination.Regression_ElasticNet(10, dtype = np.float32, rho = rho, l1_ratio = l1_ratio, alpha = 0.01, tolerance = None)
     model_enet.train(generator_builder if use_generator_builder else (X_train, Y_train), n_epochs = iter, soft_thresholding = False)
     Y_pred_enet = model_enet.predict(X_test)
     print('elastic net', model_enet.error)
@@ -74,7 +77,7 @@ def do_regressions(use_generator_builder):
     print('elastic net soft', model_enet.error)
     print(model_enet.weights)
 
-    model_sklearn = SklearnElasticNet(alpha = 0.1, l1_ratio = 0.5, max_iter = iter)
+    model_sklearn = SklearnElasticNet(alpha = rho, l1_ratio = l1_ratio, max_iter = iter)
     model_sklearn.fit(X_train, Y_train)
     Y_pred_sklearn = model_sklearn.predict(X_test)
 
@@ -91,9 +94,9 @@ def test_regression():
         plt.figure(figsize = (14, 7))
         plt.plot(Y_test, label = 'Actual values', color = 'yellow', marker = None)
         plt.plot(Y_pred_ana_nmb, label = 'decontamination ana model predictions', color = 'red', linestyle = '--', marker = None)
-        plt.plot(Y_pred_basic_nmb, label = 'decontamination basic model predictions', color = 'red', linestyle = '-.', marker = None)
+        plt.plot(Y_pred_basic_nmb, label = 'decontamination basic model predictions', color = 'orange', linestyle = '-.', marker = None)
         plt.plot(Y_pred_enet_nmb, label = 'decontamination enet model predictions', color = 'blue', linestyle = '--', marker = None)
-        plt.plot(Y_pred_enet_soft_nmb, label = 'decontamination enet soft model predictions', color = 'blue', linestyle = '-.', marker = None)
+        #plt.plot(Y_pred_enet_soft_nmb, label = 'decontamination enet soft model predictions', color = 'cyan', linestyle = '-.', marker = None)
         plt.plot(Y_pred_sklearn_nmb, label = 'sklearn model predictions', color = 'green', linestyle = '--', marker = None)
         plt.xlabel('Test Sample Index')
         plt.ylabel('Output Value')

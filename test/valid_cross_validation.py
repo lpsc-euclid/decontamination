@@ -5,7 +5,7 @@
 import os
 import sys
 
-from sklearn.linear_model import ElasticNet as SklearnElasticNet
+from sklearn.linear_model import ElasticNetCV as SklearnElasticNetCV
 
 from decontamination.algo import batch_iterator
 
@@ -50,11 +50,23 @@ def generator_builder():
 
 def test_cross_validation():
 
-    model_enetcv = decontamination.CrossValidation_ElasticNet(dim = 10, max_batch_iter = 100, l1_ratios = [0.1, 0.5, 0.9], n_rhos = 20, eps = 1e-4, cv = 5)
+    batched = True
 
-    result = model_enetcv.find_hyper_parameters(generator_builder, n_epochs = 100, soft_thresholding = True, show_progress_bar = True)
+    print('* DECONTAMINATION *')
+
+    cv = decontamination.CrossValidation_ElasticNet(dim = 10, l1_ratios = [0.1, 0.5, 0.9], n_rhos = 20, eps = 1e-4, cv = 5, alpha = 0.005, tolerance = 1.0e-4)
+
+    result = cv.find_hyper_parameters(generator_builder if batched else (X_train, Y_train), n_epochs = 1000, soft_thresholding = True, show_progress_bar = True)
 
     print(result)
+
+    print('* SKLEARN *')
+
+    reg = SklearnElasticNetCV(l1_ratio = [0.1, 0.5, 0.9], n_alphas = 20, eps = 1e-4, cv = 5, tol = 1.0e-4, max_iter = 1000)
+
+    reg.fit(X = X_train, y = Y_train)
+
+    print(reg.alpha_, reg.l1_ratio_)
 
 ########################################################################################################################
 

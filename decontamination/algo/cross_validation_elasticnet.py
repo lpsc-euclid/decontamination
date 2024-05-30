@@ -22,7 +22,7 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
 
     ####################################################################################################################
 
-    def __init__(self, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, max_batch_iter: int = 1000, l1_ratios: typing.Union[float, typing.List[float]] = 0.5, n_rhos: int = 100, eps: float = 1.0e-3, cv: int = 5, alpha: typing.Optional[float] = 0.01, tolerance: typing.Optional[float] = None):
+    def __init__(self, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, l1_ratios: typing.Union[float, typing.List[float]] = 0.5, n_rhos: int = 100, eps: float = 1.0e-3, cv: int = 5, alpha: typing.Optional[float] = 0.01, tolerance: typing.Optional[float] = None):
 
         ################################################################################################################
 
@@ -36,7 +36,6 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
 
         ################################################################################################################
 
-        self._max_batch_iter = max_batch_iter
         self._l1_ratios = l1_ratios
         self._n_rhos = n_rhos
         self._eps = eps
@@ -44,35 +43,53 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
 
     ####################################################################################################################
 
-    def _compute_rho_range(self, generator_builder: typing.Callable) -> np.ndarray:
+    def _compute_rho_range(self, generator_builder: typing.Callable, lambda_max: np.ndarray, l1_ratio: float) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
-        max_value = 0
+        if lambda_max is None:
 
-        generator = generator_builder()
+            ############################################################################################################
 
-        for i, (x, y) in enumerate(generator()):
+            n_vectors = 0
 
-            max_value = max(max_value, np.max(np.abs(np.dot(x.T, y))))
+            xy = np.zeros(self._dim, dtype = np.float32)
 
-            if i >= self._max_batch_iter:
+            ############################################################################################################
 
-                break
+            generator = generator_builder()
+
+            for x, y in generator():
+
+                n_vectors += x.shape[0]
+
+                xy += np.dot(x.T, y)
+
+            ############################################################################################################
+
+            lambda_max = np.sqrt(xy ** 2).max() / n_vectors
 
         ################################################################################################################
 
-        min_value = max_value * self._eps
+        alpha_max = lambda_max / l1_ratio
 
         ################################################################################################################
 
-        return np.logspace(np.log10(min_value), np.log10(max_value), self._n_rhos)
+        if alpha_max <= np.finfo(float).resolution:
+
+            return np.full(self._n_rhos, np.finfo(float).resolution)
+
+        else:
+
+            return lambda_max, np.geomspace(alpha_max, alpha_max * self._eps, num = self._n_rhos)
 
     ####################################################################################################################
 
     def find_hyper_parameters(self, dataset: typing.Union[typing.Tuple[np.ndarray, np.ndarray], typing.Callable], n_epochs: typing.Optional[int] = 1000, soft_thresholding: bool = True, show_progress_bar: bool = False) -> typing.Optional[typing.Dict[str, float]]:
 
         result = None
+
+        lambda_max = None
 
         best_score = np.inf
 
@@ -81,28 +98,34 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
         generator_builder = dataset_to_generator_builder(dataset)
 
         ################################################################################################################
-        # COMPUTE RHO RANGE                                                                                            #
-        ################################################################################################################
 
-        rhos = self._compute_rho_range(generator_builder)
+        for l1_ratio in self._l1_ratios:
 
-        ################################################################################################################
-        # COMPUTE FOLDS                                                                                                #
-        ################################################################################################################
+            print(f'-> l1_ratio = {l1_ratio}')
 
-        indices = np.arange(self._cv)
+            ############################################################################################################
+            # COMPUTE RHO RANGE                                                                                        #
+            ############################################################################################################
 
-        np.random.shuffle(indices)
+            lambda_max, rhos = self._compute_rho_range(generator_builder, lambda_max, l1_ratio)
 
-        folds = [indices[i::self._cv] for i in range(self._cv)]
+            print('rhos ->', rhos)
 
-        ################################################################################################################
-        # FIND BEST HYPER PARAMETERS                                                                                   #
-        ################################################################################################################
+            ############################################################################################################
+            # COMPUTE FOLDS                                                                                            #
+            ############################################################################################################
 
-        for rho in tqdm.tqdm(rhos, disable = not show_progress_bar):
+            indices = np.arange(self._cv)
 
-            for l1_ratio in self._l1_ratios:
+            np.random.shuffle(indices)
+
+            folds = [indices[i::self._cv] for i in range(self._cv)]
+
+            ############################################################################################################
+            # FIND BEST HYPER PARAMETERS                                                                               #
+            ############################################################################################################
+
+            for rho in tqdm.tqdm(rhos, disable = not show_progress_bar):
 
                 ########################################################################################################
 
@@ -128,6 +151,8 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
                 ########################################################################################################
 
                 mean_score = np.mean(scores)
+
+                ########################################################################################################
 
                 if mean_score < best_score:
 

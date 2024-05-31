@@ -150,8 +150,8 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
     projector = hp.projector.CartesianProj(
         lonra = [lon_min, lon_max],
         latra = [lat_min, lat_max],
-        xsize = 800,
-        ysize = 800
+        xsize = 1600,
+        ysize = 1600
     )
 
     image = projector.projmap(full_sky, lambda x, y, z: hp.vec2pix(nside, x, y, z, nest = nest))
@@ -160,7 +160,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
     fig, ax = plt.subplots(figsize = (8, 8))
 
-    img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), norm = norm, cmap = cmap, origin = 'lower', aspect = 'equal')
+    img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), norm = norm, cmap = cmap, origin = 'lower', aspect = 'equal', interpolation = 'nearest')
 
     ax.set_xlabel('Longitude (deg)')
     ax.set_ylabel('Latitude (deg)')

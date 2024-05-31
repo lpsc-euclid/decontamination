@@ -93,7 +93,7 @@ class Regression_Abstract(object):
 
     def predict(self, x: np.ndarray) -> np.ndarray:
 
-        return (x @ self._weights) + self._intercept
+        return x @ self._weights + self._intercept
 
     ####################################################################################################################
 
@@ -105,7 +105,7 @@ class Regression_Abstract(object):
 
         for x, y in generator():
 
-            yield (x @ self._weights) + self._intercept
+            yield x @ self._weights + self._intercept
 
     ####################################################################################################################
 

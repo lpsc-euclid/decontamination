@@ -10,6 +10,7 @@ import tqdm
 import typing
 
 import numpy as np
+import numba as nb
 
 from numpy.linalg import inv, norm
 
@@ -53,9 +54,12 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
     ####################################################################################################################
 
     @staticmethod
-    def _update_weights(errors: np.ndarray, vectors: np.ndarray) -> typing.Tuple[np.ndarray, float]:
+    @nb.njit()
+    def _update_weights(weights: np.ndarray, intercept: float, x: np.ndarray, y: np.ndarray) -> typing.Tuple[np.ndarray, float]:
 
-        dw = -2.0 * (vectors.T @ errors)
+        errors = y - (x @ weights + intercept)
+
+        dw = -2.0 * (x.T @ errors)
 
         di = -2.0 * np.sum(errors)
 
@@ -122,7 +126,7 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
             # ITERATIVE METHODS                                                                                        #
             ############################################################################################################
 
-            for epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
+            for _ in tqdm.trange(n_epochs, disable = not show_progress_bar):
 
                 ########################################################################################################
 
@@ -141,17 +145,15 @@ class Regression_Basic(regression_abstract.Regression_Abstract):
 
                     n_vectors += x.shape[0]
 
-                    errors = y - self.predict(x)
-
-                    _dw, _di = Regression_Basic._update_weights(errors, x)
+                    _dw, _di = Regression_Basic._update_weights(self._weights, self._dtype(self._intercept), x, y)
 
                     dw += _dw
                     di += _di
 
                 ########################################################################################################
 
-                self._weights -= self._alpha * dw / n_vectors
-                self._intercept -= self._alpha * di / n_vectors
+                self._weights -= self._alpha * dw / (2.0 * n_vectors)
+                self._intercept -= self._alpha * di / (2.0 * n_vectors)
 
                 ########################################################################################################
 

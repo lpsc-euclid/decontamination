@@ -21,17 +21,17 @@ import matplotlib.pyplot as plt
 
 ########################################################################################################################
 
-true_coef = np.array([1.5, -2.0, 3.0, 0, 0, 0, 0.1, 0, 0, 0], dtype = np.float64)
+true_coef = np.array([1.5, -2.0, 3.0, 0, 0, 0, 0.1, 0, 0, 0], dtype = np.float32)
 
 ########################################################################################################################
 
 rnd = np.random.default_rng(seed = 0)
 
-X_train = rnd.standard_normal((160, 10), dtype = np.float64)
-Y_train = np.dot(X_train, true_coef) + rnd.standard_normal(160, dtype = np.float64) * 0.5
+X_train = rnd.standard_normal((160, 10), dtype = np.float32)
+Y_train = np.dot(X_train, true_coef) + rnd.standard_normal(160, dtype = np.float32) * 0.5
 
-X_test = rnd.standard_normal((40, 10), dtype = np.float64)
-Y_test = np.dot(X_test, true_coef) + rnd.standard_normal(40, dtype = np.float64) * 0.5
+X_test = rnd.standard_normal((40, 10), dtype = np.float32)
+Y_test = np.dot(X_test, true_coef) + rnd.standard_normal(40, dtype = np.float32) * 0.5
 
 ########################################################################################################################
 
@@ -96,7 +96,7 @@ def test_regression():
         plt.plot(Y_pred_ana_nmb, label = 'decontamination ana model predictions', color = 'red', linestyle = '--', marker = None)
         plt.plot(Y_pred_basic_nmb, label = 'decontamination basic model predictions', color = 'orange', linestyle = '-.', marker = None)
         plt.plot(Y_pred_enet_nmb, label = 'decontamination enet model predictions', color = 'blue', linestyle = '--', marker = None)
-        #plt.plot(Y_pred_enet_soft_nmb, label = 'decontamination enet soft model predictions', color = 'cyan', linestyle = '-.', marker = None)
+        plt.plot(Y_pred_enet_soft_nmb, label = 'decontamination enet soft model predictions', color = 'cyan', linestyle = '-.', marker = None)
         plt.plot(Y_pred_sklearn_nmb, label = 'sklearn model predictions', color = 'green', linestyle = '--', marker = None)
         plt.xlabel('Test Sample Index')
         plt.ylabel('Output Value')

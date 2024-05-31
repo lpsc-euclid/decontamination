@@ -80,7 +80,7 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
         lambda2 = self._rho * (1.0 - self._l1_ratio)
 
-        for epoch in tqdm.trange(n_epochs, disable = not show_progress_bar):
+        for _ in tqdm.trange(n_epochs, disable = not show_progress_bar):
 
             ############################################################################################################
 
@@ -96,7 +96,6 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
             n_vectors = 0
 
             sign_w = np.sign(self._weights)
-            sign_i = np.sign(self._intercept)
 
             if fold_indices is None:
 
@@ -108,9 +107,7 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
                     n_vectors += x.shape[0]
 
-                    errors = y - self.predict(x)
-
-                    _dw, _di = regression_basic.Regression_Basic._update_weights(errors, x)
+                    _dw, _di = regression_basic.Regression_Basic._update_weights(self._weights, self._dtype(self._intercept), x, y)
 
                     dw += _dw
                     di += _di
@@ -129,9 +126,7 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
 
                         n_vectors += x.shape[0]
 
-                        errors = y - self.predict(x)
-
-                        _dw, _di = regression_basic.Regression_Basic._update_weights(errors, x)
+                        _dw, _di = regression_basic.Regression_Basic._update_weights(self._weights, self._dtype(self._intercept), x, y)
 
                         dw += _dw
                         di += _di
@@ -139,24 +134,20 @@ class Regression_ElasticNet(regression_basic.Regression_Basic):
             ############################################################################################################
 
             # L2 penalty
-            dw += 2.0 * lambda2 * self._weights
-            di += 2.0 * lambda2 * self._intercept
+            dw += lambda2 * self._weights
 
             if n_vectors > 0:
 
-                self._weights -= self._alpha * dw / n_vectors
-                self._intercept -= self._alpha * di / n_vectors
+                self._weights -= self._alpha * dw / (2.0 * n_vectors)
+                self._intercept -= self._alpha * di / (2.0 * n_vectors)
 
             ############################################################################################################
 
             # L1 penalty
             if soft_thresholding:
                 self._weights = np.sign(self._weights) * np.maximum(np.abs(self._weights) - self._alpha * lambda1, 0.0)
-                self._intercept = np.sign(self._intercept) * np.maximum(np.abs(self._intercept) - self._alpha * lambda1, 0.0)
-
             else:
                 self._weights -= sign_w * self._alpha * lambda1
-                self._intercept -= sign_i * self._alpha * lambda1
 
             ############################################################################################################
 

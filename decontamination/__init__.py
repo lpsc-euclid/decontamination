@@ -28,7 +28,7 @@ from .hp import nside2npix, npix2nside, nside2pixarea, nside2resol, xyf2nest, ne
 
 from .mask.wcs import WCS
 
-from mask.downgrade imprt downgrade
+from mask.downgrade import downgrade
 
 from .mask.healpix import rms_bit_to_healpix, image_to_healpix
 

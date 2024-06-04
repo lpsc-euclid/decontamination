@@ -11,7 +11,7 @@ import typing
 import numpy as np
 import numba as nb
 
-from . import UNSEEN
+from ..hp import UNSEEN
 
 ########################################################################################################################
 

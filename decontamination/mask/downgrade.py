@@ -16,6 +16,14 @@ import numba as nb
 @nb.njit
 def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_out: np.array, weights: np.array, mode: typing.Optional[str] = None, ignore_zeros: bool = False) -> np.array:
 
+    if nside_in == nside_out:
+
+        return weights
+        
+    if nside_in < nside_out:
+
+        raise ValueError('The output nside must be greater than the input resolution')
+
     factor = nside_in // nside_out
 
     npix = int(12 * nside * nside)

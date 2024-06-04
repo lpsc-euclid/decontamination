@@ -6,6 +6,7 @@
 # license: CeCILL-C
 ########################################################################################################################
 
+import math
 import typing
 
 import numpy as np
@@ -16,7 +17,7 @@ from ..hp import UNSEEN
 ########################################################################################################################
 
 @nb.njit
-def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_out: np.array, weights: np.array, mode: typing.Optional[str] = None, ignore_zeros: bool = False) -> np.array:
+def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_out: np.array, weights: np.array, mode: typing.Optional[str] = None, ignore_zeros: bool = False, log_factor: float = -2.5) -> np.array:
 
     if nside_in == nside_out:
 
@@ -67,6 +68,21 @@ def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_o
 
             map_out = sums / counts
 
+        elif mode == 'logquad':
+
+            for i in range(len(weights)):
+        
+                pix_out = int(np.floor(footprint_in[i] / factor ** 2))
+        
+                weight = weights[i]
+                
+                if not np.isnan(weight) and weight != UNSEEN and (not ignore_zeros or weight != 0.0):
+        
+                    sums[pix_out] += math.pow(10.0, weight / log_factor) ** 2
+                    counts[pix_out] += 1.000000000
+
+            map_out = log_factor * math.log10(math.sqrt(sums / counts))
+
         elif mode == 'quad':
 
             for i in range(len(weights)):
@@ -80,7 +96,7 @@ def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_o
                     sums[pix_out] += weight ** 2
                     counts[pix_out] += 1.000000000
 
-            map_out = np.sqrt(sums / counts)
+            map_out = math.sqrt(sums / counts)
         
         else:
     

@@ -28,7 +28,7 @@ def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_o
 
     factor = nside_in // nside_out
 
-    npix = int(12 * nside * nside)
+    npix = int(12 * nside_out * nside_out)
 
     if mode == 'sum':
 

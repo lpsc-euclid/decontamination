@@ -78,7 +78,7 @@ def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_o
                 
                 if not np.isnan(weight) and weight != UNSEEN and (not ignore_zeros or weight != 0.0):
         
-                    sums[pix_out] += np.pow(10.0, weight / log_factor) ** 2
+                    sums[pix_out] += np.power(10.0, weight / log_factor) ** 2
                     counts[pix_out] += 1.000000000
 
             map_out = log_factor * np.log10(np.sqrt(sums / counts))

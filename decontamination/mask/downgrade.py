@@ -11,6 +11,8 @@ import typing
 import numpy as np
 import numba as nb
 
+from . import UNSEEN
+
 ########################################################################################################################
 
 @nb.njit
@@ -19,7 +21,7 @@ def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_o
     if nside_in == nside_out:
 
         return weights
-        
+
     if nside_in < nside_out:
 
         raise ValueError('The output nside must be greater than the input resolution')
@@ -30,7 +32,7 @@ def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_o
 
     if mode == 'sum':
 
-        sums = np.zeros(npix, dtype = np.float32)
+        sums = np.zeros(npix, dtype = weights.dtype)
 
         for i in range(len(weights)):
 
@@ -38,7 +40,7 @@ def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_o
     
             weight = weights[i]
             
-            if not np.isnan(weight) and weight != hp.UNSEEN:
+            if not np.isnan(weight) and weight != UNSEEN:
     
                 sums[pix_out] += weight
 
@@ -46,8 +48,8 @@ def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_o
 
     else:
 
-        sums = np.zeros(npix, dtype = np.float32)
-        counts = np.zeros(npix, dtype = np.float32)
+        sums = np.zeros(npix, dtype = weights.dtype)
+        counts = np.zeros(npix, dtype = weights.dtype)
 
         if mode == 'cov':
         
@@ -57,7 +59,7 @@ def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_o
         
                 weight = weights[i]
                 
-                if not np.isnan(weight) and weight != hp.UNSEEN:
+                if not np.isnan(weight) and weight != UNSEEN:
         
                     sums[pix_out] += weight
         
@@ -73,7 +75,7 @@ def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_o
         
                 weight = weights[i]
                 
-                if not np.isnan(weight) and weight != hp.UNSEEN and (not ignore_zeros or weight != 0.0):
+                if not np.isnan(weight) and weight != UNSEEN and (not ignore_zeros or weight != 0.0):
         
                     sums[pix_out] += weight ** 2
                     counts[pix_out] += 1.000000000
@@ -88,7 +90,7 @@ def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_o
         
                 weight = weights[i]
                 
-                if not np.isnan(weight) and weight != hp.UNSEEN and (not ignore_zeros or weight != 0.0):
+                if not np.isnan(weight) and weight != UNSEEN and (not ignore_zeros or weight != 0.0):
         
                     sums[pix_out] += weight
                     counts[pix_out] += 1.0000

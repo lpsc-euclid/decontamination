@@ -16,8 +16,14 @@ from ..hp import UNSEEN
 
 ########################################################################################################################
 
-@nb.njit
 def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_out: np.array, weights: np.array, mode: typing.Optional[str] = None, ignore_zeros: bool = False, log_factor: float = -2.5) -> np.array:
+
+    return _downgrade(nside_in, nside_out, footprint_in, footprint_out, weights, mode, ignore_zeros, weights.dtype(log_factor))
+
+########################################################################################################################
+
+@nb.njit
+def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_out: np.array, weights: np.array, mode: typing.Optional[str], ignore_zeros: bool = False, log_factor: float) -> np.array:
 
     if nside_in == nside_out:
 

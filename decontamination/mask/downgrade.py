@@ -23,7 +23,7 @@ def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_o
 ########################################################################################################################
 
 @nb.njit
-def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_out: np.array, weights: np.array, mode: typing.Optional[str], ignore_zeros: bool = False, log_factor: float) -> np.array:
+def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_out: np.array, weights: np.array, mode: typing.Optional[str], ignore_zeros: bool, log_factor: float) -> np.array:
 
     if nside_in == nside_out:
 

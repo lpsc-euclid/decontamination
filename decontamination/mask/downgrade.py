@@ -47,13 +47,18 @@ def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_
 
     ####################################################################################################################
 
+    sums = np.zeros(npix, dtype = weights.dtype)
+    counts = np.zeros(npix, dtype = weights.dtype)
+
+    ####################################################################################################################
+
     if mode == 'sum':
 
         ################################################################################################################
         # MODE SUM                                                                                                     #
         ################################################################################################################
 
-        sums = np.zeros(npix, dtype = weights.dtype)
+        temp = np.zeros(npix, dtype = weights.dtype)
 
         for i in range(len(weights)):
 
@@ -64,103 +69,101 @@ def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_
             if not math.isnan(weight) and weight != UNSEEN:
     
                 sums[pix_out] += weight
+                temp[pix_out] += 1.0000
 
-        return sums[footprint_out]
+            counts[pix_out] += 1.0000
+
+        map_out = sums * temp / counts
+
+        ################################################################################################################
+
+    elif mode == 'cov':
+
+        ################################################################################################################
+        # MODE COV                                                                                                     #
+        ################################################################################################################
+
+        for i in range(len(weights)):
+
+            pix_out = int(np.floor(footprint_in[i] / factor ** 2))
+
+            weight = weights[i]
+
+            if not math.isnan(weight) and weight != UNSEEN:
+
+                sums[pix_out] += weight
+
+            counts[pix_out] += 1.0000
+
+        map_out = sums / counts
+
+        ################################################################################################################
+
+    elif mode == 'logquad':
+
+        ################################################################################################################
+        # MODE LOGQUAD                                                                                                 #
+        ################################################################################################################
+
+        for i in range(len(weights)):
+
+            pix_out = int(np.floor(footprint_in[i] / factor ** 2))
+
+            weight = weights[i]
+
+            if not math.isnan(weight) and weight != UNSEEN and (not ignore_zeros or weight != 0.0):
+
+                sums[pix_out] += np.power(10.0, weight / log_factor) ** 2
+                counts[pix_out] += 1.00000000000000000000000000000000000000
+
+        map_out = log_factor * np.log10(np.sqrt(sums / counts))
+
+        ################################################################################################################
+
+    elif mode == 'quad':
+
+        ################################################################################################################
+        # MODE QUADRATIC                                                                                               #
+        ################################################################################################################
+
+        for i in range(len(weights)):
+
+            pix_out = int(np.floor(footprint_in[i] / factor ** 2))
+
+            weight = weights[i]
+
+            if not math.isnan(weight) and weight != UNSEEN and (not ignore_zeros or weight != 0.0):
+
+                sums[pix_out] += weight ** 2
+                counts[pix_out] += 1.000000000
+
+        map_out = np.sqrt(sums / counts)
 
         ################################################################################################################
 
     else:
 
-        sums = np.zeros(npix, dtype = weights.dtype)
-        counts = np.zeros(npix, dtype = weights.dtype)
+        ################################################################################################################
+        # MODE ARITHMETIC                                                                                              #
+        ################################################################################################################
 
-        if mode == 'cov':
+        for i in range(len(weights)):
 
-            ############################################################################################################
-            # MODE COV                                                                                                 #
-            ############################################################################################################
+            pix_out = int(np.floor(footprint_in[i] / factor ** 2))
 
-            for i in range(len(weights)):
-        
-                pix_out = int(np.floor(footprint_in[i] / factor ** 2))
-        
-                weight = weights[i]
-                
-                if not math.isnan(weight) and weight != UNSEEN:
-        
-                    sums[pix_out] += weight
-        
+            weight = weights[i]
+
+            if not math.isnan(weight) and weight != UNSEEN and (not ignore_zeros or weight != 0.0):
+
+                sums[pix_out] += weight
                 counts[pix_out] += 1.0000
 
-            map_out = sums / counts
+        map_out = sums / counts
 
-            ############################################################################################################
+        ################################################################################################################
 
-        elif mode == 'logquad':
+    map_out[counts == 0] = np.nan
 
-            ############################################################################################################
-            # MODE LOGQUAD                                                                                             #
-            ############################################################################################################
-
-            for i in range(len(weights)):
-        
-                pix_out = int(np.floor(footprint_in[i] / factor ** 2))
-        
-                weight = weights[i]
-                
-                if not math.isnan(weight) and weight != UNSEEN and (not ignore_zeros or weight != 0.0):
-        
-                    sums[pix_out] += np.power(10.0, weight / log_factor) ** 2
-                    counts[pix_out] += 1.00000000000000000000000000000000000000
-
-            map_out = log_factor * np.log10(np.sqrt(sums / counts))
-
-            ############################################################################################################
-
-        elif mode == 'quad':
-
-            ############################################################################################################
-            # MODE QUADRATIC                                                                                           #
-            ############################################################################################################
-
-            for i in range(len(weights)):
-        
-                pix_out = int(np.floor(footprint_in[i] / factor ** 2))
-        
-                weight = weights[i]
-                
-                if not math.isnan(weight) and weight != UNSEEN and (not ignore_zeros or weight != 0.0):
-        
-                    sums[pix_out] += weight ** 2
-                    counts[pix_out] += 1.000000000
-
-            map_out = np.sqrt(sums / counts)
-
-            ############################################################################################################
-
-        else:
-
-            ############################################################################################################
-            # MODE ARITHMETIC                                                                                          #
-            ############################################################################################################
-
-            for i in range(len(weights)):
-        
-                pix_out = int(np.floor(footprint_in[i] / factor ** 2))
-        
-                weight = weights[i]
-                
-                if not math.isnan(weight) and weight != UNSEEN and (not ignore_zeros or weight != 0.0):
-        
-                    sums[pix_out] += weight
-                    counts[pix_out] += 1.0000
-    
-            map_out = sums / counts
-
-            ############################################################################################################
-
-        map_out[counts == 0] = np.nan
-    
-        return map_out[footprint_out]
+    return map_out[footprint_out]
 
 ########################################################################################################################

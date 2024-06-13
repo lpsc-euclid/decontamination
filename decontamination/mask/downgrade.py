@@ -69,11 +69,11 @@ def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_
             if not math.isnan(weight) and weight != UNSEEN:
     
                 sums[pix_out] += weight
-                temp[pix_out] += 1.0000
+                counts[pix_out] += 1.0000
 
-            counts[pix_out] += 1.0000
+            temp[pix_out] += 1.0000
 
-        map_out = sums * temp / counts
+        map_out = sums * (temp / counts)
 
         ################################################################################################################
 
@@ -92,8 +92,7 @@ def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_
             if not math.isnan(weight) and weight != UNSEEN:
 
                 sums[pix_out] += weight
-
-            counts[pix_out] += 1.0000
+                counts[pix_out] += 1.0000
 
         map_out = sums / counts
 

@@ -5,7 +5,7 @@
 <html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Module decontamination.mask &#8212; decontamination 0.0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
     <script src="_static/documentation_options.js?v=d45e8c67"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/custom.js?v=81cfe101"></script>
 
@@ -77,7 +77,7 @@
 <span id="healpix-masks"></span><h2>HEALPix masks<a class="headerlink" href="#module-decontamination.mask.healpix" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.mask.healpix.rms_bit_to_healpix">
-<span class="sig-prename descclassname"><span class="pre">decontamination.mask.healpix.</span></span><span class="sig-name descname"><span class="pre">rms_bit_to_healpix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wcs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#decontamination.mask.wcs.WCS" title="decontamination.mask.wcs.WCS"><span class="pre">WCS</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rms_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bit_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rms_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bit_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.mask.healpix.rms_bit_to_healpix" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">decontamination.mask.healpix.</span></span><span class="sig-name descname"><span class="pre">rms_bit_to_healpix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.healpix.rms_bit_to_healpix" title="Link to this definition">¶</a></dt>
 <dd><p>Projects RMS (aka. noise) and bit (aka. data quality) images into a HEALPix footprint. <strong>Nested ordering only.</strong></p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -117,7 +117,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.mask.healpix.image_to_healpix">
-<span class="sig-prename descclassname"><span class="pre">decontamination.mask.healpix.</span></span><span class="sig-name descname"><span class="pre">image_to_healpix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wcs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#decontamination.mask.wcs.WCS" title="decontamination.mask.wcs.WCS"><span class="pre">WCS</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xxx_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xxx_image_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quadratic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.mask.healpix.image_to_healpix" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">decontamination.mask.healpix.</span></span><span class="sig-name descname"><span class="pre">image_to_healpix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.healpix.image_to_healpix" title="Link to this definition">¶</a></dt>
 <dd><p>Projects the given image into a HEALPix footprint. <strong>Nested ordering only.</strong></p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -154,7 +154,7 @@
 <span id="multi-order-coverage-moc-masks"></span><h2>Multi-Order Coverage (MOC) masks<a class="headerlink" href="#module-decontamination.mask.moc" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.mask.moc.order_index_to_nuniq">
-<span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">order_index_to_nuniq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orders</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.mask.moc.order_index_to_nuniq" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">order_index_to_nuniq</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.moc.order_index_to_nuniq" title="Link to this definition">¶</a></dt>
 <dd><p>Encodes HEALPix orders and pixel indices to unique identifiers (nuniq). <strong>Nested ordering only.</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -176,7 +176,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.mask.moc.nuniq_to_order_index">
-<span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">nuniq_to_order_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nuniqs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.mask.moc.nuniq_to_order_index" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">nuniq_to_order_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.moc.nuniq_to_order_index" title="Link to this definition">¶</a></dt>
 <dd><p>Decodes HEALPix nuniq identifiers to their corresponding orders and pixel indices. <strong>Nested ordering only.</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -198,7 +198,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.mask.moc.moc_to_healpix">
-<span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">moc_to_healpix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moc_orders</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moc_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_new</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.mask.moc.moc_to_healpix" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">moc_to_healpix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.moc.moc_to_healpix" title="Link to this definition">¶</a></dt>
 <dd><p>Refines a given Multi-Order Coverage (MOC) to a specified order. <strong>Nested ordering only.</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -222,7 +222,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.mask.moc.wmoc_to_healpix">
-<span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">wmoc_to_healpix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moc_orders</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moc_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moc_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_new</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.mask.moc.wmoc_to_healpix" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">decontamination.mask.moc.</span></span><span class="sig-name descname"><span class="pre">wmoc_to_healpix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.moc.wmoc_to_healpix" title="Link to this definition">¶</a></dt>
 <dd><p>Refines a given Weighted Multi-Order Coverage (WMOC) to a specified order. <strong>Nested ordering only.</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -253,7 +253,7 @@
 <span id="world-coordinate-system-wcs"></span><h2>World Coordinate System (WCS)<a class="headerlink" href="#module-decontamination.mask.wcs" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.mask.wcs.</span></span><span class="sig-name descname"><span class="pre">WCS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">astropy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thread_safe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">healpix_convention</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.mask.wcs.</span></span><span class="sig-name descname"><span class="pre">WCS</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">WCS</span></code></p>
 <p>Thread-safe and HEALPix compliant World Coordinate System (WCS) inherited from <cite>astropy.wcs.WCS</cite> with additional features.</p>
 <dl class="field-list simple">
@@ -332,107 +332,107 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.all_pix2world" title="decontamination.mask.wcs.WCS.all_pix2world"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_pix2world</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.all_pix2world" title="decontamination.mask.wcs.WCS.all_pix2world"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_pix2world</span></code></a></p></td>
 <td><p>Thread-safe version of <cite>astropy.wcs.WCS.all_pix2world</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.all_world2pix" title="decontamination.mask.wcs.WCS.all_world2pix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_world2pix</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.all_world2pix" title="decontamination.mask.wcs.WCS.all_world2pix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_world2pix</span></code></a></p></td>
 <td><p>Thread-safe version of <cite>astropy.wcs.WCS.all_world2pix</cite>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">array_index_to_world</span></code>(*index_arrays)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">array_index_to_world</span></code></p></td>
 <td><p>Convert array indices to world coordinates (represented by Astropy objects).</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">array_index_to_world_values</span></code>(*index_arrays)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">array_index_to_world_values</span></code></p></td>
 <td><p>Convert array indices to world coordinates.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_footprint</span></code>([header, undistort, axes, center])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_footprint</span></code></p></td>
 <td><p>Calculates the footprint of the image on the sky.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></p></td>
 <td><p>Return a shallow copy of the object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">deepcopy</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">deepcopy</span></code></p></td>
 <td><p>Return a deep copy of the object.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">det2im</span></code>(*args)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">det2im</span></code></p></td>
 <td><p>Convert detector coordinates to image plane coordinates using <a href="#id6"><span class="problematic" id="id7">`distortion paper`_</span></a> table-lookup correction.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dropaxis</span></code>(dropax)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dropaxis</span></code></p></td>
 <td><p>Remove an axis from the WCS.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix</span></code>([translate_units, naxis])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix</span></code></p></td>
 <td><p>Perform the fix operations from wcslib, and warn about any changes it has made.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">footprint_contains</span></code>(coord, **kwargs)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">footprint_contains</span></code></p></td>
 <td><p>Determines if a given SkyCoord is contained in the wcs footprint.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">footprint_to_file</span></code>([filename, color, width, ...])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">footprint_to_file</span></code></p></td>
 <td><p>Writes out a <a href="#id8"><span class="problematic" id="id9">`ds9`_</span></a> style regions file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_axis_types</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_axis_types</span></code></p></td>
 <td><p>Similar to <cite>self.wcsprm.axis_types &lt;astropy.wcs.Wcsprm.axis_types&gt;</cite> but provides the information in a more Python-friendly format.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">p4_pix2foc</span></code>(*args)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">p4_pix2foc</span></code></p></td>
 <td><p>Convert pixel coordinates to focal plane coordinates using <a href="#id10"><span class="problematic" id="id11">`distortion paper`_</span></a> table-lookup correction.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pix2foc</span></code>(*args)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pix2foc</span></code></p></td>
 <td><p>Convert pixel coordinates to focal plane coordinates using the <a href="#id12"><span class="problematic" id="id13">`SIP`_</span></a> polynomial distortion convention and <a href="#id14"><span class="problematic" id="id15">`distortion paper`_</span></a> table-lookup correction.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_to_world</span></code>(*pixel_arrays)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_to_world</span></code></p></td>
 <td><p>Convert pixel coordinates to world coordinates (represented by high-level objects).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_to_world_values</span></code>(*pixel_arrays)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_to_world_values</span></code></p></td>
 <td><p>Convert pixel coordinates to world coordinates.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">proj_plane_pixel_area</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">proj_plane_pixel_area</span></code></p></td>
 <td><p>For a <strong>celestial</strong> WCS (see <cite>astropy.wcs.WCS.celestial</cite>), returns pixel area of the image pixel at the <code class="docutils literal notranslate"><span class="pre">CRPIX</span></code> location once it is projected onto the &quot;plane of intermediate world coordinates&quot; as defined in <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2002A%26A...395.1061G">Greisen &amp; Calabretta 2002, A&amp;A, 395, 1061</a>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">proj_plane_pixel_scales</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">proj_plane_pixel_scales</span></code></p></td>
 <td><p><p>Calculate pixel scales along each axis of the image pixel at the <code class="docutils literal notranslate"><span class="pre">CRPIX</span></code> location once it is projected onto the &quot;plane of intermediate world coordinates&quot; as defined in <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2002A%26A...395.1061G">Greisen &amp; Calabretta 2002, A&amp;A, 395, 1061</a>.</p>
 </p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reorient_celestial_first</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reorient_celestial_first</span></code></p></td>
 <td><p>Reorient the WCS such that the celestial axes are first, followed by the spectral axis, followed by any others.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sip_foc2pix</span></code>(*args)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sip_foc2pix</span></code></p></td>
 <td><p>Convert focal plane coordinates to pixel coordinates using the <a href="#id16"><span class="problematic" id="id17">`SIP`_</span></a> polynomial distortion convention.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sip_pix2foc</span></code>(*args)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sip_pix2foc</span></code></p></td>
 <td><p>Convert pixel coordinates to focal plane coordinates using the <a href="#id18"><span class="problematic" id="id19">`SIP`_</span></a> polynomial distortion convention.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">slice</span></code>(view[, numpy_order])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">slice</span></code></p></td>
 <td><p>Slice a WCS instance using a Numpy slice.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code>(axes)</p></td>
 <td><p>Extracts the coordinate description for a subimage from a <cite>~astropy.wcs.WCS</cite> object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">swapaxes</span></code>(ax0, ax1)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">swapaxes</span></code></p></td>
 <td><p>Swap axes in a WCS.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_fits</span></code>([relax, key])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_fits</span></code></p></td>
 <td><p>Generate an <cite>~astropy.io.fits.HDUList</cite> object with all of the information stored in this object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_header</span></code>([relax, key])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_header</span></code></p></td>
 <td><p>Generate an <cite>astropy.io.fits.Header</cite> object with the basic WCS and SIP information stored in this object.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_header_string</span></code>([relax])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_header_string</span></code></p></td>
 <td><p>Identical to <cite>to_header</cite>, but returns a string containing the header cards.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wcs_pix2world</span></code>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wcs_pix2world</span></code></p></td>
 <td><p>Transforms pixel coordinates to world coordinates by doing only the basic <a href="#id20"><span class="problematic" id="id21">`wcslib`_</span></a> transformation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wcs_world2pix</span></code>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wcs_world2pix</span></code></p></td>
 <td><p>Transforms world coordinates to pixel coordinates, using only the basic <a href="#id22"><span class="problematic" id="id23">`wcslib`_</span></a> WCS transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_to_array_index</span></code>(*world_objects)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_to_array_index</span></code></p></td>
 <td><p>Convert world coordinates (represented by Astropy objects) to array indices.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_to_array_index_values</span></code>(*world_arrays)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_to_array_index_values</span></code></p></td>
 <td><p>Convert world coordinates to array indices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_to_pixel</span></code>(*world_objects)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_to_pixel</span></code></p></td>
 <td><p>Convert world coordinates (represented by Astropy objects) to pixel coordinates.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_to_pixel_values</span></code>(*world_arrays)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_to_pixel_values</span></code></p></td>
 <td><p>Convert world coordinates to pixel coordinates.</p></td>
 </tr>
 </tbody>
@@ -451,13 +451,13 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.all_pix2world">
-<span class="sig-name descname"><span class="pre">all_pix2world</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.all_pix2world" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">all_pix2world</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.all_pix2world" title="Link to this definition">¶</a></dt>
 <dd><p>Thread-safe version of <cite>astropy.wcs.WCS.all_pix2world</cite>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.all_world2pix">
-<span class="sig-name descname"><span class="pre">all_world2pix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.all_world2pix" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">all_world2pix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.all_world2pix" title="Link to this definition">¶</a></dt>
 <dd><p>Thread-safe version of <cite>astropy.wcs.WCS.all_world2pix</cite>.</p>
 </dd></dl>
 
@@ -520,7 +520,7 @@
 <li class="toctree-l1"><a class="reference internal" href="module_decontamination.html">Module decontamination.decontamination</a></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -528,7 +528,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script><div style="text-align: center; margin-right: 1.0rem; margin-top: 1rem;">
     <a href="https://sonarqube.in2p3.fr/dashboard?id=decontamination-key" target="_blank">
         <img src="https://sonarqube.in2p3.fr/api/project_badges/quality_gate?project=decontamination-key&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37" alt="Sonar" />
@@ -581,7 +581,7 @@
 
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, CNRS/LPSC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>

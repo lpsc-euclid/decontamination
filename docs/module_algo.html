@@ -5,7 +5,7 @@
 <html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Module decontamination.algo &#8212; decontamination 0.0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
     <script src="_static/documentation_options.js?v=d45e8c67"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.min.js"></script>
     <script src="_static/custom.js?v=81cfe101"></script>
@@ -76,10 +76,11 @@
 <section id="self-organizing-maps">
 <h2>Self-Organizing Maps<a class="headerlink" href="#self-organizing-maps" title="Link to this heading">¶</a></h2>
 <p>Self Organizing Maps (SOMs) are neural networks that transform high-dimensional data into spatially organized low-dimensional clusters.</p>
-<a class="reference internal image-reference" href="_images/som.png"><img alt="Self Organizing Maps" class="align-center" src="_images/som.png" style="width: 50%;" /></a>
+<a class="reference internal image-reference" href="_images/som.png"><img alt="Self Organizing Maps" class="align-center" src="_images/som.png" style="width: 50%;" />
+</a>
 <span class="target" id="module-decontamination.algo.som_abstract"></span><dl class="py class">
 <dt class="sig sig-object py" id="decontamination.algo.som_abstract.SOM_Abstract">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_abstract.</span></span><span class="sig-name descname"><span class="pre">SOM_Abstract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_abstract.</span></span><span class="sig-name descname"><span class="pre">SOM_Abstract</span></span><a class="headerlink" href="#decontamination.algo.som_abstract.SOM_Abstract" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Self Organizing Maps (abstract class).</p>
 <dl class="field-list">
@@ -123,28 +124,28 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_errors</span></code>(dataset[, show_progress_bar, ...])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_errors</span></code></p></td>
 <td><p>For the given input, computes the quantization and topographic errors.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code>(dataset[, ...])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code></p></td>
 <td><p>For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code>([normalization])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code></p></td>
 <td><p>Returns the distance map of the weights.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code>(dataset[, enable_gpu, ...])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code></p></td>
 <td><p>For the given input, returns a vector of the best matching unit indices <span class="math notranslate nohighlight">\(\in[0,m\times n-1]\)</span>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code>(other)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code></p></td>
 <td><p>Initializes the neural network from another one.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_rand</span></code>([seed])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_rand</span></code></p></td>
 <td><p>Initializes the neural network randomly.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>(filename)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></p></td>
 <td><p>Loads the trained neural network from a HDF5 file.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code>(filename)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></p></td>
 <td><p>Saves the trained neural network to a HDF5 file.</p></td>
 </tr>
 </tbody>
@@ -153,7 +154,7 @@
 
 <span class="target" id="module-decontamination.algo.som_pca"></span><dl class="py class">
 <dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_pca.</span></span><span class="sig-name descname"><span class="pre">SOM_PCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_pca.</span></span><span class="sig-name descname"><span class="pre">SOM_PCA</span></span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract" title="decontamination.algo.som_abstract.SOM_Abstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">SOM_Abstract</span></code></a></p>
 <p>Self Organizing Maps that span the first two principal components. It runs with constant memory usage.</p>
 <div class="admonition note">
@@ -209,31 +210,31 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_errors</span></code>(dataset[, show_progress_bar, ...])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_errors</span></code></p></td>
 <td><p>For the given input, computes the quantization and topographic errors.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code>(dataset[, ...])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code></p></td>
 <td><p>For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code>([normalization])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code></p></td>
 <td><p>Returns the distance map of the weights.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code>(dataset[, enable_gpu, ...])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code></p></td>
 <td><p>For the given input, returns a vector of the best matching unit indices <span class="math notranslate nohighlight">\(\in[0,m\times n-1]\)</span>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code>(other)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code></p></td>
 <td><p>Initializes the neural network from another one.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_rand</span></code>([seed])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_rand</span></code></p></td>
 <td><p>Initializes the neural network randomly.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>(filename)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></p></td>
 <td><p>Loads the trained neural network from a HDF5 file.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code>(filename)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></p></td>
 <td><p>Saves the trained neural network to a HDF5 file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code>(dataset[, min_weight, max_weight, ...])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></p></td>
 <td><p>Trains the neural network.</p></td>
 </tr>
 </tbody>
@@ -242,7 +243,7 @@
 
 <span class="target" id="module-decontamination.algo.som_online"></span><dl class="py class">
 <dt class="sig sig-object py" id="decontamination.algo.som_online.SOM_Online">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_online.</span></span><span class="sig-name descname"><span class="pre">SOM_Online</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_online.</span></span><span class="sig-name descname"><span class="pre">SOM_Online</span></span><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract" title="decontamination.algo.som_abstract.SOM_Abstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">SOM_Abstract</span></code></a></p>
 <p>Self Organizing Maps (standard online implementation). It runs with constant memory usage.</p>
 <div class="admonition note">
@@ -298,31 +299,31 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_errors</span></code>(dataset[, show_progress_bar, ...])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_errors</span></code></p></td>
 <td><p>For the given input, computes the quantization and topographic errors.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code>(dataset[, ...])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code></p></td>
 <td><p>For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code>([normalization])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code></p></td>
 <td><p>Returns the distance map of the weights.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code>(dataset[, enable_gpu, ...])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code></p></td>
 <td><p>For the given input, returns a vector of the best matching unit indices <span class="math notranslate nohighlight">\(\in[0,m\times n-1]\)</span>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code>(other)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code></p></td>
 <td><p>Initializes the neural network from another one.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_rand</span></code>([seed])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_rand</span></code></p></td>
 <td><p>Initializes the neural network randomly.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>(filename)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></p></td>
 <td><p>Loads the trained neural network from a HDF5 file.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code>(filename)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></p></td>
 <td><p>Saves the trained neural network to a HDF5 file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code>(dataset[, n_epochs, n_vectors, ...])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></p></td>
 <td><p>Trains the neural network.</p></td>
 </tr>
 </tbody>
@@ -331,7 +332,7 @@
 
 <span class="target" id="module-decontamination.algo.som_batch"></span><dl class="py class">
 <dt class="sig sig-object py" id="decontamination.algo.som_batch.SOM_Batch">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_batch.</span></span><span class="sig-name descname"><span class="pre">SOM_Batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.som_batch.SOM_Batch" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_batch.</span></span><span class="sig-name descname"><span class="pre">SOM_Batch</span></span><a class="headerlink" href="#decontamination.algo.som_batch.SOM_Batch" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract" title="decontamination.algo.som_abstract.SOM_Abstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">SOM_Abstract</span></code></a></p>
 <p>Self Organizing Maps (standard batch implementation). It runs with constant memory usage.</p>
 <div class="admonition note">
@@ -383,31 +384,31 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_errors</span></code>(dataset[, show_progress_bar, ...])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_errors</span></code></p></td>
 <td><p>For the given input, computes the quantization and topographic errors.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code>(dataset[, ...])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_activation_map</span></code></p></td>
 <td><p>For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code>([normalization])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_map</span></code></p></td>
 <td><p>Returns the distance map of the weights.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code>(dataset[, enable_gpu, ...])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_winners</span></code></p></td>
 <td><p>For the given input, returns a vector of the best matching unit indices <span class="math notranslate nohighlight">\(\in[0,m\times n-1]\)</span>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code>(other)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_from</span></code></p></td>
 <td><p>Initializes the neural network from another one.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_rand</span></code>([seed])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_rand</span></code></p></td>
 <td><p>Initializes the neural network randomly.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>(filename)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></p></td>
 <td><p>Loads the trained neural network from a HDF5 file.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code>(filename)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></p></td>
 <td><p>Saves the trained neural network to a HDF5 file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code>(dataset[, n_epochs, n_vectors, ...])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></p></td>
 <td><p>Trains the neural network.</p></td>
 </tr>
 </tbody>
@@ -425,10 +426,10 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">average</span></code>(vectors, cluster_ids)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">average</span></code></p></td>
 <td><p>Performs averaging per cluster.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clusterize</span></code>(vectors, n_clusters)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clusterize</span></code></p></td>
 <td><p>Clusters the input array using the Lance-Williams hierarchical clustering with complete-linkage algorithm.</p></td>
 </tr>
 </tbody>
@@ -446,32 +447,35 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_table</span></code>(expression, table)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryOpNode</span></code></p></td>
+<td><p>A binary operator node.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ColNameNode</span></code></p></td>
+<td><p>A column name node.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">FloatNumNode</span></code></p></td>
+<td><p>A floating number node.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">IntNumNode</span></code></p></td>
+<td><p>An integer number node.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnaryOpNode</span></code></p></td>
+<td><p>An unary operator node.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_table</span></code></p></td>
 <td><p>Evaluates the specified expression and filters the table.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code>(expression)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code></p></td>
 <td><p>Evaluates the specified expression and returns the associated Abstract Syntax Tree (AST).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_string</span></code>(node[, is_root])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_string</span></code></p></td>
 <td><p>Converts the specified Abstract Syntax Tree (AST) into the associated expression.</p></td>
 </tr>
 </tbody>
 </table>
 <table class="docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><strong>BinaryOpNode</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><strong>ColumnNode</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p><strong>NumberNode</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><strong>Token</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p><strong>UnaryOpNode</strong></p></td>
+<tr class="row-odd"><td><p><strong>Token</strong></p></td>
 <td></td>
 </tr>
 </tbody>
@@ -529,7 +533,7 @@
 <li class="toctree-l1"><a class="reference internal" href="module_decontamination.html">Module decontamination.decontamination</a></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -537,7 +541,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script><div style="text-align: center; margin-right: 1.0rem; margin-top: 1rem;">
     <a href="https://sonarqube.in2p3.fr/dashboard?id=decontamination-key" target="_blank">
         <img src="https://sonarqube.in2p3.fr/api/project_badges/quality_gate?project=decontamination-key&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37" alt="Sonar" />
@@ -590,7 +594,7 @@
 
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, CNRS/LPSC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>

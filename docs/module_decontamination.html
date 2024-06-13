@@ -5,7 +5,7 @@
 <html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Module decontamination.decontamination &#8212; decontamination 0.0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
     <script src="_static/documentation_options.js?v=d45e8c67"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.min.js"></script>
     <script src="_static/custom.js?v=81cfe101"></script>
@@ -73,7 +73,7 @@
 <span id="self-organizing-map-method"></span><h2><em>Self-Organizing Map</em> method<a class="headerlink" href="#module-decontamination.decontamination.decontamination_som" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="decontamination.decontamination.decontamination_som.Decontamination_SOM">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.decontamination.decontamination_som.</span></span><span class="sig-name descname"><span class="pre">Decontamination_SOM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch:</span> <span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">'hexagonal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.decontamination.decontamination_som.</span></span><span class="sig-name descname"><span class="pre">Decontamination_SOM</span></span><a class="headerlink" href="#decontamination.decontamination.decontamination_som.Decontamination_SOM" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Decontamination_Abstract</span></code></p>
 <p>Systematics decontamination using the <em>Self Organizing Map</em> method.</p>
 <dl class="field-list">
@@ -163,13 +163,13 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_clustered_gndm</span></code>(n_clusters[, ...])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_clustered_gndm</span></code></p></td>
 <td><p>Compute the clustered Galaxy Number Density Map from the SOM.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_gndm</span></code>([show_progress_bar, ...])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_gndm</span></code></p></td>
 <td><p>Compute the Galaxy Number Density Map from the SOM.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code>(catalog_systematics, footprint_systematics)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></p></td>
 <td><p>Trains the neural network.</p></td>
 </tr>
 </tbody>
@@ -191,11 +191,42 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.decontamination.decontamination_elasticnet.</span></span><span class="sig-name descname"><span class="pre">Decontamination_ElasticNet</span></span><a class="headerlink" href="#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Decontamination_Abstract</span></code></p>
 <p>Systematics decontamination using the <em>Elastic Net</em> method.</p>
-<p>TODO</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>Dimensionality of the input data.</p>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;, default: <strong>np.float32</strong></span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong>.</p>
+</dd>
+<dt><strong>rho</strong><span class="classifier">float = 1.0</span></dt><dd><p>Constant that multiplies the penalty terms.</p>
+</dd>
+<dt><strong>l1_ratio</strong><span class="classifier">float = 0.5</span></dt><dd><p>Mixing parameter, with 0 &lt;= l1_ratio &lt;= 1. For l1_ratio = 0 the penalty is an L2 penalty. For l1_ratio = 1 it is an L1 penalty. For 0 &lt; l1_ratio &lt; 1, the penalty is a combination of L1 and L2.</p>
+</dd>
+<dt><strong>alpha</strong><span class="classifier">float = 0.01</span></dt><dd><p>Learning rate.</p>
+</dd>
+<dt><strong>tolerance</strong><span class="classifier">float = <strong>None</strong></span></dt><dd><p>The tolerance for the optimization.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dim</span></code></dt><dd><p>Dimensionality of the input data.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></dt><dd><p>Regression data type.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><strong>compute_equal_sky_area_edges_and_stats</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>compute_weights</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>train</strong></p></td>
 <td></td>
 </tr>
 </tbody>
@@ -269,7 +300,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Module decontamination.decontamination</a></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -277,7 +308,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script><div style="text-align: center; margin-right: 1.0rem; margin-top: 1rem;">
     <a href="https://sonarqube.in2p3.fr/dashboard?id=decontamination-key" target="_blank">
         <img src="https://sonarqube.in2p3.fr/api/project_badges/quality_gate?project=decontamination-key&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37" alt="Sonar" />
@@ -327,7 +358,7 @@
 
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, CNRS/LPSC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>

@@ -549,7 +549,7 @@ class SOM_Abstract(object):
 
             n_vectors += vectors.shape[0]
 
-            _compute_errors_kernel[enable_gpu, threads_per_blocks, dataset.shape[0]](result, self._weights, self._topography, vectors, 2.0 if self._topology == 'square' else 1.0, self._m * self._n)
+            _compute_errors_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](result, self._weights, self._topography, vectors, 2.0 if self._topology == 'square' else 1.0, self._m * self._n)
 
         ################################################################################################################
 

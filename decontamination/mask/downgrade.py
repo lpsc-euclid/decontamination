@@ -58,8 +58,6 @@ def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_
         # MODE SUM                                                                                                     #
         ################################################################################################################
 
-        temp = np.zeros(npix, dtype = weights.dtype)
-
         for i in range(len(weights)):
 
             pix_out = int(np.floor(footprint_in[i] / factor ** 2))
@@ -71,9 +69,7 @@ def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_
                 sums[pix_out] += weight
                 counts[pix_out] += 1.0000
 
-            temp[pix_out] += 1.0000
-
-        map_out = sums * (temp / counts)
+        map_out = sums * (factor ** 2 / counts)
 
         ################################################################################################################
 

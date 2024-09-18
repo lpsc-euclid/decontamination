@@ -160,7 +160,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
     fig, ax = plt.subplots(figsize = (8, 8))
 
-    img = ax.imshow(image, extent = (lon_min, lon_max, lat_min, lat_max), norm = norm, cmap = cmap, origin = 'lower', aspect = 'equal', interpolation = 'nearest')
+    img = ax.imshow(image, extent = (lon_max, lon_min, lat_min, lat_max), norm = norm, cmap = cmap, origin = 'lower', aspect = 'equal', interpolation = 'nearest')
 
     ax.set_xlabel('Longitude (deg)')
     ax.set_ylabel('Latitude (deg)')

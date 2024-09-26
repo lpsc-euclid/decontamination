@@ -90,12 +90,6 @@ class SOM_Batch(som_abstract.SOM_Abstract):
     def _train_step1_epoch_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, vector_weights: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, mn: int) -> None:
 
         ################################################################################################################
-
-        if vector_weights is None:
-
-            vector_weights = np.ones_like(weights)
-
-        ################################################################################################################
         # !--BEGIN-CPU--
 
         sigma = sigma0 * asymptotic_decay_cpu(cur_epoch, n_epochs)
@@ -108,7 +102,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 weights,
                 topography,
                 vectors[i],
-                vector_weights[i],
+                1.0,#vector_weights[i],
                 sigma,
                 mn
             )
@@ -129,7 +123,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 weights,
                 topography,
                 vectors[i],
-                vector_weights[i],
+                1.0,#vector_weights[i],
                 sigma,
                 mn
             )
@@ -143,13 +137,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     @staticmethod
     @jit(kernel = True, parallel = True)
-    def _train_step1_iter_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, vector_weights: typing.Optional[np.ndarray], cur_vector: int, n_vectors: int, sigma0: float, mn: int) -> None:
-
-        ################################################################################################################
-
-        if vector_weights is None:
-
-            vector_weights = np.ones_like(weights)
+    def _train_step1_iter_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, vector_weights: np.ndarray, cur_vector: int, n_vectors: int, sigma0: float, mn: int) -> None:
 
         ################################################################################################################
         # !--BEGIN-CPU--
@@ -294,7 +282,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                             self._weights,
                             self._topography,
                             vectors,
-                            weights,
+                            weights.astype(vectors.dtype),
                             cur_epoch,
                             n_epochs,
                             self._sigma,
@@ -315,7 +303,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                             self._weights,
                             self._topography,
                             vectors,
-                            None,
+                            np.ones_like(vectors, dtype = vectors.dtype),
                             cur_epoch,
                             n_epochs,
                             self._sigma,
@@ -395,7 +383,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                         self._weights,
                         self._topography,
                         vectors[0: count],
-                        weights[0: count],
+                        weights[0: count].astype(vectors.dtype),
                         cur_vector,
                         n_vectors,
                         self._sigma,
@@ -426,7 +414,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                         self._weights,
                         self._topography,
                         vectors[0: count],
-                        None,
+                        np.ones(count, dtype = vectors.dtype),
                         cur_vector,
                         n_vectors,
                         self._sigma,

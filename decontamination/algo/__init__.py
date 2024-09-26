@@ -18,7 +18,11 @@ from .. import jit
 # DATASET UTILITIES                                                                                                    #
 ########################################################################################################################
 
-def dataset_to_generator_builder(dataset: typing.Union[np.ndarray, typing.Tuple[np.ndarray, np.ndarray], typing.Callable]) -> typing.Callable:
+def dataset_to_generator_builder(dataset: typing.Optional[typing.Union[np.ndarray, typing.Tuple[np.ndarray, np.ndarray], typing.Callable]]) -> typing.Callable:
+
+    if dataset is None:
+
+        return None
 
     return dataset if callable(dataset) else lambda: lambda: (dataset, )
 

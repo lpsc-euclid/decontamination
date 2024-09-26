@@ -16,7 +16,7 @@ import numba as nb
 
 from .. import jit, device_array_zeros
 
-from . import som_abstract, square_distance_xpu, atomic_add_vector_xpu, asymptotic_decay_cpu, asymptotic_decay_gpu, dataset_to_generator_builder
+from . import som_abstract, square_distance_xpu, asymptotic_decay_cpu, asymptotic_decay_gpu, dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -87,7 +87,13 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     @staticmethod
     @jit(kernel = True, parallel = True)
-    def _train_step1_epoch_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, mn: int) -> None:
+    def _train_step1_epoch_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, vector_weights: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, mn: int) -> None:
+
+        ################################################################################################################
+
+        if vector_weights is None:
+
+            vector_weights = np.ones_like(weights)
 
         ################################################################################################################
         # !--BEGIN-CPU--
@@ -102,6 +108,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 weights,
                 topography,
                 vectors[i],
+                vector_weights[i],
                 sigma,
                 mn
             )
@@ -122,6 +129,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 weights,
                 topography,
                 vectors[i],
+                vector_weights[i],
                 sigma,
                 mn
             )
@@ -135,7 +143,13 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     @staticmethod
     @jit(kernel = True, parallel = True)
-    def _train_step1_iter_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_vector: int, n_vectors: int, sigma0: float, mn: int) -> None:
+    def _train_step1_iter_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, vector_weights: typing.Optional[np.ndarray], cur_vector: int, n_vectors: int, sigma0: float, mn: int) -> None:
+
+        ################################################################################################################
+
+        if vector_weights is None:
+
+            vector_weights = np.ones_like(weights)
 
         ################################################################################################################
         # !--BEGIN-CPU--
@@ -150,6 +164,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 weights,
                 topography,
                 vectors[i],
+                vector_weights[i],
                 sigma,
                 mn
             )
@@ -170,6 +185,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 weights,
                 topography,
                 vectors[i],
+                vector_weights[i],
                 sigma,
                 mn
             )
@@ -181,7 +197,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`). A batch formulation of updating weights is implemented:
@@ -208,6 +224,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
+        weights : typing.Union[np.ndarray, typing.Callable]
+            ???
         n_epochs : int, default: **None**
             Optional number of epochs to train for.
         n_vectors : int, default: **None**
@@ -232,7 +250,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        generator_builder = dataset_to_generator_builder(dataset)
+        dataset_generator_builder = dataset_to_generator_builder(dataset)
+        weights_generator_builder = dataset_to_generator_builder(weights)
 
         ################################################################################################################
 
@@ -262,23 +281,48 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                 ########################################################################################################
 
-                generator = generator_builder()
+                if weights_generator_builder is not None:
 
-                for vectors in generator():
+                    dataset_generator = dataset_generator_builder()
+                    weights_generator = weights_generator_builder()
 
-                    SOM_Batch._train_step1_epoch_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
-                        numerator,
-                        denominator,
-                        self._weights,
-                        self._topography,
-                        vectors,
-                        cur_epoch,
-                        n_epochs,
-                        self._sigma,
-                        self._m * self._n
-                    )
+                    for vectors, weights in zip(dataset_generator(), weights_generator()):
 
-                    gc.collect()
+                        SOM_Batch._train_step1_epoch_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
+                            numerator,
+                            denominator,
+                            self._weights,
+                            self._topography,
+                            vectors,
+                            weights,
+                            cur_epoch,
+                            n_epochs,
+                            self._sigma,
+                            self._m * self._n
+                        )
+
+                        gc.collect()
+
+                else:
+
+                    dataset_generator = dataset_generator_builder()
+
+                    for vectors in dataset_generator():
+
+                        SOM_Batch._train_step1_epoch_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
+                            numerator,
+                            denominator,
+                            self._weights,
+                            self._topography,
+                            vectors,
+                            None,
+                            cur_epoch,
+                            n_epochs,
+                            self._sigma,
+                            self._m * self._n
+                        )
+
+                        gc.collect()
 
                 ########################################################################################################
 
@@ -336,33 +380,68 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             progress_bar = tqdm.tqdm(total = n_vectors, disable = not show_progress_bar)
 
-            generator = generator_builder()
+            if weights_generator_builder is not None:
 
-            for vectors in generator():
+                dataset_generator = dataset_generator_builder()
+                weights_generator = weights_generator_builder()
 
-                count = min(vectors.shape[0], n_vectors - cur_vector)
+                for vectors, weights in zip(dataset_generator(), weights_generator):
 
-                SOM_Batch._train_step1_iter_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
-                    numerator,
-                    denominator,
-                    self._weights,
-                    self._topography,
-                    vectors[0: count],
-                    cur_vector,
-                    n_vectors,
-                    self._sigma,
-                    self._m * self._n
-                )
+                    count = min(vectors.shape[0], n_vectors - cur_vector)
 
-                gc.collect()
+                    SOM_Batch._train_step1_iter_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
+                        numerator,
+                        denominator,
+                        self._weights,
+                        self._topography,
+                        vectors[0: count],
+                        weights[0: count],
+                        cur_vector,
+                        n_vectors,
+                        self._sigma,
+                        self._m * self._n
+                    )
 
-                cur_vector += count
+                    gc.collect()
 
-                progress_bar.update(count)
+                    cur_vector += count
 
-                if cur_vector >= n_vectors:
+                    progress_bar.update(count)
 
-                    break
+                    if cur_vector >= n_vectors:
+
+                        break
+
+            else:
+
+                dataset_generator = dataset_generator_builder()
+
+                for vectors in dataset_generator():
+
+                    count = min(vectors.shape[0], n_vectors - cur_vector)
+
+                    SOM_Batch._train_step1_iter_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
+                        numerator,
+                        denominator,
+                        self._weights,
+                        self._topography,
+                        vectors[0: count],
+                        None,
+                        cur_vector,
+                        n_vectors,
+                        self._sigma,
+                        self._m * self._n
+                    )
+
+                    gc.collect()
+
+                    cur_vector += count
+
+                    progress_bar.update(count)
+
+                    if cur_vector >= n_vectors:
+
+                        break
 
             ############################################################################################################
 
@@ -397,7 +476,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 ########################################################################################################################
 
 @jit(fastmath = True)
-def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, sigma: float, mn: int) -> None:
+def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, vector_weight: np.ndarray, sigma: float, mn: int) -> None:
 
     ####################################################################################################################
     # DO BMUS CALCULATION                                                                                              #
@@ -423,38 +502,20 @@ def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np
     # UPDATE WEIGHTS                                                                                                   #
     ####################################################################################################################
 
-    if sigma > 0.0:
+    for i in range(mn):
 
-        ################################################################################################################
-        # ... WITH GAUSSIAN NEIGHBORHOOD OPERATOR                                                                      #
-        ################################################################################################################
+        ############################################################################################################
 
-        for i in range(mn):
+        neighborhood_i = math.exp(-square_distance_xpu(topography[i], bmu) / (2.0 * sigma ** 2))
 
-            ############################################################################################################
+        ############################################################################################################
 
-            neighborhood_i = math.exp(-square_distance_xpu(topography[i], bmu) / (2.0 * sigma ** 2))
+        numerator_i = numerator[i]
 
-            ############################################################################################################
+        for k in range(vector.shape[0]):
 
-            numerator_i = numerator[i]
+            jit.atomic_add(numerator_i, k, neighborhood_i * vector_weight * vector[k])
 
-            for k in range(vector.shape[0]):
-
-                jit.atomic_add(numerator_i, k, neighborhood_i * vector[k])
-
-            jit.atomic_add(denominator, i, neighborhood_i * 1.0000000)
-
-        ################################################################################################################
-
-    else:
-
-        ################################################################################################################
-        # ... WITH DIRAC NEIGHBORHOOD OPERATOR                                                                         #
-        ################################################################################################################
-
-        atomic_add_vector_xpu(numerator[min_index], vector)
-
-        jit.atomic_add(denominator, min_index, 1.0000)
+        jit.atomic_add(denominator, i, neighborhood_i * vector_weight * 1.0000000)
 
 ########################################################################################################################

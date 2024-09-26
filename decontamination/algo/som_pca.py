@@ -106,7 +106,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit()
-    def _update_cov_matrix(result_sum: np.ndarray, result_prods: np.ndarray, vectors: np.ndarray) -> int:
+    def _update_cov_matrix(result_sum: np.ndarray, result_prods: np.ndarray, vectors: np.ndarray, weights: np.ndarray) -> int:
 
         ################################################################################################################
 
@@ -120,14 +120,15 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         for i in range(data_dim):
 
             vector = vectors[i].astype(np.float64)
+            weight = np.int64(weights[i])
 
             if not np.any(np.isnan(vector)):
 
-                n += 1
+                n += weight
 
                 for j in range(syst_dim):
 
-                    vector_j = vector[j]
+                    vector_j = weight * vector[j]
                     result_sum[j] += vector_j
 
                     for k in range(syst_dim):
@@ -177,7 +178,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], min_weight: float = 0.0, max_weight: float = 1.0, show_progress_bar: bool = False) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, min_weight: float = 0.0, max_weight: float = 1.0, show_progress_bar: bool = False) -> None:
 
         """
         Trains the neural network.
@@ -186,6 +187,8 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
+        weights : typing.Union[np.ndarray, typing.Callable]
+            ???.
         min_weight : float, default: **0.0**
             Latent space minimum value.
         max_weight : float, default: **1.0**
@@ -196,9 +199,8 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        generator_builder = dataset_to_generator_builder(dataset)
-
-        generator = generator_builder()
+        dateset_generator_builder = dataset_to_generator_builder(dataset)
+        weights_generator_builder = dataset_to_generator_builder(weights)
 
         ################################################################################################################
 
@@ -209,11 +211,36 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        for vectors in tqdm.tqdm(generator(), disable = not show_progress_bar):
+        if weights_generator_builder is not None:
 
-            total_nb += SOM_PCA._update_cov_matrix(total_sum, total_prods, vectors)
+            dateset_generator = dateset_generator_builder()
+            weights_generator = weights_generator_builder()
 
-            gc.collect()
+            for vectors, weights in tqdm.tqdm(zip(dateset_generator(), weights_generator()), disable = not show_progress_bar):
+
+                total_nb += SOM_PCA._update_cov_matrix(
+                    total_sum,
+                    total_prods,
+                    vectors,
+                    weights.astype(np.int64)
+                )
+
+                gc.collect()
+
+        else:
+
+            dateset_generator = dateset_generator_builder()
+
+            for vectors in tqdm.tqdm(dateset_generator(), disable = not show_progress_bar):
+
+                total_nb += SOM_PCA._update_cov_matrix(
+                    total_sum,
+                    total_prods,
+                    vectors,
+                    np.ones(vectors.shape[0], dtype = np.int64)
+                )
+
+                gc.collect()
 
         ################################################################################################################
 

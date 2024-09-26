@@ -102,7 +102,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 weights,
                 topography,
                 vectors[i],
-                1.0,#vector_weights[i],
+                vector_weights[i],
                 sigma,
                 mn
             )
@@ -123,7 +123,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 weights,
                 topography,
                 vectors[i],
-                1.0,#vector_weights[i],
+                vector_weights[i],
                 sigma,
                 mn
             )
@@ -213,7 +213,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
         weights : typing.Union[np.ndarray, typing.Callable]
-            ???
+            ???.
         n_epochs : int, default: **None**
             Optional number of epochs to train for.
         n_vectors : int, default: **None**
@@ -282,7 +282,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                             self._weights,
                             self._topography,
                             vectors,
-                            weights.astype(vectors.dtype),
+                            weights.astype(np.int64),
                             cur_epoch,
                             n_epochs,
                             self._sigma,
@@ -303,7 +303,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                             self._weights,
                             self._topography,
                             vectors,
-                            np.ones_like(vectors, dtype = vectors.dtype),
+                            np.ones_like(vectors, dtype = np.int64),
                             cur_epoch,
                             n_epochs,
                             self._sigma,
@@ -383,7 +383,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                         self._weights,
                         self._topography,
                         vectors[0: count],
-                        weights[0: count].astype(vectors.dtype),
+                        weights[0: count].astype(np.int64),
                         cur_vector,
                         n_vectors,
                         self._sigma,
@@ -414,7 +414,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                         self._weights,
                         self._topography,
                         vectors[0: count],
-                        np.ones(count, dtype = vectors.dtype),
+                        np.ones(count, dtype = np.int64),
                         cur_vector,
                         n_vectors,
                         self._sigma,
@@ -466,9 +466,9 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 @jit(fastmath = True)
 def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, vector_weight: np.ndarray, sigma: float, mn: int) -> None:
 
-    ####################################################################################################################
-    # DO BMUS CALCULATION                                                                                              #
-    ####################################################################################################################
+    ################################################################################################################
+    # DO BMUS CALCULATION                                                                                          #
+    ################################################################################################################
 
     min_distance = 1.0e99
     min_index = 0
@@ -482,13 +482,13 @@ def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np
             min_distance = distance
             min_index = index
 
-    ####################################################################################################################
+    ################################################################################################################
 
     bmu = topography[min_index]
 
-    ####################################################################################################################
-    # UPDATE WEIGHTS                                                                                                   #
-    ####################################################################################################################
+    ################################################################################################################
+    # UPDATE WEIGHTS                                                                                               #
+    ################################################################################################################
 
     for i in range(mn):
 
@@ -502,8 +502,8 @@ def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np
 
         for k in range(vector.shape[0]):
 
-            jit.atomic_add(numerator_i, k, neighborhood_i * vector_weight * vector[k])
+            jit.atomic_add(numerator_i, k, vector_weight * neighborhood_i * vector[k])
 
-        jit.atomic_add(denominator, i, neighborhood_i * vector_weight * 1.0000000)
+        jit.atomic_add(denominator, i, vector_weight * neighborhood_i * 1.0000000)
 
 ########################################################################################################################

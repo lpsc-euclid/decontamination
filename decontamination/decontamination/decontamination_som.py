@@ -57,8 +57,8 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         ################################################################################################################
 
         self._batch = batch
-        self._catalog_systematics = None
         self._footprint_systematics = None
+        self._galaxy_number_density = None
 
         if batch:
             self._som = som_batch.SOM_Batch(m, n, dim, dtype = dtype, topology = topology, sigma = sigma)
@@ -403,17 +403,17 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
     ####################################################################################################################
 
     # noinspection PyArgumentList
-    def train(self, catalog_systematics: typing.Union[np.ndarray, typing.Callable], footprint_systematics: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def train(self, footprint_systematics: typing.Union[np.ndarray, typing.Callable], galaxy_number_density: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`).
 
         Parameters
         ----------
-        catalog_systematics : typing.Union[np.ndarray, typing.Callable]
-            Dataset array or generator builder of systematics for the catalog.
         footprint_systematics : typing.Union[np.ndarray, typing.Callable]
             Dataset array or generator builder of systematics for the footprint.
+        galaxy_number_density : typing.Union[np.ndarray, typing.Callable]
+            Dataset array or generator builder of galaxy number density.
         n_epochs : int, default: **None**
             Optional number of epochs to train for.
         n_vectors : int, default: **None**
@@ -434,14 +434,14 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         # SET DATASETS                                                                                                 #
         ################################################################################################################
 
-        self._catalog_systematics = catalog_systematics
         self._footprint_systematics = footprint_systematics
+        self._galaxy_number_density = galaxy_number_density
 
         ################################################################################################################
         # PCA TRAINING                                                                                                 #
         ################################################################################################################
 
-        self._pca.train(catalog_systematics, min_weight = 0.0, max_weight = 1.0)
+        self._pca.train(footprint_systematics, weights = galaxy_number_density, min_weight = 0.0, max_weight = 1.0)
 
         ################################################################################################################
         # BATCH/ONLINE TRAINING                                                                                        #
@@ -450,9 +450,10 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         self._som.init_from(self._pca)
 
         if self._batch:
-            self._som.train(catalog_systematics, n_epochs = n_epochs, n_vectors = n_vectors, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+            self._som.train(footprint_systematics, weights = galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
         else:
-            self._som.train(catalog_systematics, n_epochs = n_epochs, n_vectors = n_vectors, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar)
+            #self._som.train(catalog_systematics, n_epochs = n_epochs, n_vectors = n_vectors, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar)
+            pass
 
         ################################################################################################################
         # COMPUTE FOOTPRINT WINNERS                                                                                    #
@@ -509,9 +510,9 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
             Number of GPU threads per blocks.
         """
 
-        if self._catalog_systematics is None\
-           or                                \
-           self._footprint_systematics is None:
+        if self._footprint_systematics is None\
+           or                                 \
+           self._galaxy_number_density is None:
 
             raise ValueError('Underlying SOM network not trained')
 
@@ -519,8 +520,8 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         # COMPUTE ACTIVATION MAPS                                                                                      #
         ################################################################################################################
 
-        self._catalog_activation_map = self._som.get_activation_map(self._catalog_systematics, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
-        self._footprint_activation_map = self._som.get_activation_map(self._footprint_systematics, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+        self._catalog_activation_map = self._som.get_activation_map(self._footprint_systematics, weights = self._galaxy_number_density, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+        self._footprint_activation_map = self._som.get_activation_map(self._footprint_systematics, weights = None, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
         ################################################################################################################
         # COMPUTE GALAXY NUMBER DENSITY XXX                                                                            #

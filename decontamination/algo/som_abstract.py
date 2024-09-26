@@ -557,7 +557,7 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> np.ndarray:
+    def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> np.ndarray:
 
         """
         For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.
@@ -566,6 +566,8 @@ class SOM_Abstract(object):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Dataset array or generator builder.
+        weights : typing.Union[np.ndarray, typing.Callable]
+            ???.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**
@@ -576,7 +578,8 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        generator_builder = dataset_to_generator_builder(dataset)
+        dataset_generator_builder = dataset_to_generator_builder(dataset)
+        weights_generator_builder = dataset_to_generator_builder(weights)
 
         ################################################################################################################
 
@@ -584,11 +587,34 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        generator = generator_builder()
+        if weights_generator_builder is not None:
 
-        for data in tqdm.tqdm(generator(), disable = not show_progress_bar):
+            dataset_generator = dataset_generator_builder()
+            weights_generator = weights_generator_builder()
 
-            _count_bmus_kernel[enable_gpu, threads_per_blocks, data.shape[0]](result, self._weights, data, self._m * self._n)
+            for vectors, weights in tqdm.tqdm(zip(dataset_generator(), weights_generator()), disable = not show_progress_bar):
+
+                _count_bmus_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
+                    result,
+                    self._weights,
+                    vectors,
+                    weights.astype(np.int64),
+                    self._m * self._n
+                )
+
+        else:
+
+            dataset_generator = dataset_generator_builder()
+
+            for vectors in tqdm.tqdm(dataset_generator(), disable = not show_progress_bar):
+
+                _count_bmus_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
+                    result,
+                    self._weights,
+                    vectors,
+                    np.ones(vectors.shape[0], dtype = np.int64),
+                    self._m * self._n
+                )
 
         ################################################################################################################
 
@@ -626,14 +652,14 @@ class SOM_Abstract(object):
 ########################################################################################################################
 
 @jit(kernel = True, parallel = True)
-def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, mn: int) -> None:
+def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, vector_weights: np.ndarray, mn: int) -> None:
 
     ####################################################################################################################
     # !--BEGIN-CPU--
 
     for i in nb.prange(vectors.shape[0]):
 
-        jit.atomic_add(result, _find_bmu_xpu(weights, vectors[i], mn), 1)
+        jit.atomic_add(result, _find_bmu_xpu(weights, vectors[i], mn), vector_weights[i])
 
     # !--END-CPU--
     ####################################################################################################################
@@ -643,7 +669,7 @@ def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndar
 
     if i < vectors.shape[0]:
 
-        jit.atomic_add(result, _find_bmu_xpu(weights, vectors[i], mn), 1)
+        jit.atomic_add(result, _find_bmu_xpu(weights, vectors[i], mn), vector_weights[i])
 
     # !--END-GPU--
 

@@ -6,6 +6,7 @@
 # license: CeCILL-C
 ########################################################################################################################
 
+import os
 import typing
 
 import numpy as np
@@ -399,6 +400,90 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         """
 
         return (self._clustered_gndm - (self._n_gal / self._n_pix)) / (self._n_gal / self._n_pix)
+
+    ####################################################################################################################
+
+    def save(self, filename: str) -> None:
+
+        """
+        Saves the trained decontamination model to a HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            Output filename.
+        """
+
+        ################################################################################################################
+
+        import h5py
+
+        ################################################################################################################
+
+        filename_without_ext = os.path.splitext(os.path.basename(filename))[0]
+
+        ################################################################################################################
+        # SAVE MODELS                                                                                                  #
+        ################################################################################################################
+
+        self._pca.save(f'{filename_without_ext}_pca.hdf5')
+
+        self._som.save(f'{filename_without_ext}.hdf5')
+
+        ################################################################################################################
+        # SAVE DATASET                                                                                                 #
+        ################################################################################################################
+
+        with h5py.File(f'{filename_without_ext}.hdf5', 'r+') as file:
+
+            group = file.create_group('dataset')
+
+            group.create_dataset('footprint_systematics', data = self._footprint_systematics)
+            group.create_dataset('galaxy_number_density', data = self._galaxy_number_density)
+            group.create_dataset('winner'               , data = self._winners              )
+
+        ################################################################################################################
+
+    ####################################################################################################################
+
+    def load(self, filename: str) -> None:
+
+        """
+        Loads the trained decontamination model from a HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            Input filename.
+        """
+
+        ################################################################################################################
+
+        import h5py
+
+        ################################################################################################################
+
+        filename_without_ext = os.path.splitext(os.path.basename(filename))[0]
+
+        ################################################################################################################
+        # LOAD MODELS                                                                                                  #
+        ################################################################################################################
+
+        self._pca.load(f'{filename_without_ext}_pca.hdf5')
+
+        self._som.load(f'{filename_without_ext}.hdf5')
+
+        ################################################################################################################
+        # LOAD DATASET                                                                                                 #
+        ################################################################################################################
+
+        with h5py.File(f'{filename_without_ext}.hdf5', 'r') as hdf_file:
+
+            group = hdf_file['dataset']
+
+            self._footprint_systematics = group['footprint_systematics'][:]
+            self._galaxy_number_density = group['galaxy_number_density'][:]
+            self._winners               = group['winner'               ][:]
 
     ####################################################################################################################
 

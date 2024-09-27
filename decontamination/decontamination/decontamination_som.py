@@ -441,7 +441,7 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         # PCA TRAINING                                                                                                 #
         ################################################################################################################
 
-        self._pca.train(footprint_systematics, weights = galaxy_number_density, min_weight = 0.0, max_weight = 1.0)
+        self._pca.train(footprint_systematics, density = galaxy_number_density, min_weight = 0.0, max_weight = 1.0)
 
         ################################################################################################################
         # BATCH/ONLINE TRAINING                                                                                        #

@@ -6,7 +6,6 @@
 # license: CeCILL-C
 ########################################################################################################################
 
-import os
 import typing
 
 import numpy as np
@@ -419,22 +418,18 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         import h5py
 
         ################################################################################################################
-
-        filename_without_ext = os.path.splitext(os.path.basename(filename))[0]
-
-        ################################################################################################################
         # SAVE MODELS                                                                                                  #
         ################################################################################################################
 
-        self._pca.save(f'{filename_without_ext}_pca.hdf5')
+        self._pca.save(filename.replace('.hdf5', '_pca.hdf5'))
 
-        self._som.save(f'{filename_without_ext}.hdf5')
+        self._som.save(filename)
 
         ################################################################################################################
         # SAVE DATASET                                                                                                 #
         ################################################################################################################
 
-        with h5py.File(f'{filename_without_ext}.hdf5', 'r+') as file:
+        with h5py.File(filename, 'r+') as file:
 
             group = file.create_group('dataset')
 
@@ -462,24 +457,20 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         import h5py
 
         ################################################################################################################
-
-        filename_without_ext = os.path.splitext(os.path.basename(filename))[0]
-
-        ################################################################################################################
         # LOAD MODELS                                                                                                  #
         ################################################################################################################
 
-        self._pca.load(f'{filename_without_ext}_pca.hdf5')
+        self._pca.load(filename.replace('.hdf5', '_pca.hdf5'))
 
-        self._som.load(f'{filename_without_ext}.hdf5')
+        self._som.load(filename)
 
         ################################################################################################################
         # LOAD DATASET                                                                                                 #
         ################################################################################################################
 
-        with h5py.File(f'{filename_without_ext}.hdf5', 'r') as hdf_file:
+        with h5py.File(filename, 'r') as file:
 
-            group = hdf_file['dataset']
+            group = file['dataset']
 
             self._footprint_systematics = group['footprint_systematics'][:]
             self._galaxy_number_density = group['galaxy_number_density'][:]

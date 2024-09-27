@@ -87,7 +87,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     @staticmethod
     @jit(kernel = True, parallel = True)
-    def _train_step1_epoch_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, vector_weights: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, mn: int) -> None:
+    def _train_step1_epoch_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, density: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, mn: int) -> None:
 
         ################################################################################################################
         # !--BEGIN-CPU--
@@ -102,7 +102,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 weights,
                 topography,
                 vectors[i],
-                vector_weights[i],
+                density[i],
                 sigma,
                 mn
             )
@@ -123,7 +123,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 weights,
                 topography,
                 vectors[i],
-                vector_weights[i],
+                density[i],
                 sigma,
                 mn
             )
@@ -137,7 +137,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     @staticmethod
     @jit(kernel = True, parallel = True)
-    def _train_step1_iter_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, vector_weights: np.ndarray, cur_vector: int, n_vectors: int, sigma0: float, mn: int) -> None:
+    def _train_step1_iter_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, density: np.ndarray, cur_vector: int, n_vectors: int, sigma0: float, mn: int) -> None:
 
         ################################################################################################################
         # !--BEGIN-CPU--
@@ -152,7 +152,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 weights,
                 topography,
                 vectors[i],
-                vector_weights[i],
+                density[i],
                 sigma,
                 mn
             )
@@ -173,7 +173,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 weights,
                 topography,
                 vectors[i],
-                vector_weights[i],
+                density[i],
                 sigma,
                 mn
             )
@@ -185,7 +185,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], density: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`). A batch formulation of updating weights is implemented:
@@ -212,7 +212,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
-        weights : typing.Union[np.ndarray, typing.Callable]
+        density : typing.Union[np.ndarray, typing.Callable]
             ???.
         n_epochs : int, default: **None**
             Optional number of epochs to train for.
@@ -239,7 +239,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         ################################################################################################################
 
         dataset_generator_builder = dataset_to_generator_builder(dataset)
-        weights_generator_builder = dataset_to_generator_builder(weights)
+        density_generator_builder = dataset_to_generator_builder(density)
 
         ################################################################################################################
 
@@ -269,12 +269,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                 ########################################################################################################
 
-                if weights_generator_builder is not None:
+                if density_generator_builder is not None:
 
                     dataset_generator = dataset_generator_builder()
-                    weights_generator = weights_generator_builder()
+                    density_generator = density_generator_builder()
 
-                    for vectors, weights in zip(dataset_generator(), weights_generator()):
+                    for vectors, density in zip(dataset_generator(), density_generator()):
 
                         SOM_Batch._train_step1_epoch_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
                             numerator,
@@ -282,7 +282,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                             self._weights,
                             self._topography,
                             vectors,
-                            weights.astype(np.int64),
+                            density.astype(np.int64),
                             cur_epoch,
                             n_epochs,
                             self._sigma,
@@ -338,7 +338,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                 if errors[0] <= stop_quantization_error\
                    and                                 \
-                   errors[1] <= stop_topographic_error :
+                   errors[1] <= stop_topographic_error:
 
                     print('Stopping at epoch #{}.'.format(cur_epoch))
 
@@ -368,12 +368,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             progress_bar = tqdm.tqdm(total = n_vectors, disable = not show_progress_bar)
 
-            if weights_generator_builder is not None:
+            if density_generator_builder is not None:
 
                 dataset_generator = dataset_generator_builder()
-                weights_generator = weights_generator_builder()
+                density_generator = density_generator_builder()
 
-                for vectors, weights in zip(dataset_generator(), weights_generator):
+                for vectors, density in zip(dataset_generator(), density_generator):
 
                     count = min(vectors.shape[0], n_vectors - cur_vector)
 
@@ -383,7 +383,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                         self._weights,
                         self._topography,
                         vectors[0: count],
-                        weights[0: count].astype(np.int64),
+                        density[0: count].astype(np.int64),
                         cur_vector,
                         n_vectors,
                         self._sigma,
@@ -464,7 +464,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 ########################################################################################################################
 
 @jit(fastmath = True)
-def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, vector_weight: np.ndarray, sigma: float, mn: int) -> None:
+def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, density: np.ndarray, sigma: float, mn: int) -> None:
 
     ################################################################################################################
     # DO BMUS CALCULATION                                                                                          #
@@ -502,8 +502,8 @@ def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np
 
         for k in range(vector.shape[0]):
 
-            jit.atomic_add(numerator_i, k, vector_weight * neighborhood_i * vector[k])
+            jit.atomic_add(numerator_i, k, density * neighborhood_i * vector[k])
 
-        jit.atomic_add(denominator, i, vector_weight * neighborhood_i * 1.0000000)
+        jit.atomic_add(denominator, i, density * neighborhood_i * 1.0000000)
 
 ########################################################################################################################

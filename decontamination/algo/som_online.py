@@ -150,7 +150,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], density: typing.Optional[typing.Union[np.ndarray, typing.Callable]], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`). An online formulation of updating weights is implemented:
@@ -170,6 +170,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
+        density : typing.Union[np.ndarray, typing.Callable]
+            ???.
         n_epochs : int, default: **None**
             Optional number of epochs to train for.
         n_vectors : int, default: **None**
@@ -244,7 +246,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
                 if errors[0] <= stop_quantization_error\
                    and                                 \
-                   errors[1] <= stop_topographic_error :
+                   errors[1] <= stop_topographic_error:
 
                     print('Stopping at epoch #{}.'.format(cur_epoch))
 

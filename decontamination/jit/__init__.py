@@ -429,7 +429,7 @@ class jit(object):
     ####################################################################################################################
 
     @staticmethod
-    def atomic_add(array: np.ndarray, idx: int, val: typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]) -> typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]:
+    def atomic_add(array: np.ndarray, idx: int, val: typing.Union[np.ndarray, np.float32, np.float64, float, np.int32, np.int64, int]) -> typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]:
 
         """
         Performs atomic `array[idx] += val` and returns the old value. Supported on int32/64 and float32/64 operands only.
@@ -440,7 +440,7 @@ class jit(object):
             Array to be modified.
         idx : int
             Index in the array.
-        val : typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]
+        val : typing.Union[np.ndarray, np.float32, np.float64, float, np.int32, np.int64, int]
             New value.
         """
 
@@ -449,7 +449,7 @@ class jit(object):
     ####################################################################################################################
 
     @staticmethod
-    def atomic_sub(array: np.ndarray, idx: int, val: typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]) -> typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]:
+    def atomic_sub(array: np.ndarray, idx: int, val: typing.Union[np.ndarray, np.float32, np.float64, float, np.int32, np.int64, int]) -> typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]:
 
         """
         Performs atomic `array[idx] -= val` and returns the old value. Supported on int32/64 and float32/64 operands only.
@@ -460,7 +460,7 @@ class jit(object):
             Array to be modified.
         idx : int
             Index in the array.
-        val : typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]
+        val : typing.Union[np.ndarray, np.float32, np.float64, float, np.int32, np.int64, int]
             New value.
         """
 

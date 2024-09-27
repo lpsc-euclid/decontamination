@@ -11,4 +11,5 @@ __pycache__
 /coverage.xml
 
 *.hdf5
+*.egg
 *.png

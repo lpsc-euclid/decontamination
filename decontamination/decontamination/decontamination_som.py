@@ -450,10 +450,9 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         self._som.init_from(self._pca)
 
         if self._batch:
-            self._som.train(footprint_systematics, weights = galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+            self._som.train(footprint_systematics, density = galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
         else:
-            #self._som.train(catalog_systematics, n_epochs = n_epochs, n_vectors = n_vectors, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar)
-            pass
+            self._som.train(footprint_systematics, density = galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar)
 
         ################################################################################################################
         # COMPUTE FOOTPRINT WINNERS                                                                                    #
@@ -520,8 +519,8 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         # COMPUTE ACTIVATION MAPS                                                                                      #
         ################################################################################################################
 
-        self._catalog_activation_map = self._som.get_activation_map(self._footprint_systematics, weights = self._galaxy_number_density, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
-        self._footprint_activation_map = self._som.get_activation_map(self._footprint_systematics, weights = None, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+        self._catalog_activation_map = self._som.get_activation_map(self._footprint_systematics, density = self._galaxy_number_density, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+        self._footprint_activation_map = self._som.get_activation_map(self._footprint_systematics, density = None, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
         ################################################################################################################
         # COMPUTE GALAXY NUMBER DENSITY XXX                                                                            #

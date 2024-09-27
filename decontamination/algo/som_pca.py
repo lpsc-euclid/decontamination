@@ -17,7 +17,7 @@ from . import som_abstract, dataset_to_generator_builder
 
 ########################################################################################################################
 
-# noinspection PyPep8Naming
+# noinspection PyPep8Naming, DuplicatedCode
 class SOM_PCA(som_abstract.SOM_Abstract):
 
     """
@@ -106,7 +106,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit()
-    def _update_cov_matrix(result_sum: np.ndarray, result_prods: np.ndarray, vectors: np.ndarray, weights: np.ndarray) -> int:
+    def _update_cov_matrix(result_sum: np.ndarray, result_prods: np.ndarray, vectors: np.ndarray, density: np.ndarray) -> int:
 
         ################################################################################################################
 
@@ -119,8 +119,9 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         for i in range(data_dim):
 
-            vector = vectors[i].astype(np.float64)
-            weight = np.int64(weights[i])
+            vector = vectors[i] \
+                        .astype(np.float64)
+            weight = density[i]
 
             if not np.any(np.isnan(vector)):
 
@@ -178,7 +179,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, min_weight: float = 0.0, max_weight: float = 1.0, show_progress_bar: bool = False) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], density: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, min_weight: float = 0.0, max_weight: float = 1.0, show_progress_bar: bool = False) -> None:
 
         """
         Trains the neural network.
@@ -187,7 +188,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
-        weights : typing.Union[np.ndarray, typing.Callable]
+        density : typing.Union[np.ndarray, typing.Callable]
             ???.
         min_weight : float, default: **0.0**
             Latent space minimum value.
@@ -200,7 +201,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         ################################################################################################################
 
         dateset_generator_builder = dataset_to_generator_builder(dataset)
-        weights_generator_builder = dataset_to_generator_builder(weights)
+        density_generator_builder = dataset_to_generator_builder(density)
 
         ################################################################################################################
 
@@ -211,18 +212,18 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        if weights_generator_builder is not None:
+        if density_generator_builder is not None:
 
             dateset_generator = dateset_generator_builder()
-            weights_generator = weights_generator_builder()
+            density_generator = density_generator_builder()
 
-            for vectors, weights in tqdm.tqdm(zip(dateset_generator(), weights_generator()), disable = not show_progress_bar):
+            for vectors, density in tqdm.tqdm(zip(dateset_generator(), density_generator()), disable = not show_progress_bar):
 
                 total_nb += SOM_PCA._update_cov_matrix(
                     total_sum,
                     total_prods,
                     vectors,
-                    weights.astype(np.int64)
+                    density.astype(np.int64)
                 )
 
                 gc.collect()

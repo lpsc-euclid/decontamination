@@ -53,8 +53,6 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
 
         self._pca = som_pca.SOM_PCA(m, n, dim, dtype = dtype, topology = topology)
 
-        return
-
         ################################################################################################################
         # SOM                                                                                                          #
         ################################################################################################################

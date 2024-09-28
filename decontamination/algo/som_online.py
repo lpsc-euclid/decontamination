@@ -150,7 +150,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], density: typing.Optional[typing.Union[np.ndarray, typing.Callable]], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], density: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`). An online formulation of updating weights is implemented:
@@ -227,7 +227,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
                     SOM_Online._train_step1_epoch(
                         self._weights,
                         self._topography,
-                        vectors,
+                        vectors.astype(self._dtype),
                         cur_epoch,
                         n_epochs,
                         self._alpha,
@@ -279,7 +279,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
                 SOM_Online._train_step1_iter(
                     self._weights,
                     self._topography,
-                    vectors[0: count],
+                    vectors[0: count].astype(self._dtype),
                     cur_vector,
                     n_vectors,
                     self._alpha,

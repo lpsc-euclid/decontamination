@@ -373,7 +373,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 dataset_generator = dataset_generator_builder()
                 density_generator = density_generator_builder()
 
-                for vectors, density in zip(dataset_generator(), density_generator):
+                for vectors, density in zip(dataset_generator(), density_generator()):
 
                     count = min(vectors.shape[0], n_vectors - cur_vector)
 

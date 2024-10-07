@@ -299,9 +299,9 @@
 </dd>
 <dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.array_shape" title="decontamination.mask.wcs.WCS.array_shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array_shape</span></code></a></dt><dd><p>The shape of the data that the WCS applies to as a tuple of length <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite> in <code class="docutils literal notranslate"><span class="pre">(row,</span> <span class="pre">column)</span></code> order (the convention for arrays in Python).</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">array_shape</span></code></dt><dd><p>The shape of the data that the WCS applies to as a tuple of length <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite> in <code class="docutils literal notranslate"><span class="pre">(row,</span> <span class="pre">column)</span></code> order (the convention for arrays in Python).</p>
 </dd>
-<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.axis_correlation_matrix" title="decontamination.mask.wcs.WCS.axis_correlation_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_correlation_matrix</span></code></a></dt><dd><p>Returns an (<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_n_dim</cite>, <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite>) matrix that indicates using booleans whether a given world coordinate depends on a given pixel coordinate.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_correlation_matrix</span></code></dt><dd><p>Returns an (<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_n_dim</cite>, <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite>) matrix that indicates using booleans whether a given world coordinate depends on a given pixel coordinate.</p>
 </dd>
 <dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.axis_type_names" title="decontamination.mask.wcs.WCS.axis_type_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_type_names</span></code></a></dt><dd><p>World names for each coordinate axis.</p>
 </dd>
@@ -323,38 +323,38 @@
 <dt><strong>is_celestial</strong></dt><dd></dd>
 <dt><strong>is_spectral</strong></dt><dd></dd>
 <dt><strong>is_temporal</strong></dt><dd></dd>
-<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.low_level_wcs" title="decontamination.mask.wcs.WCS.low_level_wcs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">low_level_wcs</span></code></a></dt><dd><p>Returns a reference to the underlying low-level WCS object.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">low_level_wcs</span></code></dt><dd><p>Returns a reference to the underlying low-level WCS object.</p>
 </dd>
 <dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.pixel_axis_names" title="decontamination.mask.wcs.WCS.pixel_axis_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_axis_names</span></code></a></dt><dd><p>An iterable of strings describing the name for each pixel axis.</p>
 </dd>
-<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.pixel_bounds" title="decontamination.mask.wcs.WCS.pixel_bounds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_bounds</span></code></a></dt><dd><p>The bounds (in pixel coordinates) inside which the WCS is defined, as a list with <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite> <code class="docutils literal notranslate"><span class="pre">(min,</span> <span class="pre">max)</span></code> tuples.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_bounds</span></code></dt><dd><p>The bounds (in pixel coordinates) inside which the WCS is defined, as a list with <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite> <code class="docutils literal notranslate"><span class="pre">(min,</span> <span class="pre">max)</span></code> tuples.</p>
 </dd>
-<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.pixel_n_dim" title="decontamination.mask.wcs.WCS.pixel_n_dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_n_dim</span></code></a></dt><dd><p>The number of axes in the pixel coordinate system.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_n_dim</span></code></dt><dd><p>The number of axes in the pixel coordinate system.</p>
 </dd>
 <dt><strong>pixel_scale_matrix</strong></dt><dd></dd>
-<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.pixel_shape" title="decontamination.mask.wcs.WCS.pixel_shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_shape</span></code></a></dt><dd><p>The shape of the data that the WCS applies to as a tuple of length <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite> in <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> order (where for an image, <code class="docutils literal notranslate"><span class="pre">x</span></code> is the horizontal coordinate and <code class="docutils literal notranslate"><span class="pre">y</span></code> is the vertical coordinate).</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_shape</span></code></dt><dd><p>The shape of the data that the WCS applies to as a tuple of length <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite> in <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> order (where for an image, <code class="docutils literal notranslate"><span class="pre">x</span></code> is the horizontal coordinate and <code class="docutils literal notranslate"><span class="pre">y</span></code> is the vertical coordinate).</p>
 </dd>
-<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.serialized_classes" title="decontamination.mask.wcs.WCS.serialized_classes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serialized_classes</span></code></a></dt><dd><p>Indicates whether Python objects are given in serialized form or as actual Python objects.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">serialized_classes</span></code></dt><dd><p>Indicates whether Python objects are given in serialized form or as actual Python objects.</p>
 </dd>
-<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.sip" title="decontamination.mask.wcs.WCS.sip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sip</span></code></a></dt><dd><p>Get/set the <cite>~astropy.wcs.Sip</cite> object for performing <a href="#id5"><span class="problematic" id="id6">`SIP`_</span></a> distortion correction.</p>
+<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.sip" title="decontamination.mask.wcs.WCS.sip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sip</span></code></a></dt><dd><p>Get/set the <cite>~astropy.wcs.Sip</cite> object for performing <a href="#id4"><span class="problematic" id="id5">`SIP`_</span></a> distortion correction.</p>
 </dd>
 <dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.spectral" title="decontamination.mask.wcs.WCS.spectral"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spectral</span></code></a></dt><dd><p>A copy of the current WCS with only the spectral axes included.</p>
 </dd>
 <dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.temporal" title="decontamination.mask.wcs.WCS.temporal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">temporal</span></code></a></dt><dd><p>A copy of the current WCS with only the time axes included.</p>
 </dd>
-<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.wcs" title="decontamination.mask.wcs.WCS.wcs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wcs</span></code></a></dt><dd><p>A <cite>~astropy.wcs.Wcsprm</cite> object to perform the basic <a href="#id7"><span class="problematic" id="id8">`wcslib`_</span></a> WCS transformation.</p>
+<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.wcs" title="decontamination.mask.wcs.WCS.wcs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wcs</span></code></a></dt><dd><p>A <cite>~astropy.wcs.Wcsprm</cite> object to perform the basic <a href="#id6"><span class="problematic" id="id7">`wcslib`_</span></a> WCS transformation.</p>
 </dd>
-<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.world_axis_names" title="decontamination.mask.wcs.WCS.world_axis_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_axis_names</span></code></a></dt><dd><p>An iterable of strings describing the name for each world axis.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_axis_names</span></code></dt><dd><p>An iterable of strings describing the name for each world axis.</p>
 </dd>
-<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.world_axis_object_classes" title="decontamination.mask.wcs.WCS.world_axis_object_classes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_axis_object_classes</span></code></a></dt><dd><p>A dictionary giving information on constructing high-level objects for the world coordinates.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_axis_object_classes</span></code></dt><dd><p>A dictionary giving information on constructing high-level objects for the world coordinates.</p>
 </dd>
-<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.world_axis_object_components" title="decontamination.mask.wcs.WCS.world_axis_object_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_axis_object_components</span></code></a></dt><dd><p>A list with <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_n_dim</cite> elements giving information on constructing high-level objects for the world coordinates.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_axis_object_components</span></code></dt><dd><p>A list with <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_n_dim</cite> elements giving information on constructing high-level objects for the world coordinates.</p>
 </dd>
-<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.world_axis_physical_types" title="decontamination.mask.wcs.WCS.world_axis_physical_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_axis_physical_types</span></code></a></dt><dd><p>An iterable of strings describing the physical type for each world axis.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_axis_physical_types</span></code></dt><dd><p>An iterable of strings describing the physical type for each world axis.</p>
 </dd>
-<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.world_axis_units" title="decontamination.mask.wcs.WCS.world_axis_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_axis_units</span></code></a></dt><dd><p>An iterable of strings given the units of the world coordinates for each axis.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_axis_units</span></code></dt><dd><p>An iterable of strings given the units of the world coordinates for each axis.</p>
 </dd>
-<dt><a class="reference internal" href="#decontamination.mask.wcs.WCS.world_n_dim" title="decontamination.mask.wcs.WCS.world_n_dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_n_dim</span></code></a></dt><dd><p>The number of axes in the world coordinate system.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_n_dim</span></code></dt><dd><p>The number of axes in the world coordinate system.</p>
 </dd>
 </dl>
 </dd>
@@ -384,7 +384,7 @@
 <td><p>Return a deep copy of the object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.det2im" title="decontamination.mask.wcs.WCS.det2im"><code class="xref py py-obj docutils literal notranslate"><span class="pre">det2im</span></code></a>(*args)</p></td>
-<td><p>Convert detector coordinates to image plane coordinates using <a href="#id9"><span class="problematic" id="id10">`distortion paper`_</span></a> table-lookup correction.</p></td>
+<td><p>Convert detector coordinates to image plane coordinates using <a href="#id8"><span class="problematic" id="id9">`distortion paper`_</span></a> table-lookup correction.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.dropaxis" title="decontamination.mask.wcs.WCS.dropaxis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dropaxis</span></code></a>(dropax)</p></td>
 <td><p>Remove an axis from the WCS.</p></td>
@@ -396,21 +396,21 @@
 <td><p>Determines if a given SkyCoord is contained in the wcs footprint.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.footprint_to_file" title="decontamination.mask.wcs.WCS.footprint_to_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">footprint_to_file</span></code></a>([filename, color, width, ...])</p></td>
-<td><p>Writes out a <a href="#id11"><span class="problematic" id="id12">`ds9`_</span></a> style regions file.</p></td>
+<td><p>Writes out a <a href="#id10"><span class="problematic" id="id11">`ds9`_</span></a> style regions file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.get_axis_types" title="decontamination.mask.wcs.WCS.get_axis_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_axis_types</span></code></a>()</p></td>
 <td><p>Similar to <cite>self.wcsprm.axis_types &lt;astropy.wcs.Wcsprm.axis_types&gt;</cite> but provides the information in a more Python-friendly format.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.p4_pix2foc" title="decontamination.mask.wcs.WCS.p4_pix2foc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">p4_pix2foc</span></code></a>(*args)</p></td>
-<td><p>Convert pixel coordinates to focal plane coordinates using <a href="#id13"><span class="problematic" id="id14">`distortion paper`_</span></a> table-lookup correction.</p></td>
+<td><p>Convert pixel coordinates to focal plane coordinates using <a href="#id12"><span class="problematic" id="id13">`distortion paper`_</span></a> table-lookup correction.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.pix2foc" title="decontamination.mask.wcs.WCS.pix2foc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pix2foc</span></code></a>(*args)</p></td>
-<td><p>Convert pixel coordinates to focal plane coordinates using the <a href="#id15"><span class="problematic" id="id16">`SIP`_</span></a> polynomial distortion convention and <a href="#id17"><span class="problematic" id="id18">`distortion paper`_</span></a> table-lookup correction.</p></td>
+<td><p>Convert pixel coordinates to focal plane coordinates using the <a href="#id14"><span class="problematic" id="id15">`SIP`_</span></a> polynomial distortion convention and <a href="#id16"><span class="problematic" id="id17">`distortion paper`_</span></a> table-lookup correction.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.pixel_to_world" title="decontamination.mask.wcs.WCS.pixel_to_world"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_to_world</span></code></a>(*pixel_arrays)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_to_world</span></code>(*pixel_arrays)</p></td>
 <td><p>Convert pixel coordinates to world coordinates (represented by high-level objects).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.pixel_to_world_values" title="decontamination.mask.wcs.WCS.pixel_to_world_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_to_world_values</span></code></a>(*pixel_arrays)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_to_world_values</span></code>(*pixel_arrays)</p></td>
 <td><p>Convert pixel coordinates to world coordinates.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.proj_plane_pixel_area" title="decontamination.mask.wcs.WCS.proj_plane_pixel_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">proj_plane_pixel_area</span></code></a>()</p></td>
@@ -423,10 +423,10 @@
 <td><p>Reorient the WCS such that the celestial axes are first, followed by the spectral axis, followed by any others.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.sip_foc2pix" title="decontamination.mask.wcs.WCS.sip_foc2pix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sip_foc2pix</span></code></a>(*args)</p></td>
-<td><p>Convert focal plane coordinates to pixel coordinates using the <a href="#id19"><span class="problematic" id="id20">`SIP`_</span></a> polynomial distortion convention.</p></td>
+<td><p>Convert focal plane coordinates to pixel coordinates using the <a href="#id18"><span class="problematic" id="id19">`SIP`_</span></a> polynomial distortion convention.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.sip_pix2foc" title="decontamination.mask.wcs.WCS.sip_pix2foc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sip_pix2foc</span></code></a>(*args)</p></td>
-<td><p>Convert pixel coordinates to focal plane coordinates using the <a href="#id21"><span class="problematic" id="id22">`SIP`_</span></a> polynomial distortion convention.</p></td>
+<td><p>Convert pixel coordinates to focal plane coordinates using the <a href="#id20"><span class="problematic" id="id21">`SIP`_</span></a> polynomial distortion convention.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.slice" title="decontamination.mask.wcs.WCS.slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slice</span></code></a>(view[, numpy_order])</p></td>
 <td><p>Slice a WCS instance using a Numpy slice.</p></td>
@@ -447,10 +447,10 @@
 <td><p>Identical to <cite>to_header</cite>, but returns a string containing the header cards.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.wcs_pix2world" title="decontamination.mask.wcs.WCS.wcs_pix2world"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wcs_pix2world</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Transforms pixel coordinates to world coordinates by doing only the basic <a href="#id23"><span class="problematic" id="id24">`wcslib`_</span></a> transformation.</p></td>
+<td><p>Transforms pixel coordinates to world coordinates by doing only the basic <a href="#id22"><span class="problematic" id="id23">`wcslib`_</span></a> transformation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.wcs_world2pix" title="decontamination.mask.wcs.WCS.wcs_world2pix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wcs_world2pix</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Transforms world coordinates to pixel coordinates, using only the basic <a href="#id25"><span class="problematic" id="id26">`wcslib`_</span></a> WCS transformation.</p></td>
+<td><p>Transforms world coordinates to pixel coordinates, using only the basic <a href="#id24"><span class="problematic" id="id25">`wcslib`_</span></a> WCS transformation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.world_to_array_index" title="decontamination.mask.wcs.WCS.world_to_array_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_to_array_index</span></code></a>(*world_objects)</p></td>
 <td><p>Convert world coordinates (represented by Astropy objects) to array indices.</p></td>
@@ -458,10 +458,10 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.world_to_array_index_values" title="decontamination.mask.wcs.WCS.world_to_array_index_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_to_array_index_values</span></code></a>(*world_arrays)</p></td>
 <td><p>Convert world coordinates to array indices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.world_to_pixel" title="decontamination.mask.wcs.WCS.world_to_pixel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_to_pixel</span></code></a>(*world_objects)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_to_pixel</span></code>(*world_objects)</p></td>
 <td><p>Convert world coordinates (represented by Astropy objects) to pixel coordinates.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.mask.wcs.WCS.world_to_pixel_values" title="decontamination.mask.wcs.WCS.world_to_pixel_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_to_pixel_values</span></code></a>(*world_arrays)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">world_to_pixel_values</span></code>(*world_arrays)</p></td>
 <td><p>Convert world coordinates to pixel coordinates.</p></td>
 </tr>
 </tbody>
@@ -500,29 +500,6 @@ the indices should be given in <code class="docutils literal notranslate"><span 
 <p>If <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_n_dim</cite> is <code class="docutils literal notranslate"><span class="pre">1</span></code>, this
 method returns a single scalar or array, otherwise a tuple of scalars or
 arrays is returned.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.array_shape">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">array_shape</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.array_shape" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.array_shape'"></a></dt>
-<dd><p>The shape of the data that the WCS applies to as a tuple of length
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite> in <code class="docutils literal notranslate"><span class="pre">(row,</span> <span class="pre">column)</span></code>
-order (the convention for arrays in Python).</p>
-<p>If the WCS is valid in the context of a dataset with a particular
-shape, then this property can be used to store the shape of the
-data. This can be used for example if implementing slicing of WCS
-objects. This is an optional property, and it should return <cite>None</cite>
-if a shape is not known or relevant.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.axis_correlation_matrix">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">axis_correlation_matrix</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.axis_correlation_matrix" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.axis_correlation_matrix'"></a></dt>
-<dd><p>Returns an (<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_n_dim</cite>,
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite>) matrix that
-indicates using booleans whether a given world coordinate depends on a
-given pixel coordinate.</p>
-<p>This defaults to a matrix where all elements are <cite>True</cite> in the absence
-of any further information. For completely independent axes, the
-diagonal would be <cite>True</cite> and all other entries <cite>False</cite>.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.axis_type_names">
@@ -611,7 +588,7 @@ shallow copy.</p>
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.det2im">
 <span class="sig-name descname"><span class="pre">det2im</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.det2im" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.det2im'"></a></dt>
 <dd><p>Convert detector coordinates to image plane coordinates using
-<a href="#id27"><span class="problematic" id="id28">`distortion paper`_</span></a> table-lookup correction.</p>
+<a href="#id26"><span class="problematic" id="id27">`distortion paper`_</span></a> table-lookup correction.</p>
 <p>The output is in absolute pixel coordinates, not relative to
 <code class="docutils literal notranslate"><span class="pre">CRPIX</span></code>.</p>
 <dl class="field-list">
@@ -746,8 +723,8 @@ invoked.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.footprint_to_file">
 <span class="sig-name descname"><span class="pre">footprint_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'footprint.reg'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'green'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordsys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.footprint_to_file" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.footprint_to_file'"></a></dt>
-<dd><p>Writes out a <a href="#id29"><span class="problematic" id="id30">`ds9`_</span></a> style regions file. It can be loaded
-directly by <a href="#id31"><span class="problematic" id="id32">`ds9`_</span></a>.</p>
+<dd><p>Writes out a <a href="#id28"><span class="problematic" id="id29">`ds9`_</span></a> style regions file. It can be loaded
+directly by <a href="#id30"><span class="problematic" id="id31">`ds9`_</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -825,44 +802,15 @@ generate an error.</p>
 </dl>
 </dd></dl>
 <dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.has_celestial">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_celestial</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.has_celestial" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.has_celestial'"></a></dt>
-<dd></dd></dl>
-<dl class="py property">
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.has_distortion">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_distortion</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.has_distortion" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.has_distortion'"></a></dt>
 <dd><p>Returns <cite>True</cite> if any distortion terms are present.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.has_spectral">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_spectral</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.has_spectral" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.has_spectral'"></a></dt>
-<dd></dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.has_temporal">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_temporal</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.has_temporal" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.has_temporal'"></a></dt>
-<dd></dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.is_celestial">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_celestial</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.is_celestial" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.is_celestial'"></a></dt>
-<dd></dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.is_spectral">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_spectral</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.is_spectral" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.is_spectral'"></a></dt>
-<dd></dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.is_temporal">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_temporal</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.is_temporal" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.is_temporal'"></a></dt>
-<dd></dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.low_level_wcs">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">low_level_wcs</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.low_level_wcs" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.low_level_wcs'"></a></dt>
-<dd><p>Returns a reference to the underlying low-level WCS object.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.p4_pix2foc">
 <span class="sig-name descname"><span class="pre">p4_pix2foc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.p4_pix2foc" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.p4_pix2foc'"></a></dt>
 <dd><p>Convert pixel coordinates to focal plane coordinates using
-<a href="#id33"><span class="problematic" id="id34">`distortion paper`_</span></a> table-lookup correction.</p>
+<a href="#id32"><span class="problematic" id="id33">`distortion paper`_</span></a> table-lookup correction.</p>
 <p>The output is in absolute pixel coordinates, not relative to
 <code class="docutils literal notranslate"><span class="pre">CRPIX</span></code>.</p>
 <dl class="field-list">
@@ -906,7 +854,7 @@ returned.</p>
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.pix2foc">
 <span class="sig-name descname"><span class="pre">pix2foc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.pix2foc" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.pix2foc'"></a></dt>
 <dd><p>Convert pixel coordinates to focal plane coordinates using the
-<a href="#id35"><span class="problematic" id="id36">`SIP`_</span></a> polynomial distortion convention and <a href="#id37"><span class="problematic" id="id38">`distortion
+<a href="#id34"><span class="problematic" id="id35">`SIP`_</span></a> polynomial distortion convention and <a href="#id36"><span class="problematic" id="id37">`distortion
 paper`_</span></a> table-lookup correction.</p>
 <p>The output is in absolute pixel coordinates, not relative to
 <code class="docutils literal notranslate"><span class="pre">CRPIX</span></code>.</p>
@@ -956,76 +904,6 @@ returned.</p>
 override this property). Note that these names are just for display
 purposes and are not standardized.</p>
 </dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.pixel_bounds">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pixel_bounds</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.pixel_bounds" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.pixel_bounds'"></a></dt>
-<dd><p>The bounds (in pixel coordinates) inside which the WCS is defined,
-as a list with <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite>
-<code class="docutils literal notranslate"><span class="pre">(min,</span> <span class="pre">max)</span></code> tuples.</p>
-<p>The bounds should be given in <code class="docutils literal notranslate"><span class="pre">[(xmin,</span> <span class="pre">xmax),</span> <span class="pre">(ymin,</span> <span class="pre">ymax)]</span></code>
-order. WCS solutions are sometimes only guaranteed to be accurate
-within a certain range of pixel values, for example when defining a
-WCS that includes fitted distortions. This is an optional property,
-and it should return <cite>None</cite> if a shape is not known or relevant.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.pixel_n_dim">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pixel_n_dim</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.pixel_n_dim" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.pixel_n_dim'"></a></dt>
-<dd><p>The number of axes in the pixel coordinate system.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.pixel_scale_matrix">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pixel_scale_matrix</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.pixel_scale_matrix" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.pixel_scale_matrix'"></a></dt>
-<dd></dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.pixel_shape">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pixel_shape</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.pixel_shape" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.pixel_shape'"></a></dt>
-<dd><p>The shape of the data that the WCS applies to as a tuple of length
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite> in <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code>
-order (where for an image, <code class="docutils literal notranslate"><span class="pre">x</span></code> is the horizontal coordinate and <code class="docutils literal notranslate"><span class="pre">y</span></code>
-is the vertical coordinate).</p>
-<p>If the WCS is valid in the context of a dataset with a particular
-shape, then this property can be used to store the shape of the
-data. This can be used for example if implementing slicing of WCS
-objects. This is an optional property, and it should return <cite>None</cite>
-if a shape is not known or relevant.</p>
-<p>If you are interested in getting a shape that is comparable to that of
-a Numpy array, you should use
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.array_shape</cite> instead.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.pixel_to_world">
-<span class="sig-name descname"><span class="pre">pixel_to_world</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">pixel_arrays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.pixel_to_world" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.pixel_to_world'"></a></dt>
-<dd><p>Convert pixel coordinates to world coordinates (represented by
-high-level objects).</p>
-<p>If a single high-level object is used to represent the world coordinates
-(i.e., if <code class="docutils literal notranslate"><span class="pre">len(wcs.world_axis_object_classes)</span> <span class="pre">==</span> <span class="pre">1</span></code>), it is returned
-as-is (not in a tuple/list), otherwise a tuple of high-level objects is
-returned. See
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_to_world_values</cite> for pixel
-indexing and ordering conventions.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.pixel_to_world_values">
-<span class="sig-name descname"><span class="pre">pixel_to_world_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">pixel_arrays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.pixel_to_world_values" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.pixel_to_world_values'"></a></dt>
-<dd><p>Convert pixel coordinates to world coordinates.</p>
-<p>This method takes <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite> scalars or arrays as
-input, and pixel coordinates should be zero-based. Returns
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_n_dim</cite> scalars or arrays in units given by
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_axis_units</cite>. Note that pixel coordinates are
-assumed to be 0 at the center of the first pixel in each dimension. If a
-pixel is in a region where the WCS is not defined, NaN can be returned.
-The coordinates should be specified in the <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> order, where for
-an image, <code class="docutils literal notranslate"><span class="pre">x</span></code> is the horizontal coordinate and <code class="docutils literal notranslate"><span class="pre">y</span></code> is the vertical
-coordinate.</p>
-<p>If <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_n_dim</cite> is <code class="docutils literal notranslate"><span class="pre">1</span></code>, this
-method returns a single scalar or array, otherwise a tuple of scalars or
-arrays is returned.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.printwcs">
-<span class="sig-name descname"><span class="pre">printwcs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.printwcs" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.printwcs'"></a></dt>
-<dd></dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.proj_plane_pixel_area">
 <span class="sig-name descname"><span class="pre">proj_plane_pixel_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.proj_plane_pixel_area" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.proj_plane_pixel_area'"></a></dt>
@@ -1116,24 +994,18 @@ pixel side (axis).</p>
 the spectral axis, followed by any others.
 Assumes at least celestial axes are present.</p>
 </dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.serialized_classes">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">serialized_classes</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.serialized_classes" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.serialized_classes'"></a></dt>
-<dd><p>Indicates whether Python objects are given in serialized form or as
-actual Python objects.</p>
-</dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.sip">
 <span class="sig-name descname"><span class="pre">sip</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.sip" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.sip'"></a></dt>
-<dd><p>Get/set the <cite>~astropy.wcs.Sip</cite> object for performing <a href="#id39"><span class="problematic" id="id40">`SIP`_</span></a> distortion
+<dd><p>Get/set the <cite>~astropy.wcs.Sip</cite> object for performing <a href="#id38"><span class="problematic" id="id39">`SIP`_</span></a> distortion
 correction.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.sip_foc2pix">
 <span class="sig-name descname"><span class="pre">sip_foc2pix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.sip_foc2pix" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.sip_foc2pix'"></a></dt>
 <dd><p>Convert focal plane coordinates to pixel coordinates using the
-<a href="#id41"><span class="problematic" id="id42">`SIP`_</span></a> polynomial distortion convention.</p>
-<p>FITS WCS <a href="#id43"><span class="problematic" id="id44">`distortion paper`_</span></a> table lookup distortion
+<a href="#id40"><span class="problematic" id="id41">`SIP`_</span></a> polynomial distortion convention.</p>
+<p>FITS WCS <a href="#id42"><span class="problematic" id="id43">`distortion paper`_</span></a> table lookup distortion
 correction is not applied, even if that information existed in
 the FITS file that initialized this <cite>~astropy.wcs.WCS</cite> object.</p>
 <dl class="field-list">
@@ -1177,9 +1049,9 @@ returned.</p>
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.sip_pix2foc">
 <span class="sig-name descname"><span class="pre">sip_pix2foc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.sip_pix2foc" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.sip_pix2foc'"></a></dt>
 <dd><p>Convert pixel coordinates to focal plane coordinates using the
-<a href="#id45"><span class="problematic" id="id46">`SIP`_</span></a> polynomial distortion convention.</p>
+<a href="#id44"><span class="problematic" id="id45">`SIP`_</span></a> polynomial distortion convention.</p>
 <p>The output is in pixel coordinates, relative to <code class="docutils literal notranslate"><span class="pre">CRPIX</span></code>.</p>
-<p>FITS WCS <a href="#id47"><span class="problematic" id="id48">`distortion paper`_</span></a> table lookup correction is not
+<p>FITS WCS <a href="#id46"><span class="problematic" id="id47">`distortion paper`_</span></a> table lookup correction is not
 applied, even if that information existed in the FITS file
 that initialized this <code class="xref py py-class docutils literal notranslate"><span class="pre">WCS</span></code> object.  To
 correct for that, use <cite>~astropy.wcs.WCS.pix2foc</cite> or
@@ -1415,7 +1287,7 @@ logically identical to the input FITS file, but it will be
 normalized in a number of ways.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>This function does not write out FITS WCS <a href="#id49"><span class="problematic" id="id50">`distortion
+<p>This function does not write out FITS WCS <a href="#id48"><span class="problematic" id="id49">`distortion
 paper`_</span></a> information, since that requires multiple FITS
 header data units.  To get a full representation of
 everything in this object, use <cite>to_fits</cite>.</p>
@@ -1485,15 +1357,15 @@ header cards.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.wcs">
 <span class="sig-name descname"><span class="pre">wcs</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.wcs" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.wcs'"></a></dt>
-<dd><p>A <cite>~astropy.wcs.Wcsprm</cite> object to perform the basic <a href="#id51"><span class="problematic" id="id52">`wcslib`_</span></a> WCS
+<dd><p>A <cite>~astropy.wcs.Wcsprm</cite> object to perform the basic <a href="#id50"><span class="problematic" id="id51">`wcslib`_</span></a> WCS
 transformation.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.wcs_pix2world">
 <span class="sig-name descname"><span class="pre">wcs_pix2world</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.wcs_pix2world" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.wcs_pix2world'"></a></dt>
 <dd><p>Transforms pixel coordinates to world coordinates by doing
-only the basic <a href="#id53"><span class="problematic" id="id54">`wcslib`_</span></a> transformation.</p>
-<p>No <a href="#id55"><span class="problematic" id="id56">`SIP`_</span></a> or <a href="#id57"><span class="problematic" id="id58">`distortion paper`_</span></a> table lookup correction is
+only the basic <a href="#id52"><span class="problematic" id="id53">`wcslib`_</span></a> transformation.</p>
+<p>No <a href="#id54"><span class="problematic" id="id55">`SIP`_</span></a> or <a href="#id56"><span class="problematic" id="id57">`distortion paper`_</span></a> table lookup correction is
 applied.  To perform distortion correction, see
 <cite>~astropy.wcs.WCS.all_pix2world</cite>,
 <cite>~astropy.wcs.WCS.sip_pix2foc</cite>, <cite>~astropy.wcs.WCS.p4_pix2foc</cite>,
@@ -1565,8 +1437,8 @@ members can be used to determine the order of the axes.</p>
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.wcs_world2pix">
 <span class="sig-name descname"><span class="pre">wcs_world2pix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.wcs_world2pix" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.wcs_world2pix'"></a></dt>
 <dd><p>Transforms world coordinates to pixel coordinates, using only
-the basic <a href="#id59"><span class="problematic" id="id60">`wcslib`_</span></a> WCS transformation.  No <a href="#id61"><span class="problematic" id="id62">`SIP`_</span></a> or
-<a href="#id63"><span class="problematic" id="id64">`distortion paper`_</span></a> table lookup transformation is applied.</p>
+the basic <a href="#id58"><span class="problematic" id="id59">`wcslib`_</span></a> WCS transformation.  No <a href="#id60"><span class="problematic" id="id61">`SIP`_</span></a> or
+<a href="#id62"><span class="problematic" id="id63">`distortion paper`_</span></a> table lookup transformation is applied.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -1630,113 +1502,6 @@ not always be of the form (<em>ra</em>, <em>dec</em>).  The
 <cite>~astropy.wcs.Wcsprm.lattyp</cite> and <cite>~astropy.wcs.Wcsprm.lngtyp</cite>
 members can be used to determine the order of the axes.</p>
 </dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.world_axis_names">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">world_axis_names</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.world_axis_names" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.world_axis_names'"></a></dt>
-<dd><p>An iterable of strings describing the name for each world axis.</p>
-<p>If an axis does not have a name, an empty string should be returned
-(this is the default behavior for all axes if a subclass does not
-override this property). Note that these names are just for display
-purposes and are not standardized. For standardized axis types, see
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_axis_physical_types</cite>.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.world_axis_object_classes">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">world_axis_object_classes</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.world_axis_object_classes" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.world_axis_object_classes'"></a></dt>
-<dd><p>A dictionary giving information on constructing high-level objects for
-the world coordinates.</p>
-<p>Each key of the dictionary is a string key from
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_axis_object_components</cite>, and each value is a
-tuple with three elements or four elements:</p>
-<ul class="simple">
-<li><p>The first element of the tuple must be a class or a string specifying
-the fully-qualified name of a class, which will specify the actual
-Python object to be created.</p></li>
-<li><p>The second element, should be a tuple specifying the positional
-arguments required to initialize the class. If
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_axis_object_components</cite> specifies that the
-world coordinates should be passed as a positional argument, this this
-tuple should include <cite>None</cite> placeholders for the world coordinates.</p></li>
-<li><p>The third tuple element must be a dictionary with the keyword
-arguments required to initialize the class.</p></li>
-<li><p>Optionally, for advanced use cases, the fourth element (if present)
-should be a callable Python object that gets called instead of the
-class and gets passed the positional and keyword arguments. It should
-return an object of the type of the first element in the tuple.</p></li>
-</ul>
-<p>Note that we don’t require the classes to be Astropy classes since there
-is no guarantee that Astropy will have all the classes to represent all
-kinds of world coordinates. Furthermore, we recommend that the output be
-kept as human-readable as possible.</p>
-<p>The classes used here should have the ability to do conversions by
-passing an instance as the first argument to the same class with
-different arguments (e.g. <code class="docutils literal notranslate"><span class="pre">Time(Time(...),</span> <span class="pre">scale='tai')</span></code>). This is
-a requirement for the implementation of the high-level interface.</p>
-<p>The second and third tuple elements for each value of this dictionary
-can in turn contain either instances of classes, or if necessary can
-contain serialized versions that should take the same form as the main
-classes described above (a tuple with three elements with the fully
-qualified name of the class, then the positional arguments and the
-keyword arguments). For low-level API objects implemented in Python, we
-recommend simply returning the actual objects (not the serialized form)
-for optimal performance. Implementations should either always or never
-use serialized classes to represent Python objects, and should indicate
-which of these they follow using the
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.serialized_classes</cite> attribute.</p>
-<p>See the document
-<a class="reference external" href="https://doi.org/10.5281/zenodo.1188875">APE 14: A shared Python interface for World Coordinate Systems</a> for examples .</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.world_axis_object_components">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">world_axis_object_components</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.world_axis_object_components" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.world_axis_object_components'"></a></dt>
-<dd><p>A list with <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_n_dim</cite> elements giving information
-on constructing high-level objects for the world coordinates.</p>
-<p>Each element of the list is a tuple with three items:</p>
-<ul class="simple">
-<li><p>The first is a name for the world object this world array
-corresponds to, which <em>must</em> match the string names used in
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_axis_object_classes</cite>. Note that names might
-appear twice because two world arrays might correspond to a single
-world object (e.g. a celestial coordinate might have both “ra” and
-“dec” arrays, which correspond to a single sky coordinate object).</p></li>
-<li><p>The second element is either a string keyword argument name or a
-positional index for the corresponding class from
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_axis_object_classes</cite>.</p></li>
-<li><p>The third argument is a string giving the name of the property
-to access on the corresponding class from
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_axis_object_classes</cite> in
-order to get numerical values. Alternatively, this argument can be a
-callable Python object that takes a high-level coordinate object and
-returns the numerical values suitable for passing to the low-level
-WCS transformation methods.</p></li>
-</ul>
-<p>See the document
-<a class="reference external" href="https://doi.org/10.5281/zenodo.1188875">APE 14: A shared Python interface for World Coordinate Systems</a> for examples.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.world_axis_physical_types">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">world_axis_physical_types</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.world_axis_physical_types" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.world_axis_physical_types'"></a></dt>
-<dd><p>An iterable of strings describing the physical type for each world axis.</p>
-<p>These should be names from the VO UCD1+ controlled Vocabulary
-(<a class="reference external" href="http://www.ivoa.net/documents/latest/UCDlist.html">http://www.ivoa.net/documents/latest/UCDlist.html</a>). If no matching UCD
-type exists, this can instead be <code class="docutils literal notranslate"><span class="pre">"custom:xxx"</span></code>, where <code class="docutils literal notranslate"><span class="pre">xxx</span></code> is an
-arbitrary string.  Alternatively, if the physical type is
-unknown/undefined, an element can be <cite>None</cite>.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.world_axis_units">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">world_axis_units</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.world_axis_units" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.world_axis_units'"></a></dt>
-<dd><p>An iterable of strings given the units of the world coordinates for each
-axis.</p>
-<p>The strings should follow the <a class="reference external" href="http://ivoa.net/documents/VOUnits/">IVOA VOUnit standard</a> (though as noted in the VOUnit
-specification document, units that do not follow this standard are still
-allowed, but just not recommended).</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.world_n_dim">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">world_n_dim</span></span><a class="headerlink" href="#decontamination.mask.wcs.WCS.world_n_dim" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.world_n_dim'"></a></dt>
-<dd><p>The number of axes in the world coordinate system.</p>
-</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.world_to_array_index">
 <span class="sig-name descname"><span class="pre">world_to_array_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">world_objects</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.world_to_array_index" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.world_to_array_index'"></a></dt>
@@ -1758,33 +1523,6 @@ the indices should be returned in <code class="docutils literal notranslate"><sp
 <code class="docutils literal notranslate"><span class="pre">i</span></code> is the row and <code class="docutils literal notranslate"><span class="pre">j</span></code> is the column (i.e. the opposite order to
 <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_to_world_values</cite>). The indices should be
 returned as rounded integers.</p>
-<p>If <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite> is <code class="docutils literal notranslate"><span class="pre">1</span></code>, this
-method returns a single scalar or array, otherwise a tuple of scalars or
-arrays is returned.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.world_to_pixel">
-<span class="sig-name descname"><span class="pre">world_to_pixel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">world_objects</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.world_to_pixel" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.world_to_pixel'"></a></dt>
-<dd><p>Convert world coordinates (represented by Astropy objects) to pixel
-coordinates.</p>
-<p>If <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite> is <code class="docutils literal notranslate"><span class="pre">1</span></code>, this
-method returns a single scalar or array, otherwise a tuple of scalars or
-arrays is returned. See
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_to_pixel_values</cite> for pixel
-indexing and ordering conventions.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.mask.wcs.WCS.world_to_pixel_values">
-<span class="sig-name descname"><span class="pre">world_to_pixel_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">world_arrays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.mask.wcs.WCS.world_to_pixel_values" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.mask.wcs.WCS.world_to_pixel_values'"></a></dt>
-<dd><p>Convert world coordinates to pixel coordinates.</p>
-<p>This method takes <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_n_dim</cite> scalars or arrays as
-input in units given by <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.world_axis_units</cite>. Returns
-<cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite> scalars or arrays. Note that pixel
-coordinates are assumed to be 0 at the center of the first pixel in each
-dimension. If a world coordinate does not have a matching pixel
-coordinate, NaN can be returned.  The coordinates should be returned in
-the <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> order, where for an image, <code class="docutils literal notranslate"><span class="pre">x</span></code> is the horizontal
-coordinate and <code class="docutils literal notranslate"><span class="pre">y</span></code> is the vertical coordinate.</p>
 <p>If <cite>~astropy.wcs.wcsapi.BaseLowLevelWCS.pixel_n_dim</cite> is <code class="docutils literal notranslate"><span class="pre">1</span></code>, this
 method returns a single scalar or array, otherwise a tuple of scalars or
 arrays is returned.</p>
@@ -1822,8 +1560,6 @@ arrays is returned.</p>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.MUTEX'" class="reference internal" href="#decontamination.mask.wcs.WCS.MUTEX"><code class="docutils literal notranslate"><span class="pre">WCS.MUTEX</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.array_index_to_world'" class="reference internal" href="#decontamination.mask.wcs.WCS.array_index_to_world"><code class="docutils literal notranslate"><span class="pre">WCS.array_index_to_world()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.array_index_to_world_values'" class="reference internal" href="#decontamination.mask.wcs.WCS.array_index_to_world_values"><code class="docutils literal notranslate"><span class="pre">WCS.array_index_to_world_values()</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.array_shape'" class="reference internal" href="#decontamination.mask.wcs.WCS.array_shape"><code class="docutils literal notranslate"><span class="pre">WCS.array_shape</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.axis_correlation_matrix'" class="reference internal" href="#decontamination.mask.wcs.WCS.axis_correlation_matrix"><code class="docutils literal notranslate"><span class="pre">WCS.axis_correlation_matrix</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.axis_type_names'" class="reference internal" href="#decontamination.mask.wcs.WCS.axis_type_names"><code class="docutils literal notranslate"><span class="pre">WCS.axis_type_names</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.calc_footprint'" class="reference internal" href="#decontamination.mask.wcs.WCS.calc_footprint"><code class="docutils literal notranslate"><span class="pre">WCS.calc_footprint()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.celestial'" class="reference internal" href="#decontamination.mask.wcs.WCS.celestial"><code class="docutils literal notranslate"><span class="pre">WCS.celestial</span></code></a></li>
@@ -1839,28 +1575,13 @@ arrays is returned.</p>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.footprint_contains'" class="reference internal" href="#decontamination.mask.wcs.WCS.footprint_contains"><code class="docutils literal notranslate"><span class="pre">WCS.footprint_contains()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.footprint_to_file'" class="reference internal" href="#decontamination.mask.wcs.WCS.footprint_to_file"><code class="docutils literal notranslate"><span class="pre">WCS.footprint_to_file()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.get_axis_types'" class="reference internal" href="#decontamination.mask.wcs.WCS.get_axis_types"><code class="docutils literal notranslate"><span class="pre">WCS.get_axis_types()</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.has_celestial'" class="reference internal" href="#decontamination.mask.wcs.WCS.has_celestial"><code class="docutils literal notranslate"><span class="pre">WCS.has_celestial</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.has_distortion'" class="reference internal" href="#decontamination.mask.wcs.WCS.has_distortion"><code class="docutils literal notranslate"><span class="pre">WCS.has_distortion</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.has_spectral'" class="reference internal" href="#decontamination.mask.wcs.WCS.has_spectral"><code class="docutils literal notranslate"><span class="pre">WCS.has_spectral</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.has_temporal'" class="reference internal" href="#decontamination.mask.wcs.WCS.has_temporal"><code class="docutils literal notranslate"><span class="pre">WCS.has_temporal</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.is_celestial'" class="reference internal" href="#decontamination.mask.wcs.WCS.is_celestial"><code class="docutils literal notranslate"><span class="pre">WCS.is_celestial</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.is_spectral'" class="reference internal" href="#decontamination.mask.wcs.WCS.is_spectral"><code class="docutils literal notranslate"><span class="pre">WCS.is_spectral</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.is_temporal'" class="reference internal" href="#decontamination.mask.wcs.WCS.is_temporal"><code class="docutils literal notranslate"><span class="pre">WCS.is_temporal</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.low_level_wcs'" class="reference internal" href="#decontamination.mask.wcs.WCS.low_level_wcs"><code class="docutils literal notranslate"><span class="pre">WCS.low_level_wcs</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.p4_pix2foc'" class="reference internal" href="#decontamination.mask.wcs.WCS.p4_pix2foc"><code class="docutils literal notranslate"><span class="pre">WCS.p4_pix2foc()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.pix2foc'" class="reference internal" href="#decontamination.mask.wcs.WCS.pix2foc"><code class="docutils literal notranslate"><span class="pre">WCS.pix2foc()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.pixel_axis_names'" class="reference internal" href="#decontamination.mask.wcs.WCS.pixel_axis_names"><code class="docutils literal notranslate"><span class="pre">WCS.pixel_axis_names</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.pixel_bounds'" class="reference internal" href="#decontamination.mask.wcs.WCS.pixel_bounds"><code class="docutils literal notranslate"><span class="pre">WCS.pixel_bounds</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.pixel_n_dim'" class="reference internal" href="#decontamination.mask.wcs.WCS.pixel_n_dim"><code class="docutils literal notranslate"><span class="pre">WCS.pixel_n_dim</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.pixel_scale_matrix'" class="reference internal" href="#decontamination.mask.wcs.WCS.pixel_scale_matrix"><code class="docutils literal notranslate"><span class="pre">WCS.pixel_scale_matrix</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.pixel_shape'" class="reference internal" href="#decontamination.mask.wcs.WCS.pixel_shape"><code class="docutils literal notranslate"><span class="pre">WCS.pixel_shape</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.pixel_to_world'" class="reference internal" href="#decontamination.mask.wcs.WCS.pixel_to_world"><code class="docutils literal notranslate"><span class="pre">WCS.pixel_to_world()</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.pixel_to_world_values'" class="reference internal" href="#decontamination.mask.wcs.WCS.pixel_to_world_values"><code class="docutils literal notranslate"><span class="pre">WCS.pixel_to_world_values()</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.printwcs'" class="reference internal" href="#decontamination.mask.wcs.WCS.printwcs"><code class="docutils literal notranslate"><span class="pre">WCS.printwcs()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.proj_plane_pixel_area'" class="reference internal" href="#decontamination.mask.wcs.WCS.proj_plane_pixel_area"><code class="docutils literal notranslate"><span class="pre">WCS.proj_plane_pixel_area()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.proj_plane_pixel_scales'" class="reference internal" href="#decontamination.mask.wcs.WCS.proj_plane_pixel_scales"><code class="docutils literal notranslate"><span class="pre">WCS.proj_plane_pixel_scales()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.reorient_celestial_first'" class="reference internal" href="#decontamination.mask.wcs.WCS.reorient_celestial_first"><code class="docutils literal notranslate"><span class="pre">WCS.reorient_celestial_first()</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.serialized_classes'" class="reference internal" href="#decontamination.mask.wcs.WCS.serialized_classes"><code class="docutils literal notranslate"><span class="pre">WCS.serialized_classes</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.sip'" class="reference internal" href="#decontamination.mask.wcs.WCS.sip"><code class="docutils literal notranslate"><span class="pre">WCS.sip</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.sip_foc2pix'" class="reference internal" href="#decontamination.mask.wcs.WCS.sip_foc2pix"><code class="docutils literal notranslate"><span class="pre">WCS.sip_foc2pix()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.sip_pix2foc'" class="reference internal" href="#decontamination.mask.wcs.WCS.sip_pix2foc"><code class="docutils literal notranslate"><span class="pre">WCS.sip_pix2foc()</span></code></a></li>
@@ -1875,16 +1596,8 @@ arrays is returned.</p>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.wcs'" class="reference internal" href="#decontamination.mask.wcs.WCS.wcs"><code class="docutils literal notranslate"><span class="pre">WCS.wcs</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.wcs_pix2world'" class="reference internal" href="#decontamination.mask.wcs.WCS.wcs_pix2world"><code class="docutils literal notranslate"><span class="pre">WCS.wcs_pix2world()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.wcs_world2pix'" class="reference internal" href="#decontamination.mask.wcs.WCS.wcs_world2pix"><code class="docutils literal notranslate"><span class="pre">WCS.wcs_world2pix()</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.world_axis_names'" class="reference internal" href="#decontamination.mask.wcs.WCS.world_axis_names"><code class="docutils literal notranslate"><span class="pre">WCS.world_axis_names</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.world_axis_object_classes'" class="reference internal" href="#decontamination.mask.wcs.WCS.world_axis_object_classes"><code class="docutils literal notranslate"><span class="pre">WCS.world_axis_object_classes</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.world_axis_object_components'" class="reference internal" href="#decontamination.mask.wcs.WCS.world_axis_object_components"><code class="docutils literal notranslate"><span class="pre">WCS.world_axis_object_components</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.world_axis_physical_types'" class="reference internal" href="#decontamination.mask.wcs.WCS.world_axis_physical_types"><code class="docutils literal notranslate"><span class="pre">WCS.world_axis_physical_types</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.world_axis_units'" class="reference internal" href="#decontamination.mask.wcs.WCS.world_axis_units"><code class="docutils literal notranslate"><span class="pre">WCS.world_axis_units</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.world_n_dim'" class="reference internal" href="#decontamination.mask.wcs.WCS.world_n_dim"><code class="docutils literal notranslate"><span class="pre">WCS.world_n_dim</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.world_to_array_index'" class="reference internal" href="#decontamination.mask.wcs.WCS.world_to_array_index"><code class="docutils literal notranslate"><span class="pre">WCS.world_to_array_index()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.world_to_array_index_values'" class="reference internal" href="#decontamination.mask.wcs.WCS.world_to_array_index_values"><code class="docutils literal notranslate"><span class="pre">WCS.world_to_array_index_values()</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.world_to_pixel'" class="reference internal" href="#decontamination.mask.wcs.WCS.world_to_pixel"><code class="docutils literal notranslate"><span class="pre">WCS.world_to_pixel()</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.world_to_pixel_values'" class="reference internal" href="#decontamination.mask.wcs.WCS.world_to_pixel_values"><code class="docutils literal notranslate"><span class="pre">WCS.world_to_pixel_values()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.all_pix2world'" class="reference internal" href="#decontamination.mask.wcs.WCS.all_pix2world"><code class="docutils literal notranslate"><span class="pre">WCS.all_pix2world()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.mask.wcs.WCS.all_world2pix'" class="reference internal" href="#decontamination.mask.wcs.WCS.all_world2pix"><code class="docutils literal notranslate"><span class="pre">WCS.all_world2pix()</span></code></a></li>
 </ul>
@@ -1910,6 +1623,6 @@ arrays is returned.</p>
 <script defer="defer" src="_static/theme.js?v=1808ab49"></script>
 <script defer="defer" src="_static/docsearch.js?v=711ed680"></script>
 <script defer="defer" src="_static/docsearch_config.js?v=0d163087"></script>
-<script src="_static/custom.js?v=79e41474"></script>
+<script src="_static/custom.js?v=3685ffa6"></script>
 </body>
 </html>

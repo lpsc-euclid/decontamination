@@ -283,7 +283,7 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
         Multiplier for standard deviation.
     n_hist_bins : int, default: **100**
         Number of histogram bins in the colorbar.
-    colorbar_label : str, default **'number'**
+    colorbar_label : str, default: **'number'**
         Colorbar label.
     log_scale : bool, default: **False**
         Specifies whether to enable the logarithm scaling.

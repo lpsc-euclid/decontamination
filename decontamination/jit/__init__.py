@@ -42,7 +42,9 @@ if not cu.is_available():
 
 def nb_to_device(ndarray):
 
-    # for future needs
+    """
+    :private:
+    """
 
     return ndarray
 

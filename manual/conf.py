@@ -74,7 +74,22 @@ html_theme = 'sphinxawesome_theme'
 
 html_permalinks_icon = ''
 
-html_sidebars = {'**': ['logo.html', 'globaltoc.html', 'sonar.html']}
+html_sidebars = {'**': [
+    'logo.html',
+    'globaltoc.html',
+    'sonar.html',
+]}
+
+########################################################################################################################
+
+# noinspection PyUnusedLocal
+def skip_member(app, what, name, obj, skip, options):
+
+    if ':private:' in getattr(obj, '__doc__', ''):
+
+        return True
+
+    return skip
 
 ########################################################################################################################
 
@@ -168,6 +183,8 @@ def process_docstring(app, what, name, obj, options, lines):
 ########################################################################################################################
 
 def setup(app):
+
+    app.connect('autodoc-skip-member', skip_member)
 
     app.connect('autodoc-before-process-signature', before_process_signature)
 

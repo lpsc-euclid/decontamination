@@ -109,10 +109,6 @@
 <section id="module-decontamination.jit">
 <span id="module-decontamination-jit"></span><h1>Module decontamination.jit<a class="headerlink" href="#module-decontamination.jit" title="Link to this heading"></a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="decontamination.jit.nb_to_device">
-<span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">nb_to_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.nb_to_device" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.jit.nb_to_device'"></a></dt>
-<dd></dd></dl>
-<dl class="py function">
 <dt class="sig sig-object py" id="decontamination.jit.device_array_from">
 <span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">device_array_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.device_array_from" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.jit.device_array_from'"></a></dt>
 <dd><p>New device array (see <a class="reference internal" href="#decontamination.jit.DeviceArray" title="decontamination.jit.DeviceArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeviceArray</span></code></a>), initialized from a Numpy ndarray.</p>
@@ -221,15 +217,6 @@
 <span class="sig-name descname"><span class="pre">copy_to_host</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.jit.DeviceArray.copy_to_host" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.jit.DeviceArray.copy_to_host'"></a></dt>
 <dd><p>Create a new Numpy ndarray from the underlying device ndarray.</p>
 </dd></dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="decontamination.jit.dont_call">
-<span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">dont_call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.dont_call" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.jit.dont_call'"></a></dt>
-<dd></dd></dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="decontamination.jit.Kernel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">Kernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cpu_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fastmath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.jit.Kernel" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.jit.Kernel'"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="decontamination.jit.jit">
@@ -406,7 +393,6 @@
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>
-<li><a :data-current="activeSection === '#decontamination.jit.nb_to_device'" class="reference internal" href="#decontamination.jit.nb_to_device"><code class="docutils literal notranslate"><span class="pre">nb_to_device()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.jit.device_array_from'" class="reference internal" href="#decontamination.jit.device_array_from"><code class="docutils literal notranslate"><span class="pre">device_array_from()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.jit.device_array_empty'" class="reference internal" href="#decontamination.jit.device_array_empty"><code class="docutils literal notranslate"><span class="pre">device_array_empty()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.jit.device_array_zeros'" class="reference internal" href="#decontamination.jit.device_array_zeros"><code class="docutils literal notranslate"><span class="pre">device_array_zeros()</span></code></a></li>
@@ -417,8 +403,6 @@
 <li><a :data-current="activeSection === '#decontamination.jit.DeviceArray.copy_to_host'" class="reference internal" href="#decontamination.jit.DeviceArray.copy_to_host"><code class="docutils literal notranslate"><span class="pre">DeviceArray.copy_to_host()</span></code></a></li>
 </ul>
 </li>
-<li><a :data-current="activeSection === '#decontamination.jit.dont_call'" class="reference internal" href="#decontamination.jit.dont_call"><code class="docutils literal notranslate"><span class="pre">dont_call()</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.jit.Kernel'" class="reference internal" href="#decontamination.jit.Kernel"><code class="docutils literal notranslate"><span class="pre">Kernel</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.jit.jit'" class="reference internal" href="#decontamination.jit.jit"><code class="docutils literal notranslate"><span class="pre">jit</span></code></a><ul>
 <li><a :data-current="activeSection === '#decontamination.jit.jit.grid'" class="reference internal" href="#decontamination.jit.jit.grid"><code class="docutils literal notranslate"><span class="pre">jit.grid()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.jit.jit.local_empty'" class="reference internal" href="#decontamination.jit.jit.local_empty"><code class="docutils literal notranslate"><span class="pre">jit.local_empty()</span></code></a></li>
@@ -448,6 +432,6 @@
 <script defer="defer" src="_static/theme.js?v=1808ab49"></script>
 <script defer="defer" src="_static/docsearch.js?v=711ed680"></script>
 <script defer="defer" src="_static/docsearch_config.js?v=0d163087"></script>
-<script src="_static/custom.js?v=79e41474"></script>
+<script src="_static/custom.js?v=3685ffa6"></script>
 </body>
 </html>

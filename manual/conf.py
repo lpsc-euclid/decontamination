@@ -49,7 +49,7 @@ autodoc_default_options = {
     'undoc-members': False,
     'private-members': False,
     'show-inheritance': True,
-    'inherited-members': True,
+    'inherited-members': False,
 }
 
 ########################################################################################################################
@@ -82,10 +82,11 @@ html_sidebars = {'**': [
 
 ########################################################################################################################
 
-# noinspection PyUnusedLocal
 def skip_member(app, what, name, obj, skip, options):
 
-    if ':private:' in getattr(obj, '__doc__', ''):
+    doc = getattr(obj, '__doc__', None)
+
+    if not doc or ':private:' in doc:
 
         return True
 
@@ -148,12 +149,6 @@ def process_signature(app, what, name, obj, options, signature, return_annotatio
 
 # noinspection PyUnusedLocal
 def process_docstring(app, what, name, obj, options, lines):
-
-    ####################################################################################################################
-
-    #options['inherited-members'] = getattr(obj, '__module__', '') not in [
-    #    'decontamination.mask.wcs'
-    #]
 
     ####################################################################################################################
 

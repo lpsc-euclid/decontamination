@@ -25,6 +25,12 @@ class Selection(object):
 
     class Token(object):
 
+        """
+        A token.
+
+        :private:
+        """
+
         def __init__(self, _type: str, _value: str):
 
             self.type: str = _type
@@ -103,7 +109,10 @@ class Selection(object):
 
     class UnaryOpNode(object):
 
-        """An unary operator node."""
+        """
+        An unary operator node.
+        :private:
+        """
 
         def __init__(self, _op: str, _right):
 
@@ -114,7 +123,10 @@ class Selection(object):
 
     class BinaryOpNode(object):
 
-        """A binary operator node."""
+        """
+        A binary operator node.
+        :private:
+        """
 
         def __init__(self, _left, _op: str, _right):
 
@@ -126,7 +138,10 @@ class Selection(object):
 
     class FloatNumNode(object):
 
-        """A floating number node."""
+        """
+        A floating number node.
+        :private:
+        """
 
         def __init__(self, _value: str):
 
@@ -136,7 +151,10 @@ class Selection(object):
 
     class IntNumNode(object):
 
-        """An integer number node."""
+        """
+        An integer number node.
+        :private:
+        """
 
         def __init__(self, _value: str):
 
@@ -146,7 +164,10 @@ class Selection(object):
 
     class ColNameNode(object):
 
-        """A column name node."""
+        """
+        A column name node.
+        :private:
+        """
 
         def __init__(self, _value: str):
 

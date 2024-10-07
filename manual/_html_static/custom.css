@@ -18,7 +18,7 @@ span.classifier {
 .py.method,
 .py.function {
 
-    border: 2px solid #EEEEEE;
+    border: 2px solid hsl(var(--border));
 
     border-radius: 0.5rem;
 }
@@ -29,13 +29,13 @@ span.classifier {
 .py.method > dt,
 .py.function > dt {
 
-    background-color: #F8F9FA;
+    background-color: hsl(var(--accent));
 
     border-top-left-radius: 0.33rem;
     border-top-right-radius: 0.33rem;
 
-    border-top: none;
-    border-bottom: 2px solid #EEEEEE;
+    border-top: 0px solid hsl(var(--border));
+    border-bottom: 2px solid hsl(var(--border));
 
     padding: 0.5rem;
 }

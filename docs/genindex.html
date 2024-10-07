@@ -1,281 +1,466 @@
-
-
 <!DOCTYPE html>
-
-<html lang="en" data-content_root="./">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; decontamination 0.0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="_static/cloud.css?v=8edef7da" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=4a166fb7" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
-    
-    <script src="_static/documentation_options.js?v=d45e8c67"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/custom.js?v=81cfe101"></script>
-
-    
-    
-     
-        <script src="_static/jquery.cookie.js"></script>
-    
-
-    
-     
-        <script src="_static/cloud.base.js"></script>
-    
-
-    
-     
-        <script src="_static/cloud.js"></script>
-    
-
-    <link rel="index" title="Index" href="#" />
-    <link rel="search" title="Search" href="search.html" /> 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head><body>
-    <div class="relbar-top">
-        
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="#" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">decontamination 0.0.1 documentation</a> &#187;</li>
-
-        <li class="nav-item nav-item-this"><a href="">Index</a></li> 
-      </ul>
-    </div>
-    </div>
+<html lang="en"
+      data-content_root="./"
+      x-data="{ darkMode: localStorage.getItem('darkMode') || localStorage.setItem('darkMode', 'system'), activeSection: '' }"
+      x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
+      class="scroll-smooth"
+      :class="{'dark': darkMode === 'dark' || (darkMode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)}"
+>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="white" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black" />
   
+    <title>Index | decontamination 0.0.1 documentation</title>
+    <meta property="og:title" content="Index | decontamination 0.0.1 documentation" />
+    <meta name="twitter:title" content="Index | decontamination 0.0.1 documentation" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8d216cef" />
+      <link rel="stylesheet" type="text/css" href="_static/theme.css?v=edd7d3d2" />
+      <link rel="stylesheet" type="text/css" href="_static/docsearch.css?v=0bd54598" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=3755291c" />
+      <link rel="stylesheet" type="text/css" href="_static/awesome-docsearch.css?v=851f3c4f" />
+    <link rel="preconnect" href="https://-dsn.algolia.net" crossorigin="anonymous" />
+  
+        <link rel="index" title="Index" href="#" />
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+    <script>
+    <!-- Prevent Flash of wrong theme -->
+      const userPreference = localStorage.getItem('darkMode');
+      let mode;
+      if (userPreference === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        mode = 'dark';
+        document.documentElement.classList.add('dark');
+      } else {
+        mode = 'light';
+      }
+      if (!userPreference) {localStorage.setItem('darkMode', mode)}
+    </script>
+</head>
+  <body x-data="{ showSidebar: false, showScrollTop: false }" class="min-h-screen font-sans antialiased bg-background text-foreground" :class="{ 'overflow-hidden': showSidebar }">
+    <div x-cloak x-show="showSidebar" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" @click.self="showSidebar = false"></div><div id="page" class="relative flex flex-col min-h-screen"><a href="#content" class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100">
+      Skip to content
+    </a><header
+  class="sticky top-0 z-40 w-full border-b shadow-sm border-border supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur"><div class="container flex items-center h-14">
+    <div class="hidden mr-4 md:flex">
+      <a href="index.html" class="flex items-center mr-6"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">decontamination 0.0.1 documentation</span>
+      </a></div><button
+      class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden"
+      type="button" @click="showSidebar = true">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 96 960 960" aria-hidden="true"
+        fill="currentColor">
+        <path
+          d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z" />
+      </svg>
+      <span class="sr-only">Toggle navigation menu</span>
+    </button>
+    <div class="flex items-center justify-between flex-1 space-x-2 sm:space-x-4 md:justify-end">
+      <div class="flex-1 w-full md:w-auto md:flex-none"><div id="docsearch"></div>
+      </div>
+      <nav class="flex items-center space-x-1">
+        <button @click="darkMode = darkMode === 'light' ? 'dark' : 'light'"
+          class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9"
+          type="button"
+          aria-label="Color theme switcher">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 96 960 960" fill="currentColor"
+            class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0">
+            <path
+              d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 96 960 960" fill="currentColor"
+            class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100">
+            <path
+              d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z" />
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </div>
+</header>
 
-<h1 id="index">Index</h1>
+    <div class="flex-1"><div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside id="left-sidebar"
+  class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full shrink-0 overflow-y-auto border-r border-border md:sticky"
+  :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }">
 
-<div class="genindex-jumpbox">
- <a href="#A"><strong>A</strong></a>
- | <a href="#C"><strong>C</strong></a>
- | <a href="#D"><strong>D</strong></a>
- | <a href="#G"><strong>G</strong></a>
- | <a href="#I"><strong>I</strong></a>
- | <a href="#J"><strong>J</strong></a>
- | <a href="#K"><strong>K</strong></a>
- | <a href="#M"><strong>M</strong></a>
- | <a href="#N"><strong>N</strong></a>
- | <a href="#O"><strong>O</strong></a>
- | <a href="#R"><strong>R</strong></a>
- | <a href="#S"><strong>S</strong></a>
- | <a href="#W"><strong>W</strong></a>
- | <a href="#X"><strong>X</strong></a>
- 
+    <a href="index.html" class="!justify-start text-sm md:!hidden bg-background"><span class="font-bold text-clip whitespace-nowrap">decontamination 0.0.1 documentation</span>
+    </a>
+
+    <div class="relative overflow-hidden md:overflow-auto my-4 md:my-0 h-[calc(100vh-8rem)] md:h-auto">
+      <div class="overflow-y-auto h-full w-full relative pr-6"><div style="text-align: center; margin-right: 1.0rem; margin-bottom: 1.0rem;">
+    <a href="index.html">
+        <img src="_static/logo.png" alt="" width=100%" />
+    </a>
 </div>
-<h2 id="A">A</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+<h3><a href="index.html">Table of Contents</a></h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="module_jit.html">Module JIT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_hp.html">Module HP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_mask.html">Module Mask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_algo.html">Module Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_plotting.html">Module Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_generator.html">Module Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_correlation.html">Module Correlation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_decontamination.html">Module Decontamination</a></li>
+</ul>
+<div style="text-align: center; margin-right: 1.0rem; margin-top: 1rem;">
+    <a href="https://sonarqube.in2p3.fr/dashboard?id=decontamination-key" target="_blank">
+        <img src="https://sonarqube.in2p3.fr/api/project_badges/quality_gate?project=decontamination-key&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37" alt="Sonar" />
+    </a>
+</div>
+      </div>
+    </div>
+    <button type="button" @click="showSidebar = false"
+      class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 96 960 960" fill="currentColor"
+        stroke="none" class="h-4 w-4">
+        <path
+          d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z" />
+      </svg>
+    </button>
+  </aside>
+        <main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs"
+     class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+  <a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground"
+     href="index.html">
+    <span class="hidden md:inline">decontamination 0.0.1 documentation</span>
+    <svg xmlns="http://www.w3.org/2000/svg"
+         height="18"
+         width="18"
+         viewBox="0 96 960 960"
+         aria-label="Home"
+         fill="currentColor"
+         stroke="none"
+         class="md:hidden">
+      <path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z" />
+    </svg>
+  </a>
+  
+<div class="mr-1">/</div><span aria-current="page"
+        class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">Index</span>
+</nav>
+
+<div id="content" role="main">
+
+  <h1 id="index">Index</h1>
+  <h2 id="A">A</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="module_mask.html#decontamination.mask.wcs.WCS.all_pix2world">all_pix2world() (decontamination.mask.wcs.WCS method)</a>
 </li>
       <li><a href="module_mask.html#decontamination.mask.wcs.WCS.all_world2pix">all_world2pix() (decontamination.mask.wcs.WCS method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.alpha">alpha (decontamination.algo.som_online.SOM_Online property)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.alpha">(decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      </ul></li>
       <li><a href="module_hp.html#decontamination.hp.ang2pix">ang2pix() (in module decontamination.hp)</a>
 </li>
       <li><a href="module_correlation.html#decontamination.correlation.apodization">apodization() (in module decontamination.correlation)</a>
 </li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.array_index_to_world">array_index_to_world() (decontamination.mask.wcs.WCS method)</a>
+</li>
   </ul></td>
-</tr></table>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.array_index_to_world_values">array_index_to_world_values() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.array_shape">array_shape (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_jit.html#decontamination.jit.jit.atomic_add">atomic_add() (decontamination.jit.jit static method)</a>
+</li>
+      <li><a href="module_jit.html#decontamination.jit.jit.atomic_sub">atomic_sub() (decontamination.jit.jit static method)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.clustering.Clustering.average">average() (decontamination.algo.clustering.Clustering static method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.axis_correlation_matrix">axis_correlation_matrix (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.axis_type_names">axis_type_names (decontamination.mask.wcs.WCS property)</a>
+</li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="B">B</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.batch">batch (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.bin_slop">bin_slop (decontamination.correlation.correlation_pair_count.Correlation_PairCount property)</a>
+</li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="C">C</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.calc_footprint">calc_footprint() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.calculate">calculate() (decontamination.correlation.correlation_pair_count.Correlation_PairCount method)</a>
 
-<h2 id="C">C</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <ul style="list-style-type:none">
+        <li><a href="module_correlation.html#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.calculate">(decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum method)</a>
+</li>
+      </ul></li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.catalog_activation_map">catalog_activation_map (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
       <li><a href="module_plotting.html#decontamination.plotting.catalog_to_number_density">catalog_to_number_density() (in module decontamination.plotting)</a>
 </li>
-      <li><a href="module_algo.html#decontamination.algo.clustering.Clustering">Clustering (class in decontamination.algo.clustering)</a>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.celestial">celestial (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2correlation">cell2correlation() (decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum method)</a>
+</li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2power_spectrum">cell2power_spectrum() (decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum method)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.centroids">centroids (decontamination.algo.som_abstract.SOM_Abstract property)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.centroids">(decontamination.algo.som_batch.SOM_Batch property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.centroids">(decontamination.algo.som_online.SOM_Online property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.centroids">(decontamination.algo.som_pca.SOM_PCA property)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.centroids">(decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      </ul></li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.cluster_ids">cluster_ids (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_catalog_activation_map">clustered_catalog_activation_map (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_footprint_activation_map">clustered_footprint_activation_map (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gnd">clustered_gnd (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndc">clustered_gndc (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndcm">clustered_gndcm (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.clustered_gndm">clustered_gndm (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
 </li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_algo.html#decontamination.algo.clustering.Clustering">Clustering (class in decontamination.algo.clustering)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.clustering.Clustering.clusterize">clusterize() (decontamination.algo.clustering.Clustering static method)</a>
+</li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_clustered_gndm">compute_clustered_gndm() (decontamination.decontamination.decontamination_som.Decontamination_SOM method)</a>
+</li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.compute_equal_sky_area_edges_and_stats">compute_equal_sky_area_edges_and_stats() (decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet static method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_isd.Decontamination_ISD.compute_equal_sky_area_edges_and_stats">(decontamination.decontamination.decontamination_isd.Decontamination_ISD static method)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_equal_sky_area_edges_and_stats">(decontamination.decontamination.decontamination_som.Decontamination_SOM static method)</a>
+</li>
+      </ul></li>
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.compute_errors">compute_errors() (decontamination.algo.som_abstract.SOM_Abstract method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.compute_errors">(decontamination.algo.som_batch.SOM_Batch method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.compute_errors">(decontamination.algo.som_online.SOM_Online method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.compute_errors">(decontamination.algo.som_pca.SOM_PCA method)</a>
+</li>
+      </ul></li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.compute_gndm">compute_gndm() (decontamination.decontamination.decontamination_som.Decontamination_SOM method)</a>
+</li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.compute_weights">compute_weights() (decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.copy">copy() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_jit.html#decontamination.jit.DeviceArray.copy_to_host">copy_to_host() (decontamination.jit.DeviceArray method)</a>
+</li>
       <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount">Correlation_PairCount (class in decontamination.correlation.correlation_pair_count)</a>
 </li>
       <li><a href="module_correlation.html#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum">Correlation_PowerSpectrum (class in decontamination.correlation.correlation_power_spectrum)</a>
 </li>
+      <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.cov_matrix">cov_matrix (decontamination.algo.som_pca.SOM_PCA property)</a>
+</li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.coverage">coverage (decontamination.correlation.correlation_pair_count.Correlation_PairCount property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.cpdis1">cpdis1 (decontamination.mask.wcs.WCS attribute)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.cpdis2">cpdis2 (decontamination.mask.wcs.WCS attribute)</a>
+</li>
   </ul></td>
-</tr></table>
-
-<h2 id="D">D</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="D">D</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.data_contrast">data_contrast (decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum property)</a>
+</li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.data_spectrum">data_spectrum (decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum property)</a>
+</li>
       <li>
     decontamination.algo.clustering
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_algo.html#module-decontamination.algo.clustering">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.algo.selection
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_algo.html#module-decontamination.algo.selection">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.algo.som_abstract
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_algo.html#module-decontamination.algo.som_abstract">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.algo.som_batch
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_algo.html#module-decontamination.algo.som_batch">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.algo.som_online
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_algo.html#module-decontamination.algo.som_online">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.algo.som_pca
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_algo.html#module-decontamination.algo.som_pca">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.correlation
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_correlation.html#module-decontamination.correlation">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.correlation.correlation_pair_count
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_correlation.html#module-decontamination.correlation.correlation_pair_count">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.correlation.correlation_power_spectrum
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_correlation.html#module-decontamination.correlation.correlation_power_spectrum">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.decontamination.decontamination_elasticnet
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_decontamination.html#module-decontamination.decontamination.decontamination_elasticnet">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.decontamination.decontamination_isd
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_decontamination.html#module-decontamination.decontamination.decontamination_isd">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.decontamination.decontamination_som
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_decontamination.html#module-decontamination.decontamination.decontamination_som">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.generator.generator_fullsky_uniform
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_generator.html#module-decontamination.generator.generator_fullsky_uniform">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.generator.generator_number_density
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_generator.html#module-decontamination.generator.generator_number_density">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.generator.generator_uniform
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_generator.html#module-decontamination.generator.generator_uniform">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     decontamination.hp
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_hp.html#module-decontamination.hp">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.jit
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_jit.html#module-decontamination.jit">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.mask.healpix
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_mask.html#module-decontamination.mask.healpix">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.mask.moc
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_mask.html#module-decontamination.mask.moc">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li>
     decontamination.mask.wcs
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_mask.html#module-decontamination.mask.wcs">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.plotting
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_plotting.html#module-decontamination.plotting">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.plotting.healpix_map
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_plotting.html#module-decontamination.plotting.healpix_map">module</a>
 </li>
       </ul></li>
       <li>
     decontamination.plotting.latent_space
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_plotting.html#module-decontamination.plotting.latent_space">module</a>
 </li>
       </ul></li>
@@ -284,6 +469,14 @@
       <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_isd.Decontamination_ISD">Decontamination_ISD (class in decontamination.decontamination.decontamination_isd)</a>
 </li>
       <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM">Decontamination_SOM (class in decontamination.decontamination.decontamination_som)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.deepcopy">deepcopy() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.det2im">det2im() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.det2im1">det2im1 (decontamination.mask.wcs.WCS attribute)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.det2im2">det2im2 (decontamination.mask.wcs.WCS attribute)</a>
 </li>
       <li><a href="module_jit.html#decontamination.jit.device_array_empty">device_array_empty() (in module decontamination.jit)</a>
 </li>
@@ -295,6 +488,20 @@
 </li>
       <li><a href="module_jit.html#decontamination.jit.DeviceArray">DeviceArray (class in decontamination.jit)</a>
 </li>
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.dim">dim (decontamination.algo.som_abstract.SOM_Abstract property)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.dim">(decontamination.algo.som_batch.SOM_Batch property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.dim">(decontamination.algo.som_online.SOM_Online property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.dim">(decontamination.algo.som_pca.SOM_PCA property)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dim">(decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet property)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.dim">(decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      </ul></li>
       <li><a href="module_plotting.html#decontamination.plotting.healpix_map.display_catalog">display_catalog() (in module decontamination.plotting.healpix_map)</a>
 </li>
       <li><a href="module_plotting.html#decontamination.plotting.healpix_map.display_healpix">display_healpix() (in module decontamination.plotting.healpix_map)</a>
@@ -303,58 +510,269 @@
 </li>
       <li><a href="module_jit.html#decontamination.jit.dont_call">dont_call() (in module decontamination.jit)</a>
 </li>
-  </ul></td>
-</tr></table>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.dropaxis">dropaxis() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.dtype">dtype (decontamination.algo.som_abstract.SOM_Abstract property)</a>
 
-<h2 id="G">G</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.dtype">(decontamination.algo.som_batch.SOM_Batch property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.dtype">(decontamination.algo.som_online.SOM_Online property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.dtype">(decontamination.algo.som_pca.SOM_PCA property)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dtype">(decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet property)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.dtype">(decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+        <li><a href="module_jit.html#decontamination.jit.DeviceArray.dtype">(decontamination.jit.DeviceArray property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="E">E</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.eigenvalues">eigenvalues (decontamination.algo.som_pca.SOM_PCA property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.eigenvectors">eigenvectors (decontamination.algo.som_pca.SOM_PCA property)</a>
+</li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="F">F</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_algo.html#decontamination.algo.selection.Selection.filter_table">filter_table() (decontamination.algo.selection.Selection static method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.fix">fix() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.footprint">footprint (decontamination.correlation.correlation_pair_count.Correlation_PairCount property)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_correlation.html#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.footprint">(decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.footprint_activation_map">footprint_activation_map (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.footprint_contains">footprint_contains() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.footprint_to_file">footprint_to_file() (decontamination.mask.wcs.WCS method)</a>
+</li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="G">G</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_generator.html#decontamination.generator.generator_fullsky_uniform.Generator_FullSkyUniform.generate">generate() (decontamination.generator.generator_fullsky_uniform.Generator_FullSkyUniform method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_generator.html#decontamination.generator.generator_number_density.Generator_NumberDensity.generate">(decontamination.generator.generator_number_density.Generator_NumberDensity method)</a>
+</li>
+        <li><a href="module_generator.html#decontamination.generator.generator_uniform.Generator_Uniform.generate">(decontamination.generator.generator_uniform.Generator_Uniform method)</a>
+</li>
+      </ul></li>
       <li><a href="module_generator.html#decontamination.generator.generator_fullsky_uniform.Generator_FullSkyUniform">Generator_FullSkyUniform (class in decontamination.generator.generator_fullsky_uniform)</a>
 </li>
       <li><a href="module_generator.html#decontamination.generator.generator_number_density.Generator_NumberDensity">Generator_NumberDensity (class in decontamination.generator.generator_number_density)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_generator.html#decontamination.generator.generator_uniform.Generator_Uniform">Generator_Uniform (class in decontamination.generator.generator_uniform)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.get_activation_map">get_activation_map() (decontamination.algo.som_abstract.SOM_Abstract method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.get_activation_map">(decontamination.algo.som_batch.SOM_Batch method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.get_activation_map">(decontamination.algo.som_online.SOM_Online method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.get_activation_map">(decontamination.algo.som_pca.SOM_PCA method)</a>
+</li>
+      </ul></li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.get_axis_types">get_axis_types() (decontamination.mask.wcs.WCS method)</a>
 </li>
       <li><a href="module_plotting.html#decontamination.plotting.get_bounding_box">get_bounding_box() (in module decontamination.plotting)</a>
 </li>
   </ul></td>
-</tr></table>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.get_distance_map">get_distance_map() (decontamination.algo.som_abstract.SOM_Abstract method)</a>
 
-<h2 id="I">I</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_mask.html#decontamination.mask.healpix.image_to_healpix">image_to_healpix() (in module decontamination.mask.healpix)</a>
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.get_distance_map">(decontamination.algo.som_batch.SOM_Batch method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.get_distance_map">(decontamination.algo.som_online.SOM_Online method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.get_distance_map">(decontamination.algo.som_pca.SOM_PCA method)</a>
+</li>
+      </ul></li>
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.get_winners">get_winners() (decontamination.algo.som_abstract.SOM_Abstract method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.get_winners">(decontamination.algo.som_batch.SOM_Batch method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.get_winners">(decontamination.algo.som_online.SOM_Online method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.get_winners">(decontamination.algo.som_pca.SOM_PCA method)</a>
+</li>
+      </ul></li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.gnd">gnd (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.gndc">gndc (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.gndcm">gndcm (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.gndm">gndm (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      <li><a href="module_jit.html#decontamination.jit.jit.grid">grid() (decontamination.jit.jit static method)</a>
 </li>
   </ul></td>
-</tr></table>
+  </tr>
+      </table>
+  
+  <h2 id="H">H</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.has_celestial">has_celestial (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.has_distortion">has_distortion (decontamination.mask.wcs.WCS property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.has_spectral">has_spectral (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.has_temporal">has_temporal (decontamination.mask.wcs.WCS property)</a>
+</li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="I">I</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_mask.html#decontamination.mask.healpix.image_to_healpix">image_to_healpix() (in module decontamination.mask.healpix)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.init_from">init_from() (decontamination.algo.som_abstract.SOM_Abstract method)</a>
 
-<h2 id="J">J</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.init_from">(decontamination.algo.som_batch.SOM_Batch method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.init_from">(decontamination.algo.som_online.SOM_Online method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.init_from">(decontamination.algo.som_pca.SOM_PCA method)</a>
+</li>
+      </ul></li>
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.init_rand">init_rand() (decontamination.algo.som_abstract.SOM_Abstract method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.init_rand">(decontamination.algo.som_batch.SOM_Batch method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.init_rand">(decontamination.algo.som_online.SOM_Online method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.init_rand">(decontamination.algo.som_pca.SOM_PCA method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.is_celestial">is_celestial (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.is_spectral">is_spectral (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.is_temporal">is_temporal (decontamination.mask.wcs.WCS property)</a>
+</li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="J">J</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="module_jit.html#decontamination.jit.jit">jit (class in decontamination.jit)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="K">K</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="K">K</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="module_jit.html#decontamination.jit.Kernel">Kernel (class in decontamination.jit)</a>
 </li>
   </ul></td>
-</tr></table>
+  </tr>
+      </table>
+  
+  <h2 id="L">L</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.l">l (decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum property)</a>
+</li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.l_max">l_max (decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum property)</a>
+</li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.library">library (decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum property)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.load">load() (decontamination.algo.som_abstract.SOM_Abstract method)</a>
 
-<h2 id="M">M</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.load">(decontamination.algo.som_batch.SOM_Batch method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.load">(decontamination.algo.som_online.SOM_Online method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.load">(decontamination.algo.som_pca.SOM_PCA method)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.load">(decontamination.decontamination.decontamination_som.Decontamination_SOM method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_jit.html#decontamination.jit.jit.local_empty">local_empty() (decontamination.jit.jit static method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.low_level_wcs">low_level_wcs (decontamination.mask.wcs.WCS property)</a>
+</li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="M">M</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.m">m (decontamination.algo.som_abstract.SOM_Abstract property)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.m">(decontamination.algo.som_batch.SOM_Batch property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.m">(decontamination.algo.som_online.SOM_Online property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.m">(decontamination.algo.som_pca.SOM_PCA property)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.m">(decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      </ul></li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.max_sep">max_sep (decontamination.correlation.correlation_pair_count.Correlation_PairCount property)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_correlation.html#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.max_sep">(decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum property)</a>
+</li>
+      </ul></li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.min_sep">min_sep (decontamination.correlation.correlation_pair_count.Correlation_PairCount property)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_correlation.html#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.min_sep">(decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum property)</a>
+</li>
+      </ul></li>
       <li><a href="module_mask.html#decontamination.mask.moc.moc_to_healpix">moc_to_healpix() (in module decontamination.mask.moc)</a>
 </li>
       <li>
     module
 
-      <ul>
+      <ul style="list-style-type:none">
         <li><a href="module_algo.html#module-decontamination.algo.clustering">decontamination.algo.clustering</a>
 </li>
         <li><a href="module_algo.html#module-decontamination.algo.selection">decontamination.algo.selection</a>
@@ -403,23 +821,56 @@
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="module_mask.html#decontamination.mask.wcs.WCS.MUTEX">MUTEX (decontamination.mask.wcs.WCS attribute)</a>
 </li>
   </ul></td>
-</tr></table>
+  </tr>
+      </table>
+  
+  <h2 id="N">N</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.n">n (decontamination.algo.som_abstract.SOM_Abstract property)</a>
 
-<h2 id="N">N</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.n">(decontamination.algo.som_batch.SOM_Batch property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.n">(decontamination.algo.som_online.SOM_Online property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.n">(decontamination.algo.som_pca.SOM_PCA property)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.n">(decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      </ul></li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_bins">n_bins (decontamination.correlation.correlation_pair_count.Correlation_PairCount property)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_correlation.html#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.n_bins">(decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum property)</a>
+</li>
+      </ul></li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.n_gal">n_gal (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.n_pix">n_pix (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_threads">n_threads (decontamination.correlation.correlation_pair_count.Correlation_PairCount property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="module_jit.html#decontamination.jit.nb_to_device">nb_to_device() (in module decontamination.jit)</a>
+</li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.nest">nest (decontamination.correlation.correlation_pair_count.Correlation_PairCount property)</a>
 </li>
       <li><a href="module_hp.html#decontamination.hp.nest2xyf">nest2xyf() (in module decontamination.hp)</a>
 </li>
       <li><a href="module_hp.html#decontamination.hp.npix2nside">npix2nside() (in module decontamination.hp)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.nside">nside (decontamination.correlation.correlation_pair_count.Correlation_PairCount property)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_correlation.html#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.nside">(decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum property)</a>
+</li>
+      </ul></li>
       <li><a href="module_hp.html#decontamination.hp.nside2npix">nside2npix() (in module decontamination.hp)</a>
 </li>
       <li><a href="module_hp.html#decontamination.hp.nside2pixarea">nside2pixarea() (in module decontamination.hp)</a>
@@ -429,149 +880,312 @@
       <li><a href="module_mask.html#decontamination.mask.moc.nuniq_to_order_index">nuniq_to_order_index() (in module decontamination.mask.moc)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="O">O</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  </tr>
+      </table>
+  
+  <h2 id="O">O</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="module_mask.html#decontamination.mask.moc.order_index_to_nuniq">order_index_to_nuniq() (in module decontamination.mask.moc)</a>
 </li>
   </ul></td>
-</tr></table>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.orders">orders (decontamination.algo.som_pca.SOM_PCA property)</a>
+</li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="P">P</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.p4_pix2foc">p4_pix2foc() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.selection.Selection.parse">parse() (decontamination.algo.selection.Selection static method)</a>
+</li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.pca">pca (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.pix2foc">pix2foc() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.pixel_axis_names">pixel_axis_names (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.pixel_bounds">pixel_bounds (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.pixel_n_dim">pixel_n_dim (decontamination.mask.wcs.WCS property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.pixel_scale_matrix">pixel_scale_matrix (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.pixel_shape">pixel_shape (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.pixel_to_world">pixel_to_world() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.pixel_to_world_values">pixel_to_world_values() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.printwcs">printwcs() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.proj_plane_pixel_area">proj_plane_pixel_area() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.proj_plane_pixel_scales">proj_plane_pixel_scales() (decontamination.mask.wcs.WCS method)</a>
+</li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="Q">Q</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.quantization_errors">quantization_errors (decontamination.algo.som_abstract.SOM_Abstract property)</a>
 
-<h2 id="R">R</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.quantization_errors">(decontamination.algo.som_batch.SOM_Batch property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.quantization_errors">(decontamination.algo.som_online.SOM_Online property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.quantization_errors">(decontamination.algo.som_pca.SOM_PCA property)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.quantization_errors">(decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="R">R</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="module_hp.html#decontamination.hp.randang">randang() (in module decontamination.hp)</a>
 </li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.reorient_celestial_first">reorient_celestial_first() (decontamination.mask.wcs.WCS method)</a>
+</li>
       <li><a href="module_mask.html#decontamination.mask.healpix.rms_bit_to_healpix">rms_bit_to_healpix() (in module decontamination.mask.healpix)</a>
 </li>
   </ul></td>
-</tr></table>
+  </tr>
+      </table>
+  
+  <h2 id="S">S</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.save">save() (decontamination.algo.som_abstract.SOM_Abstract method)</a>
 
-<h2 id="S">S</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.save">(decontamination.algo.som_batch.SOM_Batch method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.save">(decontamination.algo.som_online.SOM_Online method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.save">(decontamination.algo.som_pca.SOM_PCA method)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.save">(decontamination.decontamination.decontamination_som.Decontamination_SOM method)</a>
+</li>
+      </ul></li>
       <li><a href="module_algo.html#decontamination.algo.selection.Selection">Selection (class in decontamination.algo.selection)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.selection.Selection.BinaryOpNode">Selection.BinaryOpNode (class in decontamination.algo.selection)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.selection.Selection.ColNameNode">Selection.ColNameNode (class in decontamination.algo.selection)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.selection.Selection.FloatNumNode">Selection.FloatNumNode (class in decontamination.algo.selection)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.selection.Selection.IntNumNode">Selection.IntNumNode (class in decontamination.algo.selection)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.selection.Selection.Token">Selection.Token (class in decontamination.algo.selection)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.selection.Selection.UnaryOpNode">Selection.UnaryOpNode (class in decontamination.algo.selection)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.serialized_classes">serialized_classes (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_jit.html#decontamination.jit.DeviceArray.shape">shape (decontamination.jit.DeviceArray property)</a>
+</li>
+      <li><a href="module_jit.html#decontamination.jit.jit.shared_empty">shared_empty() (decontamination.jit.jit static method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.sigma">sigma (decontamination.algo.som_batch.SOM_Batch property)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.sigma">(decontamination.algo.som_online.SOM_Online property)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.sigma">(decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      </ul></li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.sip">sip (decontamination.mask.wcs.WCS attribute)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.sip_foc2pix">sip_foc2pix() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.sip_pix2foc">sip_pix2foc() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.slice">slice() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.som">som (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
 </li>
       <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract">SOM_Abstract (class in decontamination.algo.som_abstract)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch">SOM_Batch (class in decontamination.algo.som_batch)</a>
 </li>
       <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online">SOM_Online (class in decontamination.algo.som_online)</a>
 </li>
       <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA">SOM_PCA (class in decontamination.algo.som_pca)</a>
 </li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.spectral">spectral (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.sub">sub() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.swapaxes">swapaxes() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_jit.html#decontamination.jit.jit.syncthreads">syncthreads() (decontamination.jit.jit static method)</a>
+</li>
   </ul></td>
-</tr></table>
+  </tr>
+      </table>
+  
+  <h2 id="T">T</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.temporal">temporal (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.to_fits">to_fits() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.to_header">to_header() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.to_header_string">to_header_string() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.selection.Selection.to_string">to_string() (decontamination.algo.selection.Selection static method)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.topographic_errors">topographic_errors (decontamination.algo.som_abstract.SOM_Abstract property)</a>
 
-<h2 id="W">W</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.topographic_errors">(decontamination.algo.som_batch.SOM_Batch property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.topographic_errors">(decontamination.algo.som_online.SOM_Online property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.topographic_errors">(decontamination.algo.som_pca.SOM_PCA property)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.topographic_errors">(decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.topology">topology (decontamination.algo.som_abstract.SOM_Abstract property)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.topology">(decontamination.algo.som_batch.SOM_Batch property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.topology">(decontamination.algo.som_online.SOM_Online property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.topology">(decontamination.algo.som_pca.SOM_PCA property)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.topology">(decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      </ul></li>
+      <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.train">train() (decontamination.algo.som_batch.SOM_Batch method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.train">(decontamination.algo.som_online.SOM_Online method)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.train">(decontamination.algo.som_pca.SOM_PCA method)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.train">(decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet method)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.train">(decontamination.decontamination.decontamination_som.Decontamination_SOM method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="W">W</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="module_mask.html#decontamination.mask.wcs.WCS">WCS (class in decontamination.mask.wcs)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_mask.html#decontamination.mask.moc.wmoc_to_healpix">wmoc_to_healpix() (in module decontamination.mask.moc)</a>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.wcs">wcs (decontamination.mask.wcs.WCS attribute)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.wcs_pix2world">wcs_pix2world() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.wcs_world2pix">wcs_world2pix() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract.weights">weights (decontamination.algo.som_abstract.SOM_Abstract property)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.weights">(decontamination.algo.som_batch.SOM_Batch property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_online.SOM_Online.weights">(decontamination.algo.som_online.SOM_Online property)</a>
+</li>
+        <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.weights">(decontamination.algo.som_pca.SOM_PCA property)</a>
+</li>
+        <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.weights">(decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
+</li>
+      </ul></li>
+      <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.winners">winners (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="X">X</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_mask.html#decontamination.mask.moc.wmoc_to_healpix">wmoc_to_healpix() (in module decontamination.mask.moc)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.world_axis_names">world_axis_names (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.world_axis_object_classes">world_axis_object_classes (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.world_axis_object_components">world_axis_object_components (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.world_axis_physical_types">world_axis_physical_types (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.world_axis_units">world_axis_units (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.world_n_dim">world_n_dim (decontamination.mask.wcs.WCS property)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.world_to_array_index">world_to_array_index() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.world_to_array_index_values">world_to_array_index_values() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.world_to_pixel">world_to_pixel() (decontamination.mask.wcs.WCS method)</a>
+</li>
+      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.world_to_pixel_values">world_to_pixel_values() (decontamination.mask.wcs.WCS method)</a>
+</li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="X">X</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="module_hp.html#decontamination.hp.xyf2nest">xyf2nest() (in module decontamination.hp)</a>
 </li>
   </ul></td>
-</tr></table>
+  </tr>
+      </table>
+  
 
-
-
-            <div class="clearer"></div>
-          </div>
-        </div>
+</div></div>
+<aside id="right-sidebar" class="hidden text-sm xl:block">
+<div class="sticky top-16 -mt-10 max-h-[calc(var(--vh)-4rem)] overflow-y-auto pt-6 space-y-2">
+<a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#A">A</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#B">B</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#C">C</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#D">D</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#E">E</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#F">F</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#G">G</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#H">H</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#I">I</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#J">J</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#K">K</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#L">L</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#M">M</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#N">N</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#O">O</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#P">P</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#Q">Q</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#R">R</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#S">S</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#T">T</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#W">W</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#X">X</a>
+</div>
+</aside>
+        </main>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div style="text-align: center; margin-right: 1.0rem; margin-bottom: 1.0rem;">
-    <a href="index.html">
-        <img src="_static/logo.png" alt="" width="66.6%" />
-    </a>
+    </div><footer class="py-6 border-t border-border md:py-0">
+    <div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+      <div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+        <p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2023-2024, CNRS/LPSC&nbsp;Built with <a class="font-medium underline underline-offset-4"
+    href="https://www.sphinx-doc.org"
+    rel="noreferrer">Sphinx 8.0.2</a></p>
 </div>
-<div class="sphinx-toc sphinxglobaltoc">
-<h3><a href="index.html">Table of Contents</a></h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="module_jit.html">Module decontamination.jit</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_hp.html">Module decontamination.hp</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_mask.html">Module decontamination.mask</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_algo.html">Module decontamination.algo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_plotting.html">Module decontamination.plotting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_generator.html">Module decontamination.generator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_correlation.html">Module decontamination.correlation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_decontamination.html">Module decontamination.decontamination</a></li>
-</ul>
 </div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script><div style="text-align: center; margin-right: 1.0rem; margin-top: 1rem;">
-    <a href="https://sonarqube.in2p3.fr/dashboard?id=decontamination-key" target="_blank">
-        <img src="https://sonarqube.in2p3.fr/api/project_badges/quality_gate?project=decontamination-key&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37" alt="Sonar" />
-    </a>
-</div>
-        </div>
-      </div>
-    
-    
-        <div class="sidebar-toggle-group no-js">
-            
-            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
-                 «
-                <span class="show-for-small">hide menu</span>
-                
-            </button>
-            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
-                
-                <span class="show-for-small">menu</span>
-                <span class="hide-for-small">sidebar</span>
-                 »
-            </button>
-        </div>
-    
-      <div class="clearer"></div>
-    </div>
-    <div class="relbar-bottom">
-        
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="#" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">decontamination 0.0.1 documentation</a> &#187;</li>
-
-        <li class="nav-item nav-item-this"><a href="">Index</a></li> 
-      </ul>
-    </div>
-    </div>
-
-    <div class="footer" role="contentinfo">
-    &#169; Copyright 2023, CNRS/LPSC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
-    </div>
-    <!-- cloud_sptheme 1.4 -->
-  </body>
+</footer>
+  </div>
+  
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer="defer" src="_static/theme.js?v=1808ab49"></script>
+    <script defer="defer" src="_static/docsearch.js?v=711ed680"></script>
+    <script defer="defer" src="_static/docsearch_config.js?v=0d163087"></script>
+    <script src="_static/custom.js?v=79e41474"></script>
+  
+</body>
 </html>

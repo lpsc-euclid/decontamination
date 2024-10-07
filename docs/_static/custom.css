@@ -1,53 +1,53 @@
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-h1, h2, h3, h4, h5 {
-    margin: 0.25em 0 0.25em 0 !important;
-    text-align: left !important;
+.container {
+
+    max-width: 95% !important;
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-p {
-    margin: 0.25em 0 0.25em 0 !important;
+span.classifier {
+
+    margin-left: 0.5rem;
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-div.sphinxsidebar {
-    border-radius: 0.25rem !important;
-}
+.py.class,
+.py.method,
+.py.function {
 
-div.sphinxsidebar a {
-    border: none !important;
-}
+    border: 2px solid #EEEEEE;
 
-div.sphinxsidebar a:hover {
-    background: none !important;
-}
-
-div.sphinxsidebarwrapper {
-    padding: 0.5rem !important;
+    border-radius: 0.5rem;
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-table.docutils,
-table.autosummary {
-    display: none !important;
+.py.class > dt,
+.py.method > dt,
+.py.function > dt {
+
+    background-color: #F8F9FA;
+
+    border-top-left-radius: 0.33rem;
+    border-top-right-radius: 0.33rem;
+
+    border-top: none;
+    border-bottom: 2px solid #EEEEEE;
+
+    padding: 0.5rem;
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-.logo-container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: nowrap;
-    margin-bottom: 2rem;
-}
+.py.class > dd,
+.py.method > dd,
+.py.function > dd {
 
-.logo-container img {
-    margin: 0;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/

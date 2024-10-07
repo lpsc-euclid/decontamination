@@ -9,9 +9,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import json
 import typing
-import inspect
 
 import numpy as np
+
+from datetime import date
 
 import decontamination.algo.selection as selection
 
@@ -28,14 +29,16 @@ release = metadata['version']
 
 author = ', '.join(metadata['author_names'])
 
-copyright = '2023, ' + metadata['credits']
+copyright = f'2023-{date.today().year}, {metadata["credits"]}'
 
 ########################################################################################################################
 
 extensions = [
     'numpydoc',
+    'sphinx_docsearch',
     'sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
+    'sphinxawesome_theme',
 ]
 
 autodoc_default_options = {
@@ -48,8 +51,6 @@ autodoc_default_options = {
     'show-inheritance': True,
     'inherited-members': True,
 }
-
-mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.min.js'
 
 ########################################################################################################################
 
@@ -69,19 +70,11 @@ html_static_path = ['_html_static']
 
 ########################################################################################################################
 
-html_theme = 'cloud'
+html_theme = 'sphinxawesome_theme'
 
-html_theme_options = {
-    'max_width': '13in',
-    'externalicon': False,
-    'borderless_decor': True,
-}
+html_permalinks_icon = ''
 
-html_sidebars = {'**': ['logo.html', 'localtoc.html', 'globaltoc.html', 'searchbox.html', 'sonar.html']}
-
-########################################################################################################################
-
-html_use_modindex = False
+html_sidebars = {'**': ['logo.html', 'globaltoc.html', 'sonar.html']}
 
 ########################################################################################################################
 
@@ -95,8 +88,10 @@ def before_process_signature(app, obj, bound_method):
     ast_node = typing.Union[
         selection.Selection.UnaryOpNode,
         selection.Selection.BinaryOpNode,
-        selection.Selection.NumberNode,
-        selection.Selection.ColumnNode,
+        selection.Selection.FloatNumNode,
+        selection.Selection.IntNumNode,
+        selection.Selection.IntNumNode,
+        selection.Selection.ColNameNode,
     ]
 
     if callable(obj):
@@ -141,9 +136,9 @@ def process_docstring(app, what, name, obj, options, lines):
 
     ####################################################################################################################
 
-    options['inherited-members'] = getattr(obj, '__module__', '') not in [
-        'decontamination.mask.wcs'
-    ]
+    #options['inherited-members'] = getattr(obj, '__module__', '') not in [
+    #    'decontamination.mask.wcs'
+    #]
 
     ####################################################################################################################
 

@@ -55,10 +55,11 @@ Authors:
  * Gaël ALGUERO - gael.alguero@lpsc.in2p3.fr
  * Juan MACIAS-PEREZ - juan.macias-perez@lpsc.in2p3.fr
 
-Indices and tables
-==================
+Indices and modules
+===================
 
 .. toctree::
+   :hidden:
    :maxdepth: 1
    :caption: Contents:
 
@@ -72,3 +73,5 @@ Indices and tables
    Module Decontamination <module_decontamination>
 
 :ref:`genindex`
+
+:ref:`modindex`

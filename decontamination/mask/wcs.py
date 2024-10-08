@@ -32,7 +32,7 @@ class WCS(ASTROPY_WCS):
 
     ####################################################################################################################
 
-    MUTEX = threading.Lock()
+    _MUTEX = threading.Lock()
 
     ####################################################################################################################
 
@@ -99,7 +99,7 @@ class WCS(ASTROPY_WCS):
 
             else:
 
-                with WCS.MUTEX:
+                with WCS._MUTEX:
 
                     return super().all_pix2world(*args, **kwargs)
 
@@ -115,7 +115,7 @@ class WCS(ASTROPY_WCS):
 
         if self._thread_safe:
 
-            with WCS.MUTEX:
+            with WCS._MUTEX:
 
                 return super().all_world2pix(*args, **kwargs)
 

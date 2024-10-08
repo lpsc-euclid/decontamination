@@ -471,21 +471,13 @@ class jit(object):
 
     ####################################################################################################################
 
-    _CPU_PREPROCESSOR = processor.Preprocessor(is_gpu = False)
-
-    _GPU_PREPROCESSOR = processor.Preprocessor(is_gpu = True)
+    _METHOD_RE = re.compile('def[^(]+(\\(.*)', flags = re.DOTALL)
 
     ####################################################################################################################
 
-    _CALL_RE = re.compile('(\\w+)_xpu\\s*\\(')
+    _CPU_PREPROCESSOR = processor.Preprocessor(is_gpu = False)
 
-    _JIT_X_RE = re.compile('(?:\\w*\\.)?jit\\.')
-
-    _METHOD_RE = re.compile('def[^(]+(\\(.*)', flags = re.DOTALL)
-
-    _CPU_CODE_RE = re.compile(re.escape('!--BEGIN-CPU--') + '.*?' + re.escape('!--END-CPU--'), flags = re.DOTALL)
-
-    _GPU_CODE_RE = re.compile(re.escape('!--BEGIN-GPU--') + '.*?' + re.escape('!--END-GPU--'), flags = re.DOTALL)
+    _GPU_PREPROCESSOR = processor.Preprocessor(is_gpu = True)
 
     ####################################################################################################################
 

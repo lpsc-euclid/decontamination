@@ -282,10 +282,10 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                             self._weights,
                             self._topography,
                             vectors.astype(self._dtype),
-                            density.astype(np.int64),
+                            density.astype(np.int32),
                             cur_epoch,
                             n_epochs,
-                            self._sigma,
+                            self._dtype(self._sigma),
                             self._m * self._n
                         )
 
@@ -303,10 +303,10 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                             self._weights,
                             self._topography,
                             vectors.astype(self._dtype),
-                            np.ones_like(vectors, dtype = np.int64),
+                            np.ones(vectors.shape[0], dtype = np.int32),
                             cur_epoch,
                             n_epochs,
-                            self._sigma,
+                            self._dtype(self._sigma),
                             self._m * self._n
                         )
 
@@ -377,16 +377,16 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                     count = min(vectors.shape[0], n_vectors - cur_vector)
 
-                    SOM_Batch._train_step1_iter_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
+                    SOM_Batch._train_step1_iter_kernel[enable_gpu, threads_per_blocks, count](
                         numerator,
                         denominator,
                         self._weights,
                         self._topography,
                         vectors[0: count].astype(self._dtype),
-                        density[0: count].astype(np.int64),
+                        density[0: count].astype(np.int32),
                         cur_vector,
                         n_vectors,
-                        self._sigma,
+                        self._dtype(self._sigma),
                         self._m * self._n
                     )
 
@@ -408,16 +408,16 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                     count = min(vectors.shape[0], n_vectors - cur_vector)
 
-                    SOM_Batch._train_step1_iter_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
+                    SOM_Batch._train_step1_iter_kernel[enable_gpu, threads_per_blocks, count](
                         numerator,
                         denominator,
                         self._weights,
                         self._topography,
                         vectors[0: count].astype(self._dtype),
-                        np.ones(count, dtype = np.int64),
+                        np.ones(count, dtype = np.int32),
                         cur_vector,
                         n_vectors,
-                        self._sigma,
+                        self._dtype(self._sigma),
                         self._m * self._n
                     )
 

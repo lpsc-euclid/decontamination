@@ -230,8 +230,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
                         vectors.astype(self._dtype),
                         cur_epoch,
                         n_epochs,
-                        self._alpha,
-                        self._sigma,
+                        self._dtype(self._alpha),
+                        self._dtype(self._sigma),
                         self._m * self._n
                     )
 
@@ -282,8 +282,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
                     vectors[0: count].astype(self._dtype),
                     cur_vector,
                     n_vectors,
-                    self._alpha,
-                    self._sigma,
+                    self._dtype(self._alpha),
+                    self._dtype(self._sigma),
                     self._m * self._n
                 )
 

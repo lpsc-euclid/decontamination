@@ -22,7 +22,7 @@ data = np.random.default_rng(seed = 0).random((1_000, 4), np.float32)
 
 som = decontamination.SOM_Batch(4, 4, 4, dtype = np.float32, topology = 'square')
 
-####################################################################################################################
+########################################################################################################################
 
 @pytest.mark.parametrize('enable_gpu', [False, True])
 def test_centroids_epoch(enable_gpu):
@@ -55,7 +55,7 @@ def test_centroids_epoch(enable_gpu):
 
     assert np.allclose(som.centroids, expected, rtol = 1e-4)
 
-####################################################################################################################
+########################################################################################################################
 
 @pytest.mark.parametrize('enable_gpu', [False, True])
 def test_centroids_iter(enable_gpu):

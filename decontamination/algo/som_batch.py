@@ -89,47 +89,52 @@ class SOM_Batch(som_abstract.SOM_Abstract):
     @jit(kernel = True, parallel = True)
     def _train_step1_epoch_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, density: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, mn: int) -> None:
 
-        ################################################################################################################
-        # !--BEGIN-CPU--
+        if jit.is_gpu:
 
-        sigma = sigma0 * asymptotic_decay_cpu(cur_epoch, n_epochs)
+            ############################################################################################################
+            # GPU                                                                                                      #
+            ############################################################################################################
 
-        for i in nb.prange(vectors.shape[0]):
+            i = jit.grid(1)
+            if i < vectors.shape[0]:
 
-            _train_step2_xpu(
-                numerator,
-                denominator,
-                weights,
-                topography,
-                vectors[i],
-                density[i],
-                sigma,
-                mn
-            )
+                sigma = sigma0 * asymptotic_decay_gpu(cur_epoch, n_epochs)
 
-        # !--END-CPU--
-        ################################################################################################################
-        # !--BEGIN-GPU--
+                _train_step2_xpu(
+                    numerator,
+                    denominator,
+                    weights,
+                    topography,
+                    vectors[i],
+                    density[i],
+                    sigma,
+                    mn
+                )
 
-        i = jit.grid(1)
+            ############################################################################################################
 
-        if i < vectors.shape[0]:
+        else:
 
-            sigma = sigma0 * asymptotic_decay_gpu(cur_epoch, n_epochs)
+            ############################################################################################################
+            # CPU                                                                                                      #
+            ############################################################################################################
 
-            _train_step2_xpu(
-                numerator,
-                denominator,
-                weights,
-                topography,
-                vectors[i],
-                density[i],
-                sigma,
-                mn
-            )
+            sigma = sigma0 * asymptotic_decay_cpu(cur_epoch, n_epochs)
 
-        # !--END-GPU--
-        ################################################################################################################
+            for i in nb.prange(vectors.shape[0]):
+
+                _train_step2_xpu(
+                    numerator,
+                    denominator,
+                    weights,
+                    topography,
+                    vectors[i],
+                    density[i],
+                    sigma,
+                    mn
+                )
+
+            ############################################################################################################
 
         jit.syncthreads()
 
@@ -139,47 +144,52 @@ class SOM_Batch(som_abstract.SOM_Abstract):
     @jit(kernel = True, parallel = True)
     def _train_step1_iter_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, density: np.ndarray, cur_vector: int, n_vectors: int, sigma0: float, mn: int) -> None:
 
-        ################################################################################################################
-        # !--BEGIN-CPU--
+        if jit.is_gpu:
 
-        for i in nb.prange(vectors.shape[0]):
+            ############################################################################################################
+            # GPU                                                                                                      #
+            ############################################################################################################
 
-            sigma = sigma0 * asymptotic_decay_cpu(cur_vector + i, n_vectors)
+            i = jit.grid(1)
+            if i < vectors.shape[0]:
 
-            _train_step2_xpu(
-                numerator,
-                denominator,
-                weights,
-                topography,
-                vectors[i],
-                density[i],
-                sigma,
-                mn
-            )
+                sigma = sigma0 * asymptotic_decay_gpu(cur_vector + i, n_vectors)
 
-        # !--END-CPU--
-        ################################################################################################################
-        # !--BEGIN-GPU--
+                _train_step2_xpu(
+                    numerator,
+                    denominator,
+                    weights,
+                    topography,
+                    vectors[i],
+                    density[i],
+                    sigma,
+                    mn
+                )
 
-        i = jit.grid(1)
+            ############################################################################################################
 
-        if i < vectors.shape[0]:
+        else:
 
-            sigma = sigma0 * asymptotic_decay_gpu(cur_vector + i, n_vectors)
+            ############################################################################################################
+            # CPU                                                                                                      #
+            ############################################################################################################
 
-            _train_step2_xpu(
-                numerator,
-                denominator,
-                weights,
-                topography,
-                vectors[i],
-                density[i],
-                sigma,
-                mn
-            )
+            for i in nb.prange(vectors.shape[0]):
 
-        # !--END-GPU--
-        ################################################################################################################
+                sigma = sigma0 * asymptotic_decay_cpu(cur_vector + i, n_vectors)
+
+                _train_step2_xpu(
+                    numerator,
+                    denominator,
+                    weights,
+                    topography,
+                    vectors[i],
+                    density[i],
+                    sigma,
+                    mn
+                )
+
+            ############################################################################################################
 
         jit.syncthreads()
 
@@ -329,7 +339,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                     where = denominator_host != 0.0
                 )
 
-                ############################################################################################################
+                ########################################################################################################
 
                 errors = self.compute_errors(dataset, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
@@ -364,7 +374,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             denominator = device_array_zeros(shape = (self._m * self._n, ), dtype = self._dtype)
 
-            ########################################################################################################
+            ############################################################################################################
 
             progress_bar = tqdm.tqdm(total = n_vectors, disable = not show_progress_bar)
 
@@ -466,9 +476,9 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 @jit(fastmath = True)
 def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, density: np.ndarray, sigma: float, mn: int) -> None:
 
-    ################################################################################################################
-    # DO BMUS CALCULATION                                                                                          #
-    ################################################################################################################
+    ####################################################################################################################
+    # DO BMUS CALCULATION                                                                                              #
+    ####################################################################################################################
 
     min_distance = 1.0e99
     min_index = 0
@@ -482,21 +492,21 @@ def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np
             min_distance = distance
             min_index = index
 
-    ################################################################################################################
+    ####################################################################################################################
 
     bmu = topography[min_index]
 
-    ################################################################################################################
-    # UPDATE WEIGHTS                                                                                               #
-    ################################################################################################################
+    ####################################################################################################################
+    # UPDATE WEIGHTS                                                                                                   #
+    ####################################################################################################################
 
     for i in range(mn):
 
-        ############################################################################################################
+        ################################################################################################################
 
         neighborhood_i = math.exp(-square_distance_xpu(topography[i], bmu) / (2.0 * sigma ** 2))
 
-        ############################################################################################################
+        ################################################################################################################
 
         numerator_i = numerator[i]
 

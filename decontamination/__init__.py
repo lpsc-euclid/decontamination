@@ -50,10 +50,6 @@ from .algo.regression_abstract import Regression_Abstract
 
 from .algo.regression_basic import Regression_Basic
 
-from .algo.regression_elasticnet import Regression_ElasticNet
-
-from .algo.cross_validation_elasticnet import CrossValidation_ElasticNet
-
 from .algo.clustering import Clustering
 
 from .algo.selection import Selection
@@ -100,10 +96,6 @@ from .decontamination.decontamination_abstract import Decontamination_Abstract
 
 from .decontamination.decontamination_som import Decontamination_SOM
 
-from .decontamination.decontamination_elasticnet import Decontamination_ElasticNet
-
-from .decontamination.decontamination_isd import Decontamination_ISD
-
 ########################################################################################################################
 # UTILITIES                                                                                                            #
 ########################################################################################################################
@@ -125,7 +117,7 @@ __all__ = [
     'WCS', 'downgrade', 'rms_bit_to_healpix', 'image_to_healpix',
     'order_index_to_nuniq', 'nuniq_to_order_index', 'moc_to_healpix', 'wmoc_to_healpix',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
-    'Regression_Abstract', 'Regression_Basic', 'Regression_ElasticNet', 'CrossValidation_ElasticNet',
+    'Regression_Abstract', 'Regression_Basic',
     'Clustering',
     'Selection',
     'catalog_to_number_density',
@@ -134,7 +126,7 @@ __all__ = [
     'Generator_Uniform', 'Generator_NumberDensity', 'Generator_FullSkyUniform',
     'apodization',
     'Correlation_PairCount', 'Correlation_PowerSpectrum',
-    'Decontamination_Abstract', 'Decontamination_SOM', 'Decontamination_ElasticNet', 'Decontamination_ISD',
+    'Decontamination_Abstract', 'Decontamination_SOM',
 ]
 
 ########################################################################################################################

@@ -478,82 +478,11 @@
 </dd></dl>
 </dd></dl>
 </section>
-<section id="module-decontamination.decontamination.decontamination_elasticnet">
-<span id="elastic-net-method"></span><h2><em>Elastic Net</em> method<a class="headerlink" href="#module-decontamination.decontamination.decontamination_elasticnet" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#module-decontamination.decontamination.decontamination_elasticnet'"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.decontamination.decontamination_elasticnet.</span></span><span class="sig-name descname"><span class="pre">Decontamination_ElasticNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1_ratio:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet'"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Decontamination_Abstract</span></code></p>
-<p>Systematics decontamination using the <em>Elastic Net</em> method.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>Dimensionality of the input data.</p>
-</dd>
-<dt><strong>dtype</strong><span class="classifier">&lt;numeric type&gt;, default: <strong>np.float32</strong></span></dt><dd><p>Neural network data type, either <strong>np.float32</strong> or <strong>np.float64</strong>.</p>
-</dd>
-<dt><strong>rho</strong><span class="classifier">float = 1.0</span></dt><dd><p>Constant that multiplies the penalty terms.</p>
-</dd>
-<dt><strong>l1_ratio</strong><span class="classifier">float = 0.5</span></dt><dd><p>Mixing parameter, with 0 &lt;= l1_ratio &lt;= 1. For l1_ratio = 0 the penalty is an L2 penalty. For l1_ratio = 1 it is an L1 penalty. For 0 &lt; l1_ratio &lt; 1, the penalty is a combination of L1 and L2.</p>
-</dd>
-<dt><strong>alpha</strong><span class="classifier">float = 0.01</span></dt><dd><p>Learning rate.</p>
-</dd>
-<dt><strong>tolerance</strong><span class="classifier">float = <strong>None</strong></span></dt><dd><p>The tolerance for the optimization.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Attributes<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dim" title="decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dim</span></code></a></dt><dd><p>Dimensionality of the input data.</p>
-</dd>
-<dt><a class="reference internal" href="#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dtype" title="decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></dt><dd><p>Regression data type.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<table class="docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><strong>compute_equal_sky_area_edges_and_stats</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><strong>compute_weights</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p><strong>train</strong></p></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dim">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dim" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dim'"></a></dt>
-<dd><p>Dimensionality of the input data.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dtype">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dtype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span></em><a class="headerlink" href="#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dtype" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dtype'"></a></dt>
-<dd><p>Regression data type.</p>
-</dd></dl>
-</dd></dl>
+<section id="elastic-net-method">
+<h2><em>Elastic Net</em> method<a class="headerlink" href="#elastic-net-method" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#elastic-net-method'"></a></h2>
 </section>
-<section id="module-decontamination.decontamination.decontamination_isd">
-<span id="iterative-systematics-decontamination-method"></span><h2><em>Iterative Systematics Decontamination</em> method<a class="headerlink" href="#module-decontamination.decontamination.decontamination_isd" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#module-decontamination.decontamination.decontamination_isd'"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="decontamination.decontamination.decontamination_isd.Decontamination_ISD">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.decontamination.decontamination_isd.</span></span><span class="sig-name descname"><span class="pre">Decontamination_ISD</span></span><a class="headerlink" href="#decontamination.decontamination.decontamination_isd.Decontamination_ISD" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.decontamination.decontamination_isd.Decontamination_ISD'"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Decontamination_Abstract</span></code></p>
-<p>Systematics decontamination using the <em>Iterative Systematics Decontamination</em> method.</p>
-<p>TODO</p>
-<p class="rubric">Methods</p>
-<table class="docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><strong>compute_equal_sky_area_edges_and_stats</strong></p></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<section id="iterative-systematics-decontamination-method">
+<h2><em>Iterative Systematics Decontamination</em> method<a class="headerlink" href="#iterative-systematics-decontamination-method" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#iterative-systematics-decontamination-method'"></a></h2>
 </section>
 </section>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
@@ -598,18 +527,8 @@
 </li>
 </ul>
 </li>
-<li><a :data-current="activeSection === '#module-decontamination.decontamination.decontamination_elasticnet'" class="reference internal" href="#module-decontamination.decontamination.decontamination_elasticnet"><em>Elastic Net</em> method</a><ul>
-<li><a :data-current="activeSection === '#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet'" class="reference internal" href="#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet"><code class="docutils literal notranslate"><span class="pre">Decontamination_ElasticNet</span></code></a><ul>
-<li><a :data-current="activeSection === '#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dim'" class="reference internal" href="#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dim"><code class="docutils literal notranslate"><span class="pre">Decontamination_ElasticNet.dim</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dtype'" class="reference internal" href="#decontamination.decontamination.decontamination_elasticnet.Decontamination_ElasticNet.dtype"><code class="docutils literal notranslate"><span class="pre">Decontamination_ElasticNet.dtype</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a :data-current="activeSection === '#module-decontamination.decontamination.decontamination_isd'" class="reference internal" href="#module-decontamination.decontamination.decontamination_isd"><em>Iterative Systematics Decontamination</em> method</a><ul>
-<li><a :data-current="activeSection === '#decontamination.decontamination.decontamination_isd.Decontamination_ISD'" class="reference internal" href="#decontamination.decontamination.decontamination_isd.Decontamination_ISD"><code class="docutils literal notranslate"><span class="pre">Decontamination_ISD</span></code></a></li>
-</ul>
-</li>
+<li><a :data-current="activeSection === '#elastic-net-method'" class="reference internal" href="#elastic-net-method"><em>Elastic Net</em> method</a></li>
+<li><a :data-current="activeSection === '#iterative-systematics-decontamination-method'" class="reference internal" href="#iterative-systematics-decontamination-method"><em>Iterative Systematics Decontamination</em> method</a></li>
 </ul>
 </div>
 </aside>

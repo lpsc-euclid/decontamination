@@ -17,6 +17,7 @@ import numba as nb
 import numba.cuda as cu
 
 from . import atomic
+from . import processor
 
 ########################################################################################################################
 
@@ -470,6 +471,12 @@ class jit(object):
 
     ####################################################################################################################
 
+    _CPU_PREPROCESSOR = processor.Preprocessor(is_gpu = False)
+
+    _GPU_PREPROCESSOR = processor.Preprocessor(is_gpu = True)
+
+    ####################################################################################################################
+
     _CALL_RE = re.compile('(\\w+)_xpu\\s*\\(')
 
     _JIT_X_RE = re.compile('(?:\\w*\\.)?jit\\.')
@@ -501,40 +508,6 @@ class jit(object):
         cls._cnt = cls._cnt + 1
 
         return name
-
-    ####################################################################################################################
-
-    @classmethod
-    def _patch_cpu_code(cls, code: str) -> str:
-
-        code_cpu = cls._CALL_RE.sub(lambda m: f'jit_module.{m.group(1)}_cpu(', cls._JIT_X_RE.sub('jit.', cls._GPU_CODE_RE.sub('', code)))
-
-        return (
-            code_cpu
-            .replace('jit.grid', '# jit.grid')
-            .replace('jit.local_empty', 'np.empty')
-            .replace('jit.shared_empty', 'np.empty')
-            .replace('jit.syncthreads', '# jit.syncthreads')
-            .replace('jit.atomic_add', 'jit_module.atomic.add')
-            .replace('jit.atomic_sub', 'jit_module.atomic.sub')
-        )
-
-    ####################################################################################################################
-
-    @classmethod
-    def _patch_gpu_code(cls, code: str) -> str:
-
-        code_gpu = cls._CALL_RE.sub(lambda m: f'jit_module.{m.group(1)}_gpu(', cls._JIT_X_RE.sub('jit.', cls._CPU_CODE_RE.sub('', code)))
-
-        return (
-            code_gpu
-            .replace('jit.grid', 'cuda_module.grid')
-            .replace('jit.local_empty', 'cuda_module.local.array')
-            .replace('jit.shared_empty', 'cuda_module.shared.array')
-            .replace('jit.syncthreads', 'cuda_module.syncthreads')
-            .replace('jit.atomic_add', 'cuda_module.atomic.add')
-            .replace('jit.atomic_sub', 'cuda_module.atomic.sub')
-        )
 
     ####################################################################################################################
 
@@ -592,7 +565,7 @@ class jit(object):
 
         name_cpu = jit._get_unique_function_name()
 
-        code_cpu = jit._patch_cpu_code(f'def {name_cpu} {code_raw}')
+        code_cpu = jit._CPU_PREPROCESSOR.process(f'def {name_cpu} {code_raw}')
 
         ################################################################################################################
 
@@ -610,7 +583,7 @@ class jit(object):
 
         name_gpu = jit._get_unique_function_name()
 
-        code_gpu = jit._patch_gpu_code(f'def {name_gpu} {code_raw}')
+        code_gpu = jit._GPU_PREPROCESSOR.process(f'def {name_gpu} {code_raw}')
 
         ################################################################################################################
 

@@ -17,11 +17,8 @@
     <meta name="twitter:title" content="Index | decontamination 0.0.1 documentation" />
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8d216cef" />
       <link rel="stylesheet" type="text/css" href="_static/theme.css?v=edd7d3d2" />
-      <link rel="stylesheet" type="text/css" href="_static/docsearch.css?v=0bd54598" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=a946b518" />
-      <link rel="stylesheet" type="text/css" href="_static/awesome-docsearch.css?v=851f3c4f" />
-    <link rel="preconnect" href="https://-dsn.algolia.net" crossorigin="anonymous" />
-  
+        <link rel="search" title="Search" href="search.html" />
         <link rel="index" title="Index" href="#" />
 
     <script>
@@ -55,7 +52,23 @@
       <span class="sr-only">Toggle navigation menu</span>
     </button>
     <div class="flex items-center justify-between flex-1 space-x-2 sm:space-x-4 md:justify-end">
-      <div class="flex-1 w-full md:w-auto md:flex-none"><div id="docsearch"></div>
+      <div class="flex-1 w-full md:w-auto md:flex-none"><form id="searchbox"
+      action="search.html"
+      method="get"
+      class="relative flex items-center group"
+      @keydown.k.window.meta="$refs.search.focus()">
+  <input x-ref="search"
+          name="q"
+          id="search-input"
+          type="search"
+          aria-label="Search the docs"
+          placeholder="Search ..."
+          class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" />
+  <kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+    <span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
       </div>
       <nav class="flex items-center space-x-1">
         <button @click="darkMode = darkMode === 'light' ? 'dark' : 'light'"
@@ -627,10 +640,6 @@
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
-      <li><a href="module_mask.html#decontamination.mask.wcs.WCS.MUTEX">MUTEX (decontamination.mask.wcs.WCS attribute)</a>
-</li>
-  </ul></td>
   </tr>
       </table>
   
@@ -720,20 +729,8 @@
       </ul></li>
       <li><a href="module_algo.html#decontamination.algo.selection.Selection">Selection (class in decontamination.algo.selection)</a>
 </li>
-      <li><a href="module_algo.html#decontamination.algo.selection.Selection.BinaryOpNode">Selection.BinaryOpNode (class in decontamination.algo.selection)</a>
-</li>
-      <li><a href="module_algo.html#decontamination.algo.selection.Selection.ColNameNode">Selection.ColNameNode (class in decontamination.algo.selection)</a>
-</li>
-      <li><a href="module_algo.html#decontamination.algo.selection.Selection.FloatNumNode">Selection.FloatNumNode (class in decontamination.algo.selection)</a>
-</li>
-      <li><a href="module_algo.html#decontamination.algo.selection.Selection.IntNumNode">Selection.IntNumNode (class in decontamination.algo.selection)</a>
-</li>
-      <li><a href="module_algo.html#decontamination.algo.selection.Selection.UnaryOpNode">Selection.UnaryOpNode (class in decontamination.algo.selection)</a>
-</li>
       <li><a href="module_jit.html#decontamination.jit.DeviceArray.shape">shape (decontamination.jit.DeviceArray property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="module_jit.html#decontamination.jit.jit.shared_empty">shared_empty() (decontamination.jit.jit static method)</a>
 </li>
       <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch.sigma">sigma (decontamination.algo.som_batch.SOM_Batch property)</a>
@@ -744,6 +741,8 @@
         <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.sigma">(decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="module_algo.html#decontamination.algo.som_abstract.SOM_Abstract">SOM_Abstract (class in decontamination.algo.som_abstract)</a>
 </li>
       <li><a href="module_algo.html#decontamination.algo.som_batch.SOM_Batch">SOM_Batch (class in decontamination.algo.som_batch)</a>
@@ -836,8 +835,6 @@
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script defer="defer" src="_static/theme.js?v=1808ab49"></script>
-    <script defer="defer" src="_static/docsearch.js?v=711ed680"></script>
-    <script defer="defer" src="_static/docsearch_config.js?v=0d163087"></script>
     <script src="_static/custom.js?v=3685ffa6"></script>
   
 </body>

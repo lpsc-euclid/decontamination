@@ -109,10 +109,8 @@ def xyf2nest(nside: int, x: np.ndarray, y: np.ndarray, f: np.ndarray) -> np.ndar
     # Convert x, y, face (HEALPix Discrete) coordinates to nested HEALPix pixel indices.
 
     return (
-        (_spread_bits(x) << 0)
-        +
-        (_spread_bits(y) << 1)
-        +
+        (_spread_bits(x) << 0) +
+        (_spread_bits(y) << 1) +
         (f * nside * nside)
     )
 
@@ -126,11 +124,9 @@ def nest2xyf(nside: int, pixels: np.ndarray) -> typing.Tuple[np.ndarray, np.ndar
     v = pixels & (nside * nside - 1)
 
     return (
-        _compress_bits(v >> 0)
-        ,
-        _compress_bits(v >> 1)
-        ,
-        pixels // (nside * nside)
+        _compress_bits(v >> 0),
+        _compress_bits(v >> 1),
+        pixels // (nside * nside),
     )
 
 ########################################################################################################################
@@ -262,7 +258,7 @@ def _modulo(v1, v2):
 # FAST RAND_ANG                                                                                                        #
 ########################################################################################################################
 
-def randang(nside: int, pixels: np.ndarray, lonlat: bool = False, compat: bool = False, rng: typing.Optional[np.random.Generator] = None):
+def randang(nside: int, pixels: np.ndarray, lonlat: bool = False, compat: bool = False, rng: typing.Optional[np.random.Generator] = None) -> typing.Tuple[np.ndarray, np.ndarray]:
 
     """
     Samples random spherical coordinates from the given HEALPix pixels. **Nested ordering only.**

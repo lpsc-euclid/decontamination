@@ -35,7 +35,7 @@ copyright = f'2023-{date.today().year}, {metadata["credits"]}'
 
 extensions = [
     'numpydoc',
-    'sphinx_docsearch',
+    #'sphinx_docsearch',
     'sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     'sphinxawesome_theme',
@@ -54,7 +54,7 @@ autodoc_default_options = {
 
 ########################################################################################################################
 
-exclude_patterns = ['_build', '.DS_Store', 'Thumbs.db', 'toctree.rst']
+exclude_patterns = ['_build', '.DS_Store', 'Thumbs.db']
 
 ########################################################################################################################
 

@@ -368,6 +368,17 @@ class jit(object):
 
     ####################################################################################################################
 
+    @property
+    def is_gpu(self) -> bool:
+
+        """
+        Indicates whether the current function is running on GPU.
+        """
+
+        return False
+
+    ####################################################################################################################
+
     @staticmethod
     def grid(ndim: int) -> typing.Union[tuple, int]:
 

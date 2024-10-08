@@ -175,8 +175,8 @@ def ang2pix(nside: int, θ: np.ndarray, ϕ: np.ndarray, lonlat: bool = False) ->
     ϕ = _modulo(ϕ, 2.0 * np.pi) * (2.0 / np.pi)
 
     mask = (za <= 2.0 / 3.0)
-    equa = np.where(mask)[0]
-    pole = np.where(~mask)[0]
+    equa = np.nonzero(mask)
+    pole = np.nonzero(~mask)
 
     ####################################################################################################################
     # EQUA                                                                                                             #
@@ -337,8 +337,8 @@ def _xyf2loc(nside: int, x: np.ndarray, y: np.ndarray, f: np.ndarray, u: np.ndar
     m = 2.0 - r * h
 
     mask = m > 1.0
-    equa = np.where(mask)[0]
-    pole = np.where(~mask)[0]
+    equa = np.nonzero(mask)
+    pole = np.nonzero(~mask)
 
     m_pole_ = m[pole]
     n_pole_ = 1.0 - (m_pole_ ** 2) / 3.0

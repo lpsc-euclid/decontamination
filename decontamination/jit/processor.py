@@ -35,12 +35,14 @@ class Preprocessor(ast.NodeTransformer):
 
         ################################################################################################################
 
-        test_is_gpu = isinstance(node.test, ast.Attribute) and node.test.attr == 'is_gpu'
+        test_is_gpu = (
+            isinstance(node.test, ast.Attribute) and node.test.attr == 'is_gpu'
+        )
 
         test_not_gpu = (
-                isinstance(node.test, ast.UnaryOp) and isinstance(node.test.op, ast.Not)
-                and
-                isinstance(node.test.operand, ast.Attribute) and node.test.operand.attr == 'is_gpu'
+            isinstance(node.test, ast.UnaryOp) and isinstance(node.test.op, ast.Not)
+            and
+            isinstance(node.test.operand, ast.Attribute) and node.test.operand.attr == 'is_gpu'
         )
 
         ################################################################################################################

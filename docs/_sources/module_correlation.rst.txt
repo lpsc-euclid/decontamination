@@ -15,11 +15,6 @@ This module provides different ways of computing two-point galaxy angular correl
   | Jarvis M., Bernstein G. and Jain B.
     (`documentation <https://rmjarvis.github.io/TreeCorr/_build/html/index.html>`_)
 
-Angular correlation function from power spectrum
-------------------------------------------------
-
-.. automodule:: decontamination.correlation.correlation_power_spectrum
-
 Angular correlation function from pair counting
 -----------------------------------------------
 

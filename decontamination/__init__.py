@@ -86,8 +86,6 @@ from decontamination.correlation import apodization
 
 from decontamination.correlation.correlation_pair_count import Correlation_PairCount
 
-from decontamination.correlation.correlation_power_spectrum import Correlation_PowerSpectrum
-
 ########################################################################################################################
 # DECONTAMINATION                                                                                                      #
 ########################################################################################################################
@@ -125,7 +123,7 @@ __all__ = [
     'display_healpix', 'display_catalog',
     'Generator_Uniform', 'Generator_NumberDensity', 'Generator_FullSkyUniform',
     'apodization',
-    'Correlation_PairCount', 'Correlation_PowerSpectrum',
+    'Correlation_PairCount',
     'Decontamination_Abstract', 'Decontamination_SOM',
 ]
 

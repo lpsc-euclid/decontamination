@@ -133,84 +133,6 @@
 </div>
 </li>
 </ul>
-<section id="module-decontamination.correlation.correlation_power_spectrum">
-<span id="angular-correlation-function-from-power-spectrum"></span><h2>Angular correlation function from power spectrum<a class="headerlink" href="#module-decontamination.correlation.correlation_power_spectrum" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#module-decontamination.correlation.correlation_power_spectrum'"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.correlation.correlation_power_spectrum.</span></span><span class="sig-name descname"><span class="pre">Correlation_PowerSpectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">library</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'xpol'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum'"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Correlation_Abstract</span></code></p>
-<p>Angular correlation function from power spectrum.</p>
-<div class="math notranslate nohighlight">
-\[\xi(\theta)=\frac{1}{4\pi}\sum_{l=0}^{2\times\text{nside}}(2l+1)\,C_l\,P_l(\cos\theta)\]</div>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>data_lon</strong><span class="classifier">np.ndarray</span></dt><dd><p>Galaxy catalog longitudes (in degrees).</p>
-</dd>
-<dt><strong>data_lat</strong><span class="classifier">np.ndarray</span></dt><dd><p>Galaxy catalog latitudes (in degrees).</p>
-</dd>
-<dt><strong>footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the region where correlation must be calculated.</p>
-</dd>
-<dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
-</dd>
-<dt><strong>nest</strong><span class="classifier">bool</span></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering.</p>
-</dd>
-<dt><strong>min_sep</strong><span class="classifier">float</span></dt><dd><p>Minimum galaxy separation being considered (in arcmins).</p>
-</dd>
-<dt><strong>max_sep</strong><span class="classifier">float</span></dt><dd><p>Maximum galaxy separation being considered (in arcmins).</p>
-</dd>
-<dt><strong>n_bins</strong><span class="classifier">int</span></dt><dd><p>Number of angular bins.</p>
-</dd>
-<dt><strong>l_max</strong><span class="classifier">int, default: 3*nside-1</span></dt><dd><p>Maximum <span class="math notranslate nohighlight">\(l\)</span> of the power spectrum.</p>
-</dd>
-<dt><strong>library</strong><span class="classifier">str, default: <strong>‘xpol’</strong></span></dt><dd><p>Library to be used for calculating the <span class="math notranslate nohighlight">\(C_l\)</span> inside the footprint (<strong>‘xpol’</strong>, <strong>‘anafast’</strong>).</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Attributes<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>data_contrast</strong></dt><dd></dd>
-<dt><strong>data_spectrum</strong></dt><dd></dd>
-<dt><strong>footprint</strong></dt><dd></dd>
-<dt><strong>l</strong></dt><dd></dd>
-<dt><strong>l_max</strong></dt><dd></dd>
-<dt><strong>library</strong></dt><dd></dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_sep</span></code></dt><dd><p>Maximum separation (in degrees).</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_sep</span></code></dt><dd><p>Minimum separation (in degrees).</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_bins</span></code></dt><dd><p>Number of angular bins.</p>
-</dd>
-<dt><strong>nside</strong></dt><dd></dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate</span></code>(estimator[, random_lon, random_lat])</p></td>
-<td><p>Calculates the angular correlation function.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2correlation" title="decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2correlation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell2correlation</span></code></a>(cl)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2power_spectrum" title="decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2power_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell2power_spectrum</span></code></a>(cl)</p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2power_spectrum">
-<span class="sig-name descname"><span class="pre">cell2power_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2power_spectrum" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2power_spectrum'"></a></dt>
-<dd><p>???</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2correlation">
-<span class="sig-name descname"><span class="pre">cell2correlation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2correlation" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2correlation'"></a></dt>
-<dd><p>???</p>
-</dd></dl>
-</dd></dl>
-</section>
 <section id="module-decontamination.correlation.correlation_pair_count">
 <span id="angular-correlation-function-from-pair-counting"></span><h2>Angular correlation function from pair counting<a class="headerlink" href="#module-decontamination.correlation.correlation_pair_count" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#module-decontamination.correlation.correlation_pair_count'"></a></h2>
 <dl class="py class">
@@ -341,14 +263,6 @@ or a scalar field approach (≡ KK correlations) if a footprint is provided.</p>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>
-<li><a :data-current="activeSection === '#module-decontamination.correlation.correlation_power_spectrum'" class="reference internal" href="#module-decontamination.correlation.correlation_power_spectrum">Angular correlation function from power spectrum</a><ul>
-<li><a :data-current="activeSection === '#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum'" class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum"><code class="docutils literal notranslate"><span class="pre">Correlation_PowerSpectrum</span></code></a><ul>
-<li><a :data-current="activeSection === '#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2power_spectrum'" class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2power_spectrum"><code class="docutils literal notranslate"><span class="pre">Correlation_PowerSpectrum.cell2power_spectrum()</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2correlation'" class="reference internal" href="#decontamination.correlation.correlation_power_spectrum.Correlation_PowerSpectrum.cell2correlation"><code class="docutils literal notranslate"><span class="pre">Correlation_PowerSpectrum.cell2correlation()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li><a :data-current="activeSection === '#module-decontamination.correlation.correlation_pair_count'" class="reference internal" href="#module-decontamination.correlation.correlation_pair_count">Angular correlation function from pair counting</a><ul>
 <li><a :data-current="activeSection === '#decontamination.correlation.correlation_pair_count.Correlation_PairCount'" class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount</span></code></a><ul>
 <li><a :data-current="activeSection === '#decontamination.correlation.correlation_pair_count.Correlation_PairCount.bin_slop'" class="reference internal" href="#decontamination.correlation.correlation_pair_count.Correlation_PairCount.bin_slop"><code class="docutils literal notranslate"><span class="pre">Correlation_PairCount.bin_slop</span></code></a></li>
@@ -382,7 +296,6 @@ or a scalar field approach (≡ KK correlations) if a footprint is provided.</p>
 <script src="_static/doctools.js?v=9a2dae69"></script>
 <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
 <script defer="defer" src="_static/theme.js?v=1808ab49"></script>
-<script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script src="_static/custom.js?v=3685ffa6"></script>
 </body>
 </html>

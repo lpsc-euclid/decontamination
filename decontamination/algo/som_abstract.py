@@ -655,48 +655,56 @@ class SOM_Abstract(object):
 @jit(kernel = True, parallel = True)
 def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, density: np.ndarray, mn: int) -> None:
 
-    ####################################################################################################################
-    # !--BEGIN-CPU--
+    if jit.is_gpu:
 
-    for i in nb.prange(vectors.shape[0]):
+        ################################################################################################################
+        # GPU                                                                                                          #
+        ################################################################################################################
 
-        jit.atomic_add(result, _find_bmu_xpu(weights, vectors[i], mn), density[i])
+        i = jit.grid(1)
+        if i < vectors.shape[0]:
 
-    # !--END-CPU--
-    ####################################################################################################################
-    # !--BEGIN-GPU--
+            jit.atomic_add(result, _find_bmu_xpu(weights, vectors[i], mn), density[i])
 
-    i = jit.grid(1)
+        ################################################################################################################
 
-    if i < vectors.shape[0]:
+    else:
 
-        jit.atomic_add(result, _find_bmu_xpu(weights, vectors[i], mn), density[i])
+        ################################################################################################################
+        # CPU                                                                                                          #
+        ################################################################################################################
 
-    # !--END-GPU--
+        for i in nb.prange(vectors.shape[0]):
+
+            jit.atomic_add(result, _find_bmu_xpu(weights, vectors[i], mn), density[i])
 
 ########################################################################################################################
 
 @jit(kernel = True, parallel = True)
 def _find_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndarray, mn: int) -> None:
 
-    ####################################################################################################################
-    # !--BEGIN-CPU--
+    if jit.is_gpu:
 
-    for i in nb.prange(vectors.shape[0]):
+        ################################################################################################################
+        # GPU                                                                                                          #
+        ################################################################################################################
 
-        result[i] = _find_bmu_xpu(weights, vectors[i], mn)
+        i = jit.grid(1)
+        if i < vectors.shape[0]:
 
-    # !--END-CPU--
-    ####################################################################################################################
-    # !--BEGIN-GPU--
+            result[i] = _find_bmu_xpu(weights, vectors[i], mn)
 
-    i = jit.grid(1)
+        ################################################################################################################
 
-    if i < vectors.shape[0]:
+    else:
 
-        result[i] = _find_bmu_xpu(weights, vectors[i], mn)
+        ################################################################################################################
+        # CPU                                                                                                          #
+        ################################################################################################################
 
-    # !--END-GPU--
+        for i in nb.prange(vectors.shape[0]):
+
+            result[i] = _find_bmu_xpu(weights, vectors[i], mn)
 
 ########################################################################################################################
 
@@ -722,24 +730,28 @@ def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 @jit(kernel = True, parallel = True)
 def _compute_errors_kernel(errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, penalty_dist: float, mn: int) -> None:
 
-    ####################################################################################################################
-    # !--BEGIN-CPU--
+    if jit.is_gpu:
 
-    for i in nb.prange(vectors.shape[0]):
+        ################################################################################################################
+        # GPU                                                                                                          #
+        ################################################################################################################
 
-        _compute_errors_xpu(errors, weights, topography, vectors[i], penalty_dist, mn)
+        i = jit.grid(1)
+        if i < vectors.shape[0]:
 
-    # !--END-CPU--
-    ####################################################################################################################
-    # !--BEGIN-GPU--
+            _compute_errors_xpu(errors, weights, topography, vectors[i], penalty_dist, mn)
 
-    i = jit.grid(1)
+        ################################################################################################################
 
-    if i < vectors.shape[0]:
+    else:
 
-        _compute_errors_xpu(errors, weights, topography, vectors[i], penalty_dist, mn)
+        ################################################################################################################
+        # CPU                                                                                                          #
+        ################################################################################################################
 
-    # !--END-GPU--
+        for i in nb.prange(vectors.shape[0]):
+
+            _compute_errors_xpu(errors, weights, topography, vectors[i], penalty_dist, mn)
 
 ########################################################################################################################
 

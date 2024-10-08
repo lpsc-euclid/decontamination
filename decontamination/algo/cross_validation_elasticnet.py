@@ -15,6 +15,20 @@ from . import regression_elasticnet, dataset_to_generator_builder
 
 ########################################################################################################################
 
+try:
+
+    from sklearn.linear_model import ElasticNet as SklearnElastic
+
+except (ImportError, ModuleNotFoundError):
+
+    SklearnElastic = None
+
+########################################################################################################################
+
+RESOLUTION = np.finfo(float).resolution
+
+########################################################################################################################
+
 # noinspection PyPep8Naming
 class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
 
@@ -75,9 +89,9 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
 
         ################################################################################################################
 
-        if alpha_max <= np.finfo(float).resolution:
+        if alpha_max <= RESOLUTION:
 
-            return np.full(self._n_rhos, np.finfo(float).resolution)
+            return lambda_max, np.full(self._n_rhos, RESOLUTION)
 
         else:
 
@@ -85,13 +99,17 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
 
     ####################################################################################################################
 
-    def find_hyper_parameters(self, dataset: typing.Union[typing.Tuple[np.ndarray, np.ndarray], typing.Callable], n_epochs: typing.Optional[int] = 1000, soft_thresholding: bool = True, show_progress_bar: bool = False) -> typing.Optional[typing.Dict[str, float]]:
+    def find_hyper_parameters(self, dataset: typing.Union[typing.Tuple[np.ndarray, np.ndarray], typing.Callable], n_epochs: typing.Optional[int] = 1000, soft_thresholding: bool = True, seed: typing.Optional[int] = None, use_sklearn: bool = False, show_progress_bar: bool = False) -> typing.Optional[typing.Dict[str, float]]:
 
         result = None
 
         lambda_max = None
 
         best_score = np.inf
+
+        ################################################################################################################
+
+        rng = np.random.default_rng(seed = seed)
 
         ################################################################################################################
 
@@ -117,7 +135,7 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
 
             indices = np.arange(self._cv)
 
-            np.random.shuffle(indices)
+            rng.shuffle(indices)
 
             folds = [indices[i::self._cv] for i in range(self._cv)]
 
@@ -137,16 +155,52 @@ class CrossValidation_ElasticNet(regression_elasticnet.Regression_ElasticNet):
 
                     fold_indices = np.concatenate([folds[j] for j in range(self._cv) if j != i])
 
-                    ####################################################################################################
-
-                    self._rho = rho
-                    self._l1_ratio = l1_ratio
-
-                    self.train(dataset, n_epochs = n_epochs, fold_indices = fold_indices, cv = self._cv, soft_thresholding = soft_thresholding, compute_error = True, show_progress_bar = False)
+                    print(fold_indices)
 
                     ####################################################################################################
 
-                    scores.append(self.error)
+                    if use_sklearn:
+
+                        ################################################################################################
+
+                        generator = generator_builder()
+
+                        dataset_x = np.empty((0, self._dim), dtype = self._dtype)
+                        dataset_y = np.empty(0, dtype = self._dtype)
+
+                        for j, (x, y) in enumerate(generator()):
+
+                            if j % self._cv in fold_indices:
+
+                                dataset_x = np.append(dataset_x, x, axis = 0)
+                                dataset_y = np.append(dataset_y, y, axis = 0)
+
+                        ################################################################################################
+
+                        enet = SklearnElastic(alpha = rho, l1_ratio = l1_ratio, fit_intercept = True, max_iter = n_epochs, tol = self._tolerance)
+
+                        enet.fit(dataset_x, dataset_y)
+
+                        ################################################################################################
+
+                        self._weights = enet.coef_.copy().astype(self.dtype)
+
+                        self._intercept = self.dtype(enet.intercept_)
+
+                        ################################################################################################
+
+                    else:
+
+                        ################################################################################################
+
+                        self._rho = rho
+                        self._l1_ratio = l1_ratio
+
+                        self.train(dataset, n_epochs = n_epochs, fold_indices = fold_indices, cv = self._cv, soft_thresholding = soft_thresholding, compute_error = False, show_progress_bar = False)
+
+                ########################################################################################################
+
+                scores.append(self._compute_error(generator_builder, fold_indices = fold_indices, cv = self._cv))
 
                 ########################################################################################################
 

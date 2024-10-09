@@ -35,7 +35,7 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
     Parameters
     ----------
     nside : int
-        HEALPix nside parameter (KK correlations only).
+        HEALPix nside parameter.
     nest : bool
         If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering.
     footprint : np.ndarray
@@ -90,7 +90,7 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
     @property
     def nside(self) -> typing.Optional[int]:
 
-        """The HEALPix nside parameter (KK correlations only)."""
+        """The HEALPix nside parameter."""
 
         return self._nside
 
@@ -99,7 +99,7 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
     @property
     def nest(self) -> typing.Optional[bool]:
 
-        """If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering (KK correlations only)."""
+        """If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering."""
 
         return self._nest
 
@@ -108,7 +108,7 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
     @property
     def footprint(self) -> typing.Optional[np.ndarray]:
 
-        """HEALPix indices of the region where correlation must be calculated (KK correlations only)."""
+        """HEALPix indices of the region where correlation must be calculated."""
 
         return self._footprint
 

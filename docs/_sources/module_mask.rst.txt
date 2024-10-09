@@ -14,9 +14,3 @@ Multi-Order Coverage (MOC) masks
 
 .. automodule:: decontamination.mask.moc
    :members:
-
-World Coordinate System (WCS)
------------------------------
-
-.. automodule:: decontamination.mask.wcs
-   :members:

@@ -201,20 +201,20 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`). A batch formulation of updating weights is implemented:
 
         .. math::
-            c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert
+            c_i(x,w,e)\\equiv\\mathrm{bmu}(x_i,w(e))\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert
 
         if :math:`\\sigma>0`:
 
         .. math::
-            \\Theta_{ji}(w,e)\\equiv\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert^2}{2\\sigma^2(e)}\\right)
+            \\Theta_{ji}(x,w,e)\\equiv\\exp\\left(-\\frac{\\lVert j-c_i(x,w,e)\\rVert^2}{2\\sigma^2(e)}\\right)
 
         if :math:`\\sigma=0`:
 
         .. math::
-            \\Theta_{ji}(w,e)\\equiv\\delta_{j,c_i(w,e)}\\equiv\\left\\{\\begin{array}{ll}1&j=c_i(w,e)\\\\0&\\mathrm{otherwise}\\end{array}\\right.
+            \\Theta_{ji}(x,w,e)\\equiv\\delta_{j,c_i(x,w,e)}\\equiv\\left\\{\\begin{array}{ll}1&j=c_i(x,w,e)\\\\0&\\mathrm{otherwise}\\end{array}\\right.
 
         .. math::
-            \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)\\cdot x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(w,e)}}
+            \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(x,w,e)\\cdot x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(x,w,e)}}
 
         where :math:`j=0\\dots m\\times n-1`, at epoch :math:`e`, :math:`\\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}}` is the neighborhood radius.
 

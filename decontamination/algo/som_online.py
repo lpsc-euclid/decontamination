@@ -156,13 +156,13 @@ class SOM_Online(som_abstract.SOM_Abstract):
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`). An online formulation of updating weights is implemented:
 
         .. math::
-            c_i(w,e)\\equiv\\mathrm{bmu}(x_i,w,e)\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert
+            c_i(x,w,t)\\equiv\\mathrm{bmu}(x_i,w(t))\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(t)\\rVert
 
         .. math::
-            \\Theta_{ji}(w,e)\\equiv\\exp\\left(-\\frac{\\lVert j-c_i(w,e)\\rVert^2}{2\\sigma^2(e)}\\right)
+            \\Theta_{ji}(x,w,e,t)\\equiv\\exp\\left(-\\frac{\\lVert j-c_i(x,w,t)\\rVert^2}{2\\sigma^2(e)}\\right)
 
         .. math::
-            \\boxed{\\mathrm{iteratively\\,for}\\,i=0\\dots N-1\\,\\mathrm{:}\\,w_j(e+1)=w_j(e)+\\alpha(e)\\cdot\\Theta_{ji}(w,e)[x_i-w_j(e)]}
+            \\boxed{\\mathrm{iteratively\\,for}\\,t=0\\dots N-1\\,\\mathrm{:}\\,w_j(t+1)=w_j(t)+\\alpha(e)\\cdot\\Theta_{ji}(x,w,e,t)[x_i-w_j(t)]}
 
         where :math:`j=0\\dots m\\times n-1` and, at epoch :math:`e`, :math:`\\alpha(e)\\equiv\\alpha\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}}` is the learning rate and :math:`\\sigma(e)\\equiv\\sigma\\cdot\\frac{1}{1+2\\frac{e}{e_\\mathrm{tot}}}` is the neighborhood radius.
 

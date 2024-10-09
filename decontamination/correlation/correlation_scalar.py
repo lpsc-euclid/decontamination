@@ -54,6 +54,10 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
         Optional number of OpenMP threads to use during the calculation.
     random_field : np.ndarray
         ???
+    data_w : np.ndarray
+        ???
+    random_w : np.ndarray
+        ???
     """
 
     ####################################################################################################################
@@ -197,14 +201,9 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
         if estimator == 'rd':
             return self._calculate_xy(self._random_catalog, self._data_catalog)
 
-        else:
+        ################################################################################################################
 
-            if estimator == 'peebles_hauser':
-                return self._calculate_xi(False, False)
-            if estimator == 'landy_szalay_1':
-                return self._calculate_xi(True, False)
-            if estimator == 'landy_szalay_2':
-                return self._calculate_xi(True, True)
+        raise ValueError('Invalid estimator (`dd`, `rr`, `dr`, `rd` are authorized)')
 
     ####################################################################################################################
 
@@ -221,51 +220,6 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
         xi_theta = xy.xi
 
         xi_theta_error = np.sqrt(xy.varxi)
-
-        ################################################################################################################
-
-        return theta, xi_theta, xi_theta_error
-
-    ####################################################################################################################
-
-    def _calculate_xi(self, with_dr: bool, with_rd: bool) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
-
-        ################################################################################################################
-
-        dd = self._correlate(self._data_catalog)
-        rr = self._correlate(self._random_catalog)
-
-        ################################################################################################################
-
-        theta = np.exp(dd.meanlogr)
-
-        ################################################################################################################
-
-        if with_dr:
-
-            dr = self._correlate(self._data_catalog, self._random_catalog)
-
-            if with_rd:
-
-                rd = self._correlate(self._random_catalog, self._data_catalog)
-
-                ##
-
-                xi_theta = (dd.npairs - dr.npairs - rd.npairs + rr.npairs) / rr.npairs
-
-                xi_theta_error = np.zeros_like(xi_theta)
-
-            else:
-
-                xi_theta = (dd.npairs - 2 * dr.npairs + rr.npairs) / rr.npairs
-
-                xi_theta_error = np.zeros_like(xi_theta)
-
-        else:
-
-            xi_theta = (dd.npairs / rr.npairs) - 1.0
-
-            xi_theta_error = np.zeros_like(xi_theta)
 
         ################################################################################################################
 

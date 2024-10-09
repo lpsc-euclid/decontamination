@@ -51,7 +51,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def __init__(self, data_lon: np.ndarray, data_lat: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, n_threads: typing.Optional[int] = None, random_lon: typing.Optional[np.ndarray] = None, random_lat: typing.Optional[np.ndarray] = None):
+    def __init__(self, data_lon: np.ndarray, data_lat: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, n_threads: typing.Optional[int] = None, random_lon: typing.Optional[np.ndarray] = None, random_lat: typing.Optional[np.ndarray] = None, data_w: typing.Optional[np.ndarray] = None, random_w: typing.Optional[np.ndarray] = None):
 
         ################################################################################################################
 
@@ -70,11 +70,11 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        self._data_catalog = self._build_catalog(data_lon, data_lat)
+        self._data_catalog = self._build_catalog(data_lon, data_lat, data_w)
 
         if random_lon is not None and random_lat is not None:
 
-            self._random_catalog = self._build_catalog(random_lon, random_lat)
+            self._random_catalog = self._build_catalog(random_lon, random_lat, random_w)
 
         else:
 
@@ -101,13 +101,14 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
     ####################################################################################################################
 
     @staticmethod
-    def _build_catalog(lon: np.ndarray, lat: np.ndarray) -> 'treecorr.Catalog':
+    def _build_catalog(lon: np.ndarray, lat: np.ndarray, w: np.ndarray) -> 'treecorr.Catalog':
 
         return treecorr.Catalog(
             ra = lon,
             dec = lat,
             ra_units = 'degrees',
-            dec_units = 'degrees'
+            dec_units = 'degrees',
+            w = w,
         )
 
     ####################################################################################################################

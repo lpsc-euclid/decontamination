@@ -1,6 +1,6 @@
 .. raw:: html
 
-    <div style="display: flex !important; justify-content: space-around; width: 100%;">
+    <div style="display: flex !important; justify-content: space-around; margin-left: auto; margin-right: auto; width: 80%;">
 
 .. image:: _html_static/logo_lpsc.svg
   :alt: LPSC

@@ -4,7 +4,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     /*----------------------------------------------------------------------------------------------------------------*/
 
-    /* NOTHING TO DO */
+    document.querySelectorAll('#right-sidebar .pre').forEach((item) => {
+
+        item.textContent = item.textContent.split('.').pop();
+    });
 
     /*----------------------------------------------------------------------------------------------------------------*/
 });

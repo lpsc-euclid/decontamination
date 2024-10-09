@@ -66,7 +66,7 @@ from .plotting.latent_space import display_latent_space
 
 ########################################################################################################################
 
-from .plotting.healpix_map import display_healpix, display_catalog
+from .plotting.healpix_map import display_healpix, display_catalog, flush_full_sky
 
 ########################################################################################################################
 # GENERATORS                                                                                                           #
@@ -120,7 +120,7 @@ __all__ = [
     'Selection',
     'catalog_to_number_density',
     'display_latent_space',
-    'display_healpix', 'display_catalog',
+    'display_healpix', 'display_catalog', 'flush_full_sky',
     'Generator_Uniform', 'Generator_NumberDensity', 'Generator_FullSkyUniform',
     'apodization',
     'Correlation_PairCount',

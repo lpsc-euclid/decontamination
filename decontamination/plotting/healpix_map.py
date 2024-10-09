@@ -6,6 +6,7 @@
 # license: CeCILL-C
 ########################################################################################################################
 
+import gc
 import typing
 
 import numpy as np
@@ -126,7 +127,7 @@ def _get_norm_cmap_label(values: np.ndarray, v_min: typing.Optional[float], v_ma
 ########################################################################################################################
 
 # noinspection PyUnresolvedReferences
-def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool, cmap: str, v_min: float, v_max: float, n_sigma: float, n_hist_bins: int, colorbar_label: str, log_scale: bool, show_colorbar: bool, show_histogram: bool, assume_positive: bool) -> typing.Tuple[plt.Figure, plt.Axes, float, float]:
+def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool, cmap: str, v_min: float, v_max: float, n_sigma: float, n_hist_bins: int, colorbar_label: str, log_scale: bool, show_graticule: bool, show_colorbar: bool, show_histogram: bool, assume_positive: bool) -> typing.Tuple[plt.Figure, plt.Axes, float, float]:
 
     ####################################################################################################################
 
@@ -154,6 +155,16 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
         ysize = 1600
     )
 
+    if show_graticule:
+
+        for lon in range(int(lon_min), int(lon_max) + 1, 10):
+
+            projector.projplot(lon, 0, 'r', lonlat = True)
+
+        for lat in range(int(lat_min), int(lat_max) + 1, 10):
+
+            projector.projplot(0, lat, 'b', lonlat = True)
+
     image = projector.projmap(full_sky, lambda x, y, z: hp.vec2pix(nside, x, y, z, nest = nest))
 
     ####################################################################################################################
@@ -179,7 +190,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
 ########################################################################################################################
 
-def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'value', log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = False) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
+def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'value', log_scale: bool = False, show_graticule: bool = True, show_colorbar: bool = True, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = False) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
 
     """
     Displays a HEALPix map.
@@ -208,6 +219,8 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
         Colorbar label.
     log_scale : bool, default: **False**
         Specifies whether to enable the logarithm scaling.
+    show_graticule : bool, default: **True**
+        Specifies whether to display the graticule.
     show_colorbar : bool, default: **True**
         Specifies whether to display the colorbar.
     show_histogram : bool, default: **True**
@@ -244,6 +257,7 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
         n_hist_bins,
         colorbar_label,
         log_scale,
+        show_graticule,
         show_colorbar,
         show_histogram,
         assume_positive
@@ -256,7 +270,7 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
 
 ########################################################################################################################
 
-def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = True) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
+def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_graticule: bool = True, show_colorbar: bool = True, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = True) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
 
     """
     Displays a catalog.
@@ -287,6 +301,8 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
         Colorbar label.
     log_scale : bool, default: **False**
         Specifies whether to enable the logarithm scaling.
+    show_graticule : bool, default: **True**
+        Specifies whether to display the graticule.
     show_colorbar : bool, default: **True**
         Specifies whether to display the colorbar.
     show_histogram : bool, default: **True**
@@ -323,6 +339,7 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
         n_hist_bins,
         colorbar_label,
         log_scale,
+        show_graticule,
         show_colorbar,
         show_histogram,
         assume_positive
@@ -332,5 +349,17 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
         return fig, ax, v_min, v_max
     else:
         return fig, ax
+
+########################################################################################################################
+
+def flush_full_sky():
+
+    global _footprint
+    global _full_sky
+
+    _footprint = None
+    _full_sky = None
+
+    gc.collect()
 
 ########################################################################################################################

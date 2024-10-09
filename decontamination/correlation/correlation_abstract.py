@@ -17,6 +17,10 @@ import healpy as hp
 # noinspection PyPep8Naming
 class Correlation_Abstract(abc.ABC):
 
+    """
+    Abstract class for computing galaxy angular correlation function using the TreeCorr library.
+    """
+
     ####################################################################################################################
 
     def __init__(self, min_sep: float, max_sep: float, n_bins: int):
@@ -56,7 +60,7 @@ class Correlation_Abstract(abc.ABC):
     ####################################################################################################################
 
     @abc.abstractmethod
-    def calculate(self, estimator: str, random_lon: typing.Optional[np.ndarray] = None, random_lat: typing.Optional[np.ndarray] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def calculate(self, estimator: str) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         """
         Calculates the angular correlation function.
@@ -80,10 +84,6 @@ class Correlation_Abstract(abc.ABC):
         ----------
         estimator : str
             Estimator being considered ("dd", "rr", "dr", "rd", "peebles_hauser", "landy_szalay_1", "landy_szalay_2").
-        random_lon : np.ndarray, default: None
-            Optional random catalog longitudes (in degrees). For Peebles & Hauser and Landy & Szalay estimators only.
-        random_lat : np.ndarray, default: None
-            Optional random catalog latitudes (in degrees). For Peebles & Hauser and Landy & Szalay estimators only.
 
         Returns
         -------

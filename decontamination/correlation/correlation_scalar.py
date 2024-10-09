@@ -9,6 +9,7 @@
 import typing
 
 import numpy as np
+import healpy as hp
 
 from . import correlation_abstract
 
@@ -25,7 +26,7 @@ except ImportError:
 ########################################################################################################################
 
 # noinspection PyPep8Naming, PyTypeChecker, DuplicatedCode
-class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
+class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
 
     """
     Galaxy angular correlation function using the TreeCorr library. Supports pair counting (≡ NN correlations)
@@ -33,10 +34,14 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     Parameters
     ----------
-    data_lon : np.ndarray
-        Galaxy catalog longitudes (in degrees).
-    data_lat : np.ndarray
-        Galaxy catalog latitudes (in degrees).
+    nside : int
+        HEALPix nside parameter (KK correlations only).
+    nest : bool
+        If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering.
+    footprint : np.ndarray
+        HEALPix indices of the region where correlation must be calculated.
+    data_field : np.ndarray
+        ???
     min_sep : float
         Minimum galaxy separation being considered (in arcmins).
     max_sep : float
@@ -47,11 +52,13 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         Optional precision parameter (see `TreeCorr documentation <https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop>`_).
     n_threads : int, default: **None** ≡ the number of cpu cores
         Optional number of OpenMP threads to use during the calculation.
+    random_field : np.ndarray
+        ???
     """
 
     ####################################################################################################################
 
-    def __init__(self, data_lon: np.ndarray, data_lat: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, n_threads: typing.Optional[int] = None, random_lon: typing.Optional[np.ndarray] = None, random_lat: typing.Optional[np.ndarray] = None):
+    def __init__(self, nside: int, nest: bool, footprint: np.ndarray, data_field: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, n_threads: typing.Optional[int] = None, random_field: typing.Optional[np.ndarray] = None, data_w: typing.Optional[np.ndarray] = None, random_w: typing.Optional[np.ndarray] = None):
 
         ################################################################################################################
 
@@ -65,6 +72,12 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
+        self._nest = nest
+        self._nside = nside
+        self._footprint = footprint
+
+        self._lon, self._lat = hp.pix2ang(self._nside, self._footprint, nest = self._nest, lonlat = True)
+
         self._bin_slop = bin_slop
         self._n_threads = n_threads
 
@@ -72,15 +85,42 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         # BUILD THE CATALOG                                                                                            #
         ################################################################################################################
 
-        self._data_catalog = self._build_catalog(data_lon, data_lat)
+        self._data_catalog = self._build_catalog(data_field, data_w)
 
-        if random_lon is not None and random_lat is not None:
+        if random_field is not None:
 
-            self._random_catalog = self._build_catalog(random_lon, random_lat)
+            self._random_catalog = self._build_catalog(random_field, random_w)
 
         else:
 
             self._random_catalog = None
+
+    ####################################################################################################################
+
+    @property
+    def nside(self) -> typing.Optional[int]:
+
+        """The HEALPix nside parameter (KK correlations only)."""
+
+        return self._nside
+
+    ####################################################################################################################
+
+    @property
+    def nest(self) -> typing.Optional[bool]:
+
+        """If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering (KK correlations only)."""
+
+        return self._nest
+
+    ####################################################################################################################
+
+    @property
+    def footprint(self) -> typing.Optional[np.ndarray]:
+
+        """HEALPix indices of the region where correlation must be calculated (KK correlations only)."""
+
+        return self._footprint
 
     ####################################################################################################################
 
@@ -102,14 +142,15 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    @staticmethod
-    def _build_catalog(lon: np.ndarray, lat: np.ndarray) -> 'treecorr.Catalog':
+    def _build_catalog(self, field: np.ndarray, w: np.ndarray) -> 'treecorr.Catalog':
 
         return treecorr.Catalog(
-            ra = lon,
-            dec = lat,
+            ra = self._lon,
+            dec = self._lat,
             ra_units = 'degrees',
-            dec_units = 'degrees'
+            dec_units = 'degrees',
+            k = field,
+            w = w,
         )
 
     ####################################################################################################################
@@ -119,9 +160,9 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         ################################################################################################################
 
         if self._bin_slop is None:
-            result = treecorr.NNCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, sep_units = 'arcmin')
+            result = treecorr.KKCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, sep_units = 'arcmin')
         else:
-            result = treecorr.NNCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, bin_slop = self._bin_slop, sep_units = 'arcmin')
+            result = treecorr.KKCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, bin_slop = self._bin_slop, sep_units = 'arcmin')
 
         ################################################################################################################
 
@@ -165,10 +206,6 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
             if estimator == 'landy_szalay_2':
                 return self._calculate_xi(True, True)
 
-        ################################################################################################################
-
-        raise ValueError('Invalid estimator (`dd`, `rr`, `dr`, `rd`, `peebles_hauser`, `landy_szalay1`, `landy_szalay_2` are authorized)')
-
     ####################################################################################################################
 
     def _calculate_xy(self, catalog1: 'treecorr.Catalog', catalog2: typing.Optional['treecorr.Catalog'] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -198,18 +235,37 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         dd = self._correlate(self._data_catalog)
         rr = self._correlate(self._random_catalog)
 
-        dr = self._correlate(self._data_catalog, self._random_catalog) if with_dr else None
-        rd = self._correlate(self._random_catalog, self._data_catalog) if with_rd else None
-
         ################################################################################################################
 
         theta = np.exp(dd.meanlogr)
 
         ################################################################################################################
 
-        xi_theta, xi_theta_variance = dd.calculateXi(rr = rr, dr = dr, rd = rd)
+        if with_dr:
 
-        xi_theta_error = np.sqrt(xi_theta_variance)
+            dr = self._correlate(self._data_catalog, self._random_catalog)
+
+            if with_rd:
+
+                rd = self._correlate(self._random_catalog, self._data_catalog)
+
+                ##
+
+                xi_theta = (dd.npairs - dr.npairs - rd.npairs + rr.npairs) / rr.npairs
+
+                xi_theta_error = np.zeros_like(xi_theta)
+
+            else:
+
+                xi_theta = (dd.npairs - 2 * dr.npairs + rr.npairs) / rr.npairs
+
+                xi_theta_error = np.zeros_like(xi_theta)
+
+        else:
+
+            xi_theta = (dd.npairs / rr.npairs) - 1.0
+
+            xi_theta_error = np.zeros_like(xi_theta)
 
         ################################################################################################################
 

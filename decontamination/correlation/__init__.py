@@ -31,6 +31,8 @@ def apodization(full_sky_map: np.ndarray, fwhm: float, threshold: float = 1.0e-5
     -------
     np.ndarray
         Apodized version of the input full-sky map.
+
+    :private:
     """
 
     result = hp.smoothing(full_sky_map, fwhm = np.deg2rad(fwhm / 60.0), pol = False, nest = nest)

@@ -18,7 +18,11 @@ This module provides different ways of computing two-point galaxy angular correl
 Angular correlation function from pair counting
 -----------------------------------------------
 
+.. automodule:: decontamination.correlation.correlation_abstract
+
 .. automodule:: decontamination.correlation.correlation_pair_count
+
+.. automodule:: decontamination.correlation.correlation_scalar
 
 Utilities
 ---------

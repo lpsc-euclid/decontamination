@@ -84,7 +84,11 @@ from .generator.generator_fullsky_uniform import Generator_FullSkyUniform
 
 from decontamination.correlation import apodization
 
+from decontamination.correlation.correlation_abstract import Correlation_Abstract
+
 from decontamination.correlation.correlation_pair_count import Correlation_PairCount
+
+from decontamination.correlation.correlation_scalar import Correlation_Scalar
 
 ########################################################################################################################
 # DECONTAMINATION                                                                                                      #
@@ -123,7 +127,7 @@ __all__ = [
     'display_healpix', 'display_catalog', 'flush_full_sky',
     'Generator_Uniform', 'Generator_NumberDensity', 'Generator_FullSkyUniform',
     'apodization',
-    'Correlation_PairCount',
+    'Correlation_Abstract', 'Correlation_PairCount', 'Correlation_Scalar',
     'Decontamination_Abstract', 'Decontamination_SOM',
 ]
 

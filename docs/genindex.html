@@ -175,8 +175,6 @@
   <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="module_hp.html#decontamination.hp.ang2pix">ang2pix() (in module decontamination.hp)</a>
 </li>
-      <li><a href="module_correlation.html#decontamination.correlation.apodization">apodization() (in module decontamination.correlation)</a>
-</li>
       <li><a href="module_jit.html#decontamination.jit.jit.atomic_add">atomic_add() (decontamination.jit.jit static method)</a>
 </li>
       <li><a href="module_jit.html#decontamination.jit.jit.atomic_sub">atomic_sub() (decontamination.jit.jit static method)</a>
@@ -195,7 +193,11 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.bin_slop">bin_slop (decontamination.correlation.correlation_pair_count.Correlation_PairCount property)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_correlation.html#decontamination.correlation.correlation_scalar.Correlation_Scalar.bin_slop">(decontamination.correlation.correlation_scalar.Correlation_Scalar property)</a>
 </li>
+      </ul></li>
   </ul></td>
   </tr>
       </table>
@@ -203,6 +205,8 @@
   <h2 id="C">C</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_abstract.Correlation_Abstract.calculate">calculate() (decontamination.correlation.correlation_abstract.Correlation_Abstract method)</a>
+</li>
       <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.catalog_activation_map">catalog_activation_map (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
 </li>
       <li><a href="module_plotting.html#decontamination.plotting.catalog_to_number_density">catalog_to_number_density() (in module decontamination.plotting)</a>
@@ -241,11 +245,13 @@
 </li>
       <li><a href="module_jit.html#decontamination.jit.DeviceArray.copy_to_host">copy_to_host() (decontamination.jit.DeviceArray method)</a>
 </li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_abstract.Correlation_Abstract">Correlation_Abstract (class in decontamination.correlation.correlation_abstract)</a>
+</li>
       <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount">Correlation_PairCount (class in decontamination.correlation.correlation_pair_count)</a>
 </li>
-      <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.cov_matrix">cov_matrix (decontamination.algo.som_pca.SOM_PCA property)</a>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_scalar.Correlation_Scalar">Correlation_Scalar (class in decontamination.correlation.correlation_scalar)</a>
 </li>
-      <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.coverage">coverage (decontamination.correlation.correlation_pair_count.Correlation_PairCount property)</a>
+      <li><a href="module_algo.html#decontamination.algo.som_pca.SOM_PCA.cov_matrix">cov_matrix (decontamination.algo.som_pca.SOM_PCA property)</a>
 </li>
   </ul></td>
   </tr>
@@ -304,10 +310,24 @@
 </li>
       </ul></li>
       <li>
+    decontamination.correlation.correlation_abstract
+
+      <ul style="list-style-type:none">
+        <li><a href="module_correlation.html#module-decontamination.correlation.correlation_abstract">module</a>
+</li>
+      </ul></li>
+      <li>
     decontamination.correlation.correlation_pair_count
 
       <ul style="list-style-type:none">
         <li><a href="module_correlation.html#module-decontamination.correlation.correlation_pair_count">module</a>
+</li>
+      </ul></li>
+      <li>
+    decontamination.correlation.correlation_scalar
+
+      <ul style="list-style-type:none">
+        <li><a href="module_correlation.html#module-decontamination.correlation.correlation_scalar">module</a>
 </li>
       </ul></li>
       <li>
@@ -345,6 +365,8 @@
         <li><a href="module_hp.html#module-decontamination.hp">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li>
     decontamination.jit
 
@@ -352,8 +374,6 @@
         <li><a href="module_jit.html#module-decontamination.jit">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li>
     decontamination.mask.healpix
 
@@ -452,7 +472,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
-      <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.footprint">footprint (decontamination.correlation.correlation_pair_count.Correlation_PairCount property)</a>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_scalar.Correlation_Scalar.footprint">footprint (decontamination.correlation.correlation_scalar.Correlation_Scalar property)</a>
 </li>
       <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.footprint_activation_map">footprint_activation_map (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
 </li>
@@ -553,6 +573,10 @@
         <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.m">(decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
 </li>
       </ul></li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_abstract.Correlation_Abstract.max_sep">max_sep (decontamination.correlation.correlation_abstract.Correlation_Abstract property)</a>
+</li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_abstract.Correlation_Abstract.min_sep">min_sep (decontamination.correlation.correlation_abstract.Correlation_Abstract property)</a>
+</li>
       <li><a href="module_mask.html#decontamination.mask.moc.moc_to_healpix">moc_to_healpix() (in module decontamination.mask.moc)</a>
 </li>
       <li>
@@ -573,7 +597,11 @@
 </li>
         <li><a href="module_correlation.html#module-decontamination.correlation">decontamination.correlation</a>
 </li>
+        <li><a href="module_correlation.html#module-decontamination.correlation.correlation_abstract">decontamination.correlation.correlation_abstract</a>
+</li>
         <li><a href="module_correlation.html#module-decontamination.correlation.correlation_pair_count">decontamination.correlation.correlation_pair_count</a>
+</li>
+        <li><a href="module_correlation.html#module-decontamination.correlation.correlation_scalar">decontamination.correlation.correlation_scalar</a>
 </li>
         <li><a href="module_decontamination.html#module-decontamination.decontamination.decontamination_som">decontamination.decontamination.decontamination_som</a>
 </li>
@@ -613,6 +641,8 @@
         <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.n">(decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
 </li>
       </ul></li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_abstract.Correlation_Abstract.n_bins">n_bins (decontamination.correlation.correlation_abstract.Correlation_Abstract property)</a>
+</li>
       <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.n_gal">n_gal (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
 </li>
       <li><a href="module_decontamination.html#decontamination.decontamination.decontamination_som.Decontamination_SOM.n_pix">n_pix (decontamination.decontamination.decontamination_som.Decontamination_SOM property)</a>
@@ -620,10 +650,14 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.n_threads">n_threads (decontamination.correlation.correlation_pair_count.Correlation_PairCount property)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="module_correlation.html#decontamination.correlation.correlation_scalar.Correlation_Scalar.n_threads">(decontamination.correlation.correlation_scalar.Correlation_Scalar property)</a>
 </li>
-      <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.nest">nest (decontamination.correlation.correlation_pair_count.Correlation_PairCount property)</a>
+      </ul></li>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_scalar.Correlation_Scalar.nest">nest (decontamination.correlation.correlation_scalar.Correlation_Scalar property)</a>
 </li>
-      <li><a href="module_correlation.html#decontamination.correlation.correlation_pair_count.Correlation_PairCount.nside">nside (decontamination.correlation.correlation_pair_count.Correlation_PairCount property)</a>
+      <li><a href="module_correlation.html#decontamination.correlation.correlation_scalar.Correlation_Scalar.nside">nside (decontamination.correlation.correlation_scalar.Correlation_Scalar property)</a>
 </li>
       <li><a href="module_mask.html#decontamination.mask.moc.nuniq_to_order_index">nuniq_to_order_index() (in module decontamination.mask.moc)</a>
 </li>

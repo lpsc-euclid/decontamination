@@ -184,7 +184,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
 ########################################################################################################################
 
-def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'value', log_scale: bool = False, show_colorbar: bool = True, show_graticule: bool = True, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = False) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
+def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'value', log_scale: bool = False, show_colorbar: bool = True, show_graticule: bool = False, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = False) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
 
     """
     Displays a HEALPix map.
@@ -215,7 +215,7 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
         Specifies whether to enable the logarithm scaling.
     show_colorbar : bool, default: **True**
         Specifies whether to display the colorbar.
-    show_graticule : bool, default: **True**
+    show_graticule : bool, default: **False**
         Specifies whether to display the graticule.
     show_histogram : bool, default: **True**
         Specifies whether to display the colorbar histogram.
@@ -264,7 +264,7 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
 
 ########################################################################################################################
 
-def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_graticule: bool = True, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = True) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
+def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_graticule: bool = False, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = True) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
 
     """
     Displays a catalog.
@@ -297,7 +297,7 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
         Specifies whether to enable the logarithm scaling.
     show_colorbar : bool, default: **True**
         Specifies whether to display the colorbar.
-    show_graticule : bool, default: **True**
+    show_graticule : bool, default: **False**
         Specifies whether to display the graticule.
     show_histogram : bool, default: **True**
         Specifies whether to display the colorbar histogram.

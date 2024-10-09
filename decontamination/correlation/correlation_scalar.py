@@ -52,17 +52,13 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
         Optional precision parameter (see `TreeCorr documentation <https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop>`_).
     n_threads : int, default: **None** ≡ the number of cpu cores
         Optional number of OpenMP threads to use during the calculation.
-    random_field : np.ndarray
-        ???
     data_w : np.ndarray
-        ???
-    random_w : np.ndarray
         ???
     """
 
     ####################################################################################################################
 
-    def __init__(self, nside: int, nest: bool, footprint: np.ndarray, data_field: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, n_threads: typing.Optional[int] = None, random_field: typing.Optional[np.ndarray] = None, data_w: typing.Optional[np.ndarray] = None, random_w: typing.Optional[np.ndarray] = None):
+    def __init__(self, nside: int, nest: bool, footprint: np.ndarray, data_field: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, n_threads: typing.Optional[int] = None, data_w: typing.Optional[np.ndarray] = None):
 
         ################################################################################################################
 
@@ -86,18 +82,8 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
         self._n_threads = n_threads
 
         ################################################################################################################
-        # BUILD THE CATALOG                                                                                            #
-        ################################################################################################################
 
         self._data_catalog = self._build_catalog(data_field, data_w)
-
-        if random_field is not None:
-
-            self._random_catalog = self._build_catalog(random_field, random_w)
-
-        else:
-
-            self._random_catalog = None
 
     ####################################################################################################################
 

@@ -69,8 +69,6 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         self._n_threads = n_threads
 
         ################################################################################################################
-        # BUILD THE CATALOG                                                                                            #
-        ################################################################################################################
 
         self._data_catalog = self._build_catalog(data_lon, data_lat)
 

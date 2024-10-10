@@ -32,7 +32,7 @@
             <img src="https://img.shields.io/badge/Main%20Repo-gitlab.in2p3.fr-success" />
         </a>
         &nbsp;
-        <a href="https://github.com/odier-xyz/decontamination">
+        <a href="https://github.com/lpsc-euclid/decontamination">
             <img src="https://img.shields.io/badge/Alt%20Repo-github.com-success" />
         </a>
         &nbsp;

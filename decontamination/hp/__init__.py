@@ -6,6 +6,7 @@
 # license: CeCILL-C
 ########################################################################################################################
 
+import time
 import typing
 
 import numpy as np
@@ -279,7 +280,9 @@ def randang(nside: int, pixels: np.ndarray, lonlat: bool = False, compat: bool =
 
     if rng is None:
 
-        rng = np.random.default_rng()
+        seed = int(time.time())
+
+        rng = np.random.default_rng(seed = seed)
 
     ####################################################################################################################
 

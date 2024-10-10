@@ -3,11 +3,11 @@ Module decontamination.correlation
 
 This module provides different ways of computing two-point galaxy angular correlation functions. It is based on:
 
-* | *Xpol*
+* | *Xpol* (soon)
   | Tristram M.
     (`documentation <https://gitlab.in2p3.fr/tristram/Xpol>`_)
 
-* | *Anafast*
+* | *Anafast* (soon)
   | Górski K. M. et al.
     (`documentation <https://healpix.sourceforge.io/html/fac_anafast.htm>`_)
 

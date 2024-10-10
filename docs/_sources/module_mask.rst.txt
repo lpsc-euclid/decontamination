@@ -1,7 +1,7 @@
 Module decontamination.mask
 ===========================
 
-This module provides primitives to perform projection from image to HEALPix masks.
+This module provides primitives to perform projection from images to HEALPix masks.
 
 HEALPix masks
 -------------

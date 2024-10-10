@@ -183,7 +183,7 @@ class WCS(ASTROPY_WCS):
 
         ################################################################################################################
 
-        lat = np.arcsin(cos_c * sin_crval2 + np.where(np.abs(r) > 1.0e-8, yp * sin_c * cos_crval2 / r, 0.0))  # CHECK 1.0e-8 #
+        lat = np.arcsin(cos_c * sin_crval2 + np.where(np.abs(r) > 1.0e-8, yp * sin_c * cos_crval2 / r, 0.0))  # TODO: CHECK 1.0e-8
 
         lon = np.arctan2(xp * sin_c, r * cos_c * cos_crval2 - yp * sin_c * sin_crval2)
 

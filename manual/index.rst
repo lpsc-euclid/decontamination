@@ -67,6 +67,8 @@ or alternatively:
 Dependencies
 ============
 
+Mandatory dependencies:
+
 * `h5py <https://www.h5py.org/>`_
 * `tqdm <https://tqdm.github.io/>`_
 * `numpy <https://numpy.org/>`_
@@ -76,9 +78,9 @@ Dependencies
 * `astropy <https://www.astropy.org/>`_
 * `matplotlib <https://matplotlib.org/>`_
 
-And optionally:
+Optional dependencies:
 
-* `treecorr <https://rmjarvis.github.io/TreeCorr/_build/html/index.html>`_ (optional)
+* `treecorr <https://rmjarvis.github.io/TreeCorr/_build/html/index.html>`_
 
 Indices and modules
 ===================

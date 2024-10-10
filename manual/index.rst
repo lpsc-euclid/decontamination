@@ -35,7 +35,7 @@
         </a>
         &nbsp;
         <a href="https://sonarqube.in2p3.fr/dashboard?id=decontamination-key">
-            <img src="https://corsproxy.io/?https%3A%2F%2Fsonarqube.in2p3.fr%2Fapi%2Fproject_badges%2Fmeasure%3Fproject%3Ddecontamination-key%26metric%3Dcoverage%26token%3Dsqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37" crossorigin="anonymous" />
+            <img src="https://sonarqube.in2p3.fr/api/project_badges/measure?project=decontamination-key&metric=coverage&token=sqb_70baaf7c87542fe8555d5bd23fdb95bfaf848b37" crossorigin="anonymous" />
         </a>
     </div>
 

@@ -10,6 +10,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     /*----------------------------------------------------------------------------------------------------------------*/
+
+    document.querySelectorAll('img[crossorigin="anonymous"]').forEach((item) => {
+
+        const url = new URL(item.src);
+
+        url.searchParams.set('_', Date.now());
+
+         item.src = 'https://corsproxy.io/?' + encodeURIComponent(url.toString());
+    });
+
+    /*----------------------------------------------------------------------------------------------------------------*/
 });
 
 /*--------------------------------------------------------------------------------------------------------------------*/

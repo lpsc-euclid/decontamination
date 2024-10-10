@@ -75,6 +75,9 @@ Dependencies
 * `healpy <https://healpy.readthedocs.io/>`_
 * `astropy <https://www.astropy.org/>`_
 * `matplotlib <https://matplotlib.org/>`_
+
+And optionally:
+
 * `treecorr <https://rmjarvis.github.io/TreeCorr/_build/html/index.html>`_ (optional)
 
 Indices and modules

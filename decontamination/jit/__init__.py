@@ -193,7 +193,7 @@ class DeviceArray(object):
 
             elif self._content is not None:
 
-                if float(self._content) == 0.0:
+                if abs(float(self._content)) < 1.0e-9:
                     self._instance = cu.to_device(np.zeros(self._shape, dtype = self._dtype))
                 else:
                     self._instance = cu.to_device(np.full(self._shape, self._content, dtype = self._dtype))

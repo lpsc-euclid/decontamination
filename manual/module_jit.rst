@@ -1,6 +1,12 @@
 Module decontamination.jit
 ==========================
 
+This module provides an overlay for Numba to write a single code running on both CPU and GPU.
+
+* | *Numba*
+  | Open source JIT compiler
+    (`documentation <https://numba.readthedocs.io/en/stable/>`_)
+
 .. automodule:: decontamination.jit
    :members:
 

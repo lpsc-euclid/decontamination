@@ -49,6 +49,34 @@ Authors:
  * Gaël ALGUERO - gael.alguero@lpsc.in2p3.fr
  * Juan MACIAS-PEREZ - juan.macias-perez@lpsc.in2p3.fr
 
+Installing
+==========
+
+Installing the last development version from git:
+
+.. code-block:: bash
+
+    pip install git+https://gitlab.in2p3.fr/lpsc-euclid/decontamination.git
+
+or alternatively:
+
+.. code-block:: bash
+
+    pip install git+https://github.com/lpsc-euclid/decontamination.git
+
+Dependencies
+============
+
+* `h5py <https://www.h5py.org/>`_
+* `tqdm <https://tqdm.github.io/>`_
+* `numpy <https://numpy.org/>`_
+* `numba <https://numba.pydata.org/>`_
+* `scipy <https://scipy.org/>`_
+* `healpy <https://healpy.readthedocs.io/>`_
+* `astropy <https://www.astropy.org/>`_
+* `matplotlib <https://matplotlib.org/>`_
+* `treecorr <https://rmjarvis.github.io/TreeCorr/_build/html/index.html>`_ (optional)
+
 Indices and modules
 ===================
 

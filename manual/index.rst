@@ -19,9 +19,7 @@
 
 .. raw:: html
 
-  </div>
-
-.. raw:: html
+   </div>
 
     <div style="display: flex !important;">
         <a href="http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.txt">

@@ -47,6 +47,8 @@ templates, ...) of the systematics that affect galaxy detection, including surve
 and sky properties; simulating random galaxy catalogs; and providing multiple methods to compute galaxy-galaxy 2-point
 correlation functions (2PCF) decontaminated from the effects of the systematics.
 
+This tool has been developed for the `Euclid <https://www.esa.int/Science_Exploration/Space_Science/Euclid/>`_ space telescope.
+
 Authors:
  * Jérôme ODIER - jerome.odier@lpsc.in2p3.fr
  * Gaël ALGUERO - gael.alguero@lpsc.in2p3.fr

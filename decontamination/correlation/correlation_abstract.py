@@ -18,7 +18,7 @@ import healpy as hp
 class Correlation_Abstract(abc.ABC):
 
     """
-    Abstract class for computing galaxy angular correlation function using the TreeCorr library.
+    Abstract class for computing galaxy-galaxy 2-point correlation functions (2PCF).
     """
 
     ####################################################################################################################

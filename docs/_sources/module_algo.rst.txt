@@ -1,7 +1,7 @@
 Module decontamination.algo
 ===========================
 
-This module provides a set of machine learning algorithms (Self-Organizing Maps (SOM), linear regressions, ...) designed to run at constant memoty usage on both CPU and GPU.
+This module provides a set of machine learning algorithms (Self-Organizing Maps (SOM), linear regressions, ...) designed to run at constant memory usage on both CPU and GPU.
 
 Self-Organizing Maps
 --------------------

@@ -29,8 +29,8 @@ except ImportError:
 class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
 
     """
-    Galaxy angular correlation function using the TreeCorr library. Supports pair counting (≡ NN correlations)
-    or a scalar field approach (≡ KK correlations) if a footprint is provided.
+    Galaxy-galaxy 2-point correlation functions (2PCF) using the TreeCorr library. Supports pair counting (≡ ΚΚ
+    correlations).
 
     Parameters
     ----------

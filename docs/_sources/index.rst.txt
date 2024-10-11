@@ -1,27 +1,8 @@
 .. raw:: html
 
-    <div style="display: flex !important; justify-content: space-around; margin-left: auto; margin-right: auto; width: 80%;">
+    <h1 style="font-size: 3rem;">Decontamination</h1>
 
-.. image:: _html_static/logo_lpsc.svg
-  :alt: LPSC
-  :height: 72
-  :target: http://lpsc.in2p3.fr/
-
-.. image:: _html_static/logo_in2p3.svg
-  :alt: IN2P3
-  :height: 72
-  :target: http://www.in2p3.fr/
-
-.. image:: _html_static/logo_uga.svg
-  :alt: UGA
-  :height: 72
-  :target: http://www.univ-grenoble-alpes.fr/
-
-.. raw:: html
-
-   </div>
-
-    <div style="display: flex !important;">
+    <div style="display: flex !important; margin-top: -1.5rem; margin-bottom: 1.5rem;">
         <a href="http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.txt">
             <img src="https://img.shields.io/badge/license-CeCILL--C-blue.svg" />
         </a>
@@ -39,9 +20,6 @@
         </a>
     </div>
 
-Decontamination
-===============
-
 This software is a toolbox for cosmology analysis with three main purposes: constructing HEALPix masks (a.k.a. maps,
 templates, ...) of the systematics that affect galaxy detection, including survey properties, instrumental performance,
 and sky properties; simulating random galaxy catalogs; and providing multiple methods to compute galaxy-galaxy 2-point
@@ -53,6 +31,31 @@ Authors:
  * Jérôme ODIER - jerome.odier@lpsc.in2p3.fr
  * Gaël ALGUERO - gael.alguero@lpsc.in2p3.fr
  * Juan MACIAS-PEREZ - juan.macias-perez@lpsc.in2p3.fr
+
+.. raw:: html
+
+    <hr style="margin-bottom: 0.5rem;" />
+
+    <div style="display: flex !important; justify-content: space-around; margin-left: auto; margin-right: auto; width: 80%;">
+
+.. image:: _html_static/logo_lpsc.svg
+  :alt: LPSC
+  :height: 68
+  :target: http://lpsc.in2p3.fr/
+
+.. image:: _html_static/logo_in2p3.svg
+  :alt: IN2P3
+  :height: 68
+  :target: http://www.in2p3.fr/
+
+.. image:: _html_static/logo_uga.svg
+  :alt: UGA
+  :height: 68
+  :target: http://www.univ-grenoble-alpes.fr/
+
+.. raw:: html
+
+   </div>
 
 Installing
 ==========

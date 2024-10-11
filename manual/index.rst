@@ -42,7 +42,10 @@
 Decontamination
 ===============
 
-A toolbox for performing systematics decontamination in cosmology analyses.
+This software is a toolbox for cosmology analysis with three main purposes: allowing the construction of masks of
+HEALPix systematics that affect galaxy detection, including survey properties, instrumental performance, and sky
+properties; simulating random galaxy catalogs; and providing multiple methods to compute galaxy-galaxy 2-point
+correlation functions (2PCF) decontaminated from the effects of systematics.
 
 Authors:
  * Jérôme ODIER - jerome.odier@lpsc.in2p3.fr

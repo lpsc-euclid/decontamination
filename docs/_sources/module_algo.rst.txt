@@ -1,6 +1,8 @@
 Module decontamination.algo
 ===========================
 
+This module provides a set of machine learning algorithms (Self-Organizing Maps (SOM), linear regressions, ...).
+
 Self-Organizing Maps
 --------------------
 

@@ -1,6 +1,8 @@
 Module decontamination.plotting
 ===============================
 
+This module provides primitives for plotting HEALPix masks and the latent space of Self-Organizing Maps.
+
 Plotting in the HEALPix space
 -----------------------------
 

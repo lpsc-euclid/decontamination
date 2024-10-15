@@ -6,7 +6,7 @@ pytest-test:
   stage: pytest-test
   image: python:3.9
   script:
-    - pip install h5py tqdm numpy numba scipy healpy matplotlib
+    - pip install h5py tqdm numpy numba scipy healpy treecorr matplotlib
     - pip install pytest pytest-cov
     - make cov
   artifacts:

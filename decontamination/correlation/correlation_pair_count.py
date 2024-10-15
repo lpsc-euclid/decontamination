@@ -28,7 +28,7 @@ except ImportError:
 class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     """
-    Galaxy-galaxy 2-point correlation functions (2PCF) using the TreeCorr library. Supports pair counting (≡ NN
+    Galaxy-galaxy 2pt correlation functions (2PCF) using the TreeCorr library. Supports pair counting (≡ NN
     correlations).
 
     Parameters

@@ -149,7 +149,7 @@
 </li>
 </ul>
 <section id="module-decontamination.correlation.correlation_abstract">
-<span id="angular-correlation-function-from-pair-counting"></span><h2>Angular correlation function from pair counting<a class="headerlink" href="#module-decontamination.correlation.correlation_abstract" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#module-decontamination.correlation.correlation_abstract'"></a></h2>
+<span id="angular-2pt-correlation-functions"></span><h2>Angular 2pt correlation functions<a class="headerlink" href="#module-decontamination.correlation.correlation_abstract" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#module-decontamination.correlation.correlation_abstract'"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="decontamination.correlation.correlation_abstract.Correlation_Abstract">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.correlation.correlation_abstract.</span></span><span class="sig-name descname"><span class="pre">Correlation_Abstract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.correlation.correlation_abstract.Correlation_Abstract" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.correlation.correlation_abstract.Correlation_Abstract'"></a></dt>
@@ -398,107 +398,6 @@ correlations).</p>
 <dd><p>Number of angular bins.</p>
 </dd></dl>
 </dd></dl>
-<span class="target" id="module-decontamination.correlation.correlation_scalar_alt"></span><dl class="py class">
-<dt class="sig sig-object py" id="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.correlation.correlation_scalar_alt.</span></span><span class="sig-name descname"><span class="pre">Correlation_ScalarAlt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_slop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_w</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_w</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt'"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#decontamination.correlation.correlation_abstract.Correlation_Abstract" title="decontamination.correlation.correlation_abstract.Correlation_Abstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">Correlation_Abstract</span></code></a></p>
-<p>Galaxy-galaxy 2-point correlation functions (2PCF) using the TreeCorr library. Supports pair counting (≡ ΚΚ
-correlations).</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>HEALPix nside parameter.</p>
-</dd>
-<dt><strong>nest</strong><span class="classifier">bool</span></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering.</p>
-</dd>
-<dt><strong>footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the region where correlation must be calculated.</p>
-</dd>
-<dt><strong>data_field</strong><span class="classifier">np.ndarray</span></dt><dd><p>???</p>
-</dd>
-<dt><strong>min_sep</strong><span class="classifier">float</span></dt><dd><p>Minimum galaxy separation being considered (in arcmins).</p>
-</dd>
-<dt><strong>max_sep</strong><span class="classifier">float</span></dt><dd><p>Maximum galaxy separation being considered (in arcmins).</p>
-</dd>
-<dt><strong>n_bins</strong><span class="classifier">int</span></dt><dd><p>Number of angular bins.</p>
-</dd>
-<dt><strong>bin_slop</strong><span class="classifier">float = <strong>None</strong></span></dt><dd><p>Optional precision parameter (see <a class="reference external" href="https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop">TreeCorr documentation</a>).</p>
-</dd>
-<dt><strong>n_threads</strong><span class="classifier">int, default: <strong>None</strong> ≡ the number of cpu cores</span></dt><dd><p>Optional number of OpenMP threads to use during the calculation.</p>
-</dd>
-<dt><strong>data_w</strong><span class="classifier">np.ndarray</span></dt><dd><p>???</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Attributes<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><a class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.bin_slop" title="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.bin_slop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bin_slop</span></code></a></dt><dd><p>Precision parameter for binning (see <a class="reference external" href="https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop">TreeCorr documentation</a>).</p>
-</dd>
-<dt><a class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.footprint" title="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.footprint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">footprint</span></code></a></dt><dd><p>HEALPix indices of the region where correlation must be calculated.</p>
-</dd>
-<dt><a class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.max_sep" title="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.max_sep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_sep</span></code></a></dt><dd><p>Maximum separation (in degrees).</p>
-</dd>
-<dt><a class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.min_sep" title="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.min_sep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_sep</span></code></a></dt><dd><p>Minimum separation (in degrees).</p>
-</dd>
-<dt><a class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.n_bins" title="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.n_bins"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_bins</span></code></a></dt><dd><p>Number of angular bins.</p>
-</dd>
-<dt><a class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.n_threads" title="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.n_threads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_threads</span></code></a></dt><dd><p>How many OpenMP threads to use during the calculation.</p>
-</dd>
-<dt><a class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.nest" title="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.nest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nest</span></code></a></dt><dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering.</p>
-</dd>
-<dt><a class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.nside" title="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.nside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nside</span></code></a></dt><dd><p>The HEALPix nside parameter.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate</span></code>(estimator)</p></td>
-<td><p>Calculates the angular correlation function.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.nside">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nside</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.nside" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.nside'"></a></dt>
-<dd><p>The HEALPix nside parameter.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.nest">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nest</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.nest" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.nest'"></a></dt>
-<dd><p>If <strong>True</strong>, assumes NESTED pixel ordering, otherwise, RING pixel ordering.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.footprint">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">footprint</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.footprint" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.footprint'"></a></dt>
-<dd><p>HEALPix indices of the region where correlation must be calculated.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.bin_slop">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bin_slop</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.bin_slop" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.bin_slop'"></a></dt>
-<dd><p>Precision parameter for binning (see <a class="reference external" href="https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop">TreeCorr documentation</a>).</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.n_threads">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_threads</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.n_threads" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.n_threads'"></a></dt>
-<dd><p>How many OpenMP threads to use during the calculation.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.max_sep">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_sep</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.max_sep" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.max_sep'"></a></dt>
-<dd><p>Maximum separation (in degrees).</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.min_sep">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">min_sep</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.min_sep" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.min_sep'"></a></dt>
-<dd><p>Minimum separation (in degrees).</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.n_bins">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_bins</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.n_bins" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.n_bins'"></a></dt>
-<dd><p>Number of angular bins.</p>
-</dd></dl>
-</dd></dl>
 </section>
 <section id="module-decontamination.correlation">
 <span id="utilities"></span><h2>Utilities<a class="headerlink" href="#module-decontamination.correlation" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#module-decontamination.correlation'"></a></h2>
@@ -507,7 +406,7 @@ correlations).</p>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>
-<li><a :data-current="activeSection === '#module-decontamination.correlation.correlation_abstract'" class="reference internal" href="#module-decontamination.correlation.correlation_abstract">Angular correlation function from pair counting</a><ul>
+<li><a :data-current="activeSection === '#module-decontamination.correlation.correlation_abstract'" class="reference internal" href="#module-decontamination.correlation.correlation_abstract">Angular 2pt correlation functions</a><ul>
 <li><a :data-current="activeSection === '#decontamination.correlation.correlation_abstract.Correlation_Abstract'" class="reference internal" href="#decontamination.correlation.correlation_abstract.Correlation_Abstract"><code class="docutils literal notranslate"><span class="pre">Correlation_Abstract</span></code></a><ul>
 <li><a :data-current="activeSection === '#decontamination.correlation.correlation_abstract.Correlation_Abstract.min_sep'" class="reference internal" href="#decontamination.correlation.correlation_abstract.Correlation_Abstract.min_sep"><code class="docutils literal notranslate"><span class="pre">Correlation_Abstract.min_sep</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.correlation.correlation_abstract.Correlation_Abstract.max_sep'" class="reference internal" href="#decontamination.correlation.correlation_abstract.Correlation_Abstract.max_sep"><code class="docutils literal notranslate"><span class="pre">Correlation_Abstract.max_sep</span></code></a></li>
@@ -532,17 +431,6 @@ correlations).</p>
 <li><a :data-current="activeSection === '#decontamination.correlation.correlation_scalar.Correlation_Scalar.max_sep'" class="reference internal" href="#decontamination.correlation.correlation_scalar.Correlation_Scalar.max_sep"><code class="docutils literal notranslate"><span class="pre">Correlation_Scalar.max_sep</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.correlation.correlation_scalar.Correlation_Scalar.min_sep'" class="reference internal" href="#decontamination.correlation.correlation_scalar.Correlation_Scalar.min_sep"><code class="docutils literal notranslate"><span class="pre">Correlation_Scalar.min_sep</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.correlation.correlation_scalar.Correlation_Scalar.n_bins'" class="reference internal" href="#decontamination.correlation.correlation_scalar.Correlation_Scalar.n_bins"><code class="docutils literal notranslate"><span class="pre">Correlation_Scalar.n_bins</span></code></a></li>
-</ul>
-</li>
-<li><a :data-current="activeSection === '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt'" class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt"><code class="docutils literal notranslate"><span class="pre">Correlation_ScalarAlt</span></code></a><ul>
-<li><a :data-current="activeSection === '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.nside'" class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.nside"><code class="docutils literal notranslate"><span class="pre">Correlation_ScalarAlt.nside</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.nest'" class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.nest"><code class="docutils literal notranslate"><span class="pre">Correlation_ScalarAlt.nest</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.footprint'" class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.footprint"><code class="docutils literal notranslate"><span class="pre">Correlation_ScalarAlt.footprint</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.bin_slop'" class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.bin_slop"><code class="docutils literal notranslate"><span class="pre">Correlation_ScalarAlt.bin_slop</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.n_threads'" class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.n_threads"><code class="docutils literal notranslate"><span class="pre">Correlation_ScalarAlt.n_threads</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.max_sep'" class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.max_sep"><code class="docutils literal notranslate"><span class="pre">Correlation_ScalarAlt.max_sep</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.min_sep'" class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.min_sep"><code class="docutils literal notranslate"><span class="pre">Correlation_ScalarAlt.min_sep</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.n_bins'" class="reference internal" href="#decontamination.correlation.correlation_scalar_alt.Correlation_ScalarAlt.n_bins"><code class="docutils literal notranslate"><span class="pre">Correlation_ScalarAlt.n_bins</span></code></a></li>
 </ul>
 </li>
 </ul>

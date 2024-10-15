@@ -24,6 +24,8 @@ Angular correlation function from pair counting
 
 .. automodule:: decontamination.correlation.correlation_scalar
 
+.. automodule:: decontamination.correlation.correlation_scalar_alt
+
 Utilities
 ---------
 

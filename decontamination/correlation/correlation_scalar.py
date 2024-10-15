@@ -58,7 +58,7 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def __init__(self, nside: int, nest: bool, footprint: np.ndarray, data_field: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, n_threads: typing.Optional[int] = None, data_w: typing.Optional[np.ndarray] = None):
+    def __init__(self, nside: int, nest: bool, footprint: np.ndarray, data_field: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, n_threads: typing.Optional[int] = None, random_field: typing.Optional[np.ndarray] = None, data_w: typing.Optional[np.ndarray] = None, random_w: typing.Optional[np.ndarray] = None):
 
         ################################################################################################################
 
@@ -76,7 +76,9 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
         self._nside = nside
         self._footprint = footprint
 
-        self._lon, self._lat = hp.pix2ang(self._nside, self._footprint, nest = self._nest, lonlat = True)
+        self._lon, self._lat = hp.pix2ang(nside, footprint, nest = nest, lonlat = True)
+
+        ################################################################################################################
 
         self._bin_slop = bin_slop
         self._n_threads = n_threads
@@ -84,6 +86,9 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
         ################################################################################################################
 
         self._data_catalog = self._build_catalog(data_field, data_w)
+
+        self._random_field = self._build_catalog(random_field, random_w) \
+                                        if random_field is not None else self._data_catalog
 
     ####################################################################################################################
 
@@ -132,35 +137,16 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def _build_catalog(self, field: np.ndarray, w: np.ndarray) -> 'treecorr.Catalog':
+    def _build_catalog(self, k: np.ndarray, w: np.ndarray) -> 'treecorr.Catalog':
 
         return treecorr.Catalog(
             ra = self._lon,
             dec = self._lat,
-            ra_units = 'degrees',
-            dec_units = 'degrees',
-            k = field,
+            k = k,
             w = w,
+            ra_units = 'degrees',
+            dec_units = 'degrees'
         )
-
-    ####################################################################################################################
-
-    def _correlate(self, catalog1: 'treecorr.Catalog', catalog2: typing.Optional['treecorr.Catalog'] = None) -> typing.Union['treecorr.NNCorrelation', 'treecorr.KKCorrelation']:
-
-        ################################################################################################################
-
-        if self._bin_slop is None:
-            result = treecorr.KKCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, sep_units = 'arcmin')
-        else:
-            result = treecorr.KKCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, bin_slop = self._bin_slop, sep_units = 'arcmin')
-
-        ################################################################################################################
-
-        result.process(catalog1, catalog2, num_threads = self._n_threads)
-
-        ################################################################################################################
-
-        return result
 
     ####################################################################################################################
 
@@ -169,23 +155,13 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
         ################################################################################################################
 
         if estimator == 'dd':
-
-            return self._calculate_xy(self._data_catalog, None)
-
-        ################################################################################################################
-
-        if self._random_catalog is None:
-
-            raise ValueError(f'Random catalog have to be provided with estimator `{estimator}`')
-
-        ################################################################################################################
-
+            return self._2pcf(self._data_catalog, self._data_catalog)
         if estimator == 'rr':
-            return self._calculate_xy(self._random_catalog, None)
+            return self._2pcf(self._random_catalog, self._random_catalog)
         if estimator == 'dr':
-            return self._calculate_xy(self._data_catalog, self._random_catalog)
+            return self._2pcf(self._data_catalog, self._random_catalog)
         if estimator == 'rd':
-            return self._calculate_xy(self._random_catalog, self._data_catalog)
+            return self._2pcf(self._random_catalog, self._data_catalog)
 
         ################################################################################################################
 
@@ -193,22 +169,12 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def _calculate_xy(self, catalog1: 'treecorr.Catalog', catalog2: typing.Optional['treecorr.Catalog'] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def _2pcf(self, catalog1: 'treecorr.Catalog', catalog2: typing.Optional['treecorr.Catalog'] = None) -> 'treecorr.KKCorrelation':
 
-        ################################################################################################################
+        kk = treecorr.KKCorrelation(bin_slop = self._bin_slop, min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, sep_units = 'arcmin')
 
-        xy = self._correlate(catalog1, catalog2)
+        kk.process(catalog1, catalog2, num_threads = self._n_threads)
 
-        ################################################################################################################
-
-        theta = np.exp(xy.meanlogr)
-
-        xi_theta = xy.xi
-
-        xi_theta_error = np.sqrt(xy.varxi)
-
-        ################################################################################################################
-
-        return theta, xi_theta, xi_theta_error
+        return np.exp(kk.meanlogr), kk.xi, np.sqrt(kk.varxi)
 
 ########################################################################################################################

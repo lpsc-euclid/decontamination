@@ -72,13 +72,8 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         self._data_catalog = self._build_catalog(data_lon, data_lat, data_w)
 
-        if random_lon is not None and random_lat is not None:
-
-            self._random_catalog = self._build_catalog(random_lon, random_lat, random_w)
-
-        else:
-
-            self._random_catalog = None
+        self._random_catalog = self._build_catalog(random_lon, random_lat, random_w) \
+                                        if random_lon is not None and random_lat is not None else self._data_catalog
 
     ####################################################################################################################
 
@@ -106,29 +101,11 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         return treecorr.Catalog(
             ra = lon,
             dec = lat,
+            k = None,
+            w = w,
             ra_units = 'degrees',
             dec_units = 'degrees',
-            w = w,
         )
-
-    ####################################################################################################################
-
-    def _correlate(self, catalog1: 'treecorr.Catalog', catalog2: typing.Optional['treecorr.Catalog'] = None) -> typing.Union['treecorr.NNCorrelation', 'treecorr.KKCorrelation']:
-
-        ################################################################################################################
-
-        if self._bin_slop is None:
-            result = treecorr.NNCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, sep_units = 'arcmin')
-        else:
-            result = treecorr.NNCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, bin_slop = self._bin_slop, sep_units = 'arcmin')
-
-        ################################################################################################################
-
-        result.process(catalog1, catalog2, num_threads = self._n_threads)
-
-        ################################################################################################################
-
-        return result
 
     ####################################################################################################################
 
@@ -137,32 +114,22 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         ################################################################################################################
 
         if estimator == 'dd':
-
-            return self._calculate_xy(self._data_catalog, None)
-
-        ################################################################################################################
-
-        if self._random_catalog is None:
-
-            raise ValueError(f'Random catalog have to be provided with estimator `{estimator}`')
-
-        ################################################################################################################
-
+            return self._2pcf(self._data_catalog, self._data_catalog)
         if estimator == 'rr':
-            return self._calculate_xy(self._random_catalog, None)
+            return self._2pcf(self._random_catalog, self._random_catalog)
         if estimator == 'dr':
-            return self._calculate_xy(self._data_catalog, self._random_catalog)
+            return self._2pcf(self._data_catalog, self._random_catalog)
         if estimator == 'rd':
-            return self._calculate_xy(self._random_catalog, self._data_catalog)
+            return self._2pcf(self._random_catalog, self._data_catalog)
 
         else:
 
             if estimator == 'peebles_hauser':
-                return self._calculate_xi(False, False)
+                return self._estimator(False, False)
             if estimator == 'landy_szalay_1':
-                return self._calculate_xi(True, False)
+                return self._estimator(True, False)
             if estimator == 'landy_szalay_2':
-                return self._calculate_xi(True, True)
+                return self._estimator(True, True)
 
         ################################################################################################################
 
@@ -170,48 +137,40 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def _calculate_xy(self, catalog1: 'treecorr.Catalog', catalog2: typing.Optional['treecorr.Catalog'] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def _process(self, catalog1: 'treecorr.Catalog', catalog2: typing.Optional['treecorr.Catalog'] = None) -> 'treecorr.NNCorrelation':
 
-        ################################################################################################################
+        nn = treecorr.NNCorrelation(min_sep = self._min_sep, max_sep = self._max_sep, nbins = self._n_bins, bin_slop = self._bin_slop, sep_units = 'arcmin')
 
-        xy = self._correlate(catalog1, catalog2)
+        nn.process(catalog1, catalog2, num_threads = self._n_threads)
 
-        ################################################################################################################
-
-        theta = np.exp(xy.meanlogr)
-
-        xi_theta = xy.xi
-
-        xi_theta_error = np.sqrt(xy.varxi)
-
-        ################################################################################################################
-
-        return theta, xi_theta, xi_theta_error
+        return nn
 
     ####################################################################################################################
 
-    def _calculate_xi(self, with_dr: bool, with_rd: bool) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def _2pcf(self, catalog1: 'treecorr.Catalog', catalog2: typing.Optional['treecorr.Catalog'] = None) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+
+        nn = self._process(catalog1, catalog2)
+
+        return np.exp(nn.meanlogr), nn.xi, np.sqrt(nn.varxi)
+
+    ####################################################################################################################
+
+    def _estimator(self, with_dr: bool, with_rd: bool) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
-        dd = self._correlate(self._data_catalog)
-        rr = self._correlate(self._random_catalog)
+        dd = self._process(self._data_catalog)
+        rr = self._process(self._random_catalog)
 
-        dr = self._correlate(self._data_catalog, self._random_catalog) if with_dr else None
-        rd = self._correlate(self._random_catalog, self._data_catalog) if with_rd else None
-
-        ################################################################################################################
-
-        theta = np.exp(dd.meanlogr)
+        dr = self._process(self._data_catalog, self._random_catalog) if with_dr else None
+        rd = self._process(self._random_catalog, self._data_catalog) if with_rd else None
 
         ################################################################################################################
 
-        xi_theta, xi_theta_variance = dd.calculateXi(rr = rr, dr = dr, rd = rd)
-
-        xi_theta_error = np.sqrt(xi_theta_variance)
+        xi, varxi = dd.calculateXi(rr = rr, dr = dr, rd = rd)
 
         ################################################################################################################
 
-        return theta, xi_theta, xi_theta_error
+        return np.exp(dd.meanlogr), xi, np.sqrt(varxi)
 
 ########################################################################################################################

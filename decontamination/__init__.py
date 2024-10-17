@@ -90,6 +90,8 @@ from decontamination.correlation.correlation_pair_count import Correlation_PairC
 
 from decontamination.correlation.correlation_scalar import Correlation_Scalar
 
+from decontamination.correlation.correlation_scalar_alt import Correlation_ScalarAlt
+
 ########################################################################################################################
 # DECONTAMINATION                                                                                                      #
 ########################################################################################################################

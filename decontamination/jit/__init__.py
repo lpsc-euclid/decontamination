@@ -373,7 +373,7 @@ class jit(object):
     def get_max_threads_per_block() -> int:
 
         """
-        Returns the maximum allowable number of threads per block for this kernel.
+        Returns the maximum allowable number of threads per block for a kernel.
         """
 
         return cu.get_current_device().MAX_THREADS_PER_BLOCK

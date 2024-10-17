@@ -72,16 +72,18 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        self._bins = np.radians(np.logspace(math.log(min_sep, 10.0), math.log(max_sep, 10.0), n_bins + 1, base = 10.0) / 60.0)
-
-        self._log_min_sep = math.log(self._bins[0])
-        self._log_max_sep = math.log(self._bins[-1])
+        self._log_min_sep = math.log(self._min_sep_rad)
+        self._log_max_sep = math.log(self._max_sep_rad)
 
         self._inv_bin_width = n_bins / (
             self._log_max_sep
             -
             self._log_min_sep
         )
+
+        ################################################################################################################
+
+        self._bins = np.linspace(self._log_min_sep, self._log_max_sep, n_bins + 1)
 
         ################################################################################################################
 
@@ -205,14 +207,16 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
                 field2,
                 w1[start: stop],
                 w2,
+                self._min_sep_rad,
+                self._max_sep_rad,
                 self._log_min_sep,
                 self._inv_bin_width,
                 is_autocorr
             )
 
-        result_w = device_w.copy_to_host()
-        result_h = device_h.copy_to_host()
-        sum_logr = device_logr.copy_to_host()
+        result_w    = device_w   .copy_to_host()
+        result_h    = device_h   .copy_to_host()
+        result_logr = device_logr.copy_to_host()
 
         ################################################################################################################
 
@@ -220,20 +224,8 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        result_w[valid_bins] /= result_h[valid_bins]
-
-        ################################################################################################################
-
-        mean_logr = np.zeros(self.n_bins, dtype = np.float64)
-        theta_mean = np.zeros(self.n_bins, dtype = np.float64)
-
-        mean_logr[valid_bins] = (
-            sum_logr[valid_bins]
-            /
-            result_h[valid_bins]
-        )
-
-        theta_mean[valid_bins] = np.exp(mean_logr[valid_bins])
+        result_w   [valid_bins] /= result_h[valid_bins]
+        result_logr[valid_bins] /= result_h[valid_bins]
 
         ################################################################################################################
 
@@ -241,7 +233,7 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
 
             if idx + 1 < self._bins.shape[0]:
 
-                theta_mean[idx] = 0.5 * (
+                result_logr[idx] = 0.5 * (
                     self._bins[idx + 0]
                     +
                     self._bins[idx + 1]
@@ -249,12 +241,12 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        return np.degrees(theta_mean) * 60.0, result_w, np.zeros_like(result_w)
+        return np.degrees(np.exp(result_logr)) * 60.0, result_w, np.zeros_like(result_w)
 
 ########################################################################################################################
 
 @jit(kernel = True, fastmath = True, parallel = True)
-def compute_2pcf_step1(result_w: np.ndarray, result_h: np.ndarray, result_logr: np.ndarray, lon1: np.ndarray, lon2: np.ndarray, sin_lat1: np.ndarray, sin_lat2: np.ndarray, cos_lat1: np.ndarray, cos_lat2: np.ndarray, kappa1: np.ndarray, kappa2: np.ndarray, w1: np.ndarray, w2: np.ndarray, log_min_sep: float, inv_bin_width: float, is_autocorr: bool) -> None:
+def compute_2pcf_step1(result_w: np.ndarray, result_h: np.ndarray, result_logr: np.ndarray, lon1: np.ndarray, lon2: np.ndarray, sin_lat1: np.ndarray, sin_lat2: np.ndarray, cos_lat1: np.ndarray, cos_lat2: np.ndarray, kappa1: np.ndarray, kappa2: np.ndarray, w1: np.ndarray, w2: np.ndarray, min_sep: float, max_sep: float, log_min_sep: float, inv_bin_width: float, is_autocorr: bool) -> None:
 
     if jit.is_gpu:
 
@@ -268,13 +260,13 @@ def compute_2pcf_step1(result_w: np.ndarray, result_h: np.ndarray, result_logr: 
 
             if i < kappa1.shape[0] and i < j < kappa2.shape[0]:
 
-                compute_2pcf_step2_xpu(result_w, result_h, result_logr, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], log_min_sep, inv_bin_width)
+                compute_2pcf_step2_xpu(result_w, result_h, result_logr, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
 
         else:
 
             if i < kappa1.shape[0] and j < kappa2.shape[0]:
 
-                compute_2pcf_step2_xpu(result_w, result_h, result_logr, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], log_min_sep, inv_bin_width)
+                compute_2pcf_step2_xpu(result_w, result_h, result_logr, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
 
         ################################################################################################################
 
@@ -289,14 +281,14 @@ def compute_2pcf_step1(result_w: np.ndarray, result_h: np.ndarray, result_logr: 
             for i in nb.prange(kappa1.shape[0]):
                 for j in range(i + 1, kappa2.shape[0]):
 
-                    compute_2pcf_step2_xpu(result_w, result_h, result_logr, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], log_min_sep, inv_bin_width)
+                    compute_2pcf_step2_xpu(result_w, result_h, result_logr, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
 
         else:
 
             for i in nb.prange(kappa1.shape[0]):
                 for j in range(0, kappa2.shape[0]):
 
-                    compute_2pcf_step2_xpu(result_w, result_h, result_logr, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], log_min_sep, inv_bin_width)
+                    compute_2pcf_step2_xpu(result_w, result_h, result_logr, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
 
         ################################################################################################################
 
@@ -312,7 +304,7 @@ def _clip_xpu(x, a, b):
 ########################################################################################################################
 
 @jit(kernel = False, inline = True, fastmath = True)
-def compute_2pcf_step2_xpu(result_w: np.ndarray, result_h: np.ndarray, result_logr: np.ndarray, lon1: np.ndarray, lon2: np.ndarray, sin_lat1: np.ndarray, sin_lat2: np.ndarray, cos_lat1: np.ndarray, cos_lat2: np.ndarray, kappa1: np.ndarray, kappa2: np.ndarray, w1: np.ndarray, w2: np.ndarray, log_min_sep: float, inv_bin_width: float) -> None:
+def compute_2pcf_step2_xpu(result_w: np.ndarray, result_h: np.ndarray, result_logr: np.ndarray, lon1: np.ndarray, lon2: np.ndarray, sin_lat1: np.ndarray, sin_lat2: np.ndarray, cos_lat1: np.ndarray, cos_lat2: np.ndarray, kappa1: np.ndarray, kappa2: np.ndarray, w1: np.ndarray, w2: np.ndarray, min_sep: float, max_sep: float, log_min_sep: float, inv_bin_width: float) -> None:
 
     ####################################################################################################################
 
@@ -320,13 +312,15 @@ def compute_2pcf_step2_xpu(result_w: np.ndarray, result_h: np.ndarray, result_lo
 
     sep = math.acos(_clip_xpu(cos_angle, -1.0, +1.0))
 
-    log_sep = math.log(sep)
+    if min_sep <= sep <= max_sep:
 
-    ####################################################################################################################
+        ################################################################################################################
 
-    bin_idx = int((log_sep - log_min_sep) * inv_bin_width)
+        log_sep = math.log(sep)
 
-    if 0 <= bin_idx < len(result_w):
+        bin_idx = int((log_sep - log_min_sep) * inv_bin_width)
+
+        ################################################################################################################
 
         w_ij = w1 * w2
 

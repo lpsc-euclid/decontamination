@@ -25,8 +25,17 @@ class Correlation_Abstract(abc.ABC):
 
     def __init__(self, min_sep: float, max_sep: float, n_bins: int):
 
+        if min_sep == 0.0:
+
+            min_sep = 0.1
+
         self._min_sep = min_sep
         self._max_sep = max_sep
+
+        self._min_sep_rad = np.radians(min_sep / 60.0)
+        self._max_sep_rad = np.radians(max_sep / 60.0)
+
+        print(self._min_sep, self._max_sep, self._min_sep_rad, self._max_sep_rad)
 
         self._n_bins = n_bins
 
@@ -35,7 +44,7 @@ class Correlation_Abstract(abc.ABC):
     @property
     def min_sep(self) -> float:
 
-        """Minimum separation (in degrees)."""
+        """Minimum separation (in arcmins)."""
 
         return self._min_sep
 
@@ -44,7 +53,7 @@ class Correlation_Abstract(abc.ABC):
     @property
     def max_sep(self) -> float:
 
-        """Maximum separation (in degrees)."""
+        """Maximum separation (in arcmins)."""
 
         return self._max_sep
 

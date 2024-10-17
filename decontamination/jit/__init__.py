@@ -369,6 +369,17 @@ class jit(object):
 
     ####################################################################################################################
 
+    @staticmethod
+    def get_max_threads_per_block() -> int:
+
+        """
+        Returns the maximum allowable number of threads per block for this kernel.
+        """
+
+        return cu.get_current_device().MAX_THREADS_PER_BLOCK
+
+    ####################################################################################################################
+
     @property
     def is_gpu(self) -> bool:
 

@@ -71,27 +71,59 @@ footprint, kappa1, kappa2, w1, w2 = generate_data(nside, 0.25)
 
 def test_2pcf_scalar():
 
-    expected_theta = np.array([1.24850931, 1.94614573, 3.03360429, 4.72870805, 7.37099426, 11.48972527, 17.90990228, 27.91751692, 48.67165203, 64.88142103, 113.89551151, 170.98324272, 262.89435072, 412.93908318])
+    if hasattr(decontamination, 'Correlation_Scalar'):
 
-    expected_w = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.06166733, -0.02861535, -0.01513083, -0.02068876, 0.01380232, -0.00733413])
+        expected_theta = np.array([1.24850931, 1.94614573, 3.03360429, 4.72870805, 7.37099426, 11.48972527, 17.90990228, 27.91751692, 48.67165203, 64.88142103, 113.89551151, 170.98324272, 262.89435072, 412.93908318])
 
-    ####################################################################################################################
+        expected_w = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.06166733, -0.02861535, -0.01513083, -0.02068876, 0.01380232, -0.00733413])
 
-    mean = np.sum(kappa1) / np.sum(w1)
+        ################################################################################################################
 
-    contrast = (kappa1 / w1 - mean) / mean
+        mean = np.sum(kappa1) / np.sum(w1)
 
-    correlator = decontamination.Correlation_Scalar(nside = nside, nest = True, footprint = footprint, data_field = contrast, bin_slop = 0, min_sep = min_sep, max_sep = max_sep, n_bins = n_bins, data_w = w1)
+        contrast = (kappa1 / w1 - mean) / mean
 
-    theta_mean, w, _ = correlator.calculate(estimator = 'dd')
+        correlator = decontamination.Correlation_Scalar(nside = nside, nest = True, footprint = footprint, data_field = contrast, bin_slop = 0, min_sep = min_sep, max_sep = max_sep, n_bins = n_bins, data_w = w1)
 
-    ####################################################################################################################
+        theta_mean, w, _ = correlator.calculate(estimator = 'dd')
 
-    print(theta_mean)
-    print(w)
+        ################################################################################################################
 
-    assert np.allclose(theta_mean, expected_theta, rtol = 1e-4)
-    assert np.allclose(w, expected_w, rtol = 1e-4)
+        print()
+        print(theta_mean)
+        print(w)
+
+        assert np.allclose(theta_mean, expected_theta, rtol = 1e-4)
+        assert np.allclose(w, expected_w, rtol = 1e-4)
+
+########################################################################################################################
+
+def test_2pcf_scalar_alt():
+
+    if hasattr(decontamination, 'Correlation_ScalarAlt'):
+
+        expected_theta = np.array([1.24850931, 1.94614573, 3.03360429, 4.72870805, 7.37099426, 11.48972527, 17.90990228, 27.91751692, 48.67165203, 64.88142103, 113.89551151, 170.98324272, 262.89435072, 412.93908318])
+
+        expected_w = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.06166733, -0.02861535, -0.01513083, -0.02068876, 0.01380232, -0.00733413])
+
+        ################################################################################################################
+
+        mean = np.sum(kappa1) / np.sum(w1)
+
+        contrast = (kappa1 / w1 - mean) / mean
+
+        correlator = decontamination.Correlation_ScalarAlt(nside = nside, nest = True, footprint = footprint, data_field = contrast, bin_slop = 0, min_sep = min_sep, max_sep = max_sep, n_bins = n_bins, data_w = w1)
+
+        theta_mean, w, _ = correlator.calculate(estimator = 'dd')
+
+        ################################################################################################################
+
+        print()
+        print(theta_mean)
+        print(w)
+
+        assert np.allclose(theta_mean, expected_theta, rtol = 1e-4)
+        assert np.allclose(w, expected_w, rtol = 1e-4)
 
 ########################################################################################################################
 
@@ -149,6 +181,7 @@ def test_2pcf_pair_count():
 
     ####################################################################################################################
 
+    print()
     print(theta_mean)
     print(w)
 

@@ -42,7 +42,37 @@ if not (CPU_OPTIMIZATION_AVAILABLE and cu.is_available()):
 
 ########################################################################################################################
 
-def nb_to_device(ndarray):
+def get_max_threads() -> int:
+
+    """
+    Return the number of logical CPUs in the system.
+    """
+
+    return os.cpu_count()
+
+########################################################################################################################
+
+def get_num_threads() -> int:
+
+    """
+    Get the number of threads used for parallel execution.
+    """
+
+    return nb.get_num_threads()
+
+########################################################################################################################
+
+def set_num_threads(n_threads: int) -> None:
+
+    """
+    Set the number of threads to use for parallel execution.
+    """
+
+    nb.set_num_threads(n_threads)
+
+########################################################################################################################
+
+def nb_to_device(ndarray: np.ndarray) -> np.ndarray:
 
     """
     :private:
@@ -52,7 +82,7 @@ def nb_to_device(ndarray):
 
 ########################################################################################################################
 
-def device_array_from(array: np.ndarray):
+def device_array_from(array: np.ndarray) -> 'DeviceArray':
 
     """
     New device array (see :class:`DeviceArray`), initialized from a Numpy ndarray.
@@ -67,7 +97,7 @@ def device_array_from(array: np.ndarray):
 
 ########################################################################################################################
 
-def device_array_empty(shape: typing.Union[tuple, int], dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32):
+def device_array_empty(shape: typing.Union[tuple, int], dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32) -> 'DeviceArray':
 
     """
     New device array (see :class:`DeviceArray`), not initialized. Similar to `numpy.empty()`.
@@ -84,7 +114,7 @@ def device_array_empty(shape: typing.Union[tuple, int], dtype: typing.Type[typin
 
 ########################################################################################################################
 
-def device_array_zeros(shape: typing.Union[tuple, int], dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32):
+def device_array_zeros(shape: typing.Union[tuple, int], dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32) -> 'DeviceArray':
 
     """
     New device array (see :class:`DeviceArray`), filled with **0**. Similar to `numpy.zeros()`.
@@ -101,7 +131,7 @@ def device_array_zeros(shape: typing.Union[tuple, int], dtype: typing.Type[typin
 
 ########################################################################################################################
 
-def device_array_full(shape: typing.Union[tuple, int], value: typing.Union[int, float], dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32):
+def device_array_full(shape: typing.Union[tuple, int], value: typing.Union[int, float], dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32) -> 'DeviceArray':
 
     """
     New device array (see :class:`DeviceArray`), filled with **value**. Similar to `numpy.full()`.

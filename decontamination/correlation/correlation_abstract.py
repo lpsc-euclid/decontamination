@@ -35,8 +35,6 @@ class Correlation_Abstract(abc.ABC):
         self._min_sep_rad = np.radians(min_sep / 60.0)
         self._max_sep_rad = np.radians(max_sep / 60.0)
 
-        print(self._min_sep, self._max_sep, self._min_sep_rad, self._max_sep_rad)
-
         self._n_bins = n_bins
 
     ####################################################################################################################

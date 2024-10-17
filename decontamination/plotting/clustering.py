@@ -146,7 +146,7 @@ def _display_cluster_labels(ax: pyplot.Axes, cluster_ids: np.ndarray, is_hexagon
 
             for label in range(1, n + 1):
 
-                coords = np.nonzero(labels == label)
+                coords = np.nonzero(labels == label)[0]
 
                 j = np.mean(coords[0])
                 i = np.mean(coords[1])

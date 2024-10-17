@@ -109,7 +109,7 @@ class Clustering(object):
 
         for cluster_id in np.unique(cluster_ids):
 
-            cluster_indices = np.nonzero(cluster_ids == cluster_id)
+            cluster_indices = np.nonzero(cluster_ids == cluster_id)[0]
 
             result[cluster_indices] = np.mean(vectors[cluster_indices], axis = 0)
 

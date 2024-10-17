@@ -376,7 +376,7 @@ class jit(object):
         Returns the maximum allowable number of threads per block for a kernel.
         """
 
-        return cu.get_current_device().MAX_THREADS_PER_BLOCK
+        return cu.get_current_device().MAX_THREADS_PER_BLOCK if cu.is_available() else -1
 
     ####################################################################################################################
 

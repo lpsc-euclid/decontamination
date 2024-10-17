@@ -237,17 +237,15 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        empty_bins = ~valid_bins
+        for idx in np.nonzero(~valid_bins)[0]:
 
-        if np.any(empty_bins):
+            if idx + 1 < self._bins.shape[0]:
 
-            empty_indices = np.where(empty_bins)[0]
-
-            for idx in empty_indices:
-
-                if idx + 1 < self._bins.shape[0]:
-
-                    theta_mean[idx] = 0.5 * (self._bins[idx + 0] + self._bins[idx + 1])
+                theta_mean[idx] = 0.5 * (
+                    self._bins[idx + 0]
+                    +
+                    self._bins[idx + 1]
+                )
 
         ################################################################################################################
 

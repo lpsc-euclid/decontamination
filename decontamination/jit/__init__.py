@@ -289,7 +289,9 @@ class Kernel:
 
         data_sizes = kernel_params[2] if isinstance(kernel_params[2], tuple) else (kernel_params[2], )
 
-        num_blocks = tuple(math.ceil(s / t) for s, t in zip(data_sizes, threads_per_blocks))
+        ################################################################################################################
+
+        num_blocks = tuple(math.ceil(s / t) if t > 0 else 0 for s, t in zip(data_sizes, threads_per_blocks))
 
         ################################################################################################################
 

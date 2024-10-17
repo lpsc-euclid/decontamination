@@ -40,8 +40,6 @@ if not (CPU_OPTIMIZATION_AVAILABLE and cu.is_available()):
 
     GPU_OPTIMIZATION_AVAILABLE = False
 
-print(CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE)
-
 ########################################################################################################################
 
 def nb_to_device(ndarray):

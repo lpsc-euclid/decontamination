@@ -46,7 +46,11 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
         Optional precision parameter (see `TreeCorr documentation <https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop>`_).
     n_threads : int, default: **None** ≡ the number of cpu cores
         Optional number of OpenMP threads to use during the calculation.
-    data_w : np.ndarray
+    random_field : np.ndarray, default: **None**
+        ???
+    data_w : np.ndarray, default: **None**
+        ???
+    random_w : np.ndarray, default: **None**
         ???
     """
 
@@ -93,9 +97,8 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
         ################################################################################################################
 
         self._data_field = data_field
-        self._random_field = random_field
-
         self._data_w = data_w
+        self._random_field = random_field
         self._random_w = random_w
 
     ####################################################################################################################

@@ -498,7 +498,7 @@ class jit(object):
 
     _CPU_PREPROCESSOR = processor.Preprocessor(is_numba = CPU_OPTIMIZATION_AVAILABLE, is_gpu = False)
 
-    _GPU_PREPROCESSOR = processor.Preprocessor(is_numba = CPU_OPTIMIZATION_AVAILABLE, is_gpu = True)
+    _GPU_PREPROCESSOR = processor.Preprocessor(is_numba = GPU_OPTIMIZATION_AVAILABLE, is_gpu = True)
 
     ####################################################################################################################
 

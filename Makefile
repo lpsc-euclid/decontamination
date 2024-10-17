@@ -13,19 +13,19 @@ manual:
 
 .PHONY: test
 test:
-	python3 -m pytest ./test/
+	python3 -m pytest -s ./test/
 
 ########################################################################################################################
 
 .PHONY: cov
 cov:
-	NUMBA_DISABLE_JIT=1 python3 -m pytest --cov=decontamination --cov-report xml:coverage.xml ./test/
+	NUMBA_DISABLE_JIT=1 python3 -m pytest -s --cov=decontamination --cov-report xml:coverage.xml ./test/
 
 ########################################################################################################################
 
 .PHONY: htmlcov
 htmlcov:
-	NUMBA_DISABLE_JIT=1 python3 -m pytest --cov=decontamination --cov-report html ./test/
+	NUMBA_DISABLE_JIT=1 python3 -m pytest -s --cov=decontamination --cov-report html ./test/
 
 ########################################################################################################################
 

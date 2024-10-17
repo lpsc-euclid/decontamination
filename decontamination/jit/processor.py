@@ -11,9 +11,9 @@ import ast
 
 ########################################################################################################################
 
-_CALL_RE = re.compile('(\\w+)_xpu\\s*\\(')
+_CALL_RE = re.compile(r'(\w+)_xpu\s*\(')
 
-_JIT_X_RE = re.compile('(?:\\w*\\.)?jit\\.')
+_JIT_X_RE = re.compile(r'(?:\w*\s*\.\s*)?jit\.')
 
 _CPU_CODE_RE = re.compile(re.escape('!--BEGIN-CPU--') + '.*?' + re.escape('!--END-CPU--'), flags = re.DOTALL)
 
@@ -25,7 +25,9 @@ class Preprocessor(ast.NodeTransformer):
 
     ####################################################################################################################
 
-    def __init__(self, is_gpu: bool):
+    def __init__(self, is_numba: bool, is_gpu: bool):
+
+        self.is_numba = is_numba
 
         self.is_gpu = is_gpu
 
@@ -79,30 +81,45 @@ class Preprocessor(ast.NodeTransformer):
 
         ################################################################################################################
 
-        if self.is_gpu:
+        if self.is_numba:
 
-            return (
-                source_code
-                .replace('jit.is_gpu', 'True')
-                .replace('jit.grid', 'cuda_module.grid')
-                .replace('jit.local_empty', 'cuda_module.local.array')
-                .replace('jit.shared_empty', 'cuda_module.shared.array')
-                .replace('jit.syncthreads', 'cuda_module.syncthreads')
-                .replace('jit.atomic_add', 'cuda_module.atomic.add')
-                .replace('jit.atomic_sub', 'cuda_module.atomic.sub')
-            )
+            if self.is_gpu:
+
+                return (
+                    source_code
+                    .replace('jit.is_gpu', 'True')
+                    .replace('jit.grid', 'cuda_module.grid')
+                    .replace('jit.local_empty', 'cuda_module.local.array')
+                    .replace('jit.shared_empty', 'cuda_module.shared.array')
+                    .replace('jit.syncthreads', 'cuda_module.syncthreads')
+                    .replace('jit.atomic_add', 'cuda_module.atomic.add')
+                    .replace('jit.atomic_sub', 'cuda_module.atomic.sub')
+                )
+
+            else:
+
+                return (
+                    source_code
+                    .replace('jit.is_gpu', 'False')
+                    .replace('jit.grid', '#jit.grid')
+                    .replace('jit.local_empty', 'np.empty')
+                    .replace('jit.shared_empty', 'np.empty')
+                    .replace('jit.syncthreads', '#jit.syncthreads')
+                    .replace('jit.atomic_add', 'jit_module.atomic.add')
+                    .replace('jit.atomic_sub', 'jit_module.atomic.sub')
+                )
 
         else:
 
             return (
                 source_code
                 .replace('jit.is_gpu', 'False')
-                .replace('jit.grid', '# jit.grid')
-                .replace('jit.local_empty', 'np.empty')
-                .replace('jit.shared_empty', 'np.empty')
-                .replace('jit.syncthreads', '# jit.syncthreads')
-                .replace('jit.atomic_add', 'jit_module.atomic.add')
-                .replace('jit.atomic_sub', 'jit_module.atomic.sub')
+                .replace('jit.grid', 'jit_module.grid')
+                .replace('jit.local_empty', 'jit_module.jit.local_empty')
+                .replace('jit.shared_empty', 'jit_module.jit.shared_empty')
+                .replace('jit.syncthreads', 'jit_module.jit.syncthreads')
+                .replace('jit.atomic_add', 'jit_module.jit.atomic_add')
+                .replace('jit.atomic_sub', 'jit_module.jit.atomic_sub')
             )
 
 ########################################################################################################################

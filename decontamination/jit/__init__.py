@@ -26,19 +26,21 @@ __pdoc__ = {}
 
 ########################################################################################################################
 
-CPU_OPTIMIZATION_AVAILABLE = os.environ.get('NUMBA_DISABLE_JIT', '0') == '0'
+CPU_OPTIMIZATION_AVAILABLE = os.environ.get('NUMBA_DISABLE_JIT', '0').strip() == '0'
 __pdoc__['CPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba CPU optimization is available.'
 
 ########################################################################################################################
 
-GPU_OPTIMIZATION_AVAILABLE = os.environ.get('NUMBA_DISABLE_CUDA', '0') == '0'
+GPU_OPTIMIZATION_AVAILABLE = os.environ.get('NUMBA_DISABLE_CUDA', '0').strip() == '0'
 __pdoc__['GPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba GPU optimization is available.'
 
 ########################################################################################################################
 
-if not cu.is_available():
+if not (CPU_OPTIMIZATION_AVAILABLE and cu.is_available()):
 
     GPU_OPTIMIZATION_AVAILABLE = False
+
+print(CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE)
 
 ########################################################################################################################
 
@@ -291,10 +293,6 @@ class Kernel:
 
         ################################################################################################################
 
-        num_blocks = tuple(math.ceil(s / t) if t > 0 else 0 for s, t in zip(data_sizes, threads_per_blocks))
-
-        ################################################################################################################
-
         def wrapper(*args, **kwargs):
 
             new_args = []
@@ -317,7 +315,7 @@ class Kernel:
 
                 ########################################################################################################
 
-                return self.gpu_func[num_blocks, threads_per_blocks](*new_args, **kwargs)
+                return self.gpu_func[tuple(math.ceil(s / t) if t > 0 else 0 for s, t in zip(data_sizes, threads_per_blocks)), threads_per_blocks](*new_args, **kwargs)
 
                 ########################################################################################################
 
@@ -405,7 +403,7 @@ class jit(object):
             Number of dimensions.
         """
 
-        pass
+        dont_call()
 
     ####################################################################################################################
 
@@ -423,7 +421,7 @@ class jit(object):
             Desired data-type for the new array.
         """
 
-        pass
+        return numpy.empty(shape, dtype = dtype)
 
     ####################################################################################################################
 
@@ -441,7 +439,7 @@ class jit(object):
             Desired data-type for the new array.
         """
 
-        pass
+        return np.empty(shape, dtype = dtype)
 
     ####################################################################################################################
 
@@ -472,7 +470,7 @@ class jit(object):
             New value.
         """
 
-        pass
+        array[idx] = array[idx] + val
 
     ####################################################################################################################
 
@@ -492,7 +490,7 @@ class jit(object):
             New value.
         """
 
-        pass
+        array[idx] = array[idx] - val
 
     ####################################################################################################################
 
@@ -500,9 +498,9 @@ class jit(object):
 
     ####################################################################################################################
 
-    _CPU_PREPROCESSOR = processor.Preprocessor(is_gpu = False)
+    _CPU_PREPROCESSOR = processor.Preprocessor(is_numba = CPU_OPTIMIZATION_AVAILABLE, is_gpu = False)
 
-    _GPU_PREPROCESSOR = processor.Preprocessor(is_gpu = True)
+    _GPU_PREPROCESSOR = processor.Preprocessor(is_numba = CPU_OPTIMIZATION_AVAILABLE, is_gpu = True)
 
     ####################################################################################################################
 

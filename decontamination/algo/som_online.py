@@ -319,7 +319,7 @@ def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray
     # DO BMUS CALCULATION                                                                                              #
     ####################################################################################################################
 
-    min_distance = 1.0e99
+    min_distance = 1.0e10
     min_index = 0
 
     for index in range(mn):

@@ -18,6 +18,24 @@ from ..hp import UNSEEN
 
 def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_out: np.array, weights: np.array, mode: typing.Optional[str] = None, ignore_zeros: bool = False, log_factor: float = -2.5) -> np.array:
 
+    """
+
+    Parameters
+    ----------
+    nside_in
+    nside_out
+    footprint_in
+    footprint_out
+    weights
+    mode
+    ignore_zeros
+    log_factor
+
+    Returns
+    -------
+
+    """
+
     ####################################################################################################################
 
     if nside_in == nside_out:

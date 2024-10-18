@@ -517,7 +517,7 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         # PCA TRAINING                                                                                                 #
         ################################################################################################################
 
-        self._pca.train(footprint_systematics, density = galaxy_number_density, min_weight = 0.0, max_weight = 1.0)
+        self._pca.train(footprint_systematics, dataset_weights = galaxy_number_density, min_weight = 0.0, max_weight = 1.0)
 
         ################################################################################################################
         # BATCH/ONLINE TRAINING                                                                                        #
@@ -526,9 +526,9 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         self._som.init_from(self._pca)
 
         if self._batch:
-            self._som.train(footprint_systematics, density = galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+            self._som.train(footprint_systematics, dataset_weights = galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
         else:
-            self._som.train(footprint_systematics, density = galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar)
+            self._som.train(footprint_systematics, dataset_weights = galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar)
 
         ################################################################################################################
         # COMPUTE FOOTPRINT WINNERS                                                                                    #
@@ -595,8 +595,8 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         # COMPUTE ACTIVATION MAPS                                                                                      #
         ################################################################################################################
 
-        self._catalog_activation_map = self._som.get_activation_map(self._footprint_systematics, density = self._galaxy_number_density, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
-        self._footprint_activation_map = self._som.get_activation_map(self._footprint_systematics, density = None, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+        self._catalog_activation_map = self._som.get_activation_map(self._footprint_systematics, dataset_weights = self._galaxy_number_density, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+        self._footprint_activation_map = self._som.get_activation_map(self._footprint_systematics, dataset_weights = None, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
         ################################################################################################################
         # COMPUTE GALAXY NUMBER DENSITY XXX                                                                            #

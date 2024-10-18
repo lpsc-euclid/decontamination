@@ -179,7 +179,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], density: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, min_weight: float = 0.0, max_weight: float = 1.0, show_progress_bar: bool = False) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, min_weight: float = 0.0, max_weight: float = 1.0, show_progress_bar: bool = False) -> None:
 
         """
         Trains the neural network.
@@ -188,8 +188,8 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
-        density : typing.Union[np.ndarray, typing.Callable]
-            ???.
+        dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
+            Training dataset weights array or generator builder.
         min_weight : float, default: **0.0**
             Latent space minimum value.
         max_weight : float, default: **1.0**
@@ -200,8 +200,8 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        dateset_generator_builder = dataset_to_generator_builder(dataset)
-        density_generator_builder = dataset_to_generator_builder(density)
+        dateset_generator_builder = dataset_to_generator_builder(    dataset    )
+        density_generator_builder = dataset_to_generator_builder(dataset_weights)
 
         ################################################################################################################
 

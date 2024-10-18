@@ -557,7 +557,7 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], density: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> np.ndarray:
+    def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> np.ndarray:
 
         """
         For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.
@@ -566,8 +566,8 @@ class SOM_Abstract(object):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Dataset array or generator builder.
-        density : typing.Union[np.ndarray, typing.Callable]
-            ???.
+        dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
+            Training dataset weights array or generator builder.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**
@@ -578,8 +578,8 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        dataset_generator_builder = dataset_to_generator_builder(dataset)
-        density_generator_builder = dataset_to_generator_builder(density)
+        dataset_generator_builder = dataset_to_generator_builder(    dataset    )
+        density_generator_builder = dataset_to_generator_builder(dataset_weights)
 
         ################################################################################################################
 

@@ -138,7 +138,10 @@ def nest2xyf(nside: int, pixels: np.ndarray) -> typing.Tuple[np.ndarray, np.ndar
 def ang2pix(nside: int, θ: np.ndarray, ϕ: np.ndarray, lonlat: bool = False) -> np.ndarray:
 
     """
-    Converts spherical coordinates to HEALPix pixel indices. **Nested ordering only.**
+    Converts spherical coordinates to HEALPix pixel indices.
+
+    .. warning::
+        Nested ordering only.
 
     Parameters
     ----------
@@ -262,7 +265,10 @@ def _modulo(v1, v2):
 def randang(nside: int, pixels: np.ndarray, lonlat: bool = False, compat: bool = False, rng: typing.Optional[np.random.Generator] = None) -> typing.Tuple[np.ndarray, np.ndarray]:
 
     """
-    Samples random spherical coordinates from the given HEALPix pixels. **Nested ordering only.**
+    Samples random spherical coordinates from the given HEALPix pixels.
+
+    .. warning::
+        Nested ordering only.
 
     Parameters
     ----------

@@ -567,7 +567,7 @@ class SOM_Abstract(object):
         dataset : typing.Union[np.ndarray, typing.Callable]
             Dataset array or generator builder.
         dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
-            Training dataset weights array or generator builder.
+            Training dataset weight array or generator builder.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**

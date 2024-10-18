@@ -14,3 +14,9 @@ Multi-Order Coverage (MOC) masks
 
 .. automodule:: decontamination.mask.moc
    :members:
+
+Resolution downgrading and upgrading
+------------------------------------
+
+.. automodule:: decontamination.mask.ud_grade
+   :members:

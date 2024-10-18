@@ -216,7 +216,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
         dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
-            Training dataset weights array or generator builder.
+            Training dataset weight array or generator builder.
         n_epochs : int, default: **None**
             Optional number of epochs to train for.
         n_vectors : int, default: **None**

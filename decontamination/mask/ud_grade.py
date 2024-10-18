@@ -16,41 +16,44 @@ from ..hp import UNSEEN
 
 ########################################################################################################################
 
-def downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_out: np.array, weights: np.array, mode: typing.Optional[str] = None, ignore_zeros: bool = False, log_factor: float = -2.5) -> np.array:
+def ud_grade(nside_in: int, nside_out: int, footprint_in: np.ndarray, footprint_out: np.ndarray, weights: np.ndarray, mode: typing.Optional[str] = None, ignore_zeros: bool = False, log_factor: float = -2.5) -> np.array:
 
     """
 
     Parameters
     ----------
-    nside_in
-    nside_out
-    footprint_in
-    footprint_out
-    weights
-    mode
-    ignore_zeros
-    log_factor
+    nside_in : int
+        The HEALPix nside parameter of the input map.
+    nside_out : int
+        The HEALPix nside parameter of the output map.
+    footprint_in : np.ndarray
+        HEALPix indices of the input map.
+    footprint_out : np.ndarray
+        HEALPix indices of the output map.
+    weights : np.ndarray
+        The input map.
+    mode : str, default: **None**
+        Reprojection mode: **"sum"**, **"cov"**, **"logquad"**, **"log"**, **"quad"**, or **None** to determine how the input map is rescaled.
+    ignore_zeros : bool, default: **False**
+        If True, zero values in the input map are ignored during reprojection.
+    log_factor : float, default: **-2.5**
+        Factor used when processing logarithmic data in the **"logquad"** and **"log"** modes.
 
     Returns
     -------
-
+    np.ndarray
+        The output map.
     """
 
-    ####################################################################################################################
+    if nside_in > nside_out:
 
-    if nside_in == nside_out:
-
-        return weights
-
-    ####################################################################################################################
+        return _downgrade(nside_in, nside_out, footprint_in, footprint_out, weights, mode, ignore_zeros, np.dtype(weights.dtype).type(log_factor))
 
     if nside_in < nside_out:
 
-        raise ValueError('The output nside must be greater than the input resolution')
+        return _upgrade(nside_in, nside_out, footprint_in, footprint_out, weights, mode, ignore_zeros, np.dtype(weights.dtype).type(log_factor))
 
-    ####################################################################################################################
-
-    return _downgrade(nside_in, nside_out, footprint_in, footprint_out, weights, mode, ignore_zeros, np.dtype(weights.dtype).type(log_factor))
+    return weights
 
 ########################################################################################################################
 
@@ -133,6 +136,27 @@ def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_
 
         ################################################################################################################
 
+    elif mode == 'log':
+
+        ################################################################################################################
+        # MODE LOG                                                                                                     #
+        ################################################################################################################
+
+        for i in range(len(weights)):
+
+            pix_out = int(np.floor(footprint_in[i] / factor ** 2))
+
+            weight = weights[i]
+
+            if not math.isnan(weight) and weight != UNSEEN and (not ignore_zeros or weight != 0.0):
+
+                sums[pix_out] += np.power(10.0, weight / log_factor)
+                counts[pix_out] += 1.000000000000000000000000000000000
+
+        map_out = log_factor * np.log10(sums / counts)
+
+        ################################################################################################################
+
     elif mode == 'quad':
 
         ################################################################################################################
@@ -178,5 +202,11 @@ def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_
     map_out[counts == 0] = np.nan
 
     return map_out[footprint_out]
+
+########################################################################################################################
+
+def _upgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_out: np.array, weights: np.array, mode: typing.Optional[str], ignore_zeros: bool, log_factor: typing.Any) -> np.array:
+
+    raise ValueError('Upgrading not implemented yet!')
 
 ########################################################################################################################

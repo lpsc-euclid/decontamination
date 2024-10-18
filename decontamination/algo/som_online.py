@@ -150,7 +150,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], density: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`). An online formulation of updating weights is implemented:
@@ -170,8 +170,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
-        density : typing.Union[np.ndarray, typing.Callable]
-            ???.
+        dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
+            Training dataset weights array or generator builder.
         n_epochs : int, default: **None**
             Optional number of epochs to train for.
         n_vectors : int, default: **None**
@@ -196,7 +196,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        generator_builder = dataset_to_generator_builder(dataset)
+        dataset_generator_builder = dataset_to_generator_builder(    dataset    )
+        density_generator_builder = dataset_to_generator_builder(dataset_weights)
 
         ################################################################################################################
 
@@ -220,22 +221,43 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
                 ########################################################################################################
 
-                generator = generator_builder()
+                if density_generator_builder is not None:
 
-                for vectors in generator():
+                    dataset_generator = dataset_generator_builder()
+                    density_generator = density_generator_builder()
 
-                    SOM_Online._train_step1_epoch(
-                        self._weights,
-                        self._topography,
-                        vectors.astype(self._dtype),
-                        cur_epoch,
-                        n_epochs,
-                        self._dtype(self._alpha),
-                        self._dtype(self._sigma),
-                        self._m * self._n
-                    )
+                    for vectors, _ in zip(dataset_generator(), density_generator()):
 
-                    gc.collect()
+                        SOM_Online._train_step1_epoch(
+                            self._weights,
+                            self._topography,
+                            vectors.astype(self._dtype),
+                            cur_epoch,
+                            n_epochs,
+                            self._dtype(self._alpha),
+                            self._dtype(self._sigma),
+                            self._m * self._n
+                        )
+
+                        gc.collect()
+
+                else:
+
+                    dataset_generator = dataset_generator_builder()
+
+                    for vectors in dataset_generator():
+                        SOM_Online._train_step1_epoch(
+                            self._weights,
+                            self._topography,
+                            vectors.astype(self._dtype),
+                            cur_epoch,
+                            n_epochs,
+                            self._dtype(self._alpha),
+                            self._dtype(self._sigma),
+                            self._m * self._n
+                        )
+
+                        gc.collect()
 
                 ########################################################################################################
 
@@ -270,32 +292,64 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
             progress_bar = tqdm.tqdm(total = n_vectors, disable = not show_progress_bar)
 
-            generator = generator_builder()
+            if density_generator_builder is not None:
 
-            for vectors in generator():
+                dataset_generator = dataset_generator_builder()
+                density_generator = density_generator_builder()
 
-                count = min(vectors.shape[0], n_vectors - cur_vector)
+                for vectors, _ in zip(dataset_generator(), density_generator()):
 
-                SOM_Online._train_step1_iter(
-                    self._weights,
-                    self._topography,
-                    vectors[0: count].astype(self._dtype),
-                    cur_vector,
-                    n_vectors,
-                    self._dtype(self._alpha),
-                    self._dtype(self._sigma),
-                    self._m * self._n
-                )
+                    count = min(vectors.shape[0], n_vectors - cur_vector)
 
-                gc.collect()
+                    SOM_Online._train_step1_iter(
+                        self._weights,
+                        self._topography,
+                        vectors[0: count].astype(self._dtype),
+                        cur_vector,
+                        n_vectors,
+                        self._dtype(self._alpha),
+                        self._dtype(self._sigma),
+                        self._m * self._n
+                    )
 
-                cur_vector += count
+                    gc.collect()
 
-                progress_bar.update(count)
+                    cur_vector += count
 
-                if cur_vector >= n_vectors:
+                    progress_bar.update(count)
 
-                    break
+                    if cur_vector >= n_vectors:
+
+                        break
+
+            else:
+
+                dataset_generator = dataset_generator_builder()
+
+                for vectors in dataset_generator():
+
+                    count = min(vectors.shape[0], n_vectors - cur_vector)
+
+                    SOM_Online._train_step1_iter(
+                        self._weights,
+                        self._topography,
+                        vectors[0: count].astype(self._dtype),
+                        cur_vector,
+                        n_vectors,
+                        self._dtype(self._alpha),
+                        self._dtype(self._sigma),
+                        self._m * self._n
+                    )
+
+                    gc.collect()
+
+                    cur_vector += count
+
+                    progress_bar.update(count)
+
+                    if cur_vector >= n_vectors:
+
+                        break
 
             ############################################################################################################
 

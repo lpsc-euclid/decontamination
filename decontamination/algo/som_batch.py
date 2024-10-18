@@ -195,7 +195,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], density: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`). A batch formulation of updating weights is implemented:
@@ -203,15 +203,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         .. math::
             c_i(x,w,e)\\equiv\\mathrm{bmu}(x_i,w(e))\\equiv\\underset{j}{\\mathrm{arg\\,min}}\\lVert x_i-w_j(e)\\rVert
 
-        if :math:`\\sigma>0`:
-
         .. math::
             \\Theta_{ji}(x,w,e)\\equiv\\exp\\left(-\\frac{\\lVert j-c_i(x,w,e)\\rVert^2}{2\\sigma^2(e)}\\right)
-
-        if :math:`\\sigma=0`:
-
-        .. math::
-            \\Theta_{ji}(x,w,e)\\equiv\\delta_{j,c_i(x,w,e)}\\equiv\\left\\{\\begin{array}{ll}1&j=c_i(x,w,e)\\\\0&\\mathrm{otherwise}\\end{array}\\right.
 
         .. math::
             \\boxed{w_j(e+1)=\\frac{\\sum_{i=0}^{N-1}\\Theta_{ji}(x,w,e)\\cdot x_i}{\\sum_{i=0}^{N-1}\\Theta_{ji}(x,w,e)}}
@@ -222,8 +215,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
-        density : typing.Union[np.ndarray, typing.Callable]
-            ???.
+        dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
+            Training dataset weights array or generator builder.
         n_epochs : int, default: **None**
             Optional number of epochs to train for.
         n_vectors : int, default: **None**
@@ -248,8 +241,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        dataset_generator_builder = dataset_to_generator_builder(dataset)
-        density_generator_builder = dataset_to_generator_builder(density)
+        dataset_generator_builder = dataset_to_generator_builder(    dataset    )
+        density_generator_builder = dataset_to_generator_builder(dataset_weights)
 
         ################################################################################################################
 

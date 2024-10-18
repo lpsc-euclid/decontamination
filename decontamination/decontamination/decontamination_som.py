@@ -502,7 +502,7 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**
             If available, run on GPU rather than CPU.
-        threads_per_blocks : int, default: **1024**
+        threads_per_blocks : int, default: **None** ≡ maximum
             Number of GPU threads per blocks.
         """
 
@@ -581,7 +581,7 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**
             If available, run on GPU rather than CPU.
-        threads_per_blocks : int, default: **1024**
+        threads_per_blocks : int, default: **None** ≡ maximum
             Number of GPU threads per blocks.
         """
 
@@ -622,7 +622,7 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**
             If available, run on GPU rather than CPU.
-        threads_per_blocks : int, default: **1024**
+        threads_per_blocks : int, default: **None** ≡ maximum
             Number of GPU threads per blocks.
         """
 

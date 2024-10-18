@@ -17,9 +17,3 @@ Angular two-point correlation functions
 .. automodule:: decontamination.correlation.correlation_scalar
 
 .. automodule:: decontamination.correlation.correlation_scalar_alt
-
-Utilities
----------
-
-.. automodule:: decontamination.correlation
-   :members:

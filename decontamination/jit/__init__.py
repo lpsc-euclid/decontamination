@@ -36,9 +36,7 @@ __pdoc__['GPU_OPTIMIZATION_AVAILABLE'] = 'Indicates whether the numba GPU optimi
 
 ########################################################################################################################
 
-if not (CPU_OPTIMIZATION_AVAILABLE and cu.is_available()):
-
-    GPU_OPTIMIZATION_AVAILABLE = False
+GPU_OPTIMIZATION_AVAILABLE = CPU_OPTIMIZATION_AVAILABLE and GPU_OPTIMIZATION_AVAILABLE and cu.is_available()
 
 ########################################################################################################################
 

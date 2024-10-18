@@ -42,10 +42,6 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
         Maximum galaxy separation being considered (in arcmins).
     n_bins : int
         Number of angular bins.
-    bin_slop : float = **None**
-        Optional precision parameter (see `TreeCorr documentation <https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop>`_).
-    n_threads : int, default: **None** ≡ the number of cpu cores
-        Optional number of OpenMP threads to use during the calculation.
     random_field : np.ndarray, default: **None**
         ???
     data_w : np.ndarray, default: **None**
@@ -56,7 +52,7 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def __init__(self, nside: int, nest: bool, footprint: np.ndarray, data_field: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, n_threads: typing.Optional[int] = None, random_field: typing.Optional[np.ndarray] = None, data_w: typing.Optional[np.ndarray] = None, random_w: typing.Optional[np.ndarray] = None):
+    def __init__(self, nside: int, nest: bool, footprint: np.ndarray, data_field: np.ndarray, min_sep: float, max_sep: float, n_bins: int, random_field: typing.Optional[np.ndarray] = None, data_w: typing.Optional[np.ndarray] = None, random_w: typing.Optional[np.ndarray] = None):
 
         ################################################################################################################
 
@@ -91,11 +87,6 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        self._bin_slop = bin_slop
-        self._n_threads = n_threads
-
-        ################################################################################################################
-
         self._data_field = data_field
         self._data_w = data_w
         self._random_field = random_field
@@ -127,24 +118,6 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
         """HEALPix indices of the region where correlation must be calculated."""
 
         return self._footprint
-
-    ####################################################################################################################
-
-    @property
-    def bin_slop(self) -> typing.Optional[float]:
-
-        """Precision parameter for binning (see `TreeCorr documentation <https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop>`_)."""
-
-        return self._bin_slop
-
-    ####################################################################################################################
-
-    @property
-    def n_threads(self) -> typing.Optional[int]:
-
-        """How many OpenMP threads to use during the calculation."""
-
-        return self._n_threads
 
     ####################################################################################################################
 
@@ -191,15 +164,15 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
         ################################################################################################################
 
         device_w = device_array_zeros(shape = self.n_bins, dtype = np.float64)
-        device_h = device_array_zeros(shape = self.n_bins, dtype = np.float64)
         device_logr = device_array_zeros(shape = self.n_bins, dtype = np.float64)
+        device_h = device_array_zeros(shape = self.n_bins, dtype = np.float64)
 
         for start, stop in tqdm.tqdm(algo.batch_iterator(field1.shape[0], chunk_size), total = n_chunks):
 
             compute_2pcf_step1[enable_gpu, (threads_per_blocks, threads_per_blocks), (stop - start, field2.shape[0])](
                 device_w,
-                device_h,
                 device_logr,
+                device_h,
                 self._lon[start: stop],
                 self._lon,
                 self._sin_lat[start: stop],
@@ -217,9 +190,9 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
                 is_autocorr
             )
 
-        result_w    = device_w   .copy_to_host()
-        result_h    = device_h   .copy_to_host()
+        result_w = device_w.copy_to_host()
         result_logr = device_logr.copy_to_host()
+        result_h = device_h.copy_to_host()
 
         ################################################################################################################
 
@@ -249,7 +222,7 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
 ########################################################################################################################
 
 @jit(kernel = True, fastmath = True, parallel = True)
-def compute_2pcf_step1(result_w: np.ndarray, result_h: np.ndarray, result_logr: np.ndarray, lon1: np.ndarray, lon2: np.ndarray, sin_lat1: np.ndarray, sin_lat2: np.ndarray, cos_lat1: np.ndarray, cos_lat2: np.ndarray, kappa1: np.ndarray, kappa2: np.ndarray, w1: np.ndarray, w2: np.ndarray, min_sep: float, max_sep: float, log_min_sep: float, inv_bin_width: float, is_autocorr: bool) -> None:
+def compute_2pcf_step1(result_w: np.ndarray, result_logr: np.ndarray, result_h: np.ndarray, lon1: np.ndarray, lon2: np.ndarray, sin_lat1: np.ndarray, sin_lat2: np.ndarray, cos_lat1: np.ndarray, cos_lat2: np.ndarray, kappa1: np.ndarray, kappa2: np.ndarray, w1: np.ndarray, w2: np.ndarray, min_sep: float, max_sep: float, log_min_sep: float, inv_bin_width: float, is_autocorr: bool) -> None:
 
     if jit.is_gpu:
 
@@ -263,13 +236,13 @@ def compute_2pcf_step1(result_w: np.ndarray, result_h: np.ndarray, result_logr: 
 
             if i < kappa1.shape[0] and i < j < kappa2.shape[0]:
 
-                compute_2pcf_step2_xpu(result_w, result_h, result_logr, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
+                compute_2pcf_step2_xpu(result_w, result_logr, result_h, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
 
         else:
 
             if i < kappa1.shape[0] and j < kappa2.shape[0]:
 
-                compute_2pcf_step2_xpu(result_w, result_h, result_logr, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
+                compute_2pcf_step2_xpu(result_w, result_logr, result_h, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
 
         ################################################################################################################
 
@@ -284,14 +257,14 @@ def compute_2pcf_step1(result_w: np.ndarray, result_h: np.ndarray, result_logr: 
             for i in nb.prange(kappa1.shape[0]):
                 for j in range(i + 1, kappa2.shape[0]):
 
-                    compute_2pcf_step2_xpu(result_w, result_h, result_logr, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
+                    compute_2pcf_step2_xpu(result_w, result_logr, result_h, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
 
         else:
 
             for i in nb.prange(kappa1.shape[0]):
                 for j in range(0, kappa2.shape[0]):
 
-                    compute_2pcf_step2_xpu(result_w, result_h, result_logr, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
+                    compute_2pcf_step2_xpu(result_w, result_logr, result_h, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
 
         ################################################################################################################
 
@@ -307,7 +280,7 @@ def _clip_xpu(x, a, b):
 ########################################################################################################################
 
 @jit(kernel = False, inline = True, fastmath = True)
-def compute_2pcf_step2_xpu(result_w: np.ndarray, result_h: np.ndarray, result_logr: np.ndarray, lon1: np.ndarray, lon2: np.ndarray, sin_lat1: np.ndarray, sin_lat2: np.ndarray, cos_lat1: np.ndarray, cos_lat2: np.ndarray, kappa1: np.ndarray, kappa2: np.ndarray, w1: np.ndarray, w2: np.ndarray, min_sep: float, max_sep: float, log_min_sep: float, inv_bin_width: float) -> None:
+def compute_2pcf_step2_xpu(result_w: np.ndarray, result_logr: np.ndarray, result_h: np.ndarray, lon1: np.ndarray, lon2: np.ndarray, sin_lat1: np.ndarray, sin_lat2: np.ndarray, cos_lat1: np.ndarray, cos_lat2: np.ndarray, kappa1: np.ndarray, kappa2: np.ndarray, w1: np.ndarray, w2: np.ndarray, min_sep: float, max_sep: float, log_min_sep: float, inv_bin_width: float) -> None:
 
     ####################################################################################################################
 
@@ -328,8 +301,9 @@ def compute_2pcf_step2_xpu(result_w: np.ndarray, result_h: np.ndarray, result_lo
         w_ij = w1 * w2
 
         jit.atomic_add(result_w, bin_idx, w_ij * kappa1 * kappa2)
-        jit.atomic_add(result_h, bin_idx, w_ij * 1.0000000000000)
 
         jit.atomic_add(result_logr, bin_idx, w_ij * log_sep)
+
+        jit.atomic_add(result_h, bin_idx, w_ij)
 
 ########################################################################################################################

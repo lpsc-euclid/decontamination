@@ -1,4 +1,4 @@
-#~!/usr/bin/env python3 -m pytest
+#!/usr/bin/env python3 -m pytest
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
@@ -110,7 +110,7 @@ def test_2pcf_scalar_alt():
 
         contrast = (kappa1 / w1 - mean) / mean
 
-        correlator = decontamination.Correlation_ScalarAlt(nside = nside, nest = True, footprint = footprint, data_field = contrast, bin_slop = 0, min_sep = min_sep, max_sep = max_sep, n_bins = n_bins, data_w = w1)
+        correlator = decontamination.Correlation_ScalarAlt(nside = nside, nest = True, footprint = footprint, data_field = contrast, min_sep = min_sep, max_sep = max_sep, n_bins = n_bins, data_w = w1)
 
         theta_mean, w, _ = correlator.calculate(estimator = 'dd')
 

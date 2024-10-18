@@ -1,7 +1,7 @@
 Module decontamination.correlation
 ==================================
 
-This module provides different ways of computing two-point correlation functions. It is based on:
+This module provides different ways of computing two-point correlation functions. It is mainly based on:
 
 * | *TreeCorr*
   | Jarvis M., Bernstein G. and Jain B.

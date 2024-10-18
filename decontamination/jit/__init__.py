@@ -42,27 +42,27 @@ if not (CPU_OPTIMIZATION_AVAILABLE and cu.is_available()):
 
 ########################################################################################################################
 
-def get_max_threads() -> int:
+def get_max_cpu_threads() -> int:
 
     """
-    Return the number of logical CPUs for a CPU kernel.
+    Return the number of logical CPUs.
     """
 
     return os.cpu_count()
 
 ########################################################################################################################
 
-def get_max_threads_per_block() -> int:
+def get_max_gpu_threads_per_block() -> int:
 
     """
-    Returns the maximum allowable number of threads per block for a GPU kernel.
+    Returns the maximum number of threads per block.
     """
 
     return cu.get_current_device().MAX_THREADS_PER_BLOCK if GPU_OPTIMIZATION_AVAILABLE else 0
 
 ########################################################################################################################
 
-def get_num_threads() -> int:
+def get_num_cpu_threads() -> int:
 
     """
     Get the number of threads used for parallel execution.
@@ -72,7 +72,7 @@ def get_num_threads() -> int:
 
 ########################################################################################################################
 
-def set_num_threads(n_threads: int) -> None:
+def set_num_cpu_threads(n_threads: int) -> None:
 
     """
     Set the number of threads to use for parallel execution.

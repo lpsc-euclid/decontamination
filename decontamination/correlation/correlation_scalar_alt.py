@@ -16,7 +16,7 @@ import healpy as hp
 
 from . import correlation_abstract
 
-from .. import jit, algo, device_array_zeros, get_max_threads_per_block
+from .. import jit, algo, device_array_zeros, get_max_gpu_threads_per_block
 
 ########################################################################################################################
 
@@ -159,7 +159,7 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
 
         chunk_size = max(1, field1.shape[0] // n_chunks)
 
-        threads_per_blocks = int(math.sqrt(get_max_threads_per_block()))
+        threads_per_blocks = int(math.sqrt(get_max_gpu_threads_per_block()))
 
         ################################################################################################################
 

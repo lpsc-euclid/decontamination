@@ -137,14 +137,14 @@
 </li>
 </ul>
 <span class="target" id="module-decontamination.jit"></span><dl class="py function">
-<dt class="sig sig-object py" id="decontamination.jit.get_max_cpu_threads">
-<span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">get_max_cpu_threads</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#decontamination.jit.get_max_cpu_threads" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.jit.get_max_cpu_threads'"></a></dt>
-<dd><p>Return the number of logical CPUs.</p>
+<dt class="sig sig-object py" id="decontamination.jit.get_max_cpu_cores">
+<span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">get_max_cpu_cores</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#decontamination.jit.get_max_cpu_cores" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.jit.get_max_cpu_cores'"></a></dt>
+<dd><p>Return the number of logical CPU cores.</p>
 </dd></dl>
 <dl class="py function">
-<dt class="sig sig-object py" id="decontamination.jit.get_max_gpu_threads_per_block">
-<span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">get_max_gpu_threads_per_block</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#decontamination.jit.get_max_gpu_threads_per_block" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.jit.get_max_gpu_threads_per_block'"></a></dt>
-<dd><p>Returns the maximum number of threads per block.</p>
+<dt class="sig sig-object py" id="decontamination.jit.get_max_gpu_threads">
+<span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">get_max_gpu_threads</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#decontamination.jit.get_max_gpu_threads" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.jit.get_max_gpu_threads'"></a></dt>
+<dd><p>Returns the maximum number of threads per GPU block.</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.jit.get_num_cpu_threads">
@@ -501,8 +501,8 @@
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>
-<li><a :data-current="activeSection === '#decontamination.jit.get_max_cpu_threads'" class="reference internal" href="#decontamination.jit.get_max_cpu_threads"><code class="docutils literal notranslate"><span class="pre">get_max_cpu_threads()</span></code></a></li>
-<li><a :data-current="activeSection === '#decontamination.jit.get_max_gpu_threads_per_block'" class="reference internal" href="#decontamination.jit.get_max_gpu_threads_per_block"><code class="docutils literal notranslate"><span class="pre">get_max_gpu_threads_per_block()</span></code></a></li>
+<li><a :data-current="activeSection === '#decontamination.jit.get_max_cpu_cores'" class="reference internal" href="#decontamination.jit.get_max_cpu_cores"><code class="docutils literal notranslate"><span class="pre">get_max_cpu_cores()</span></code></a></li>
+<li><a :data-current="activeSection === '#decontamination.jit.get_max_gpu_threads'" class="reference internal" href="#decontamination.jit.get_max_gpu_threads"><code class="docutils literal notranslate"><span class="pre">get_max_gpu_threads()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.jit.get_num_cpu_threads'" class="reference internal" href="#decontamination.jit.get_num_cpu_threads"><code class="docutils literal notranslate"><span class="pre">get_num_cpu_threads()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.jit.set_num_cpu_threads'" class="reference internal" href="#decontamination.jit.set_num_cpu_threads"><code class="docutils literal notranslate"><span class="pre">set_num_cpu_threads()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.jit.device_array_from'" class="reference internal" href="#decontamination.jit.device_array_from"><code class="docutils literal notranslate"><span class="pre">device_array_from()</span></code></a></li>

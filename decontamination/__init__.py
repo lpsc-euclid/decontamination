@@ -14,7 +14,7 @@ import numpy as np
 
 from .jit import CPU_OPTIMIZATION_AVAILABLE, GPU_OPTIMIZATION_AVAILABLE, jit
 
-from .jit import get_max_cpu_threads, get_max_gpu_threads_per_block, get_num_cpu_threads, set_num_cpu_threads
+from .jit import get_max_cpu_cores, get_max_gpu_threads, get_num_cpu_threads, set_num_cpu_threads
 
 from .jit import DeviceArray, device_array_from, device_array_empty, device_array_zeros, device_array_full
 
@@ -118,7 +118,7 @@ def array_to_string(arr):
 
 __all__ = [
     'CPU_OPTIMIZATION_AVAILABLE', 'GPU_OPTIMIZATION_AVAILABLE', 'jit',
-    'get_max_cpu_threads', 'get_max_gpu_threads_per_block', 'get_num_cpu_threads', 'set_num_cpu_threads',
+    'get_max_cpu_cores', 'get_max_gpu_threads', 'get_num_cpu_threads', 'set_num_cpu_threads',
     'DeviceArray', 'device_array_from', 'device_array_empty', 'device_array_zeros', 'device_array_full',
     'nside2npix', 'npix2nside', 'nside2pixarea', 'nside2resol', 'xyf2nest', 'nest2xyf', 'ang2pix', 'randang',
     'WCS', 'downgrade', 'rms_bit_to_healpix', 'image_to_healpix',

@@ -40,20 +40,20 @@ GPU_OPTIMIZATION_AVAILABLE = CPU_OPTIMIZATION_AVAILABLE and GPU_OPTIMIZATION_AVA
 
 ########################################################################################################################
 
-def get_max_cpu_threads() -> int:
+def get_max_cpu_cores() -> int:
 
     """
-    Return the number of logical CPUs.
+    Return the number of logical CPU cores.
     """
 
     return os.cpu_count()
 
 ########################################################################################################################
 
-def get_max_gpu_threads_per_block() -> int:
+def get_max_gpu_threads() -> int:
 
     """
-    Returns the maximum number of threads per block.
+    Returns the maximum number of threads per GPU block.
     """
 
     return cu.get_current_device().MAX_THREADS_PER_BLOCK if GPU_OPTIMIZATION_AVAILABLE else 0

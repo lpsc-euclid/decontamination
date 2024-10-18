@@ -19,6 +19,7 @@ from ..hp import UNSEEN
 def ud_grade(nside_in: int, nside_out: int, footprint_in: np.ndarray, footprint_out: np.ndarray, weights: np.ndarray, mode: typing.Optional[str] = None, ignore_zeros: bool = False, log_factor: float = -2.5) -> np.array:
 
     """
+    Upgrades or downgrades the resolutions of HEALPix masks.
 
     Parameters
     ----------

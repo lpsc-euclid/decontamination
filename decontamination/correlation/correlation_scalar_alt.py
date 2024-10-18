@@ -34,7 +34,7 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
         If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering.
     footprint : np.ndarray
         HEALPix indices of the region where correlation must be calculated.
-    data_field : np.ndarray
+    data1 : np.ndarray
         ???
     min_sep : float
         Minimum galaxy separation being considered (in arcmins).
@@ -42,17 +42,17 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
         Maximum galaxy separation being considered (in arcmins).
     n_bins : int
         Number of angular bins.
-    random_field : np.ndarray, default: **None**
+    data2 : np.ndarray, default: **None**
         ???
-    data_w : np.ndarray, default: **None**
+    data1_weights : np.ndarray, default: **None**
         ???
-    random_w : np.ndarray, default: **None**
+    data2_weights : np.ndarray, default: **None**
         ???
     """
 
     ####################################################################################################################
 
-    def __init__(self, nside: int, nest: bool, footprint: np.ndarray, data_field: np.ndarray, min_sep: float, max_sep: float, n_bins: int, random_field: typing.Optional[np.ndarray] = None, data_w: typing.Optional[np.ndarray] = None, random_w: typing.Optional[np.ndarray] = None):
+    def __init__(self, nside: int, nest: bool, footprint: np.ndarray, data1: np.ndarray, min_sep: float, max_sep: float, n_bins: int, data2: typing.Optional[np.ndarray] = None, data1_weights: typing.Optional[np.ndarray] = None, data2_weights: typing.Optional[np.ndarray] = None):
 
         ################################################################################################################
 
@@ -87,10 +87,10 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        self._data_field = data_field
-        self._data_w = data_w
-        self._random_field = random_field
-        self._random_w = random_w
+        self._data1 = data1
+        self._data1_weights = data1_weights
+        self._data2 = data2
+        self._data2_weights = data2_weights
 
     ####################################################################################################################
 
@@ -126,13 +126,13 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
         ################################################################################################################
 
         if estimator == 'dd':
-            return self._2pcf(self._data_field, self._data_field, self._data_w, self._data_w, True, enable_gpu)
+            return self._2pcf(self._data1, self._data1, self._data1_weights, self._data1_weights, True, enable_gpu)
         if estimator == 'rr':
-            return self._2pcf(self._random_field, self._random_field, self._random_w, self._random_w, True, enable_gpu)
+            return self._2pcf(self._data2, self._data2, self._data2_weights, self._data2_weights, True, enable_gpu)
         if estimator == 'dr':
-            return self._2pcf(self._data_field, self._random_field, self._data_w, self._random_w, False, enable_gpu)
+            return self._2pcf(self._data1, self._data2, self._data1_weights, self._data2_weights, False, enable_gpu)
         if estimator == 'rd':
-            return self._2pcf(self._random_field, self._data_field, self._random_w, self._data_w, False, enable_gpu)
+            return self._2pcf(self._data2, self._data1, self._data2_weights, self._data1_weights, False, enable_gpu)
 
         ################################################################################################################
 
@@ -140,24 +140,24 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def _2pcf(self, field1: np.ndarray, field2: np.ndarray, w1: typing.Optional[np.ndarray], w2: typing.Optional[np.ndarray], is_autocorr: bool, enable_gpu: bool) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def _2pcf(self, data1: np.ndarray, data2: np.ndarray, data1_weight: typing.Optional[np.ndarray], data2_weights: typing.Optional[np.ndarray], is_autocorr: bool, enable_gpu: bool) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
         if is_autocorr:
-            if w1 is None or w2 is None:
-                w1 = w2 = np.ones_like(field1)
+            if data1_weight is None or data2_weights is None:
+                data1_weight = data2_weights = np.ones_like(data1)
         else:
-            if w1 is None:
-                w1 = np.ones_like(field1)
-            if w2 is None:
-                w2 = np.ones_like(field2)
+            if data1_weight is None:
+                data1_weight = np.ones_like(data1)
+            if data2_weights is None:
+                data2_weights = np.ones_like(data2)
 
         ################################################################################################################
 
         n_chunks = 100
 
-        chunk_size = max(1, field1.shape[0] // n_chunks)
+        chunk_size = max(1, data1.shape[0] // n_chunks)
 
         threads_per_blocks = int(math.sqrt(get_max_gpu_threads()))
 
@@ -167,9 +167,9 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
         device_logr = device_array_zeros(shape = self.n_bins, dtype = np.float64)
         device_h = device_array_zeros(shape = self.n_bins, dtype = np.float64)
 
-        for start, stop in tqdm.tqdm(algo.batch_iterator(field1.shape[0], chunk_size), total = n_chunks):
+        for start, stop in tqdm.tqdm(algo.batch_iterator(data1.shape[0], chunk_size), total = n_chunks):
 
-            compute_2pcf_step1[enable_gpu, (threads_per_blocks, threads_per_blocks), (stop - start, field2.shape[0])](
+            compute_2pcf_step1[enable_gpu, (threads_per_blocks, threads_per_blocks), (stop - start, data2.shape[0])](
                 device_w,
                 device_logr,
                 device_h,
@@ -179,10 +179,10 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
                 self._sin_lat,
                 self._cos_lat[start: stop],
                 self._cos_lat,
-                field1[start: stop],
-                field2,
-                w1[start: stop],
-                w2,
+                data1[start: stop],
+                data2,
+                data1_weight[start: stop],
+                data2_weights,
                 self._min_sep_rad,
                 self._max_sep_rad,
                 self._log_min_sep,
@@ -222,7 +222,7 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
 ########################################################################################################################
 
 @jit(kernel = True, fastmath = True, parallel = True)
-def compute_2pcf_step1(result_w: np.ndarray, result_logr: np.ndarray, result_h: np.ndarray, lon1: np.ndarray, lon2: np.ndarray, sin_lat1: np.ndarray, sin_lat2: np.ndarray, cos_lat1: np.ndarray, cos_lat2: np.ndarray, kappa1: np.ndarray, kappa2: np.ndarray, w1: np.ndarray, w2: np.ndarray, min_sep: float, max_sep: float, log_min_sep: float, inv_bin_width: float, is_autocorr: bool) -> None:
+def compute_2pcf_step1(result_w: np.ndarray, result_logr: np.ndarray, result_h: np.ndarray, lon1: np.ndarray, lon2: np.ndarray, sin_lat1: np.ndarray, sin_lat2: np.ndarray, cos_lat1: np.ndarray, cos_lat2: np.ndarray, data1: np.ndarray, data2: np.ndarray, data1_weight: np.ndarray, data2_weight: np.ndarray, min_sep: float, max_sep: float, log_min_sep: float, inv_bin_width: float, is_autocorr: bool) -> None:
 
     if jit.is_gpu:
 
@@ -234,15 +234,15 @@ def compute_2pcf_step1(result_w: np.ndarray, result_logr: np.ndarray, result_h: 
 
         if is_autocorr:
 
-            if i < kappa1.shape[0] and i < j < kappa2.shape[0]:
+            if i < data1.shape[0] and i < j < data2.shape[0]:
 
-                compute_2pcf_step2_xpu(result_w, result_logr, result_h, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
+                compute_2pcf_step2_xpu(result_w, result_logr, result_h, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], data1[i], data2[j], data1_weight[i], data2_weight[j], min_sep, max_sep, log_min_sep, inv_bin_width)
 
         else:
 
-            if i < kappa1.shape[0] and j < kappa2.shape[0]:
+            if i < data1.shape[0] and j < data2.shape[0]:
 
-                compute_2pcf_step2_xpu(result_w, result_logr, result_h, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
+                compute_2pcf_step2_xpu(result_w, result_logr, result_h, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], data1[i], data2[j], data1_weight[i], data2_weight[j], min_sep, max_sep, log_min_sep, inv_bin_width)
 
         ################################################################################################################
 
@@ -254,17 +254,17 @@ def compute_2pcf_step1(result_w: np.ndarray, result_logr: np.ndarray, result_h: 
 
         if is_autocorr:
 
-            for i in nb.prange(kappa1.shape[0]):
-                for j in range(i + 1, kappa2.shape[0]):
+            for i in nb.prange(data1.shape[0]):
+                for j in range(i + 1, data2.shape[0]):
 
-                    compute_2pcf_step2_xpu(result_w, result_logr, result_h, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
+                    compute_2pcf_step2_xpu(result_w, result_logr, result_h, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], data1[i], data2[j], data1_weight[i], data2_weight[j], min_sep, max_sep, log_min_sep, inv_bin_width)
 
         else:
 
-            for i in nb.prange(kappa1.shape[0]):
-                for j in range(0, kappa2.shape[0]):
+            for i in nb.prange(data1.shape[0]):
+                for j in range(0, data2.shape[0]):
 
-                    compute_2pcf_step2_xpu(result_w, result_logr, result_h, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], kappa1[i], kappa2[j], w1[i], w2[j], min_sep, max_sep, log_min_sep, inv_bin_width)
+                    compute_2pcf_step2_xpu(result_w, result_logr, result_h, lon1[i], lon2[j], sin_lat1[i], sin_lat2[j], cos_lat1[i], cos_lat2[j], data1[i], data2[j], data1_weight[i], data2_weight[j], min_sep, max_sep, log_min_sep, inv_bin_width)
 
         ################################################################################################################
 
@@ -280,7 +280,7 @@ def _clip_xpu(x, a, b):
 ########################################################################################################################
 
 @jit(kernel = False, inline = True, fastmath = True)
-def compute_2pcf_step2_xpu(result_w: np.ndarray, result_logr: np.ndarray, result_h: np.ndarray, lon1: np.ndarray, lon2: np.ndarray, sin_lat1: np.ndarray, sin_lat2: np.ndarray, cos_lat1: np.ndarray, cos_lat2: np.ndarray, kappa1: np.ndarray, kappa2: np.ndarray, w1: np.ndarray, w2: np.ndarray, min_sep: float, max_sep: float, log_min_sep: float, inv_bin_width: float) -> None:
+def compute_2pcf_step2_xpu(result_w: np.ndarray, result_logr: np.ndarray, result_h: np.ndarray, lon1: np.ndarray, lon2: np.ndarray, sin_lat1: np.ndarray, sin_lat2: np.ndarray, cos_lat1: np.ndarray, cos_lat2: np.ndarray, data1: np.ndarray, data2: np.ndarray, data1_weight: np.ndarray, data2_weight: np.ndarray, min_sep: float, max_sep: float, log_min_sep: float, inv_bin_width: float) -> None:
 
     ####################################################################################################################
 
@@ -298,12 +298,12 @@ def compute_2pcf_step2_xpu(result_w: np.ndarray, result_logr: np.ndarray, result
 
         ################################################################################################################
 
-        w_ij = w1 * w2
+        weight = data1_weight * data2_weight
 
-        jit.atomic_add(result_w, bin_idx, w_ij * kappa1 * kappa2)
+        jit.atomic_add(result_w, bin_idx, weight * data1 * data2)
 
-        jit.atomic_add(result_logr, bin_idx, w_ij * log_sep)
+        jit.atomic_add(result_logr, bin_idx, weight * log_sep)
 
-        jit.atomic_add(result_h, bin_idx, w_ij)
+        jit.atomic_add(result_h, bin_idx, weight)
 
 ########################################################################################################################

@@ -32,9 +32,9 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     Parameters
     ----------
-    data_lon : np.ndarray
+    data1_lon : np.ndarray
         Galaxy catalog longitudes (in degrees).
-    data_lat : np.ndarray
+    data1_lat : np.ndarray
         Galaxy catalog latitudes (in degrees).
     min_sep : float
         Minimum galaxy separation being considered (in arcmins).
@@ -50,7 +50,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
     ####################################################################################################################
 
-    def __init__(self, data_lon: np.ndarray, data_lat: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, n_threads: typing.Optional[int] = None, random_lon: typing.Optional[np.ndarray] = None, random_lat: typing.Optional[np.ndarray] = None, data_w: typing.Optional[np.ndarray] = None, random_w: typing.Optional[np.ndarray] = None):
+    def __init__(self, data1_lon: np.ndarray, data1_lat: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, n_threads: typing.Optional[int] = None, data2_lon: typing.Optional[np.ndarray] = None, data2_lat: typing.Optional[np.ndarray] = None, data1_weights: typing.Optional[np.ndarray] = None, data2_weights: typing.Optional[np.ndarray] = None):
 
         ################################################################################################################
 
@@ -69,10 +69,10 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        self._data_catalog = self._build_catalog(data_lon, data_lat, data_w)
+        self._catalog1 = self._build_catalog(data1_lon, data1_lat, data1_weights)
 
-        self._random_catalog = self._build_catalog(random_lon, random_lat, random_w) \
-                                        if random_lon is not None and random_lat is not None else self._data_catalog
+        self._catalog2 = self._build_catalog(data2_lon, data2_lat, data2_weights) \
+                                        if data2_lon is not None and data2_lat is not None else self._catalog1
 
     ####################################################################################################################
 
@@ -113,13 +113,13 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         ################################################################################################################
 
         if estimator == 'dd':
-            return self._2pcf(self._data_catalog, self._data_catalog)
+            return self._2pcf(self._catalog1, self._catalog1)
         if estimator == 'rr':
-            return self._2pcf(self._random_catalog, self._random_catalog)
+            return self._2pcf(self._catalog2, self._catalog2)
         if estimator == 'dr':
-            return self._2pcf(self._data_catalog, self._random_catalog)
+            return self._2pcf(self._catalog1, self._catalog2)
         if estimator == 'rd':
-            return self._2pcf(self._random_catalog, self._data_catalog)
+            return self._2pcf(self._catalog2, self._catalog1)
 
         else:
 
@@ -158,11 +158,11 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        dd = self._process(self._data_catalog)
-        rr = self._process(self._random_catalog)
+        dd = self._process(self._catalog1)
+        rr = self._process(self._catalog2)
 
-        dr = self._process(self._data_catalog, self._random_catalog) if with_dr else None
-        rd = self._process(self._random_catalog, self._data_catalog) if with_rd else None
+        dr = self._process(self._catalog1, self._catalog2) if with_dr else None
+        rd = self._process(self._catalog2, self._catalog1) if with_rd else None
 
         ################################################################################################################
 

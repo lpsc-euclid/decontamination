@@ -39,7 +39,7 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
         If **True**, assumes NESTED pixel ordering, otherwise, RING pixel ordering.
     footprint : np.ndarray
         HEALPix indices of the region where correlation must be calculated.
-    data_field : np.ndarray
+    data1 : np.ndarray
         ???
     min_sep : float
         Minimum galaxy separation being considered (in arcmins).
@@ -51,17 +51,17 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
         Optional precision parameter (see `TreeCorr documentation <https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop>`_).
     n_threads : int, default: **None** ≡ the number of cpu cores
         Optional number of OpenMP threads to use during the calculation.
-    random_field : np.ndarray, default: **None**
+    data2 : np.ndarray, default: **None**
         ???
-    data_w : np.ndarray, default: **None**
+    data1_weights : np.ndarray, default: **None**
         ???
-    random_w : np.ndarray, default: **None**
+    data2_weights : np.ndarray, default: **None**
         ???
     """
 
     ####################################################################################################################
 
-    def __init__(self, nside: int, nest: bool, footprint: np.ndarray, data_field: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, n_threads: typing.Optional[int] = None, random_field: typing.Optional[np.ndarray] = None, data_w: typing.Optional[np.ndarray] = None, random_w: typing.Optional[np.ndarray] = None):
+    def __init__(self, nside: int, nest: bool, footprint: np.ndarray, data1: np.ndarray, min_sep: float, max_sep: float, n_bins: int, bin_slop: typing.Optional[float] = None, n_threads: typing.Optional[int] = None, data2: typing.Optional[np.ndarray] = None, data1_weights: typing.Optional[np.ndarray] = None, data2_weights: typing.Optional[np.ndarray] = None):
 
         ################################################################################################################
 
@@ -88,10 +88,10 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        self._data_catalog = self._build_catalog(data_field, data_w)
+        self._catalog1 = self._build_catalog(data1, data1_weights)
 
-        self._random_catalog = self._build_catalog(random_field, random_w) \
-                                        if random_field is not None else self._data_catalog
+        self._catalog2 = self._build_catalog(data2, data2_weights) \
+                                        if data2 is not None else self._catalog1
 
     ####################################################################################################################
 
@@ -158,13 +158,13 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
         ################################################################################################################
 
         if estimator == 'dd':
-            return self._2pcf(self._data_catalog, self._data_catalog)
+            return self._2pcf(self._catalog1, self._catalog1)
         if estimator == 'rr':
-            return self._2pcf(self._random_catalog, self._random_catalog)
+            return self._2pcf(self._catalog2, self._catalog2)
         if estimator == 'dr':
-            return self._2pcf(self._data_catalog, self._random_catalog)
+            return self._2pcf(self._catalog1, self._catalog2)
         if estimator == 'rd':
-            return self._2pcf(self._random_catalog, self._data_catalog)
+            return self._2pcf(self._catalog2, self._catalog1)
 
         ################################################################################################################
 

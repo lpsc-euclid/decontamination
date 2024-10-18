@@ -193,7 +193,13 @@
 <span class="target" id="module-decontamination.jit"></span><dl class="py function">
 <dt class="sig sig-object py" id="decontamination.jit.get_max_threads">
 <span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">get_max_threads</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#decontamination.jit.get_max_threads" title="Link to this definition"></a></dt>
-<dd><p>Return the number of logical CPUs in the system.</p>
+<dd><p>Return the number of logical CPUs for a CPU kernel.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="decontamination.jit.get_max_threads_per_block">
+<span class="sig-prename descclassname"><span class="pre">decontamination.jit.</span></span><span class="sig-name descname"><span class="pre">get_max_threads_per_block</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#decontamination.jit.get_max_threads_per_block" title="Link to this definition"></a></dt>
+<dd><p>Returns the maximum allowable number of threads per block for a GPU kernel.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -363,29 +369,20 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.jit.jit.atomic_sub" title="decontamination.jit.jit.atomic_sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atomic_sub</span></code></a>(array, idx, val)</p></td>
 <td><p>Performs atomic <cite>array[idx] -= val</cite> and returns the old value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.jit.jit.get_max_threads_per_block" title="decontamination.jit.jit.get_max_threads_per_block"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_max_threads_per_block</span></code></a>()</p></td>
-<td><p>Returns the maximum allowable number of threads per block for a kernel.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.jit.jit.grid" title="decontamination.jit.jit.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code></a>(ndim)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.jit.jit.grid" title="decontamination.jit.jit.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code></a>(ndim)</p></td>
 <td><p>Return the absolute position of the current thread in the entire grid of blocks.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.jit.jit.local_empty" title="decontamination.jit.jit.local_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_empty</span></code></a>(shape[, dtype])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.jit.jit.local_empty" title="decontamination.jit.jit.local_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_empty</span></code></a>(shape[, dtype])</p></td>
 <td><p>Allocate an empty device ndarray in the local memory.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.jit.jit.shared_empty" title="decontamination.jit.jit.shared_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shared_empty</span></code></a>(shape[, dtype])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.jit.jit.shared_empty" title="decontamination.jit.jit.shared_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shared_empty</span></code></a>(shape[, dtype])</p></td>
 <td><p>Allocate an empty device ndarray in the shared memory.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.jit.jit.syncthreads" title="decontamination.jit.jit.syncthreads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">syncthreads</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.jit.jit.syncthreads" title="decontamination.jit.jit.syncthreads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">syncthreads</span></code></a>()</p></td>
 <td><p>Synchronize all threads in the same thread block.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="decontamination.jit.jit.get_max_threads_per_block">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_max_threads_per_block</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#decontamination.jit.jit.get_max_threads_per_block" title="Link to this definition"></a></dt>
-<dd><p>Returns the maximum allowable number of threads per block for a kernel.</p>
-</dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="decontamination.jit.jit.is_gpu">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_gpu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#decontamination.jit.jit.is_gpu" title="Link to this definition"></a></dt>
@@ -580,6 +577,7 @@
   <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
     <ul>
 <li><a class="reference internal" href="#decontamination.jit.get_max_threads"><code class="docutils literal notranslate"><span class="pre">get_max_threads()</span></code></a></li>
+<li><a class="reference internal" href="#decontamination.jit.get_max_threads_per_block"><code class="docutils literal notranslate"><span class="pre">get_max_threads_per_block()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.jit.get_num_threads"><code class="docutils literal notranslate"><span class="pre">get_num_threads()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.jit.set_num_threads"><code class="docutils literal notranslate"><span class="pre">set_num_threads()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.jit.device_array_from"><code class="docutils literal notranslate"><span class="pre">device_array_from()</span></code></a></li>
@@ -593,7 +591,6 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#decontamination.jit.jit"><code class="docutils literal notranslate"><span class="pre">jit</span></code></a><ul>
-<li><a class="reference internal" href="#decontamination.jit.jit.get_max_threads_per_block"><code class="docutils literal notranslate"><span class="pre">jit.get_max_threads_per_block()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.jit.jit.is_gpu"><code class="docutils literal notranslate"><span class="pre">jit.is_gpu</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.jit.jit.grid"><code class="docutils literal notranslate"><span class="pre">jit.grid()</span></code></a></li>
 <li><a class="reference internal" href="#decontamination.jit.jit.local_empty"><code class="docutils literal notranslate"><span class="pre">jit.local_empty()</span></code></a></li>

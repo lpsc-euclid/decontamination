@@ -45,10 +45,20 @@ if not (CPU_OPTIMIZATION_AVAILABLE and cu.is_available()):
 def get_max_threads() -> int:
 
     """
-    Return the number of logical CPUs in the system.
+    Return the number of logical CPUs for a CPU kernel.
     """
 
     return os.cpu_count()
+
+########################################################################################################################
+
+def get_max_threads_per_block() -> int:
+
+    """
+    Returns the maximum allowable number of threads per block for a GPU kernel.
+    """
+
+    return cu.get_current_device().MAX_THREADS_PER_BLOCK if GPU_OPTIMIZATION_AVAILABLE else 0
 
 ########################################################################################################################
 
@@ -394,17 +404,6 @@ class jit(object):
     parallel : bool, default: **False**
         Enables parallelization when running on CPU.
     """
-
-    ####################################################################################################################
-
-    @staticmethod
-    def get_max_threads_per_block() -> int:
-
-        """
-        Returns the maximum allowable number of threads per block for a kernel.
-        """
-
-        return cu.get_current_device().MAX_THREADS_PER_BLOCK if GPU_OPTIMIZATION_AVAILABLE else 0
 
     ####################################################################################################################
 

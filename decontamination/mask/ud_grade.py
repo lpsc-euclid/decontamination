@@ -32,8 +32,8 @@ def ud_grade(nside_in: int, nside_out: int, footprint_in: np.ndarray, footprint_
         HEALPix indices of the output map.
     weights : np.ndarray
         The input map.
-    mode : str, default: **None**
-        Reprojection mode: **"sum"**, **"cov"**, **"logquad"**, **"log"**, **"quad"**, or **None** to determine how the input map is rescaled.
+    mode : str, default: **None** ≡ **"arith"**
+        Reprojection mode: **"sum"** (galaxy / star number density, ...), **"cov"** (coverage, ...), **"logquad"** (limiting depth, ...), **"log"**, **"quad"** (RMS, PSF, ...), or **"arith"** (galactic extinction, ...) to determine how the input map is rescaled.
     ignore_zeros : bool, default: **False**
         If True, zero values in the input map are ignored during reprojection.
     log_factor : float, default: **-2.5**
@@ -57,6 +57,7 @@ def ud_grade(nside_in: int, nside_out: int, footprint_in: np.ndarray, footprint_
 
 ########################################################################################################################
 
+# noinspection DuplicatedCode
 @nb.njit
 def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_out: np.array, weights: np.array, mode: typing.Optional[str], ignore_zeros: bool, log_factor: typing.Any) -> np.array:
 
@@ -205,6 +206,7 @@ def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_
 
 ########################################################################################################################
 
+# noinspection PyUnusedLocal
 def _upgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_out: np.array, weights: np.array, mode: typing.Optional[str], ignore_zeros: bool, log_factor: typing.Any) -> np.array:
 
     raise ValueError('Upgrading not implemented yet!')

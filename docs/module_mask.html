@@ -316,7 +316,7 @@
 </dd>
 <dt><strong>weights</strong><span class="classifier">np.ndarray</span></dt><dd><p>The input map.</p>
 </dd>
-<dt><strong>mode</strong><span class="classifier">str, default: <strong>None</strong></span></dt><dd><p>Reprojection mode: <strong>“sum”</strong>, <strong>“cov”</strong>, <strong>“logquad”</strong>, <strong>“log”</strong>, <strong>“quad”</strong>, or <strong>None</strong> to determine how the input map is rescaled.</p>
+<dt><strong>mode</strong><span class="classifier">str, default: <strong>None</strong> ≡ <strong>“arith”</strong></span></dt><dd><p>Reprojection mode: <strong>“sum”</strong> (galaxy / star number density, …), <strong>“cov”</strong> (coverage, …), <strong>“logquad”</strong> (limiting depth, …), <strong>“log”</strong>, <strong>“quad”</strong> (RMS, PSF, …), or <strong>“arith”</strong> (galactic extinction, …) to determine how the input map is rescaled.</p>
 </dd>
 <dt><strong>ignore_zeros</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If True, zero values in the input map are ignored during reprojection.</p>
 </dd>

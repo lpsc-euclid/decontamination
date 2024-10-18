@@ -305,11 +305,26 @@ class Kernel:
 
     ####################################################################################################################
 
+    DEFAULT_THREADS_PER_BLOCK = get_max_gpu_threads()
+
+    ####################################################################################################################
+
     def __init__(self, cpu_func: typing.Callable, gpu_func: typing.Callable, fastmath: bool, parallel: bool):
 
         self.cpu_func = nb.njit(cpu_func, fastmath = fastmath, parallel = parallel) if CPU_OPTIMIZATION_AVAILABLE else cpu_func
 
         self.gpu_func = cu.jit(gpu_func, device = False) if GPU_OPTIMIZATION_AVAILABLE else dont_call
+
+    ####################################################################################################################
+
+    @classmethod
+    def _number_of_blocks(cls, s, t):
+
+        if t is None or t <= 0:
+
+            t = cls.DEFAULT_THREADS_PER_BLOCK
+
+        return math.ceil(s / t) if s > 0 and t > 0 else 0
 
     ####################################################################################################################
 
@@ -351,7 +366,7 @@ class Kernel:
 
                 ########################################################################################################
 
-                return self.gpu_func[tuple(math.ceil(s / t) if t > 0 else 0 for s, t in zip(data_sizes, threads_per_blocks)), threads_per_blocks](*new_args, **kwargs)
+                return self.gpu_func[tuple(self._number_of_blocks(s, t) for s, t in zip(data_sizes, threads_per_blocks)), threads_per_blocks](*new_args, **kwargs)
 
                 ########################################################################################################
 
@@ -416,6 +431,7 @@ class jit(object):
 
     ####################################################################################################################
 
+    # noinspection PyUnusedLocal,PyTypeChecker
     @staticmethod
     def grid(ndim: int) -> typing.Union[tuple, int]:
 
@@ -480,7 +496,7 @@ class jit(object):
     ####################################################################################################################
 
     @staticmethod
-    def atomic_add(array: np.ndarray, idx: int, val: typing.Union[np.ndarray, np.float32, np.float64, float, np.int32, np.int64, int]) -> typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]:
+    def atomic_add(array: np.ndarray, idx: int, val: typing.Union[np.ndarray, np.float32, np.float64, float, np.int32, np.int64, int]) -> typing.Union[np.ndarray, np.float32, np.float64, float, np.int32, np.int64, int]:
 
         """
         Performs atomic `array[idx] += val` and returns the old value. Supported on int32/64 and float32/64 operands only.
@@ -495,12 +511,14 @@ class jit(object):
             New value.
         """
 
-        array[idx] = array[idx] + val
+        orig = array[idx]
+        array[idx] += val
+        return orig
 
     ####################################################################################################################
 
     @staticmethod
-    def atomic_sub(array: np.ndarray, idx: int, val: typing.Union[np.ndarray, np.float32, np.float64, float, np.int32, np.int64, int]) -> typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]:
+    def atomic_sub(array: np.ndarray, idx: int, val: typing.Union[np.ndarray, np.float32, np.float64, float, np.int32, np.int64, int]) -> typing.Union[np.ndarray, np.float32, np.float64, float, np.int32, np.int64, int]:
 
         """
         Performs atomic `array[idx] -= val` and returns the old value. Supported on int32/64 and float32/64 operands only.
@@ -515,7 +533,9 @@ class jit(object):
             New value.
         """
 
-        array[idx] = array[idx] - val
+        orig = array[idx]
+        array[idx] -= val
+        return orig
 
     ####################################################################################################################
 

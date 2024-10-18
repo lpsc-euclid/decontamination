@@ -514,7 +514,7 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def compute_errors(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> typing.Tuple[float, float]:
+    def compute_errors(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> typing.Tuple[float, float]:
 
         """
         For the given input, computes the quantization and topographic errors.
@@ -557,7 +557,7 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> np.ndarray:
+    def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> np.ndarray:
 
         """
         For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.
@@ -622,7 +622,7 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> np.ndarray:
+    def get_winners(self, dataset: np.ndarray, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> np.ndarray:
 
         """
         For the given input, returns a vector of the best matching unit indices :math:`\\in[0,m\\times n-1]`.

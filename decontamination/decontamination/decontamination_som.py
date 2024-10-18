@@ -479,7 +479,7 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
     ####################################################################################################################
 
     # noinspection PyArgumentList
-    def train(self, footprint_systematics: typing.Union[np.ndarray, typing.Callable], galaxy_number_density: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def train(self, footprint_systematics: typing.Union[np.ndarray, typing.Callable], galaxy_number_density: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`).
@@ -570,7 +570,7 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
 
     ####################################################################################################################
 
-    def compute_gndm(self, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def compute_gndm(self, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> None:
 
         """
         Compute the Galaxy Number Density Map from the SOM.
@@ -609,7 +609,7 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
 
     ####################################################################################################################
 
-    def compute_clustered_gndm(self, n_clusters: int, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: int = 1024) -> None:
+    def compute_clustered_gndm(self, n_clusters: int, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> None:
 
         """
         Compute the clustered Galaxy Number Density Map from the SOM.

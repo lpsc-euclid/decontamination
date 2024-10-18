@@ -46,6 +46,14 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         Optional precision parameter (see `TreeCorr documentation <https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop>`_).
     n_threads : int, default: **None** ≡ the number of cpu cores
         Optional number of OpenMP threads to use during the calculation.
+    data2_lon : np.ndarray, default: **None**
+        ???
+    data2_lat : np.ndarray, default: **None**
+        ???
+    data1_weights : np.ndarray, default: **None**
+        ???
+    data2_weights : np.ndarray, default: **None**
+        ???
     """
 
     ####################################################################################################################

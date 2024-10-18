@@ -15,7 +15,10 @@ import numpy as np
 def order_index_to_nuniq(orders: np.ndarray, indices: np.ndarray) -> np.ndarray:
 
     """
-    Encodes HEALPix orders and pixel indices to unique identifiers (nuniq). **Nested ordering only.**
+    Encodes HEALPix orders and pixel indices to unique identifiers (nuniq).
+
+    .. warning::
+        Nested ordering only.
 
     Parameters
     ----------
@@ -37,7 +40,10 @@ def order_index_to_nuniq(orders: np.ndarray, indices: np.ndarray) -> np.ndarray:
 def nuniq_to_order_index(nuniqs: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray]:
 
     """
-    Decodes HEALPix nuniq identifiers to their corresponding orders and pixel indices. **Nested ordering only.**
+    Decodes HEALPix nuniq identifiers to their corresponding orders and pixel indices.
+
+    .. warning::
+        Nested ordering only.
 
     Parameters
     ----------
@@ -63,7 +69,10 @@ def nuniq_to_order_index(nuniqs: np.ndarray) -> typing.Tuple[np.ndarray, np.ndar
 def moc_to_healpix(moc_orders: np.ndarray, moc_indices: np.ndarray, order_new: int) -> np.ndarray:
 
     """
-    Refines a given Multi-Order Coverage (MOC) to a specified order. **Nested ordering only.**
+    Refines a given Multi-Order Coverage (MOC) to a specified order.
+
+    .. warning::
+        Nested ordering only.
 
     Parameters
     ----------
@@ -147,7 +156,10 @@ def moc_to_healpix(moc_orders: np.ndarray, moc_indices: np.ndarray, order_new: i
 def wmoc_to_healpix(moc_orders: np.ndarray, moc_indices: np.ndarray, moc_weights: np.ndarray, order_new: int) -> typing.Tuple[np.ndarray, np.ndarray]:
 
     """
-    Refines a given Weighted Multi-Order Coverage (WMOC) to a specified order. **Nested ordering only.**
+    Refines a given Weighted Multi-Order Coverage (WMOC) to a specified order.
+
+    .. warning::
+        Nested ordering only.
 
     Parameters
     ----------

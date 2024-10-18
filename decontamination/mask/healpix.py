@@ -22,7 +22,10 @@ from ..hp import UNSEEN, ang2pix
 def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: np.ndarray, bit_image: typing.Optional[np.ndarray] = None, rms_selection: float = 1.0e4, bit_selection: int = 0, n_threads: int = 1, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
     """
-    Projects RMS (aka. noise) and bit (aka. data quality) images into a HEALPix footprint. **Nested ordering only.**
+    Projects RMS (aka. noise) and bit (aka. data quality) images into a HEALPix footprint.
+
+    .. warning::
+        Nested ordering only.
 
     Parameters
     ----------
@@ -143,7 +146,10 @@ def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: n
 def image_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, xxx_image: np.ndarray, xxx_image_scale: float = 1.0, quadratic: bool = False, n_threads: int = 1, show_progress_bar: bool = False) -> np.ndarray:
 
     """
-    Projects the given image into a HEALPix footprint. **Nested ordering only.**
+    Projects the given image into a HEALPix footprint.
+
+    .. warning::
+        Nested ordering only.
 
     Parameters
     ----------

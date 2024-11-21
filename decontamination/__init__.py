@@ -60,7 +60,7 @@ from .algo.selection import Selection
 # PLOTTING                                                                                                             #
 ########################################################################################################################
 
-from .plotting import catalog_to_number_density
+from .plotting import get_bounding_box, get_full_sky, catalog_to_number_density
 
 ########################################################################################################################
 
@@ -68,7 +68,7 @@ from .plotting.latent_space import display_latent_space
 
 ########################################################################################################################
 
-from .plotting.healpix_map import display_healpix, display_catalog, flush_full_sky
+from .plotting.healpix_map import display_healpix, display_catalog
 
 ########################################################################################################################
 # GENERATORS                                                                                                           #
@@ -125,9 +125,9 @@ __all__ = [
     'Regression_Abstract', 'Regression_Basic',
     'Clustering',
     'Selection',
-    'catalog_to_number_density',
+    'get_bounding_box', 'get_full_sky', 'catalog_to_number_density',
     'display_latent_space',
-    'display_healpix', 'display_catalog', 'flush_full_sky',
+    'display_healpix', 'display_catalog',
     'Generator_Uniform', 'Generator_NumberDensity', 'Generator_FullSkyUniform',
     'Correlation_Abstract', 'Correlation_PairCount', 'Correlation_Scalar',
     'Decontamination_Abstract', 'Decontamination_SOM',

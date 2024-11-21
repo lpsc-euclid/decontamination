@@ -20,6 +20,16 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 ########################################################################################################################
 
+try:
+
+    import zarr
+
+except ImportError:
+
+    zarr = None
+
+########################################################################################################################
+
 def get_bounding_box(nside: int, footprint: np.ndarray, nest: bool = True) -> typing.Tuple[float, float, float, float]:
 
     """
@@ -68,9 +78,40 @@ def get_bounding_box(nside: int, footprint: np.ndarray, nest: bool = True) -> ty
 
 ########################################################################################################################
 
+def get_full_sky(nside: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int, np.bool, bool]] = np.float32) -> np.ndarray:
+
+    """
+    ???
+
+    Parameters
+    ----------
+    nside : int
+        The HEALPix nside parameter.
+    dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int, np.bool, bool]], default: **np.float32**
+        The desired data-type for the array.
+    """
+
+    ####################################################################################################################
+
+    npix = hp.nside2npix(nside)
+
+    ####################################################################################################################
+
+    if zarr is None:
+
+        return np.full(npix, np.nan, dtype = dtype)
+
+    else:
+
+        return zarr.full(npix, np.nan, chunks = 4 * nside, dtype = dtype)
+
+########################################################################################################################
+
 def catalog_to_number_density(nside: int, footprint: np.ndarray, full_sky: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, lonlat: bool = True) -> None:
 
     """
+    ???
+
     Parameters
     ----------
     nside : int

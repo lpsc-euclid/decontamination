@@ -6,7 +6,6 @@
 # license: CeCILL-C
 ########################################################################################################################
 
-import gc
 import typing
 
 import numpy as np
@@ -16,36 +15,7 @@ import healpy as hp
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 
-from . import get_bounding_box, catalog_to_number_density, _build_colorbar
-
-########################################################################################################################
-
-_footprint: typing.Optional[np.ndarray] = None
-_full_sky: typing.Optional[np.ndarray] = None
-
-########################################################################################################################
-
-def _get_full_sky(nside: int, footprint: np.ndarray) -> np.ndarray:
-
-    global _footprint
-    global _full_sky
-
-    ####################################################################################################################
-
-    npix = hp.nside2npix(nside)
-
-    ####################################################################################################################
-
-    if not np.array_equal(_footprint, footprint) or _full_sky is None or _full_sky.shape[0] != npix:
-
-        full_sky = np.full(npix, np.nan, dtype = np.float32)
-
-        _footprint = footprint
-        _full_sky = full_sky
-
-    ####################################################################################################################
-
-    return _full_sky
+from . import get_bounding_box, get_full_sky, catalog_to_number_density, _build_colorbar
 
 ########################################################################################################################
 
@@ -233,7 +203,7 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
 
     ####################################################################################################################
 
-    full_sky = _get_full_sky(nside, footprint)
+    full_sky = get_full_sky(nside)
 
     full_sky[footprint] = np.where(weights != hp.UNSEEN, weights, np.nan)
 
@@ -315,7 +285,7 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
 
     ####################################################################################################################
 
-    full_sky = _get_full_sky(nside, footprint)
+    full_sky = get_full_sky(nside)
 
     catalog_to_number_density(nside, footprint, full_sky, lon, lat, nest = nest, lonlat = True)
 
@@ -343,17 +313,5 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
         return fig, ax, v_min, v_max
     else:
         return fig, ax
-
-########################################################################################################################
-
-def flush_full_sky():
-
-    global _footprint
-    global _full_sky
-
-    _footprint = None
-    _full_sky = None
-
-    gc.collect()
 
 ########################################################################################################################

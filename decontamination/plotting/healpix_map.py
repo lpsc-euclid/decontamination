@@ -203,7 +203,7 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
 
     ####################################################################################################################
 
-    full_sky = get_full_sky(nside)
+    full_sky = get_full_sky(nside, np.nan, dtype = np.float32)
 
     full_sky[footprint] = np.where(weights != hp.UNSEEN, weights, np.nan)
 
@@ -285,7 +285,7 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
 
     ####################################################################################################################
 
-    full_sky = get_full_sky(nside)
+    full_sky = get_full_sky(nside, np.nan, dtype = np.float32)
 
     catalog_to_number_density(nside, footprint, full_sky, lon, lat, nest = nest, lonlat = True)
 

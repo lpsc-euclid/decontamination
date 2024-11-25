@@ -10,6 +10,7 @@ import re
 import typing
 
 import numpy as np
+import healpy as hp
 
 ########################################################################################################################
 
@@ -40,6 +41,8 @@ class Selection(object):
 
     _TOKEN_PATTERN = re.compile(
         r'([()])'
+        r'|'
+        r'(isfinite)'        
         r'|'
         r'(~)'
         r'|'
@@ -75,10 +78,12 @@ class Selection(object):
     @staticmethod
     def _tokenize(expression: str) -> typing.Generator[Token, typing.Any, typing.Any]:
 
-        for grouping, not_op, comparison_op, logical_and_op, logical_or_op, bitwise_and_op, bitwise_or_op, float_num, int_num, col_name, blank in Selection._TOKEN_PATTERN.findall(expression):
+        for grouping, isfinite_op, not_op, comparison_op, logical_and_op, logical_or_op, bitwise_and_op, bitwise_or_op, float_num, int_num, col_name, blank in Selection._TOKEN_PATTERN.findall(expression):
 
             if grouping:
                 yield Selection.Token('GROUPING', grouping)
+            elif isfinite_op:
+                yield Selection.Token('ISFINITE_OP', isfinite_op)
             elif not_op:
                 yield Selection.Token('NOT_OP', not_op)
             elif comparison_op:
@@ -266,9 +271,9 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def _parse_not_op(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode]:
+    def _parse_isfinite_op(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode]:
 
-        if token_list and token_list[0].type == 'NOT_OP':
+        if token_list and token_list[0].type == 'ISFINITE_OP':
 
             op = token_list.pop(0).value
 
@@ -277,6 +282,21 @@ class Selection(object):
             return Selection.UnaryOpNode(op, right_node)
 
         return Selection._parse_term(token_list)
+
+    ####################################################################################################################
+
+    @staticmethod
+    def _parse_not_op(token_list: typing.List[Token]) -> typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode]:
+
+        if token_list and token_list[0].type == 'NOT_OP':
+
+            op = token_list.pop(0).value
+
+            right_node = Selection._parse_isfinite_op(token_list)
+
+            return Selection.UnaryOpNode(op, right_node)
+
+        return Selection._parse_isfinite_op(token_list)
 
     ####################################################################################################################
 
@@ -405,6 +425,13 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
+    def _isfinite(x: np.ndarray) -> np.ndarray:
+
+        return np.isfinite(x) & (x != hp.UNSEEN)
+
+    ####################################################################################################################
+
+    @staticmethod
     def _evaluate(node: typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode], table: np.ndarray) -> typing.Union[np.ndarray, float]:
 
         ################################################################################################################
@@ -415,7 +442,9 @@ class Selection(object):
 
             right_value = Selection._evaluate(node.right, table)
 
-            if node.op == '~':
+            if   node.op == 'isfinite':
+                return Selection._isfinite(right_value)
+            elif node.op == '~':
                 return np.logical_not(right_value)
 
         ################################################################################################################

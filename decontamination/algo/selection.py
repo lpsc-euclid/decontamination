@@ -537,7 +537,10 @@ class Selection(object):
 
             right_expr = Selection.to_string(node.right, is_root = False)
 
-            expr = f'{node.op}{right_expr}'
+            if node.op[-1].isalnum():
+                expr = f'{node.op} {right_expr}'
+            else:
+                expr = f'{node.op}{right_expr}'
 
             if not is_root:
 

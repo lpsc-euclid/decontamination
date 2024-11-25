@@ -41,4 +41,8 @@ def test_selection():
     assert expression == '~((foo == 1.0) && ((bar == 4.0) || (qux >= 3.5)))'
     assert np.array_equal(mask, [False, True, False])
 
+    expression, mask = decontamination.Selection.filter_table('isfinite foo', table)
+    assert expression == 'isfinite foo'
+    assert np.array_equal(mask, [True, True, True])
+
 ########################################################################################################################

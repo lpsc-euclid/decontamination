@@ -384,7 +384,9 @@ class Selection(object):
 
             comparison_expr  = not_expr { COMPARISON_OP not_expr } ;
 
-            not_expr         = [ NOT_OP ] term ;
+            not_expr         = [ NOT_OP ] isfinite_expr ;
+
+            isfinite_expr    = [ ISFINITE_OP ] term ;
 
             term             = "(" boolean_expr ")"
                              | FLOAT_NUM
@@ -392,6 +394,7 @@ class Selection(object):
                              | COL_NAME [(BITWISE_OR_OP | LOGICAL_AND_OP) INT_NUM]
                              ;
 
+            ISFINITE_OP      = "isfinite" ;
             NOT_OP           = "~" ;
             COMPARISON_OP    = "==" | "!=" | "<=" | ">=" | "<" | ">" ;
             LOGICAL_AND_OP   = "&&" | "and" ;

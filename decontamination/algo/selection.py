@@ -12,6 +12,8 @@ import typing
 import numpy as np
 import healpy as hp
 
+from astropy.utils.masked import MaskedNDArray
+
 ########################################################################################################################
 
 class Selection(object):
@@ -428,9 +430,19 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def _isfinite(x: np.ndarray) -> np.ndarray:
+    def _isfinite(x: typing.Union[np.ndarray, np.ma.MaskedArray, MaskedNDArray]) -> np.ndarray:
 
-        return np.isfinite(x) & (x != hp.UNSEEN)
+        y = np.asarray(x)
+
+        if not hasattr(x, 'data')\
+           or                    \
+           not hasattr(x, 'mask'):
+
+            return np.isfinite(y) & (y != hp.UNSEEN)
+
+        else:
+
+            return np.isfinite(y) & (y != hp.UNSEEN) & ~x.mask
 
     ####################################################################################################################
 
@@ -445,7 +457,7 @@ class Selection(object):
 
             right_value = Selection._evaluate(node.right, table)
 
-            if   node.op == 'isfinite':
+            if node.op == 'isfinite':
                 return Selection._isfinite(right_value)
             elif node.op == '~':
                 return np.logical_not(right_value)
@@ -459,7 +471,7 @@ class Selection(object):
             left_value = Selection._evaluate(node.left, table)
             right_value = Selection._evaluate(node.right, table)
 
-            if   node.op == '==':
+            if node.op == '==':
                 return left_value == right_value
             elif node.op == '!=':
                 return left_value != right_value

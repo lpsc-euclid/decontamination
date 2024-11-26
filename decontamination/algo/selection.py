@@ -115,7 +115,7 @@ class Selection(object):
             elif col_name:
                 yield Selection.Token('COL_NAME', col_name)
             elif blank:
-                pass # IGNORE BLANK CHARACTERS #
+                pass  # IGNORE BLANK CHARACTERS #
             else:
                 yield Selection.Token('UNKNOWN', unknown)
 
@@ -174,7 +174,7 @@ class Selection(object):
 
         def __init__(self, _value: str):
 
-            if   _value.startswith('0x'):
+            if _value.startswith('0x'):
                 self.value = int(_value[2:], base = 16)
             elif _value.startswith('0o'):
                 self.value = int(_value[2:], base = 8)

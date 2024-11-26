@@ -12,8 +12,6 @@ import typing
 import numpy as np
 import healpy as hp
 
-from astropy.utils.masked import MaskedNDArray
-
 ########################################################################################################################
 
 class Selection(object):
@@ -430,7 +428,7 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def _isfinite(x: typing.Union[np.ndarray, np.ma.MaskedArray, MaskedNDArray]) -> np.ndarray:
+    def _isfinite(x: typing.Union[np.ndarray, np.ma.MaskedArray]) -> np.ndarray:
 
         y = np.asarray(x)
 
@@ -447,7 +445,7 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def _evaluate(node: typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode], table: np.ndarray) -> typing.Union[np.ndarray, float]:
+    def _evaluate(node: typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode], table: typing.Union[np.ndarray, np.ma.MaskedArray]) -> typing.Union[np.ndarray, float]:
 
         ################################################################################################################
         # UNARY OP                                                                                                     #
@@ -608,7 +606,7 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def filter_table(expression: str, table: np.ndarray) -> typing.Tuple[str, np.ndarray]:
+    def filter_table(expression: str, table: typing.Union[np.ndarray, np.ma.MaskedArray]) -> typing.Tuple[str, np.ndarray]:
 
         """
         Evaluates the specified expression and filters the table.
@@ -617,8 +615,8 @@ class Selection(object):
         ----------
         expression : str
             The expression to be evaluated.
-        table : np.ndarray
-            The table to be filtered with the expression.
+        table : typing.Union[np.ndarray, np.ma.MaskedArray]
+            The table to be filtered by the expression.
 
         Returns
         -------

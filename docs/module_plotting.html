@@ -289,13 +289,13 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.plotting.get_full_sky">
 <span class="sig-prename descclassname"><span class="pre">decontamination.plotting.</span></span><span class="sig-name descname"><span class="pre">get_full_sky</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype:</span> <span class="pre">~Type[~np.float32</span> <span class="pre">|</span> <span class="pre">~np.float64</span> <span class="pre">|</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">~np.int32</span> <span class="pre">|</span> <span class="pre">~np.int64</span> <span class="pre">|</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">bool]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.plotting.get_full_sky" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.plotting.get_full_sky'"></a></dt>
-<dd><p>???</p>
+<dd><p>Returns an array representing the full sky for the given nside (will have <span class="math notranslate nohighlight">\(12\cdot\mathrm{nside}^2\)</span> HEALPix pixels).</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
 </dd>
-<dt><strong>fill_value</strong><span class="classifier">???</span></dt><dd><p>???</p>
+<dt><strong>fill_value</strong><span class="classifier">Union[np.float32, np.float64, float, np.int32, np.int64, int, bool]</span></dt><dd><p>Fill value of the returned array.</p>
 </dd>
 <dt><strong>dtype</strong><span class="classifier">Type[Union[np.float32, np.float64, float, np.int32, np.int64, int, bool]], default: <strong>np.float32</strong></span></dt><dd><p>The desired data-type for the array.</p>
 </dd>
@@ -306,7 +306,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.plotting.catalog_to_number_density">
 <span class="sig-prename descclassname"><span class="pre">decontamination.plotting.</span></span><span class="sig-name descname"><span class="pre">catalog_to_number_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_sky</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lonlat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.plotting.catalog_to_number_density" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.plotting.catalog_to_number_density'"></a></dt>
-<dd><p>???</p>
+<dd><p>Fill the provided uninitialized number density mask (must have <span class="math notranslate nohighlight">\(12\cdot\mathrm{nside}^2\)</span> HEALPix pixels) from a galaxy or star catalog.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -314,11 +314,11 @@
 </dd>
 <dt><strong>footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the region to consider.</p>
 </dd>
-<dt><strong>full_sky</strong><span class="classifier">np.ndarray</span></dt><dd><p>Resulting full-sky number density (size must be <span class="math notranslate nohighlight">\(12\cdot\mathrm{nside}^2\)</span>).</p>
+<dt><strong>full_sky</strong><span class="classifier">np.ndarray</span></dt><dd><p>Full-sky number density to be filled.</p>
 </dd>
-<dt><strong>lon</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of longitudes.</p>
+<dt><strong>lon</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of galaxy or star longitudes.</p>
 </dd>
-<dt><strong>lat</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of latitudes.</p>
+<dt><strong>lat</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of galaxy or star latitudes.</p>
 </dd>
 <dt><strong>nest</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If <strong>True</strong>, ordering scheme is <em>NESTED</em>, otherwise, <em>RING</em>.</p>
 </dd>

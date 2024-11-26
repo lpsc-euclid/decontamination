@@ -81,14 +81,14 @@ def get_bounding_box(nside: int, footprint: np.ndarray, nest: bool = True) -> ty
 def get_full_sky(nside: int, fill_value, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int, bool]] = np.float32) -> np.ndarray:
 
     """
-    ???
+    Returns an array representing the full sky for the given nside (will have :math:`12\\cdot\\mathrm{nside}^2` HEALPix pixels).
 
     Parameters
     ----------
     nside : int
         The HEALPix nside parameter.
-    fill_value : ???
-        ???
+    fill_value : typing.Union[np.float32, np.float64, float, np.int32, np.int64, int, bool]
+        Fill value of the returned array.
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int, bool]], default: **np.float32**
         The desired data-type for the array.
     """
@@ -112,7 +112,7 @@ def get_full_sky(nside: int, fill_value, dtype: typing.Type[typing.Union[np.floa
 def catalog_to_number_density(nside: int, footprint: np.ndarray, full_sky: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, lonlat: bool = True) -> None:
 
     """
-    ???
+    Fill the provided uninitialized number density mask (must have :math:`12\\cdot\\mathrm{nside}^2` HEALPix pixels) from a galaxy or star catalog.
 
     Parameters
     ----------
@@ -121,11 +121,11 @@ def catalog_to_number_density(nside: int, footprint: np.ndarray, full_sky: np.nd
     footprint : np.ndarray
         HEALPix indices of the region to consider.
     full_sky : np.ndarray
-        Resulting full-sky number density (size must be :math:`12\\cdot\\mathrm{nside}^2`).
+        Full-sky number density to be filled.
     lon : np.ndarray
-        Array of longitudes.
+        Array of galaxy or star longitudes.
     lat : np.ndarray
-        Array of latitudes.
+        Array of galaxy or star latitudes.
     nest : bool, default: **True**
         If **True**, ordering scheme is *NESTED*, otherwise, *RING*.
     lonlat : bool, default: **True**

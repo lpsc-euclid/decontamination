@@ -119,7 +119,6 @@ def before_process_signature(app, obj, bound_method):
         selection.Selection.BinaryOpNode,
         selection.Selection.FloatNumNode,
         selection.Selection.IntNumNode,
-        selection.Selection.IntNumNode,
         selection.Selection.ColNameNode,
     ]
 
@@ -171,8 +170,8 @@ def process_docstring(app, what, name, obj, options, lines):
     numeric_value1 = 'np.float32 | np.float64 | float | np.int32 | np.int64 | int'
     numeric_value2 = 'Union[np.float32, np.float64, float, np.int32, np.int64, int]'
 
-    ast_node1 = 'UnaryOpNode | BinaryOpNode | NumberNode | ColumnNode'
-    ast_node2 = 'Union[UnaryOpNode, BinaryOpNode, NumberNode, ColumnNode]'
+    ast_node1 = 'UnaryOpNode | BinaryOpNode | FloatNumNode | IntNumNode | ColNameNode'
+    ast_node2 = 'Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode]'
 
     for index, line in enumerate(lines):
 

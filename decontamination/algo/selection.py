@@ -32,10 +32,18 @@ class Selection(object):
         :private:
         """
 
+        ################################################################################################################
+
         def __init__(self, _type: str, _value: str):
 
             self.type: str = _type
             self.value: str = _value
+
+        ################################################################################################################
+
+        def __str__(self):
+
+            return f'<{self.type},`{self.value}`>'
 
     ####################################################################################################################
 
@@ -63,7 +71,9 @@ class Selection(object):
         r'([-+]?(?:'
             r'0x[0-9a-fA-F]+'
             r'|'
-            r'Ob[01]+'
+            r'0o[0-7]+'
+            r'|'
+            r'0b[0-1]+'
             r'|'
             r'\d+'
         r'))'
@@ -71,6 +81,8 @@ class Selection(object):
         r'(\w+)'
         r'|'
         r'(\s+)'
+        r'|'
+        r'(.)'
     )
 
     ####################################################################################################################
@@ -78,7 +90,7 @@ class Selection(object):
     @staticmethod
     def _tokenize(expression: str) -> typing.Generator[Token, typing.Any, typing.Any]:
 
-        for grouping, isfinite_op, not_op, comparison_op, logical_and_op, logical_or_op, bitwise_and_op, bitwise_or_op, float_num, int_num, col_name, blank in Selection._TOKEN_PATTERN.findall(expression):
+        for grouping, isfinite_op, not_op, comparison_op, logical_and_op, logical_or_op, bitwise_and_op, bitwise_or_op, float_num, int_num, col_name, blank, unknown in Selection._TOKEN_PATTERN.findall(expression):
 
             if grouping:
                 yield Selection.Token('GROUPING', grouping)
@@ -103,10 +115,9 @@ class Selection(object):
             elif col_name:
                 yield Selection.Token('COL_NAME', col_name)
             elif blank:
-                # IGNORE #
-                pass
+                pass # IGNORE BLANK CHARACTERS #
             else:
-                raise ValueError('Invalid token')
+                yield Selection.Token('UNKNOWN', unknown)
 
     ####################################################################################################################
     # PARSER                                                                                                           #
@@ -150,7 +161,7 @@ class Selection(object):
 
         def __init__(self, _value: str):
 
-            self.value: str = _value
+            self.value = float(_value)
 
     ####################################################################################################################
 
@@ -163,7 +174,14 @@ class Selection(object):
 
         def __init__(self, _value: str):
 
-            self.value: str = _value
+            if   _value.startswith('0x'):
+                self.value = int(_value[2:], base = 16)
+            elif _value.startswith('0o'):
+                self.value = int(_value[2:], base = 8)
+            elif _value.startswith('0b'):
+                self.value = int(_value[2:], base = 2)
+            else:
+                self.value = int(_value)
 
     ####################################################################################################################
 
@@ -250,13 +268,13 @@ class Selection(object):
 
             ############################################################################################################
 
-            if token_list and token_list[0].type in ['LOGICAL_AND_OP', 'LOGICAL_OR_OP']:
+            if token_list and token_list[0].type in ['BITWISE_AND_OP', 'BITWISE_OR_OP']:
 
                 op = token_list.pop(0).value
 
                 token = Selection._pick_token(token_list, expected_type = 'INT_NUM')
 
-                right_node = Selection.FloatNumNode(token.value)
+                right_node = Selection.IntNumNode(token.value)
 
                 left_node = Selection.BinaryOpNode(left_node, op, right_node)
 
@@ -388,10 +406,10 @@ class Selection(object):
 
             isfinite_expr    = [ ISFINITE_OP ] term ;
 
-            term             = "(" boolean_expr ")"
+            term             = "(" logical_or_expr ")"
                              | FLOAT_NUM
                              | INT_NUM
-                             | COL_NAME [(BITWISE_OR_OP | LOGICAL_AND_OP) INT_NUM]
+                             | COL_NAME [(BITWISE_OR_OP | BITWISE_AND_OP) INT_NUM]
                              ;
 
             ISFINITE_OP      = "isfinite" ;
@@ -419,7 +437,7 @@ class Selection(object):
 
         if token_list:
 
-            raise ValueError(f'Syntax error: unexpected token type `{token_list[0].type}`')
+            raise ValueError(f'Syntax error: unexpected token(s): {" ".join([token.__str__() for token in token_list])}')
 
         return result
 
@@ -491,20 +509,12 @@ class Selection(object):
                 return np.bitwise_or(left_value, right_value)
 
         ################################################################################################################
-        # FLOAT NUM                                                                                                    #
+        # FLOAT / INT NUM                                                                                              #
         ################################################################################################################
 
-        if isinstance(node, Selection.FloatNumNode):
+        if isinstance(node, Selection.FloatNumNode) or isinstance(node, Selection.IntNumNode):
 
-            return float(node.value)
-
-        ################################################################################################################
-        # INT NUM                                                                                                      #
-        ################################################################################################################
-
-        if isinstance(node, Selection.IntNumNode):
-
-            return int(node.value)
+            return node.value
 
         ################################################################################################################
         # COL_NAME                                                                                                     #
@@ -576,20 +586,12 @@ class Selection(object):
             return expr
 
         ################################################################################################################
-        # FLOAT NUM                                                                                                    #
+        # FLOAT / INT NUM                                                                                              #
         ################################################################################################################
 
-        elif isinstance(node, Selection.FloatNumNode):
+        elif isinstance(node, Selection.FloatNumNode) or isinstance(node, Selection.IntNumNode):
 
-            return str(float(node.value))
-
-        ################################################################################################################
-        # INT NUM                                                                                                      #
-        ################################################################################################################
-
-        elif isinstance(node, Selection.IntNumNode):
-
-            return str(int(node.value))
+            return str(node.value)
 
         ################################################################################################################
         # COL_NAME                                                                                                     #

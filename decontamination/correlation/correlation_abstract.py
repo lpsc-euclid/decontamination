@@ -10,7 +10,6 @@ import abc
 import typing
 
 import numpy as np
-import healpy as hp
 
 ########################################################################################################################
 
@@ -107,29 +106,5 @@ class Correlation_Abstract(abc.ABC):
             np.array(0, dtype = np.float32),
             np.array(0, dtype = np.float32),
         )
-
-    ####################################################################################################################
-
-    @staticmethod
-    def _build_full_sky_contrast(nside: int, nest: bool, footprint: np.ndarray, catalog_lon: np.ndarray, catalog_lat: np.ndarray) -> np.ndarray:
-
-        ################################################################################################################
-
-        galaxy_pixels = hp.ang2pix(nside, catalog_lon, catalog_lat, nest = nest, lonlat = True)
-
-        result = np.zeros(hp.nside2npix(nside), dtype = np.float32)
-
-        np.add.at(result, galaxy_pixels, 1.0)
-
-        ################################################################################################################
-
-        mean = np.mean(result[footprint])
-
-        result[footprint] -= mean
-        result[footprint] /= mean
-
-        ################################################################################################################
-
-        return result
 
 ########################################################################################################################

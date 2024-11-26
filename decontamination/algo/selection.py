@@ -50,7 +50,7 @@ class Selection(object):
     _TOKEN_PATTERN = re.compile(
         r'([()])'
         r'|'
-        r'(isfinite)'        
+        r'(isfinite)'
         r'|'
         r'(~)'
         r'|'

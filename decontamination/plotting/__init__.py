@@ -33,7 +33,7 @@ except ImportError:
 def get_bounding_box(nside: int, footprint: np.ndarray, nest: bool = True) -> typing.Tuple[float, float, float, float]:
 
     """
-    Get the bounding box of the given footprint.
+    Get the bounding box (min lon, max lon, min lat, max lat) of the given footprint.
 
     Parameters
     ----------

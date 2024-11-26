@@ -78,7 +78,7 @@ def get_bounding_box(nside: int, footprint: np.ndarray, nest: bool = True) -> ty
 
 ########################################################################################################################
 
-def get_full_sky(nside: int, fill_value, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int, np.bool, bool]] = np.float32) -> np.ndarray:
+def get_full_sky(nside: int, fill_value, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int, bool]] = np.float32) -> np.ndarray:
 
     """
     ???
@@ -89,7 +89,7 @@ def get_full_sky(nside: int, fill_value, dtype: typing.Type[typing.Union[np.floa
         The HEALPix nside parameter.
     fill_value : ???
         ???
-    dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int, np.bool, bool]], default: **np.float32**
+    dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int, bool]], default: **np.float32**
         The desired data-type for the array.
     """
 

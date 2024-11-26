@@ -83,6 +83,7 @@ Mandatory dependencies:
 
 * `h5py <https://www.h5py.org/>`_
 * `tqdm <https://tqdm.github.io/>`_
+* `zarr <https://zarr.dev>`_
 * `numpy <https://numpy.org/>`_
 * `numba <https://numba.pydata.org/>`_
 * `scipy <https://scipy.org/>`_

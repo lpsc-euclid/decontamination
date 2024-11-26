@@ -1416,20 +1416,23 @@
 </span><span id="line-5">
 </span><span id="line-6"><span class="k">comparison_expr  </span><span class="o">=</span> <span class="k">not_expr </span><span class="p">{</span> <span class="k">COMPARISON_OP not_expr </span><span class="p">}</span> <span class="p">;</span>
 </span><span id="line-7">
-</span><span id="line-8"><span class="k">not_expr         </span><span class="o">=</span> <span class="p">[</span> <span class="k">NOT_OP </span><span class="p">]</span> <span class="k">term </span><span class="p">;</span>
+</span><span id="line-8"><span class="k">not_expr         </span><span class="o">=</span> <span class="p">[</span> <span class="k">NOT_OP </span><span class="p">]</span> <span class="k">isfinite_expr </span><span class="p">;</span>
 </span><span id="line-9">
-</span><span id="line-10"><span class="k">term             </span><span class="o">=</span> <span class="s2">"("</span> <span class="k">boolean_expr </span><span class="s2">")"</span>
-</span><span id="line-11">                 <span class="p">|</span> <span class="k">FLOAT_NUM</span>
-</span><span id="line-12">                 <span class="p">|</span> <span class="k">INT_NUM</span>
-</span><span id="line-13">                 <span class="p">|</span> <span class="k">COL_NAME </span><span class="p">[(</span><span class="k">BITWISE_OR_OP </span><span class="p">|</span> <span class="k">LOGICAL_AND_OP</span><span class="p">)</span> <span class="k">INT_NUM</span><span class="p">]</span>
-</span><span id="line-14">                 <span class="p">;</span>
-</span><span id="line-15">
-</span><span id="line-16"><span class="k">NOT_OP           </span><span class="o">=</span> <span class="s2">"~"</span> <span class="p">;</span>
-</span><span id="line-17"><span class="k">COMPARISON_OP    </span><span class="o">=</span> <span class="s2">"=="</span> <span class="p">|</span> <span class="s2">"!="</span> <span class="p">|</span> <span class="s2">"&lt;="</span> <span class="p">|</span> <span class="s2">"&gt;="</span> <span class="p">|</span> <span class="s2">"&lt;"</span> <span class="p">|</span> <span class="s2">"&gt;"</span> <span class="p">;</span>
-</span><span id="line-18"><span class="k">LOGICAL_AND_OP   </span><span class="o">=</span> <span class="s2">"&amp;&amp;"</span> <span class="p">|</span> <span class="s2">"and"</span> <span class="p">;</span>
-</span><span id="line-19"><span class="k">LOGICAL_OR_OP    </span><span class="o">=</span> <span class="s2">"||"</span> <span class="p">|</span> <span class="s2">"or"</span> <span class="p">;</span>
-</span><span id="line-20"><span class="k">BITWISE_AND_OP   </span><span class="o">=</span> <span class="s2">"&amp;"</span> <span class="p">;</span>
-</span><span id="line-21"><span class="k">BITWISE_OR_OP    </span><span class="o">=</span> <span class="s2">"|"</span> <span class="p">;</span>
+</span><span id="line-10"><span class="k">isfinite_expr    </span><span class="o">=</span> <span class="p">[</span> <span class="k">ISFINITE_OP </span><span class="p">]</span> <span class="k">term </span><span class="p">;</span>
+</span><span id="line-11">
+</span><span id="line-12"><span class="k">term             </span><span class="o">=</span> <span class="s2">"("</span> <span class="k">boolean_expr </span><span class="s2">")"</span>
+</span><span id="line-13">                 <span class="p">|</span> <span class="k">FLOAT_NUM</span>
+</span><span id="line-14">                 <span class="p">|</span> <span class="k">INT_NUM</span>
+</span><span id="line-15">                 <span class="p">|</span> <span class="k">COL_NAME </span><span class="p">[(</span><span class="k">BITWISE_OR_OP </span><span class="p">|</span> <span class="k">LOGICAL_AND_OP</span><span class="p">)</span> <span class="k">INT_NUM</span><span class="p">]</span>
+</span><span id="line-16">                 <span class="p">;</span>
+</span><span id="line-17">
+</span><span id="line-18"><span class="k">ISFINITE_OP      </span><span class="o">=</span> <span class="s2">"isfinite"</span> <span class="p">;</span>
+</span><span id="line-19"><span class="k">NOT_OP           </span><span class="o">=</span> <span class="s2">"~"</span> <span class="p">;</span>
+</span><span id="line-20"><span class="k">COMPARISON_OP    </span><span class="o">=</span> <span class="s2">"=="</span> <span class="p">|</span> <span class="s2">"!="</span> <span class="p">|</span> <span class="s2">"&lt;="</span> <span class="p">|</span> <span class="s2">"&gt;="</span> <span class="p">|</span> <span class="s2">"&lt;"</span> <span class="p">|</span> <span class="s2">"&gt;"</span> <span class="p">;</span>
+</span><span id="line-21"><span class="k">LOGICAL_AND_OP   </span><span class="o">=</span> <span class="s2">"&amp;&amp;"</span> <span class="p">|</span> <span class="s2">"and"</span> <span class="p">;</span>
+</span><span id="line-22"><span class="k">LOGICAL_OR_OP    </span><span class="o">=</span> <span class="s2">"||"</span> <span class="p">|</span> <span class="s2">"or"</span> <span class="p">;</span>
+</span><span id="line-23"><span class="k">BITWISE_AND_OP   </span><span class="o">=</span> <span class="s2">"&amp;"</span> <span class="p">;</span>
+</span><span id="line-24"><span class="k">BITWISE_OR_OP    </span><span class="o">=</span> <span class="s2">"|"</span> <span class="p">;</span>
 </span></code></pre></div>
 </div>
 <dl class="field-list simple">
@@ -1470,14 +1473,14 @@
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.selection.Selection.filter_table">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.algo.selection.Selection.filter_table" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.selection.Selection.filter_table'"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MaskedArray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.algo.selection.Selection.filter_table" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.selection.Selection.filter_table'"></a></dt>
 <dd><p>Evaluates the specified expression and filters the table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>expression</strong><span class="classifier">str</span></dt><dd><p>The expression to be evaluated.</p>
 </dd>
-<dt><strong>table</strong><span class="classifier">np.ndarray</span></dt><dd><p>The table to be filtered with the expression.</p>
+<dt><strong>table</strong><span class="classifier">Union[np.ndarray, np.ma.MaskedArray]</span></dt><dd><p>The table to be filtered by the expression.</p>
 </dd>
 </dl>
 </dd>

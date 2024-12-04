@@ -454,13 +454,13 @@ class Selection(object):
         :private:
         """
 
-        def __init__(self, shape: typing.Union[int, typing.Tuple[int]]):
+        def __init__(self, shape: tuple[int, ...]):
 
-            self.shape: typing.Union[int, typing.Tuple[int]] = shape
+            self.shape: tuple[int, ...] = shape
 
         ################################################################################################################
 
-        def asarray(self) -> np.ndarray[bool]:
+        def asarray(self) -> np.ndarray:
 
             """
             Returns the corresponding numpy array.

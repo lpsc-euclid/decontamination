@@ -445,6 +445,19 @@ class Selection(object):
     # SELECTION                                                                                                        #
     ####################################################################################################################
 
+    class MaskedColumn(object):
+
+        """
+        A masked column.
+        :private:
+        """
+
+        def __init__(self, shape):
+
+            self.shape: typing.Union[int, typing.Tuple[int]] = shape
+
+    ####################################################################################################################
+
     @staticmethod
     def _isfinite(x: typing.Union[np.ndarray, np.ma.MaskedArray]) -> np.ndarray:
 
@@ -463,7 +476,7 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def _evaluate(node: typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode], table: typing.Union[np.ndarray, np.ma.MaskedArray]) -> typing.Union[np.ndarray, float]:
+    def _evaluate(node: typing.Union[UnaryOpNode, BinaryOpNode, FloatNumNode, IntNumNode, ColNameNode], table: typing.Union[np.ndarray, np.ma.MaskedArray], ignore_masked_columns: bool = False) -> typing.Union['MaskedColumn', np.ndarray, float]:
 
         ################################################################################################################
         # UNARY OP                                                                                                     #
@@ -471,11 +484,11 @@ class Selection(object):
 
         if isinstance(node, Selection.UnaryOpNode):
 
-            right_value = Selection._evaluate(node.right, table)
+            right_value = Selection._evaluate(node.right, table, ignore_masked_columns)
 
             if node.op == 'isfinite':
                 return Selection._isfinite(right_value)
-            elif node.op == '~':
+            if node.op == '~':
                 return np.logical_not(right_value)
 
         ################################################################################################################
@@ -484,28 +497,35 @@ class Selection(object):
 
         if isinstance(node, Selection.BinaryOpNode):
 
-            left_value = Selection._evaluate(node.left, table)
-            right_value = Selection._evaluate(node.right, table)
+            left_value = Selection._evaluate(node.left, table, ignore_masked_columns)
+            right_value = Selection._evaluate(node.right, table, ignore_masked_columns)
+
+            if ignore_masked_columns:
+
+                if isinstance(left_value, Selection.MaskedColumn):
+                    return np.full_like(left_value.shape, True, dtype = bool) if node.op not in ['&', '|'] else left_value
+                if isinstance(right_value, Selection.MaskedColumn):
+                    return np.full_like(right_value.shape, True, dtype = bool) if node.op not in ['&', '|'] else right_value
 
             if node.op == '==':
                 return left_value == right_value
-            elif node.op == '!=':
+            if node.op == '!=':
                 return left_value != right_value
-            elif node.op == '<=':
+            if node.op == '<=':
                 return left_value <= right_value
-            elif node.op == '>=':
+            if node.op == '>=':
                 return left_value >= right_value
-            elif node.op == '<':
+            if node.op == '<':
                 return left_value < right_value
-            elif node.op == '>':
+            if node.op == '>':
                 return left_value > right_value
-            elif node.op == '&&' or node.op == 'and':
+            if node.op == '&&' or node.op == 'and':
                 return np.logical_and(left_value, right_value)
-            elif node.op == '||' or node.op == 'or':
+            if node.op == '||' or node.op == 'or':
                 return np.logical_or(left_value, right_value)
-            elif node.op == '&':
+            if node.op == '&':
                 return np.bitwise_and(left_value, right_value)
-            elif node.op == '|':
+            if node.op == '|':
                 return np.bitwise_or(left_value, right_value)
 
         ################################################################################################################
@@ -522,7 +542,13 @@ class Selection(object):
 
         if isinstance(node, Selection.ColNameNode):
 
-            return table[node.value]
+            if ignore_masked_columns and np.all(Selection._isfinite(table[node.value])):
+
+                return Selection.MaskedColumn(table[node.value].shape)
+
+            else:
+
+                return table[node.value]
 
         ################################################################################################################
 
@@ -608,7 +634,7 @@ class Selection(object):
     ####################################################################################################################
 
     @staticmethod
-    def filter_table(expression: str, table: typing.Union[np.ndarray, np.ma.MaskedArray]) -> typing.Tuple[str, np.ndarray]:
+    def filter_table(expression: str, table: typing.Union[np.ndarray, np.ma.MaskedArray], ignore_masked_columns: bool = False) -> typing.Tuple[str, np.ndarray]:
 
         """
         Evaluates the specified expression and filters the table.
@@ -619,6 +645,8 @@ class Selection(object):
             The expression to be evaluated.
         table : typing.Union[np.ndarray, np.ma.MaskedArray]
             The table to be filtered by the expression.
+        ignore_masked_columns : bool, default: False
+            Indicates whether to ignore the selection on masked columns.
 
         Returns
         -------
@@ -636,15 +664,12 @@ class Selection(object):
 
         if not expression:
 
-            return expression, np.full_like(table, 1, dtype = bool)
+            return expression, np.full_like(table, True, dtype = bool)
 
         else:
 
             ast = Selection.parse(expression)
 
-            return (
-                Selection.to_string(ast),
-                Selection._evaluate(ast, table),
-            )
+            return Selection.to_string(ast), Selection._evaluate(ast, table, ignore_masked_columns)
 
 ########################################################################################################################

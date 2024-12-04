@@ -19,7 +19,7 @@ from ..hp import UNSEEN, ang2pix
 
 ########################################################################################################################
 
-def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: np.ndarray, bit_image: typing.Optional[np.ndarray] = None, rms_selection: float = 1.0e4, bit_selection: int = 0, n_threads: int = 1, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: np.ndarray, bit_image: typing.Optional[np.ndarray] = None, rms_cutoff: float = 1.0e4, bit_selection: int = 0, n_threads: int = 1, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
     """
     Projects RMS (aka. noise) and bit (aka. data quality) images into a HEALPix footprint.
@@ -39,8 +39,8 @@ def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: n
         2d image containing the RMS (aka. noise) information.
     bit_image : np.ndarray, default: **None**
         2d image containing the bit (aka. data quality) information.
-    rms_selection : float, default: **1.0e4**
-        Reject the pixel if RMS == 0 or RMS >= rms_selection.
+    rms_cutoff : float, default: **1.0e4**
+        Reject the pixel if RMS <= 0 or RMS >= rms_cutoff.
     bit_selection : int, default: **0x00**
         Reject the pixel if (bit & bit_selection) != 0x00.
     n_threads : int, default: 1
@@ -104,7 +104,7 @@ def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: n
                 sorted_footprint_indices,
                 j1, j2,
                 rms_image, bit_image,
-                rms_selection, bit_selection,
+                rms_cutoff, bit_selection,
                 show_progress_bar
             ))
 
@@ -264,7 +264,7 @@ def image_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, xxx_image: np.
 ########################################################################################################################
 
 # noinspection DuplicatedCode
-def _worker1(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_footprint_indices, j1, j2, rms_image, bit_image, rms_selection, bit_selection, show_progress_bar):
+def _worker1(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_footprint_indices, j1, j2, rms_image, bit_image, rms_cutoff, bit_selection, show_progress_bar):
 
     ####################################################################################################################
 
@@ -303,7 +303,7 @@ def _worker1(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
             pixels,
             rms_image[j],
             bit_image[j],
-            rms_selection,
+            rms_cutoff,
             bit_selection
         )
 
@@ -359,7 +359,7 @@ def _worker2(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
 ########################################################################################################################
 
 @nb.njit(fastmath = True)
-def _project1(result_rms: np.ndarray, result_cov: np.ndarray, result_bit: np.ndarray, result_hit: np.ndarray, sorted_footprint_pixels: np.ndarray, sorted_footprint_indices: np.ndarray, pixels: np.ndarray, rms: np.ndarray, bit: np.ndarray, rms_selection: float, bit_selection: int) -> None:
+def _project1(result_rms: np.ndarray, result_cov: np.ndarray, result_bit: np.ndarray, result_hit: np.ndarray, sorted_footprint_pixels: np.ndarray, sorted_footprint_indices: np.ndarray, pixels: np.ndarray, rms: np.ndarray, bit: np.ndarray, rms_cutoff: float, bit_selection: int) -> None:
 
     ####################################################################################################################
 
@@ -380,7 +380,7 @@ def _project1(result_rms: np.ndarray, result_cov: np.ndarray, result_bit: np.nda
         rms_i = selected_rms[i]
         bit_i = selected_bit[i]
 
-        if 0.0 < rms_i < rms_selection:
+        if 0.0 < rms_i < rms_cutoff:
 
             if (bit_i & bit_selection) == 0:
 

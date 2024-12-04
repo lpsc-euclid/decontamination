@@ -447,14 +447,27 @@ class Selection(object):
 
     class MaskedColumn(object):
 
+        ################################################################################################################
+
         """
         A masked column.
         :private:
         """
 
-        def __init__(self, shape):
+        def __init__(self, shape: typing.Union[int, typing.Tuple[int]]):
 
             self.shape: typing.Union[int, typing.Tuple[int]] = shape
+
+        ################################################################################################################
+
+        def asarray(self) -> np.ndarray[bool]:
+
+            """
+            Returns the corresponding numpy array.
+            :private:
+            """
+
+            return np.full(self.shape, True, dtype = bool)
 
     ####################################################################################################################
 
@@ -487,7 +500,7 @@ class Selection(object):
             right_value = Selection._evaluate(node.right, table, ignore_masked_columns)
 
             if ignore_masked_columns and isinstance(right_value, Selection.MaskedColumn):
-                return np.full(right_value.shape, True, dtype = bool)
+                return right_value.asarray()
 
             if node.op == 'isfinite':
                 return Selection._isfinite(right_value)
@@ -504,9 +517,9 @@ class Selection(object):
             right_value = Selection._evaluate(node.right, table, ignore_masked_columns)
 
             if ignore_masked_columns and isinstance(left_value, Selection.MaskedColumn):
-                return np.full(left_value.shape, True, dtype = bool) if node.op not in ['&', '|'] else left_value
+                return left_value.asarray() if node.op not in ['&', '|'] else left_value
             if ignore_masked_columns and isinstance(right_value, Selection.MaskedColumn):
-                return np.full(right_value.shape, True, dtype = bool) if node.op not in ['&', '|'] else right_value
+                return right_value.asarray() if node.op not in ['&', '|'] else right_value
 
             if node.op == '==':
                 return left_value == right_value

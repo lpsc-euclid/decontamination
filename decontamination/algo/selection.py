@@ -487,7 +487,7 @@ class Selection(object):
             right_value = Selection._evaluate(node.right, table, ignore_masked_columns)
 
             if ignore_masked_columns and isinstance(right_value, Selection.MaskedColumn):
-                return np.full_like(right_value.shape, True, dtype = bool)
+                return np.full(right_value.shape, True, dtype = bool)
 
             if node.op == 'isfinite':
                 return Selection._isfinite(right_value)
@@ -504,9 +504,9 @@ class Selection(object):
             right_value = Selection._evaluate(node.right, table, ignore_masked_columns)
 
             if ignore_masked_columns and isinstance(left_value, Selection.MaskedColumn):
-                return np.full_like(left_value.shape, True, dtype = bool) if node.op not in ['&', '|'] else left_value
+                return np.full(left_value.shape, True, dtype = bool) if node.op not in ['&', '|'] else left_value
             if ignore_masked_columns and isinstance(right_value, Selection.MaskedColumn):
-                return np.full_like(right_value.shape, True, dtype = bool) if node.op not in ['&', '|'] else right_value
+                return np.full(right_value.shape, True, dtype = bool) if node.op not in ['&', '|'] else right_value
 
             if node.op == '==':
                 return left_value == right_value

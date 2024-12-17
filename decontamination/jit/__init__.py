@@ -17,6 +17,8 @@ import numpy as np
 import numba as nb
 import numba.cuda as cu
 
+from collections.abc import Sequence
+
 from . import atomic
 from . import processor
 
@@ -338,9 +340,19 @@ class Kernel:
 
         ################################################################################################################
 
-        threads_per_blocks = kernel_params[1] if isinstance(kernel_params[1], tuple) else (kernel_params[1], )
+        threads_per_blocks = list(kernel_params[1]) if isinstance(kernel_params[1], Sequence) else [kernel_params[1]]
 
-        data_sizes = kernel_params[2] if isinstance(kernel_params[2], tuple) else (kernel_params[2], )
+        data_sizes = list(kernel_params[2]) if isinstance(kernel_params[2], Sequence) else [kernel_params[2]]
+
+        ################################################################################################################
+
+        dim = len(threads_per_blocks)
+
+        for i in range(dim):
+
+            if threads_per_blocks[i] is None or threads_per_blocks[i] == 0:
+
+                threads_per_blocks[i] = Kernel.DEFAULT_THREADS_PER_BLOCK // dim
 
         ################################################################################################################
 

@@ -353,7 +353,7 @@ class Kernel:
             if threads_per_blocks[i] is None or threads_per_blocks[i] == 0:
 
                 threads_per_blocks[i] = Kernel.DEFAULT_THREADS_PER_BLOCK // dim
-        print(threads_per_blocks)
+
         ################################################################################################################
 
         def wrapper(*args, **kwargs):

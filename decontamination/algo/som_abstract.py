@@ -537,7 +537,7 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        result = device_array_empty(shape = 2, dtype = np.float32)
+        result = device_array_empty(shape = 2, dtype = np.float64)
 
         ################################################################################################################
 
@@ -762,8 +762,8 @@ def _compute_errors_xpu(errors: np.ndarray, weights: np.ndarray, topography: np.
     # DO BMUS CALCULATION                                                                                              #
     ####################################################################################################################
 
-    ###_distance2 = 1.0e99
-    min_distance1 = 1.0e99
+    ###_distance2 = 1.0e10
+    min_distance1 = 1.0e10
 
     min_index2 = 0
     min_index1 = 0

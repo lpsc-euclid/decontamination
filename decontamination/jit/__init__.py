@@ -378,7 +378,7 @@ class Kernel:
 
                 ########################################################################################################
 
-                return self.gpu_func[tuple(self._number_of_blocks(s, t) for s, t in zip(data_sizes, threads_per_blocks)), threads_per_blocks](*new_args, **kwargs)
+                return self.gpu_func[tuple(self._number_of_blocks(s, t) for s, t in zip(data_sizes, threads_per_blocks)), tuple(threads_per_blocks)](*new_args, **kwargs)
 
                 ########################################################################################################
 

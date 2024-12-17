@@ -150,7 +150,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, use_best_epoch: bool = True, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`). An online formulation of updating weights is implemented:
@@ -176,6 +176,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
             Optional number of epochs to train for.
         n_vectors : int, default: **None**
             Optional number of vectors to train for.
+        use_best_epoch : bool, default: **True**
+            ???
         stop_quantization_error : float, default: **None**
             Stops training if quantization_error < stop_quantization_error.
         stop_topographic_error : float, default: **None**
@@ -211,9 +213,11 @@ class SOM_Online(som_abstract.SOM_Abstract):
             # TRAINING BY NUMBER OF EPOCHS                                                                             #
             ############################################################################################################
 
-            self._quantization_errors = np.full(n_epochs, np.nan, dtype = np.float32)
+            self._history = np.empty((n_epochs, self._m * self._n, self._dim), dtype = self._dtype)
 
-            self._topographic_errors = np.full(n_epochs, np.nan, dtype = np.float32)
+            self._quantization_errors = np.full(n_epochs, np.nan, dtype = np.float64)
+
+            self._topographic_errors = np.full(n_epochs, np.nan, dtype = np.float64)
 
             ############################################################################################################
 
@@ -261,6 +265,10 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
                 ########################################################################################################
 
+                self._history[cur_epoch] = self._weights
+
+                ########################################################################################################
+
                 errors = self.compute_errors(dataset, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
                 self._quantization_errors[cur_epoch] = errors[0]
@@ -284,9 +292,11 @@ class SOM_Online(som_abstract.SOM_Abstract):
             # TRAINING BY NUMBER OF VECTORS                                                                            #
             ############################################################################################################
 
-            self._quantization_errors = np.zeros(1, dtype = np.float32)
+            self._history = np.empty((1, self._m * self._n, self._dim), dtype = self._dtype)
 
-            self._topographic_errors = np.zeros(1, dtype = np.float32)
+            self._quantization_errors = np.zeros(1, dtype = np.float64)
+
+            self._topographic_errors = np.zeros(1, dtype = np.float64)
 
             ############################################################################################################
 
@@ -353,6 +363,10 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
+            self._history[0] = self._weights
+
+            ############################################################################################################
+
             errors = self.compute_errors(dataset, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
             self._quantization_errors[0] = errors[0]
@@ -363,6 +377,12 @@ class SOM_Online(som_abstract.SOM_Abstract):
         else:
 
             raise ValueError('Invalid training method, specify either `n_epochs` or `n_vectors`')
+
+        ################################################################################################################
+
+        if use_best_epoch:
+
+            self._weights = self._history[np.argmin(self._quantization_errors)]
 
 ########################################################################################################################
 

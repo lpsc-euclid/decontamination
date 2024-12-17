@@ -479,7 +479,7 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
     ####################################################################################################################
 
     # noinspection PyArgumentList
-    def train(self, footprint_systematics: typing.Union[np.ndarray, typing.Callable], galaxy_number_density: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> None:
+    def train(self, footprint_systematics: typing.Union[np.ndarray, typing.Callable], galaxy_number_density: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, use_best_epoch: bool = True, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`).
@@ -494,6 +494,8 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
             Optional number of epochs to train for.
         n_vectors : int, default: **None**
             Optional number of vectors to train for.
+        use_best_epoch : bool, default: **True**
+            ???
         stop_quantization_error : float, default: **None**
             Stop the training if quantization_error < stop_quantization_error.
         stop_topographic_error : float, default: **None**
@@ -526,9 +528,9 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         self._som.init_from(self._pca)
 
         if self._batch:
-            self._som.train(footprint_systematics, dataset_weights = galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+            self._som.train(footprint_systematics, dataset_weights = galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, use_best_epoch = use_best_epoch, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
         else:
-            self._som.train(footprint_systematics, dataset_weights = galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar)
+            self._som.train(footprint_systematics, dataset_weights = galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, use_best_epoch = use_best_epoch, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar)
 
         ################################################################################################################
         # COMPUTE FOOTPRINT WINNERS                                                                                    #

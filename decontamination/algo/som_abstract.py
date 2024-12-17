@@ -61,9 +61,11 @@ class SOM_Abstract(object):
 
         self._weights = np.empty((self._m * self._n, self._dim), dtype = self._dtype)
 
-        self._quantization_errors = np.empty(0, dtype = np.float32)
+        self._history = np.empty((0, self._m * self._n, self._dim), dtype = self._dtype)
 
-        self._topographic_errors = np.empty(0, dtype = np.float32)
+        self._quantization_errors = np.empty(0, dtype = np.float64)
+
+        self._topographic_errors = np.empty(0, dtype = np.float64)
 
         ################################################################################################################
 

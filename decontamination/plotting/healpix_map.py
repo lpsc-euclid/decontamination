@@ -227,6 +227,8 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
         assume_positive
     )
 
+    del full_sky
+
     if return_minmax:
         return fig, ax, v_min, v_max
     else:
@@ -308,6 +310,8 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
         show_histogram,
         assume_positive
     )
+
+    del full_sky
 
     if return_minmax:
         return fig, ax, v_min, v_max

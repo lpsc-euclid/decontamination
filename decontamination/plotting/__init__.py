@@ -92,7 +92,7 @@ def get_full_sky(nside: int, fill_value, dtype: typing.Type[typing.Union[np.floa
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int, bool]], default: **np.float32**
         The desired data-type for the array.
     use_zarr: bool, default: **True**
-        ???
+        If **True**, uses a Zarr array.
     """
 
     ####################################################################################################################

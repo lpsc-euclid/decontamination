@@ -78,7 +78,7 @@ def get_bounding_box(nside: int, footprint: np.ndarray, nest: bool = True) -> ty
 
 ########################################################################################################################
 
-def get_full_sky(nside: int, fill_value, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int, bool]] = np.float32) -> np.ndarray:
+def get_full_sky(nside: int, fill_value, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int, bool]] = np.float32, use_zarr: bool = True) -> np.ndarray:
 
     """
     Returns an array representing the full sky for the given nside (will have :math:`12\\cdot\\mathrm{nside}^2` HEALPix pixels).
@@ -91,6 +91,8 @@ def get_full_sky(nside: int, fill_value, dtype: typing.Type[typing.Union[np.floa
         Fill value of the returned array.
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int, bool]], default: **np.float32**
         The desired data-type for the array.
+    use_zarr: bool, default: **True**
+        ???
     """
 
     ####################################################################################################################
@@ -99,7 +101,7 @@ def get_full_sky(nside: int, fill_value, dtype: typing.Type[typing.Union[np.floa
 
     ####################################################################################################################
 
-    if zarr is None:
+    if not use_zarr or zarr is None:
 
         return np.full(npix, fill_value, dtype = dtype)
 

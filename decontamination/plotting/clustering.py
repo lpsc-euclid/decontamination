@@ -144,6 +144,8 @@ def _display_cluster_labels(ax: pyplot.Axes, cluster_ids: np.ndarray, is_hexagon
 
             labels, n = ndimage.label(cluster_ids == cluster_id)
 
+            print(labels)
+
             for label in range(1, n + 1):
 
                 coords = np.nonzero(labels == label)[0]

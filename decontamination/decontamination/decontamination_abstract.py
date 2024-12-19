@@ -13,6 +13,7 @@ import numpy as np
 import numba as nb
 
 from ..algo import dataset_to_generator_builder
+from ..generator import generator_number_density
 
 ########################################################################################################################
 
@@ -195,5 +196,23 @@ class Decontamination_Abstract(object):
         ################################################################################################################
 
         return result_edges, result_centers, minima, maxima, means, rmss, stds, n_vectors
+
+    ####################################################################################################################
+
+    def _generate_catalog(self, density: np.ndarray, mult_factor: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
+
+        catalog = np.empty(0, dtype = [('ra', np.float32), ('dec', np.float32)])
+
+        generator = generator_number_density.Generator_NumberDensity(self._nside, self._footprint, nest = True, seed = seed)
+
+        for lon, lat in tqdm.tqdm(generator.generate(self._coverage, mult_factor = mult_factor, n_max_per_batch = 10_000)):
+
+            rows = np.empty(lon.shape[0], dtype = catalog.dtype)
+            rows['ra'] = lon
+            rows['dec'] = lat
+
+            catalog = np.append(catalog, rows)
+
+        return catalog
 
 ########################################################################################################################

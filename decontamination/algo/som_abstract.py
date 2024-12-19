@@ -50,7 +50,7 @@ class SOM_Abstract(object):
         self._m = int(m)
         self._n = int(n)
         self._dim = int(dim)
-        self._dtype = dtype
+        self._dtype = dtype.type if hasattr(dtype, 'type') else dtype
         self._topology = topology or 'hexagonal'
 
         ################################################################################################################

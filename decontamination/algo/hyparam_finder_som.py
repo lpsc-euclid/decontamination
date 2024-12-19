@@ -55,13 +55,13 @@ class HypParamFinder_SOM(object):
 
         ################################################################################################################
 
-        base_m = np.sqrt(5.0 * np.sqrt(self._dataset.shape[0]))
+        m_ref = np.sqrt(5.0 * np.sqrt(self._dataset.shape[0]))
 
         ################################################################################################################
 
         with tqdm.tqdm(total = HypParamFinder_SOM.M_NB_OF_STEPS * HypParamFinder_SOM.Σ_NB_OF_STEPS * (1 if self._batch else len(HypParamFinder_SOM.ALPHA_LIST)), disable = not self._show_progress_bar) as pbar:
 
-            m_list = np.unique(np.linspace(2.0 * base_m, 0.5 * base_m, num = HypParamFinder_SOM.M_NB_OF_STEPS, dtype = float))
+            m_list = np.unique(np.linspace(2.0 * m_ref, 0.5 * m_ref, num = HypParamFinder_SOM.M_NB_OF_STEPS, dtype = float))
             for m in m_list:
 
                 σ_list = np.unique(m / np.linspace(4.0, 2.0, num = HypParamFinder_SOM.Σ_NB_OF_STEPS, dtype = float))

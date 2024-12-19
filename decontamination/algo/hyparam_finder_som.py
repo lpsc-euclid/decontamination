@@ -48,8 +48,8 @@ class HypParamFinder_SOM(object):
         ################################################################################################################
 
         result_m = None
-        result_sigma = None
-        result_alpha = None
+        result_α = None
+        result_σ = None
 
         min_qe = float('inf')
 
@@ -61,29 +61,32 @@ class HypParamFinder_SOM(object):
 
         with tqdm.tqdm(total = HypParamFinder_SOM.M_NB_OF_STEPS * HypParamFinder_SOM.Σ_NB_OF_STEPS * (1 if self._batch else len(HypParamFinder_SOM.ALPHA_LIST)), disable = not self._show_progress_bar) as pbar:
 
-            m_list = np.unique(np.linspace(0.5 * base_m, 2.0 * base_m, num = HypParamFinder_SOM.M_NB_OF_STEPS, dtype = float).astype(int))
+            m_list = np.unique(np.linspace(0.5 * base_m, 2.0 * base_m, num = HypParamFinder_SOM.M_NB_OF_STEPS, dtype = float))
             for m in m_list:
 
-                sigma_list = np.unique(m / np.linspace(2.0, 4.0, num = HypParamFinder_SOM.Σ_NB_OF_STEPS, dtype = float).astype(float))
-                for sigma in sigma_list:
+                σ_list = np.unique(m / np.linspace(2.0, 4.0, num = HypParamFinder_SOM.Σ_NB_OF_STEPS, dtype = float))
+                for σ in σ_list:
 
-                    for alpha in ([None] if self._batch else HypParamFinder_SOM.ALPHA_LIST):
+                    for α in ([None] if self._batch else HypParamFinder_SOM.ALPHA_LIST):
 
-                        qe = self._train(m, alpha, sigma, n_epochs)
+                        m = int(m)
+                        σ = float(σ)
+
+                        qe = self._train(m, α,  σ, n_epochs)
 
                         if min_qe > qe:
 
                             min_qe = qe
 
                             result_m = m
-                            result_alpha = alpha
-                            result_sigma = sigma
+                            result_α = α
+                            result_σ = σ
 
                         pbar.update(1)
 
         ################################################################################################################
 
-        return result_m, result_alpha, result_sigma
+        return result_m, result_α, result_σ
 
     ####################################################################################################################
 

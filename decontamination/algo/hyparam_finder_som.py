@@ -19,6 +19,11 @@ class HypParamFinder_SOM(object):
 
     ####################################################################################################################
 
+    M_NB_OF_STEPS = 7
+    Σ_NB_OF_STEPS = 5
+
+    ####################################################################################################################
+
     ALPHA_LIST = [0.1, 0.2, 0.3, 0.4, 0.5]
 
     ####################################################################################################################
@@ -50,29 +55,31 @@ class HypParamFinder_SOM(object):
 
         ################################################################################################################
 
-        max_m = np.sqrt(5.0 * np.sqrt(self._dataset.shape[0]))
+        base_m = np.sqrt(5.0 * np.sqrt(self._dataset.shape[0]))
 
         ################################################################################################################
 
-        m_list = np.linspace(0.5 * max_m, 2.0 * max_m, num = 7, dtype = float)
+        with tqdm(total =HypParamFinder_SOM.M_NB_OF_STEPS * HypParamFinder_SOM.Σ_NB_OF_STEPS * (1 if self._batch else len(HypParamFinder_SOM.ALPHA_LIST)), disable = not self._show_progress_bar) as pbar:
 
-        for m in tqdm.tqdm(m_list, disable = not self._show_progress_bar):
+            m_list = np.linspace(0.5 * base_m, 2.0 * base_m, num = HypParamFinder_SOM.M_NB_OF_STEPS, dtype = float)
+            for m in m_list:
 
-            sigma_list = m / np.linspace(2.0, 4.0, num = 5, dtype = float)
+                sigma_list = m / np.linspace(2.0, 4.0, num = HypParamFinder_SOM.Σ_NB_OF_STEPS, dtype = float)
+                for sigma in sigma_list:
 
-            for sigma in sigma_list:
+                    for alpha in ([None] if self._batch else HypParamFinder_SOM.ALPHA_LIST):
 
-                for alpha in ([None] if self._batch else self.ALPHA_LIST):
+                        qe = self._train(m, alpha, sigma, n_epochs)
 
-                    qe = self._train(m, alpha, sigma, n_epochs)
+                        if min_qe > qe:
 
-                    if min_qe > qe:
+                            min_qe = qe
 
-                        min_qe = qe
+                            result_m = m
+                            result_alpha = alpha
+                            result_sigma = sigma
 
-                        result_m = m
-                        result_alpha = alpha
-                        result_sigma = sigma
+                        pbar.update(1)
 
         ################################################################################################################
 

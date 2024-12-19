@@ -47,9 +47,9 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        self._m = m
-        self._n = n
-        self._dim = dim
+        self._m = int(m)
+        self._n = int(n)
+        self._dim = int(dim)
         self._dtype = dtype
         self._topology = topology or 'hexagonal'
 

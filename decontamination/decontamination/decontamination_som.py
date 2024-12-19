@@ -108,12 +108,16 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
     @property
     def pca(self) -> som_pca.SOM_PCA:
 
+        """The underlying PCA."""
+
         return self._pca
 
     ####################################################################################################################
 
     @property
     def som(self) -> som_abstract.SOM_Abstract:
+
+        """The underlying SOM."""
 
         return self._som
 

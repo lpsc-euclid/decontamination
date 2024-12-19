@@ -205,7 +205,7 @@ class Decontamination_Abstract(object):
 
         generator = generator_number_density.Generator_NumberDensity(self._nside, self._footprint, nest = True, seed = seed)
 
-        for lon, lat in tqdm.tqdm(generator.generate(self._coverage, mult_factor = mult_factor, n_max_per_batch = 10_000)):
+        for lon, lat in tqdm.tqdm(generator.generate(density, mult_factor = mult_factor, n_max_per_batch = 10_000)):
 
             rows = np.empty(lon.shape[0], dtype = catalog.dtype)
             rows['ra'] = lon

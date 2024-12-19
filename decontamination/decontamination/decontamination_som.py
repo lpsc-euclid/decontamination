@@ -57,6 +57,8 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
     def __init__(self, nside: int, footprint: np.ndarray, coverage: np.ndarray, footprint_systematics: typing.Union[np.ndarray, typing.Callable], galaxy_number_density: typing.Union[np.ndarray, typing.Callable], m: int, n: int, dim: int, batch: bool, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, topology: typing.Optional[str] = 'hexagonal', alpha: float = None, sigma: float = None):
 
         ################################################################################################################
+        # DATASET                                                                                                      #
+        ################################################################################################################
 
         super().__init__(nside, footprint, coverage, footprint_systematics, galaxy_number_density)
 

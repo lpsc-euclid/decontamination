@@ -26,7 +26,7 @@ class Decontamination_Abstract(object):
 
     ####################################################################################################################
 
-    def __init__(self, nside: int, footprint: np.ndarray, coverage: np.ndarray, footprint_systematics: np.ndarray, galaxy_number_density: np.ndarray):
+    def __init__(self, nside: int, footprint: np.ndarray, coverage: np.ndarray, footprint_systematics: typing.Union[np.ndarray, typing.Callable], galaxy_number_density: typing.Union[np.ndarray, typing.Callable]):
 
         ################################################################################################################
 

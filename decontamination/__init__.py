@@ -52,6 +52,8 @@ from .algo.regression_abstract import Regression_Abstract
 
 from .algo.regression_basic import Regression_Basic
 
+from .algo.hyparam_finder_som import HypParamFinder_SOM
+
 from .algo.clustering import Clustering
 
 from .algo.selection import Selection
@@ -123,6 +125,7 @@ __all__ = [
     'order_index_to_nuniq', 'nuniq_to_order_index', 'moc_to_healpix', 'wmoc_to_healpix',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
     'Regression_Abstract', 'Regression_Basic',
+    'HypParamFinder_SOM',
     'Clustering',
     'Selection',
     'get_bounding_box', 'get_full_sky', 'catalog_to_number_density',

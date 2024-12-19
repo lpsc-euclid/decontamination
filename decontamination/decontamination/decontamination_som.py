@@ -729,26 +729,70 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
 
     ####################################################################################################################
 
-    def generate_data_catalog(self, number_density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
+    def generate_data_catalog(self, density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
 
-        return self._generate_catalog(self._galaxy_number_density, mult_factor = number_density / np.mean(self._galaxy_number_density), seed = seed)
+        """
+        ???
+
+        Parameters
+        ----------
+        density: float, default: **20**
+            ???
+        seed: int, default: **None**
+            ???
+        """
+
+        return self._generate_catalog(self._galaxy_number_density, mult_factor = density / np.mean(self._galaxy_number_density), seed = seed)
 
     ####################################################################################################################
 
-    def generate_uniform_catalog(self, number_density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
+    def generate_uniform_catalog(self, density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
 
-        return self._generate_catalog(self._coverage, mult_factor = number_density, seed = seed)
+        """
+        ???
+
+        Parameters
+        ----------
+        density: float, default: **20**
+            ???
+        seed: int, default: **None**
+            ???
+        """
+
+        return self._generate_catalog(self._coverage, mult_factor = density, seed = seed)
 
     ####################################################################################################################
 
-    def generate_visibility_catalog(self, number_density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
+    def generate_visibility_catalog(self, density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
 
-        return self._generate_catalog(self.visibility, mult_factor = number_density, seed = seed)
+        """
+        ???
+
+        Parameters
+        ----------
+        density: float, default: **20**
+            ???
+        seed: int, default: **None**
+            ???
+        """
+
+        return self._generate_catalog(self.visibility, mult_factor = density, seed = seed)
 
     ####################################################################################################################
 
-    def generate_clustered_visibility_catalog(self, number_density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
+    def generate_clustered_visibility_catalog(self, density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
 
-        return self._generate_catalog(self.clustered_visibility, mult_factor = number_density, seed = seed)
+        """
+        ???
+
+        Parameters
+        ----------
+        density: float, default: **20**
+            ???
+        seed: int, default: **None**
+            ???
+        """
+
+        return self._generate_catalog(self.clustered_visibility, mult_factor = density, seed = seed)
 
 ########################################################################################################################

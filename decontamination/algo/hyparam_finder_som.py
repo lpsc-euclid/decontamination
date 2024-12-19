@@ -100,7 +100,7 @@ class HypParamFinder_SOM(object):
 
         ################################################################################################################
 
-        pca.train(self._dataset, dataset_weights = self._dataset_weights, min_weight = 0.0, max_weight = 1.0)
+        pca.train(self._dataset, dataset_weights = self._dataset_weights, min_weight = 0.0, max_weight = 1.0, show_progress_bar = False)
 
         ################################################################################################################
         # SOM                                                                                                          #
@@ -118,9 +118,9 @@ class HypParamFinder_SOM(object):
         ################################################################################################################
 
         if self._batch:
-            som.train(self._dataset, dataset_weights = self._dataset_weights, n_epochs = n_epochs, n_vectors = None, use_best_epoch = self._use_best_epoch, show_progress_bar = self._show_progress_bar, enable_gpu = self._enable_gpu, threads_per_blocks = self._threads_per_blocks)
+            som.train(self._dataset, dataset_weights = self._dataset_weights, n_epochs = n_epochs, n_vectors = None, use_best_epoch = self._use_best_epoch, show_progress_bar = False, enable_gpu = self._enable_gpu, threads_per_blocks = self._threads_per_blocks)
         else:
-            som.train(self._dataset, dataset_weights = self._dataset_weights, n_epochs = n_epochs, n_vectors = None, use_best_epoch = self._use_best_epoch, show_progress_bar = self._show_progress_bar)
+            som.train(self._dataset, dataset_weights = self._dataset_weights, n_epochs = n_epochs, n_vectors = None, use_best_epoch = self._use_best_epoch, show_progress_bar = False)
 
         ################################################################################################################
         # GET QE                                                                                                       #

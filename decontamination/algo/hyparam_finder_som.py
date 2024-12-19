@@ -19,7 +19,14 @@ class HypParamFinder_SOM(object):
 
     ####################################################################################################################
 
+    M_MIN = 0.5
+    M_MAX = 1.0
     M_NB_OF_STEPS = 7
+
+    ####################################################################################################################
+
+    Σ_MIN = 2.0
+    Σ_MAX = 4.0
     Σ_NB_OF_STEPS = 5
 
     ####################################################################################################################
@@ -61,10 +68,10 @@ class HypParamFinder_SOM(object):
 
         with tqdm.tqdm(total = HypParamFinder_SOM.M_NB_OF_STEPS * HypParamFinder_SOM.Σ_NB_OF_STEPS * (1 if self._batch else len(HypParamFinder_SOM.ALPHA_LIST)), disable = not self._show_progress_bar) as pbar:
 
-            m_list = np.unique(np.linspace(2.0 * m_ref, 0.5 * m_ref, num = HypParamFinder_SOM.M_NB_OF_STEPS, dtype = float))
+            m_list = np.unique(np.linspace(HypParamFinder_SOM.M_MAX * m_ref, HypParamFinder_SOM.M_MIN * m_ref, num = HypParamFinder_SOM.M_NB_OF_STEPS, dtype = float))
             for m in m_list:
 
-                σ_list = np.unique(m / np.linspace(4.0, 2.0, num = HypParamFinder_SOM.Σ_NB_OF_STEPS, dtype = float))
+                σ_list = np.unique(m / np.linspace(HypParamFinder_SOM.Σ_MAX, HypParamFinder_SOM.Σ_MIN, num = HypParamFinder_SOM.Σ_NB_OF_STEPS, dtype = float))
                 for σ in σ_list:
 
                     for α in ([None] if self._batch else HypParamFinder_SOM.ALPHA_LIST):

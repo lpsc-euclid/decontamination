@@ -24,6 +24,16 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
 
     Parameters
     ----------
+    nside: int
+        ???
+    footprint : np.ndarray
+        ???
+    coverage : np.ndarray
+        ???
+    footprint_systematics : typing.Union[np.ndarray, typing.Callable]
+        Dataset array or generator builder of systematics for the footprint.
+    galaxy_number_density : typing.Union[np.ndarray, typing.Callable]
+        Dataset array or generator builder of galaxy number density.
     m : int
         Number of neuron rows.
     n : int
@@ -44,18 +54,11 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
 
     ####################################################################################################################
 
-    def __init__(self, m: int, n: int, dim: int, batch: bool, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, topology: typing.Optional[str] = 'hexagonal', alpha: float = None, sigma: float = None):
+    def __init__(self, nside: int, footprint: np.ndarray, coverage: np.ndarray, footprint_systematics: typing.Union[np.ndarray, typing.Callable], galaxy_number_density: typing.Union[np.ndarray, typing.Callable], m: int, n: int, dim: int, batch: bool, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, topology: typing.Optional[str] = 'hexagonal', alpha: float = None, sigma: float = None):
 
         ################################################################################################################
-        # DATASET                                                                                                      #
-        ################################################################################################################
 
-        self._nside = None
-        self._footprint = None
-        self._coverage = None
-        self._footprint_systematics = None
-        self._galaxy_number_density = None
-        self._corrected_galaxy_number_density = None
+        super().__init__(nside, footprint, coverage, footprint_systematics, galaxy_number_density)
 
         ################################################################################################################
         # PCA                                                                                                          #
@@ -534,23 +537,13 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
     ####################################################################################################################
 
     # noinspection PyArgumentList
-    def train(self, nside: int, footprint: np.ndarray, coverage: np.ndarray, footprint_systematics: typing.Union[np.ndarray, typing.Callable], galaxy_number_density: typing.Union[np.ndarray, typing.Callable], n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, use_best_epoch: bool = True, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> None:
+    def train(self, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, use_best_epoch: bool = True, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`).
 
         Parameters
         ----------
-        nside: int
-            ???
-        footprint : np.ndarray
-            ???
-        coverage : np.ndarray
-            ???
-        footprint_systematics : typing.Union[np.ndarray, typing.Callable]
-            Dataset array or generator builder of systematics for the footprint.
-        galaxy_number_density : typing.Union[np.ndarray, typing.Callable]
-            Dataset array or generator builder of galaxy number density.
         n_epochs : int, default: **None**
             Optional number of epochs to train for.
         n_vectors : int, default: **None**
@@ -570,24 +563,10 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         """
 
         ################################################################################################################
-        # SET DATASET                                                                                                  #
-        ################################################################################################################
-
-        self._nside                 = nside
-        self._footprint             = footprint
-        self._coverage              = coverage
-        self._footprint_systematics = footprint_systematics
-        self._galaxy_number_density = galaxy_number_density
-
-        ################################################################################################################
-
-        self._corrected_galaxy_number_density = galaxy_number_density / coverage
-
-        ################################################################################################################
         # PCA TRAINING                                                                                                 #
         ################################################################################################################
 
-        self._pca.train(footprint_systematics, dataset_weights = self._corrected_galaxy_number_density, min_weight = 0.0, max_weight = 1.0)
+        self._pca.train(self._footprint_systematics, dataset_weights = self._corrected_galaxy_number_density, min_weight = 0.0, max_weight = 1.0)
 
         ################################################################################################################
         # SOM TRAINING                                                                                                 #
@@ -596,15 +575,15 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         self._som.init_from(self._pca)
 
         if self._batch:
-            self._som.train(footprint_systematics, dataset_weights = self._corrected_galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, use_best_epoch = use_best_epoch, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+            self._som.train(self._footprint_systematics, dataset_weights = self._corrected_galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, use_best_epoch = use_best_epoch, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
         else:
-            self._som.train(footprint_systematics, dataset_weights = self._corrected_galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, use_best_epoch = use_best_epoch, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar)
+            self._som.train(self._footprint_systematics, dataset_weights = self._corrected_galaxy_number_density, n_epochs = n_epochs, n_vectors = n_vectors, use_best_epoch = use_best_epoch, stop_quantization_error = stop_quantization_error, stop_topographic_error = stop_topographic_error, show_progress_bar = show_progress_bar)
 
         ################################################################################################################
         # COMPUTE FOOTPRINT WINNERS                                                                                    #
         ################################################################################################################
 
-        self._winners = self._som.get_winners(footprint_systematics, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+        self._winners = self._som.get_winners(self._footprint_systematics, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
     ####################################################################################################################
 

@@ -26,6 +26,22 @@ class Decontamination_Abstract(object):
 
     ####################################################################################################################
 
+    def __init__(self, nside: int, footprint: np.ndarray, coverage: np.ndarray, footprint_systematics: np.ndarray, galaxy_number_density: np.ndarray):
+
+        ################################################################################################################
+
+        self._nside = nside
+        self._footprint = footprint
+        self._coverage = coverage
+        self._footprint_systematics = footprint_systematics
+        self._galaxy_number_density = galaxy_number_density
+
+        ################################################################################################################
+
+        self._corrected_galaxy_number_density = galaxy_number_density / coverage
+
+    ####################################################################################################################
+
     @staticmethod
     @nb.njit(fastmath = True)
     def _compute_equal_sky_area_edges_step2(result_edges: np.ndarray, result_centers: np.ndarray, hits: np.ndarray, vals: np.ndarray, minimum: np.ndarray, maximum: np.ndarray, n_bins: int) -> None:

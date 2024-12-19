@@ -42,6 +42,60 @@ class Decontamination_Abstract(object):
 
     ####################################################################################################################
 
+    @property
+    def nside(self) -> int:
+
+        """Nside."""
+
+        return self._nside
+
+    ####################################################################################################################
+
+    @property
+    def footprint(self) -> int:
+
+        """Footprint."""
+
+        return self._footprint
+
+    ####################################################################################################################
+
+    @property
+    def coverage(self) -> int:
+
+        """Coverage."""
+
+        return self._coverage
+
+    ####################################################################################################################
+
+    @property
+    def footprint_systematics(self) -> int:
+
+        """Footprint systematics."""
+
+        return self._footprint_systematics
+
+    ####################################################################################################################
+
+    @property
+    def galaxy_number_density(self) -> int:
+
+        """Galaxy number density."""
+
+        return self._galaxy_number_density
+
+    ####################################################################################################################
+
+    @property
+    def corrected_galaxy_number_density(self) -> int:
+
+        """Coverage-corrected galaxy number density."""
+
+        return self._corrected_galaxy_number_density
+
+    ####################################################################################################################
+
     @staticmethod
     @nb.njit(fastmath = True)
     def _compute_equal_sky_area_edges_step2(result_edges: np.ndarray, result_centers: np.ndarray, hits: np.ndarray, vals: np.ndarray, minimum: np.ndarray, maximum: np.ndarray, n_bins: int) -> None:

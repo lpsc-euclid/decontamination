@@ -12,7 +12,7 @@ import typing
 
 import numpy as np
 
-from . import som_pca, som_batch, som_online
+from . import som_pca, som_batch, som_online, dataset_to_generator_builder
 
 ########################################################################################################################
 
@@ -103,9 +103,25 @@ class HypParamFinder_SOM(object):
         min_qe = math.inf
 
         ################################################################################################################
+        # COMPUTE M_REF                                                                                                #
+        ################################################################################################################
 
-        m_ref = np.sqrt(5.0 * np.sqrt(self._dataset.shape[0]))
+        size = 0
 
+        dataset_generator_builder = dataset_to_generator_builder(self._dataset)
+
+        dataset_generator = dataset_generator_builder()
+
+        for vectors in dataset_generator():
+
+            size += vectors.shape[0]
+
+        ################################################################################################################
+
+        m_ref = np.sqrt(5.0 * np.sqrt(size))
+
+        ################################################################################################################
+        # SCAN HYPERPARAMETERS                                                                                         #
         ################################################################################################################
 
         with tqdm.tqdm(total = HypParamFinder_SOM.M_NB_OF_STEPS * HypParamFinder_SOM.Σ_NB_OF_STEPS * (1 if self._batch else len(HypParamFinder_SOM.ALPHA_LIST)), disable = not self._show_progress_bar) as pbar:

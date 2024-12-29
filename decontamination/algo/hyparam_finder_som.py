@@ -6,6 +6,7 @@
 # license: CeCILL-C
 ########################################################################################################################
 
+import math
 import tqdm
 import typing
 
@@ -16,6 +17,29 @@ from . import som_pca, som_batch, som_online
 ########################################################################################################################
 
 class HypParamFinder_SOM(object):
+
+    """
+    ???
+
+    Parameters
+    ----------
+    dataset : typing.Union[np.ndarray, typing.Callable]
+        Training dataset array or generator builder.
+    dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
+        Training dataset weight array or generator builder.
+    topology : str, default: **None** ≡ **'hexagonal'**
+        Neural network topology, either **'square'** or **'hexagonal'**.
+    batch : bool, default: **True**
+        ???
+    use_best_epoch : bool, default: **True**
+        ???
+    show_progress_bar : bool, default: **False**
+        Specifies whether to display a progress bar.
+    enable_gpu : bool, default: **True**
+        If available, run on GPU rather than CPU.
+    threads_per_blocks : int, default: **None** ≡ maximum
+        Number of GPU threads per blocks.
+    """
 
     ####################################################################################################################
 
@@ -35,7 +59,7 @@ class HypParamFinder_SOM(object):
 
     ####################################################################################################################
 
-    def __init__(self, dataset: np.ndarray, dataset_weights: np.ndarray, topology: str, batch: bool = True, use_best_epoch: bool = True, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None):
+    def __init__(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, topology: typing.Optional[str] = None, batch: bool = True, use_best_epoch: bool = True, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None):
 
         self._dataset = dataset
         self._dataset_weights = dataset_weights
@@ -52,13 +76,31 @@ class HypParamFinder_SOM(object):
 
     def find(self, n_epochs):
 
+        """
+        Finds the best hyperparameters.
+
+        Parameters
+        ----------
+        n_epochs : int
+            Number of epochs to train for.
+
+        Returns
+        -------
+        int
+            Suggested number of neuron rows and columns.
+        float
+            Suggested learning rate (if batch is **False**).
+        float
+            Suggested neighborhood radius.
+        """
+
         ################################################################################################################
 
-        result_m = None
-        result_α = None
-        result_σ = None
+        result_m = 0x000000
+        result_α = math.nan
+        result_σ = math.nan
 
-        min_qe = float('inf')
+        min_qe = math.inf
 
         ################################################################################################################
 
@@ -79,7 +121,7 @@ class HypParamFinder_SOM(object):
                         m = int(m)
                         σ = float(σ)
 
-                        qe = self._train(m, α,  σ, n_epochs)
+                        qe = self._train_step2(m, α,  σ, n_epochs)
 
                         if min_qe > qe:
 
@@ -97,7 +139,7 @@ class HypParamFinder_SOM(object):
 
     ####################################################################################################################
 
-    def _train(self, m: int, alpha: typing.Optional[float], sigma: float, n_epochs: int):
+    def _train_step2(self, m: int, alpha: typing.Optional[float], sigma: float, n_epochs: int):
 
         ################################################################################################################
         # PCA                                                                                                          #

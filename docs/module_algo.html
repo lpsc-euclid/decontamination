@@ -1314,6 +1314,93 @@
 <dd><p>Neural network weights with the shape <cite>[m * n, dim]</cite>.</p>
 </dd></dl>
 </dd></dl>
+<span class="target" id="module-decontamination.algo.hyparam_finder_som"></span><dl class="py class">
+<dt class="sig sig-object py" id="decontamination.algo.hyparam_finder_som.HypParamFinder_SOM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decontamination.algo.hyparam_finder_som.</span></span><span class="sig-name descname"><span class="pre">HypParamFinder_SOM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_best_epoch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads_per_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM'"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>???</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Training dataset array or generator builder.</p>
+</dd>
+<dt><strong>dataset_weights</strong><span class="classifier">Union[np.ndarray, Callable], default: <strong>None</strong></span></dt><dd><p>Training dataset weight array or generator builder.</p>
+</dd>
+<dt><strong>topology</strong><span class="classifier">str, default: <strong>None</strong> ≡ <strong>‘hexagonal’</strong></span></dt><dd><p>Neural network topology, either <strong>‘square’</strong> or <strong>‘hexagonal’</strong>.</p>
+</dd>
+<dt><strong>batch</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>???</p>
+</dd>
+<dt><strong>use_best_epoch</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>???</p>
+</dd>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
+</dd>
+<dt><strong>enable_gpu</strong><span class="classifier">bool, default: <strong>True</strong></span></dt><dd><p>If available, run on GPU rather than CPU.</p>
+</dd>
+<dt><strong>threads_per_blocks</strong><span class="classifier">int, default: <strong>None</strong> ≡ maximum</span></dt><dd><p>Number of GPU threads per blocks.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.find" title="decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(n_epochs)</p></td>
+<td><p>Finds the best hyperparameters.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.M_MIN">
+<span class="sig-name descname"><span class="pre">M_MIN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.5</span></em><a class="headerlink" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.M_MIN" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.M_MIN'"></a></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.M_MAX">
+<span class="sig-name descname"><span class="pre">M_MAX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.0</span></em><a class="headerlink" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.M_MAX" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.M_MAX'"></a></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.M_NB_OF_STEPS">
+<span class="sig-name descname"><span class="pre">M_NB_OF_STEPS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.M_NB_OF_STEPS" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.M_NB_OF_STEPS'"></a></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="decontamination.algo.hyparam_finder_som.HypParamFinder_SOM._MIN">
+<span class="sig-name descname"><span class="pre">Σ_MIN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2.0</span></em><a class="headerlink" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM._MIN" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM._MIN'"></a></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="decontamination.algo.hyparam_finder_som.HypParamFinder_SOM._MAX">
+<span class="sig-name descname"><span class="pre">Σ_MAX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4.0</span></em><a class="headerlink" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM._MAX" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM._MAX'"></a></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="decontamination.algo.hyparam_finder_som.HypParamFinder_SOM._NB_OF_STEPS">
+<span class="sig-name descname"><span class="pre">Σ_NB_OF_STEPS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM._NB_OF_STEPS" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM._NB_OF_STEPS'"></a></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.ALPHA_LIST">
+<span class="sig-name descname"><span class="pre">ALPHA_LIST</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.1,</span> <span class="pre">0.2,</span> <span class="pre">0.3,</span> <span class="pre">0.4,</span> <span class="pre">0.5]</span></em><a class="headerlink" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.ALPHA_LIST" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.ALPHA_LIST'"></a></dt>
+<dd></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.find">
+<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_epochs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.find" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.find'"></a></dt>
+<dd><p>Finds the best hyperparameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n_epochs</strong><span class="classifier">int</span></dt><dd><p>Number of epochs to train for.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>int</dt><dd><p>Suggested number of neuron rows and columns.</p>
+</dd>
+<dt>float</dt><dd><p>Suggested learning rate (if batch is <strong>False</strong>).</p>
+</dd>
+<dt>float</dt><dd><p>Suggested neighborhood radius.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
 </section>
 <section id="module-decontamination.algo.clustering">
 <span id="clustering"></span><h2>Clustering<a class="headerlink" href="#module-decontamination.algo.clustering" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#module-decontamination.algo.clustering'"></a></h2>
@@ -1598,6 +1685,17 @@
 <li><a :data-current="activeSection === '#decontamination.algo.som_batch.SOM_Batch.topographic_errors'" class="reference internal" href="#decontamination.algo.som_batch.SOM_Batch.topographic_errors"><code class="docutils literal notranslate"><span class="pre">SOM_Batch.topographic_errors</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.algo.som_batch.SOM_Batch.topology'" class="reference internal" href="#decontamination.algo.som_batch.SOM_Batch.topology"><code class="docutils literal notranslate"><span class="pre">SOM_Batch.topology</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.algo.som_batch.SOM_Batch.weights'" class="reference internal" href="#decontamination.algo.som_batch.SOM_Batch.weights"><code class="docutils literal notranslate"><span class="pre">SOM_Batch.weights</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM'" class="reference internal" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM"><code class="docutils literal notranslate"><span class="pre">HypParamFinder_SOM</span></code></a><ul>
+<li><a :data-current="activeSection === '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.M_MIN'" class="reference internal" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.M_MIN"><code class="docutils literal notranslate"><span class="pre">HypParamFinder_SOM.M_MIN</span></code></a></li>
+<li><a :data-current="activeSection === '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.M_MAX'" class="reference internal" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.M_MAX"><code class="docutils literal notranslate"><span class="pre">HypParamFinder_SOM.M_MAX</span></code></a></li>
+<li><a :data-current="activeSection === '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.M_NB_OF_STEPS'" class="reference internal" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.M_NB_OF_STEPS"><code class="docutils literal notranslate"><span class="pre">HypParamFinder_SOM.M_NB_OF_STEPS</span></code></a></li>
+<li><a :data-current="activeSection === '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM._MIN'" class="reference internal" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM._MIN"><code class="docutils literal notranslate"><span class="pre">HypParamFinder_SOM.Σ_MIN</span></code></a></li>
+<li><a :data-current="activeSection === '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM._MAX'" class="reference internal" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM._MAX"><code class="docutils literal notranslate"><span class="pre">HypParamFinder_SOM.Σ_MAX</span></code></a></li>
+<li><a :data-current="activeSection === '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM._NB_OF_STEPS'" class="reference internal" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM._NB_OF_STEPS"><code class="docutils literal notranslate"><span class="pre">HypParamFinder_SOM.Σ_NB_OF_STEPS</span></code></a></li>
+<li><a :data-current="activeSection === '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.ALPHA_LIST'" class="reference internal" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.ALPHA_LIST"><code class="docutils literal notranslate"><span class="pre">HypParamFinder_SOM.ALPHA_LIST</span></code></a></li>
+<li><a :data-current="activeSection === '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.find'" class="reference internal" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.find"><code class="docutils literal notranslate"><span class="pre">HypParamFinder_SOM.find()</span></code></a></li>
 </ul>
 </li>
 </ul>

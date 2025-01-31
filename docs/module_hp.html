@@ -161,6 +161,39 @@
 </dl>
 </dd></dl>
 <dl class="py function">
+<dt class="sig sig-object py" id="decontamination.hp.pix2global">
+<span class="sig-prename descclassname"><span class="pre">decontamination.hp.</span></span><span class="sig-name descname"><span class="pre">pix2global</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.hp.pix2global" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.hp.pix2global'"></a></dt>
+<dd><p>Projects HEALPix pixels to a global cartesian coordinate system. <strong>Nested ordering only.</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
+</dd>
+<dt><strong>pixels</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the region to be projected.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>Tuple[np.ndarray, np.ndarray]</dt><dd><p>First array contains the global x-coordinates.
+Second array contains the global y-coordinates.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul>
+<li><p>The HEALPix sphere is projected onto a flat 2D grid with 12 faces arranged as follows:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">0</span>  <span class="pre">1</span>  <span class="pre">2</span>  <span class="pre">3</span>
+<span class="pre">4</span>  <span class="pre">5</span>  <span class="pre">6</span>  <span class="pre">7</span>
+<span class="pre">8</span>  <span class="pre">9</span> <span class="pre">10</span> <span class="pre">11</span>
+<span class="pre">`</span></code>
+Each face is of size <cite>nside x nside</cite>.</p>
+</li>
+</ul>
+</dd></dl>
+<dl class="py function">
 <dt class="sig sig-object py" id="decontamination.hp.randang">
 <span class="sig-prename descclassname"><span class="pre">decontamination.hp.</span></span><span class="sig-name descname"><span class="pre">randang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lonlat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Generator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.hp.randang" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.hp.randang'"></a></dt>
 <dd><p>Samples random spherical coordinates from the given HEALPix pixels.</p>
@@ -190,6 +223,7 @@
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>
 <li><a :data-current="activeSection === '#decontamination.hp.ang2pix'" class="reference internal" href="#decontamination.hp.ang2pix"><code class="docutils literal notranslate"><span class="pre">ang2pix()</span></code></a></li>
+<li><a :data-current="activeSection === '#decontamination.hp.pix2global'" class="reference internal" href="#decontamination.hp.pix2global"><code class="docutils literal notranslate"><span class="pre">pix2global()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.hp.randang'" class="reference internal" href="#decontamination.hp.randang"><code class="docutils literal notranslate"><span class="pre">randang()</span></code></a></li>
 </ul>
 </div>

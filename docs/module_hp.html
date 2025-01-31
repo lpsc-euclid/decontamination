@@ -163,8 +163,12 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.hp.pix2global">
 <span class="sig-prename descclassname"><span class="pre">decontamination.hp.</span></span><span class="sig-name descname"><span class="pre">pix2global</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.hp.pix2global" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.hp.pix2global'"></a></dt>
-<dd><p>Projects HEALPix pixels to a global cartesian coordinate system. <strong>Nested ordering only.</strong></p>
-<dl class="field-list simple">
+<dd><p>Projects HEALPix pixels to a global cartesian coordinate system.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Nested ordering only.</p>
+</div>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>nside</strong><span class="classifier">int</span></dt><dd><p>The HEALPix nside parameter.</p>
@@ -175,23 +179,28 @@
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>Tuple[np.ndarray, np.ndarray]</dt><dd><p>First array contains the global x-coordinates.
-Second array contains the global y-coordinates.</p>
+<dt>np.ndarray</dt><dd><p>First array contains the global x-coordinates.</p>
+</dd>
+<dt>np.ndarray</dt><dd><p>Second array contains the global y-coordinates.</p>
 </dd>
 </dl>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<ul>
-<li><p>The HEALPix sphere is projected onto a flat 2D grid with 12 faces arranged as follows:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`</span>
-<span class="pre">0</span>  <span class="pre">1</span>  <span class="pre">2</span>  <span class="pre">3</span>
-<span class="pre">4</span>  <span class="pre">5</span>  <span class="pre">6</span>  <span class="pre">7</span>
-<span class="pre">8</span>  <span class="pre">9</span> <span class="pre">10</span> <span class="pre">11</span>
-<span class="pre">`</span></code>
-Each face is of size <cite>nside x nside</cite>.</p>
-</li>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The HEALPix sphere is projected onto a flat 2D grid with 12 faces arranged as follows:</p></li>
 </ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{matrix}
+  0 &amp; 1 &amp; 2 &amp; 3 \\
+  4 &amp; 5 &amp; 6 &amp; 7 \\
+  8 &amp; 9 &amp; 10 &amp; 11 \\
+\end{matrix}\end{split}\]</div>
+<ul class="simple">
+<li><p>Each face is of size <span class="math notranslate nohighlight">\(\text{nside}\times\text{nside}\)</span>.</p></li>
+</ul>
+</div>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="decontamination.hp.randang">
@@ -236,6 +245,7 @@ Each face is of size <cite>nside x nside</cite>.</p>
 <script src="_static/doctools.js?v=9bcbadda"></script>
 <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
 <script defer="defer" src="_static/theme.js?v=1808ab49"></script>
+<script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script src="_static/custom.js?v=e4fbcdf3"></script>
 </body>
 </html>

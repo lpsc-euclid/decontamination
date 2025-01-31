@@ -263,7 +263,10 @@ def _modulo(v1, v2):
 @nb.njit(nb.types.Tuple((nb.int64[:], nb.int64[:]))(nb.int64, nb.int64[:]))
 def pix2global(nside: int, pixels: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray]:
     """
-    Projects HEALPix pixels to a global cartesian coordinate system. **Nested ordering only.**
+    Projects HEALPix pixels to a global cartesian coordinate system.
+
+    .. warning::
+        Nested ordering only.
 
     Parameters
     ----------
@@ -274,29 +277,28 @@ def pix2global(nside: int, pixels: np.ndarray) -> typing.Tuple[np.ndarray, np.nd
 
     Returns
     -------
-    typing.Tuple[np.ndarray, np.ndarray]
+    np.ndarray
         First array contains the global x-coordinates.
+    np.ndarray
         Second array contains the global y-coordinates.
 
-    Notes
-    -----
-    - The HEALPix sphere is projected onto a flat 2D grid with 12 faces arranged as follows:
+    .. note::
+        - The HEALPix sphere is projected onto a flat 2D grid with 12 faces arranged as follows:
+        .. math::
+            \\begin{matrix}
+              0 & 1 & 2 & 3 \\\\
+              4 & 5 & 6 & 7 \\\\
+              8 & 9 & 10 & 11 \\\\
+            \\end{matrix}
 
-      ```
-      0  1  2  3
-      4  5  6  7
-      8  9 10 11
-      ```
-      Each face is of size `nside x nside`.
+        - Each face is of size :math:`\\text{nside}\\times\\text{nside}`.
     """
-
-    face_size = nside
 
     x, y, f = nest2xyf(nside, pixels)
 
     return (
-        x + (f % 4) * face_size,
-        y + (f // 4) * face_size,
+        x + (f % 4) * nside,
+        y + (f // 4) * nside,
     )
 
 ########################################################################################################################

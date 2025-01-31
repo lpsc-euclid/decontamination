@@ -295,7 +295,7 @@ def pix2global(nside: int, pixels: np.ndarray) -> typing.Tuple[np.ndarray, np.nd
 
         - From `nest2xyf`:
         .. math::
-            x_{global}=x+\\left( f\\%4\\right)\\cdot\\text{nside}
+            x_{global}=x+\\left(f\\%4\\right)\\cdot\\text{nside}
         .. math::
             y_{global}=y+\\left\\lfloor f/4\\right\\rfloor\\cdot\\text{nside}
     """

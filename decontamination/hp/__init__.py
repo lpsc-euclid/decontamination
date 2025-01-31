@@ -292,6 +292,12 @@ def pix2global(nside: int, pixels: np.ndarray) -> typing.Tuple[np.ndarray, np.nd
             \\end{matrix}
 
         - Each face is of size :math:`\\text{nside}\\times\\text{nside}`.
+
+        .. math::
+            x_{global}=x+\\left( f\\%4\\right)\\cdot\\text{nside}
+
+        .. math::
+            y_{global}=y+\\left\\lfloor f/4\\right\\rfloor\\cdot\\text{nside}
     """
 
     x, y, f = nest2xyf(nside, pixels)

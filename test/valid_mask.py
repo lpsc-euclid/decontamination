@@ -81,7 +81,7 @@ def test_pix2world():
 
     t1 = time.perf_counter()
     #rms, bit, cov = decontamination.rms_bit_to_healpix(wcs, nside, tile, rms_data, n_threads = n_threads, show_progress_bar = True)
-    rms, bit, cov = decontamination.rms_bit_to_healpix(wcs, nside, tile, rms_data, bit_data.astype(np.uint32), n_threads = n_threads, show_progress_bar = True)
+    rms, bit, cov = decontamination.rms_seg_bit_to_healpix(wcs, nside, tile, rms_data, bit_data.astype(np.uint32), n_threads = n_threads, show_progress_bar = True)
     t2 = time.perf_counter()
 
     print(f'\ndelta_time: {t2 - t1:.4e}')

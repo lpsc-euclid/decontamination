@@ -14,12 +14,14 @@ import numba as nb
 
 import concurrent.futures
 
+from scipy.interpolate import griddata
+
 from .wcs import WCS
-from ..hp import UNSEEN, ang2pix
+from ..hp import UNSEEN, ang2pix, pix2global
 
 ########################################################################################################################
 
-def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: np.ndarray, bit_image: typing.Optional[np.ndarray] = None, rms_cutoff: float = 1.0e4, bit_selection: int = 0, n_threads: int = 1, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: np.ndarray, seg_image: typing.Optional[np.ndarray] = None, bit_image: typing.Optional[np.ndarray] = None, rms_cutoff: float = 1.0e4, bit_selection: int = 0, n_threads: int = 1, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
     """
     Projects RMS (aka. noise) and bit (aka. data quality) images into a HEALPix footprint.
@@ -37,6 +39,8 @@ def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: n
         HEALPix indices of the observed sky region.
     rms_image : np.ndarray
         2d image containing the RMS (aka. noise) information.
+    seg_image : np.ndarray, default: **None**
+        2d image containing the segmentation map (object detection).
     bit_image : np.ndarray, default: **None**
         2d image containing the bit (aka. data quality) information.
     rms_cutoff : float, default: **1.0e4**
@@ -70,6 +74,10 @@ def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: n
     # BUILD RMS, BIT AND COVERAGE MASKS                                                                                #
     ####################################################################################################################
 
+    if seg_image is None:
+
+        seg_image = np.zeros_like(rms_image, dtype = np.uint32)
+
     if bit_image is None:
 
         bit_image = np.zeros_like(rms_image, dtype = np.uint32)
@@ -77,6 +85,7 @@ def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: n
     ################################################################################################################
 
     result_rms = np.zeros_like(footprint, dtype = rms_image.dtype)
+    result_bkg = np.zeros_like(footprint, dtype = rms_image.dtype)
     result_cov = np.zeros_like(footprint, dtype = rms_image.dtype)
     result_hit = np.zeros_like(footprint, dtype = rms_image.dtype)
     result_bit = np.zeros_like(footprint, dtype = bit_image.dtype)
@@ -103,16 +112,17 @@ def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: n
                 sorted_footprint_pixels,
                 sorted_footprint_indices,
                 j1, j2,
-                rms_image, bit_image,
+                rms_image, seg_image, bit_image,
                 rms_cutoff, bit_selection,
                 show_progress_bar
             ))
 
         for future in concurrent.futures.as_completed(futures):
 
-            tmp_rms, tmp_cov, tmp_hit, tmp_bit = future.result()
+            tmp_rms, tmp_bks, tmp_cov, tmp_hit, tmp_bit = future.result()
 
             result_rms += tmp_rms
+            result_bkg += tmp_bks
             result_cov += tmp_cov
             result_bit |= tmp_bit
             result_hit += tmp_hit
@@ -121,13 +131,14 @@ def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: n
     # NORMALIZE RMS, BIT AND COVERAGE MASKS                                                                            #
     ####################################################################################################################
 
+    has_bkg = result_bkg > 0.0
     has_cov = result_cov > 0.0
 
     ####################################################################################################################
 
     old_settings = np.seterr(divide = 'ignore', invalid = 'ignore')
 
-    result_rms = np.where(has_cov, result_rms / result_cov, UNSEEN)
+    result_rms = np.where(has_bkg, result_rms / result_cov, UNSEEN)
     result_bit = np.where(has_cov, result_bit, 0xFFFFFFFF)
     result_cov = np.where(has_cov, result_cov / result_hit, 0.0000)
 
@@ -135,11 +146,42 @@ def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: n
 
     ####################################################################################################################
 
-    result_rms[has_cov] = np.sqrt(result_rms[has_cov])
+    result_rms[has_bkg] = np.sqrt(result_rms[has_bkg])
+
+    ####################################################################################################################
+    # RMS HOLE REMOVAL                                                                                                 #
+    ####################################################################################################################
+
+    # cubic interpolation when possible,
+    # nearest interpolation on remaining holes
+
+    for method in ['cubic', 'nearest']:
+
+        valid_pixels = result_rms != UNSEEN
+
+        known_coords = np.column_stack(pix2global(nside, footprint[valid_pixels]))
+        unknown_coords = np.column_stack(pix2global(nside, footprint[~valid_pixels]))
+
+        # noinspection PyBroadException
+        try:
+
+            result_rms[~valid_pixels] = griddata(known_coords, result_rms[valid_pixels], unknown_coords, fill_value = UNSEEN, method = method)
+
+        except Exception:
+
+            pass
 
     ####################################################################################################################
 
-    return result_rms, result_bit, result_cov
+    result_rms[~has_cov] = UNSEEN
+
+    ####################################################################################################################
+
+    return (
+        result_rms,
+        result_bit,
+        result_cov,
+    )
 
 ########################################################################################################################
 
@@ -164,7 +206,7 @@ def image_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, xxx_image: np.
     xxx_image_scale : int, default: **1.0**
         Scale so that the image size coincides with the WCS (>= 1.0).
     quadratic : bool, default: False
-        ???.
+        Quadratic averaging. ?????
     n_threads : int, default: 1
         Number of threads.
     show_progress_bar : bool, default = **False**
@@ -264,11 +306,12 @@ def image_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, xxx_image: np.
 ########################################################################################################################
 
 # noinspection DuplicatedCode
-def _worker1(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_footprint_indices, j1, j2, rms_image, bit_image, rms_cutoff, bit_selection, show_progress_bar):
+def _worker1(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_footprint_indices, j1, j2, rms_image, seg_image, bit_image, rms_cutoff, bit_selection, show_progress_bar):
 
     ####################################################################################################################
 
     result_rms = np.zeros_like(footprint, dtype = rms_image.dtype)
+    result_bkg = np.zeros_like(footprint, dtype = rms_image.dtype)
     result_cov = np.zeros_like(footprint, dtype = rms_image.dtype)
     result_bit = np.zeros_like(footprint, dtype = bit_image.dtype)
     result_hit = np.zeros_like(footprint, dtype = rms_image.dtype)
@@ -295,6 +338,7 @@ def _worker1(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
 
         _project1(
             result_rms,
+            result_bkg,
             result_cov,
             result_bit,
             result_hit,
@@ -302,6 +346,7 @@ def _worker1(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
             sorted_footprint_indices,
             pixels,
             rms_image[j],
+            seg_image[j],
             bit_image[j],
             rms_cutoff,
             bit_selection
@@ -359,7 +404,7 @@ def _worker2(wcs: WCS, nside: int, footprint, sorted_footprint_pixels, sorted_fo
 ########################################################################################################################
 
 @nb.njit(fastmath = True)
-def _project1(result_rms: np.ndarray, result_cov: np.ndarray, result_bit: np.ndarray, result_hit: np.ndarray, sorted_footprint_pixels: np.ndarray, sorted_footprint_indices: np.ndarray, pixels: np.ndarray, rms: np.ndarray, bit: np.ndarray, rms_cutoff: float, bit_selection: int) -> None:
+def _project1(result_rms: np.ndarray, result_bkg: np.ndarray, result_cov: np.ndarray, result_bit: np.ndarray, result_hit: np.ndarray, sorted_footprint_pixels: np.ndarray, sorted_footprint_indices: np.ndarray, pixels: np.ndarray, rms: np.ndarray, seg: np.ndarray, bit: np.ndarray, rms_cutoff: float, bit_selection: int) -> None:
 
     ####################################################################################################################
 
@@ -370,21 +415,31 @@ def _project1(result_rms: np.ndarray, result_cov: np.ndarray, result_bit: np.nda
     selected_idx = sorted_footprint_indices[sorted_indices[selected_idx_mask]]
 
     selected_rms = rms[selected_idx_mask]
+    selected_seg = seg[selected_idx_mask]
     selected_bit = bit[selected_idx_mask]
 
     ####################################################################################################################
 
     for i in range(selected_idx.size):
 
+        ################################################################################################################
+
         idx_i = selected_idx[i]
         rms_i = selected_rms[i]
+        seg_i = selected_seg[i]
         bit_i = selected_bit[i]
+
+        ################################################################################################################
 
         if 0.0 < rms_i < rms_cutoff:
 
             if (bit_i & bit_selection) == 0:
 
-                result_rms[idx_i] += rms_i ** 2
+                if seg_i == 0:
+
+                    result_rms[idx_i] += rms_i ** 2
+
+                    result_bkg[idx_i] += 1.00000000
 
                 result_cov[idx_i] += 1.000
 
@@ -411,8 +466,12 @@ def _project2(result_xxx: np.ndarray, result_cov: np.ndarray, sorted_footprint_p
 
     for i in range(selected_idx.size):
 
+        ################################################################################################################
+
         idx_i = selected_idx[i]
         xxx_i = selected_xxx[i]
+
+        ################################################################################################################
 
         result_xxx[idx_i] += xxx_i
 

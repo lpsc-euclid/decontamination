@@ -259,6 +259,47 @@ def _modulo(v1, v2):
         return v1 % v2 + v2
 
 ########################################################################################################################
+
+@nb.njit(nb.types.Tuple((nb.int64[:], nb.int64[:]))(nb.int64, nb.int64[:]))
+def pix2global(nside: int, pixels: np.ndarray) -> typing.Tuple[np.ndarray, np.ndarray]:
+    """
+    Projects HEALPix pixels to a global cartesian coordinate system. **Nested ordering only.**
+
+    Parameters
+    ----------
+    nside : int
+        The HEALPix nside parameter.
+    pixels : np.ndarray
+        HEALPix indices of the region to be projected.
+
+    Returns
+    -------
+    typing.Tuple[np.ndarray, np.ndarray]
+        First array contains the global x-coordinates.
+        Second array contains the global y-coordinates.
+
+    Notes
+    -----
+    - The HEALPix sphere is projected onto a flat 2D grid with 12 faces arranged as follows:
+
+      ```
+      0  1  2  3
+      4  5  6  7
+      8  9 10 11
+      ```
+      Each face is of size `nside x nside`.
+    """
+
+    face_size = nside
+
+    x, y, f = nest2xyf(nside, pixels)
+
+    return (
+        x + (f % 4) * face_size,
+        y + (f // 4) * face_size,
+    )
+
+########################################################################################################################
 # FAST RAND_ANG                                                                                                        #
 ########################################################################################################################
 

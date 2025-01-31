@@ -22,7 +22,7 @@ from .jit import DeviceArray, device_array_from, device_array_empty, device_arra
 # HP                                                                                                                   #
 ########################################################################################################################
 
-from .hp import nside2npix, npix2nside, nside2pixarea, nside2resol, xyf2nest, nest2xyf, ang2pix, randang
+from .hp import nside2npix, npix2nside, nside2pixarea, nside2resol, xyf2nest, nest2xyf, ang2pix, pix2global, randang
 
 ########################################################################################################################
 # MASK                                                                                                                 #
@@ -120,7 +120,7 @@ __all__ = [
     'CPU_OPTIMIZATION_AVAILABLE', 'GPU_OPTIMIZATION_AVAILABLE', 'jit',
     'get_max_cpu_cores', 'get_max_gpu_threads', 'get_num_cpu_threads', 'set_num_cpu_threads',
     'DeviceArray', 'device_array_from', 'device_array_empty', 'device_array_zeros', 'device_array_full',
-    'nside2npix', 'npix2nside', 'nside2pixarea', 'nside2resol', 'xyf2nest', 'nest2xyf', 'ang2pix', 'randang',
+    'nside2npix', 'npix2nside', 'nside2pixarea', 'nside2resol', 'xyf2nest', 'nest2xyf', 'ang2pix', 'pix2global', 'randang',
     'WCS', 'ud_grade', 'rms_bit_to_healpix', 'image_to_healpix',
     'order_index_to_nuniq', 'nuniq_to_order_index', 'moc_to_healpix', 'wmoc_to_healpix',
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',

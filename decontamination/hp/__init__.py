@@ -293,6 +293,8 @@ def pix2global(nside: int, pixels: np.ndarray) -> typing.Tuple[np.ndarray, np.nd
 
         - Each face is of size :math:`\\text{nside}\\times\\text{nside}`.
 
+        - From `nest2xyf`:
+
         .. math::
             x_{global}=x+\\left( f\\%4\\right)\\cdot\\text{nside}
 

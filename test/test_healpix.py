@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 -m pytest
+#!/usr/bin/env python3 -m pytest --capture=no
 # -*- coding: utf-8 -*-
 ########################################################################################################################
 
@@ -89,6 +89,19 @@ def test_ang2pix():
         assert np.allclose(pix_dec, pix_hp)
 
     print(f'\ndec: {time_dec:.4e}, ref: {time_ref:.4e}')
+
+########################################################################################################################
+
+def test_pix2global():
+
+    nside = 1
+
+    pixels = np.arange(hp.nside2npix(nside))
+
+    x, y = decontamination.pix2global(nside, pixels)
+
+    assert np.allclose(x, [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3])
+    assert np.allclose(y, [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2])
 
 ########################################################################################################################
 

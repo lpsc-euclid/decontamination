@@ -21,7 +21,7 @@ from ..hp import UNSEEN, ang2pix, pix2global
 
 ########################################################################################################################
 
-def rms_seg_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: np.ndarray, seg_image: typing.Optional[np.ndarray] = None, bit_image: typing.Optional[np.ndarray] = None, rms_cutoff: float = 1.0e4, bit_selection: int = 0, n_threads: int = 1, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+def rms_bit_to_healpix(wcs: WCS, nside: int, footprint: np.ndarray, rms_image: np.ndarray, seg_image: typing.Optional[np.ndarray] = None, bit_image: typing.Optional[np.ndarray] = None, rms_cutoff: float = 1.0e4, bit_selection: int = 0, n_threads: int = 1, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
     """
     Projects RMS (aka. noise) and bit (aka. data quality) images into a HEALPix footprint.

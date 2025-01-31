@@ -38,11 +38,13 @@ def test_pix2world():
 
     img_hdu = fits.open('/Users/jodier/Downloads/EUC_MER_BGSUB-MOSAIC-VIS_TILE101004820-263A43_20231026T211556.059931Z_00.00.fits')[0]
     rms_hdu = fits.open('/Users/jodier/Downloads/EUC_MER_MOSAIC-VIS-RMS_TILE101004820-EAB536_20231026T191726.969079Z_00.00.fits')[0]
+    seg_hdu = fits.open('/Users/jodier/Downloads/EUC_MER_MOSAIC-VIS-RMS_TILE101004820-EAB536_20231026T191726.969079Z_00.00.fits')[0]
     bit_hdu = fits.open('/Users/jodier/Downloads/EUC_MER_MOSAIC-VIS-FLAG_TILE101004820-86D39F_20231026T191726.969127Z_00.00.fits')[0]
 
-    rms_data = rms_hdu.data
-    bit_data = bit_hdu.data
     img_data = img_hdu.data
+    rms_data = rms_hdu.data
+    seg_data = seg_hdu.data
+    bit_data = bit_hdu.data
 
     if img_data.dtype.byteorder == '>':
 
@@ -53,6 +55,11 @@ def test_pix2world():
 
         rms_data.byteswap(inplace = True)
         rms_data = rms_data.newbyteorder()
+
+    if seg_data.dtype.byteorder == '>':
+
+        seg_data.byteswap(inplace = True)
+        seg_data = seg_data.newbyteorder()
 
     if bit_data.dtype.byteorder == '>':
 
@@ -65,23 +72,22 @@ def test_pix2world():
 
     ####################################################################################################################
 
-    #t1 = time.perf_counter()
-    #img = decontamination.image_to_healpix(wcs, nside, tile, img_data, quadratic = False, n_threads = n_threads, show_progress_bar = True)
-    #t2 = time.perf_counter()
+    t1 = time.perf_counter()
+    img = decontamination.image_to_healpix(wcs, nside, tile, img_data, quadratic = False, n_threads = n_threads, show_progress_bar = True)
+    t2 = time.perf_counter()
 
-    #print(f'\ndelta_time: {t2 - t1:.4e}')
+    print(f'\ndelta_time: {t2 - t1:.4e}')
 
     ####################################################################################################################
 
-    #print('Plotting img')
-    #fig, _ = decontamination.display_healpix(nside, tile, img, cmap = 'viridis')
-    #fig.savefig('mask_img_new.png')
+    print('Plotting img')
+    fig, _ = decontamination.display_healpix(nside, tile, img, cmap = 'viridis')
+    fig.savefig('mask_img_new.png')
 
     ####################################################################################################################
 
     t1 = time.perf_counter()
-    #rms, bit, cov = decontamination.rms_bit_to_healpix(wcs, nside, tile, rms_data, n_threads = n_threads, show_progress_bar = True)
-    rms, bit, cov = decontamination.rms_seg_bit_to_healpix(wcs, nside, tile, rms_data, bit_data.astype(np.uint32), n_threads = n_threads, show_progress_bar = True)
+    rms, bit, cov = decontamination.rms_bit_to_healpix(wcs, nside, tile, rms_data, seg_data.astype(np.uint32), bit_data.astype(np.uint32), n_threads = n_threads, show_progress_bar = True)
     t2 = time.perf_counter()
 
     print(f'\ndelta_time: {t2 - t1:.4e}')

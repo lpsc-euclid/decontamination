@@ -50,7 +50,7 @@ class HypParamFinder_SOM(object):
     ####################################################################################################################
 
     Σ_MIN = 2.0
-    Σ_MAX = 4.0
+    Σ_MAX = 6.0
     Σ_NB_OF_STEPS = 5
 
     ####################################################################################################################
@@ -92,13 +92,22 @@ class HypParamFinder_SOM(object):
             Suggested learning rate (if batch is **False**).
         float
             Suggested neighborhood radius.
+        int
+            Index of the selected quantization error.
+        np.ndarray
+            Array of quantization errors.
+        np.ndarray
+            Array of topographic errors.
         """
 
         ################################################################################################################
 
-        result_m = 0x000000
+        result_m = 0
         result_α = math.nan
         result_σ = math.nan
+        result_idx = -1
+        result_qes = np.empty(shape = 0, dtype = np.float64)
+        result_tes = np.empty(shape = 0, dtype = np.float64)
 
         min_qe = math.inf
 
@@ -108,13 +117,25 @@ class HypParamFinder_SOM(object):
 
         size = 0
 
-        dataset_generator_builder = dataset_to_generator_builder(self._dataset)
+        if self._dataset_weights is None:
 
-        dataset_generator = dataset_generator_builder()
+            dataset_generator_builder = dataset_to_generator_builder(self._dataset)
 
-        for vectors in dataset_generator():
+            dataset_generator = dataset_generator_builder()
 
-            size += vectors.shape[0]
+            for vectors in dataset_generator():
+
+                size += vectors.shape[0]
+
+        else:
+
+            dataset_weight_generator_builder = dataset_to_generator_builder(self._dataset_weights)
+
+            dataset_weight_generator = dataset_weight_generator_builder()
+
+            for dataset_weights in dataset_weight_generator():
+
+                size += np.sum(dataset_weights)
 
         ################################################################################################################
 
@@ -134,10 +155,12 @@ class HypParamFinder_SOM(object):
 
                     for α in ([None] if self._batch else HypParamFinder_SOM.ALPHA_LIST):
 
-                        m = int(m)
+                        m = round(m)
                         σ = float(σ)
 
-                        qe = self._train_step2(m, α,  σ, n_epochs)
+                        idx, qes, tes = self._train_step2(m, α,  σ, n_epochs)
+
+                        qe = qes[idx]
 
                         if min_qe > qe:
 
@@ -146,12 +169,15 @@ class HypParamFinder_SOM(object):
                             result_m = m
                             result_α = α
                             result_σ = σ
+                            result_idx = idx
+                            result_qes = qes
+                            result_tes = tes
 
                         pbar.update(1)
 
         ################################################################################################################
 
-        return result_m, result_α, result_σ
+        return result_m, result_α, result_σ, result_idx, result_qes, result_tes
 
     ####################################################################################################################
 
@@ -191,6 +217,6 @@ class HypParamFinder_SOM(object):
         # GET QE                                                                                                       #
         ################################################################################################################
 
-        return np.min(som.quantization_errors) if self._use_best_epoch else som.quantization_errors[-1]
+        return np.argmin(som.quantization_errors) if self._use_best_epoch else som.quantization_errors.shape[0] - 1, som.quantization_errors, som.topographic_errors
 
 ########################################################################################################################

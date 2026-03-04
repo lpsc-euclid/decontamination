@@ -119,11 +119,10 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         for i in range(data_dim):
 
-            vector = vectors[i] \
-                        .astype(np.float64)
+            vector = vectors[i]
             weight = density[i]
 
-            if not np.any(np.isnan(vector)):
+            if np.all(np.isfinite(vector)):
 
                 n += weight
 
@@ -145,16 +144,31 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit()
-    def _diag_cov_matrix(weights: np.ndarray, cov_matrix: np.ndarray, min_weight: float, max_weight: float, m: int, n: int) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def _diag_cov_matrix(weights: np.ndarray, cov_matrix: np.ndarray, min_weight: float, max_weight: float, m: int, n: int, scale_by_variance: bool) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
-        eigenvalues, eigenvectors = np.linalg.eig(cov_matrix)
+        eigenvalues, eigenvectors = np.linalg.eigh(cov_matrix)
 
-        orders = np.argsort(-eigenvalues)
+        orders = np.argsort(eigenvalues)[:: -1]
 
         order0 = orders[0]
         order1 = orders[1]
+
+        ################################################################################################################
+
+        v0 = eigenvectors[:, order0]
+        v1 = eigenvectors[:, order1]
+
+        if scale_by_variance:
+
+            ev0 = eigenvalues[order0]
+            if ev0 > 0.0:
+                v0 = v0 * np.sqrt(ev0)
+
+            ev1 = eigenvalues[order1]
+            if ev1 > 0.0:
+                v1 = v1 * np.sqrt(ev1)
 
         ################################################################################################################
 
@@ -167,11 +181,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
             for j in range(n):
                 c2 = linspace_y[j]
 
-                weights[i, j] = (
-                    eigenvectors[:, order0] * c1
-                    +
-                    eigenvectors[:, order1] * c2
-                ).astype(weights.dtype)
+                weights[i, j] = (v0 * c1 + v1 * c2).astype(weights.dtype)
 
         ################################################################################################################
 
@@ -179,7 +189,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, min_weight: float = 0.0, max_weight: float = 1.0, show_progress_bar: bool = False) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, min_weight: float = 0.0, max_weight: float = 1.0, scale_by_variance: bool = False, show_progress_bar: bool = False) -> None:
 
         """
         Trains the neural network.
@@ -194,6 +204,8 @@ class SOM_PCA(som_abstract.SOM_Abstract):
             Latent space minimum value.
         max_weight : float, default: **1.0**
             Latent space maximum value.
+        scale_by_variance : bool, default: **False**
+            If **True**, scales the two principal directions by :math:`\\sqrt{\\lambda}` (sigma units).
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         """
@@ -222,7 +234,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
                 total_nb += SOM_PCA._update_cov_matrix(
                     total_sum,
                     total_prods,
-                    vectors,
+                    vectors.astype(np.float64),
                     density.astype(np.int64)
                 )
 
@@ -237,7 +249,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
                 total_nb += SOM_PCA._update_cov_matrix(
                     total_sum,
                     total_prods,
-                    vectors,
+                    vectors.astype(np.float64),
                     np.ones(vectors.shape[0], dtype = np.int64)
                 )
 
@@ -260,7 +272,8 @@ class SOM_PCA(som_abstract.SOM_Abstract):
             min_weight,
             max_weight,
             self._m,
-            self._n
+            self._n,
+            scale_by_variance = scale_by_variance
         )
 
 ########################################################################################################################

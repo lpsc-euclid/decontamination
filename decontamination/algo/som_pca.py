@@ -7,6 +7,7 @@
 ########################################################################################################################
 
 import gc
+import math
 import tqdm
 import typing
 
@@ -144,7 +145,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit()
-    def _diag_cov_matrix(weights: np.ndarray, cov_matrix: np.ndarray, min_weight: float, max_weight: float, m: int, n: int, scale_by_variance: bool) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def _diag_cov_matrix(weights: np.ndarray, cov_matrix: np.ndarray, min_weight: float, max_weight: float, m: int, n: int, scale_by_variance: bool, project_to_unit_interval: bool, cdf_span: float, cdf_scale: float) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
@@ -172,8 +173,27 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        linspace_x = np.linspace(min_weight, max_weight, m)
-        linspace_y = np.linspace(min_weight, max_weight, n)
+        if project_to_unit_interval:
+
+            sigma = np.sqrt(np.maximum(np.diag(cov_matrix), 0.0))
+
+            sigma[sigma == 0.0] = 1.0
+
+        ################################################################################################################
+
+        if project_to_unit_interval:
+
+            sqrt2 = math.sqrt(2.0)
+
+            delta_weight = max_weight - min_weight
+
+            linspace_x = np.linspace(-cdf_span, +cdf_span, m)
+            linspace_y = np.linspace(-cdf_span, +cdf_span, n)
+        else:
+            linspace_x = np.linspace(min_weight, max_weight, m)
+            linspace_y = np.linspace(min_weight, max_weight, n)
+
+        ################################################################################################################
 
         for i in range(m):
             c1 = linspace_x[i]
@@ -181,7 +201,15 @@ class SOM_PCA(som_abstract.SOM_Abstract):
             for j in range(n):
                 c2 = linspace_y[j]
 
-                weights[i, j] = (v0 * c1 + v1 * c2).astype(weights.dtype)
+                for d in range(v0.shape[0]):
+
+                    x = v0[d] * c1 + v1[d] * c2
+
+                    if project_to_unit_interval:
+
+                        x = min_weight + delta_weight * 0.5 * (1.0 + math.erf(x / (sqrt2 * cdf_scale * sigma[d])))
+
+                    weights[i, j, d] = x
 
         ################################################################################################################
 
@@ -189,7 +217,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, min_weight: float = 0.0, max_weight: float = 1.0, scale_by_variance: bool = True, show_progress_bar: bool = False) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, min_weight: float = 0.0, max_weight: float = 1.0, scale_by_variance: bool = False, project_to_unit_interval: bool = False, cdf_span: float = 2.0, cdf_scale: float = 2.0, show_progress_bar: bool = False) -> None:
 
         """
         Trains the neural network.
@@ -204,8 +232,14 @@ class SOM_PCA(som_abstract.SOM_Abstract):
             Latent space minimum value.
         max_weight : float, default: **1.0**
             Latent space maximum value.
-        scale_by_variance : bool, default: **True**
-            If **True**, scales the two principal directions by :math:`\\sqrt{\\lambda}` (sigma units).
+        scale_by_variance : bool
+            If **True**, scales the two principal directions by :math:`\\sqrt{\\lambda}`.
+        apply_cdf : bool, default: **False**
+            If **True**, applies a per-component Gaussian CDF and rescales to :math:`[\\mathrm{min\\_weight}, \\mathrm{max\\_weight}]`.
+        cdf_span : float, default: **2.0**
+            When the CDF projection is enabled, latent PCA coefficient span (:math:`c_1,c_2 \\in [-\\mathrm{cdf\\_span}, +\\mathrm{cdf\\_span}]`).
+        cdf_scale : float, default: **2.0**
+            When the CDF projection is enabled, scaling factor applied in the Gaussian CDF argument :math:`\\Phi(x / (\\mathrm{cdf\\_scale}\\,\\sigma))`. Larger values reduce saturation.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         """
@@ -257,6 +291,10 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
+        if total_nb <= 0:
+
+            raise ValueError('Empty dataset or total weight is zero.')
+
         total_sum /= total_nb
         total_prods /= total_nb
 
@@ -273,7 +311,10 @@ class SOM_PCA(som_abstract.SOM_Abstract):
             max_weight,
             self._m,
             self._n,
-            scale_by_variance = scale_by_variance
+            scale_by_variance = scale_by_variance,
+            project_to_unit_interval = project_to_unit_interval,
+            cdf_span = cdf_span,
+            cdf_scale = cdf_scale
         )
 
 ########################################################################################################################

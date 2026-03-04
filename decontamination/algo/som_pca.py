@@ -235,11 +235,11 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         scale_by_variance : bool
             If **True**, scales the two principal directions by :math:`\sqrt{\lambda}` (before the optional CDF mapping).
         apply_cdf : bool, default: **False**
-            If **True**, applies a per-component Gaussian CDF and rescales to :math:`[\mathrm{min_weight},\mathrm{max_weight}]`.
+            If **True**, applies a per-component Gaussian CDF and rescales to :math:`[\mathrm{min\_weight},\mathrm{max\_weight}]`.
         cdf_span : float, default: **2.0**
-            When the CDF projection is enabled, latent PCA coefficient span (:math:`c_1,c_2\in[-\mathrm{cdf_span},+\mathrm{cdf_span}]`).
+            When the CDF projection is enabled, latent PCA coefficient span (:math:`c_1,c_2\in[-\mathrm{cdf\_span},+\mathrm{cdf\_span}]`).
         cdf_scale : float, default: **2.0**
-            When the CDF projection is enabled, scaling factor applied in the Gaussian CDF argument :math:`\Phi(x/(\mathrm{cdf_scale}\sigma))`. Larger values reduce saturation.
+            When the CDF projection is enabled, scaling factor applied in the Gaussian CDF argument :math:`\Phi(x/(\mathrm{cdf\_scale}\,\sigma))`. Larger values reduce saturation.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         """

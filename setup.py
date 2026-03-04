@@ -35,6 +35,7 @@ if __name__ == '__main__':
                 install_requires = ['h5py', 'tqdm', 'zarr', 'numpy', 'numba', 'scipy', 'healpy', 'astropy', 'matplotlib'],
                 extras_require = {
                     'correlation': ['xpol', 'treecorr'],
+                    'sphinx': ['sphinx', 'numpydoc', 'sphinxawesome_theme'],
                     'pytest': ['pytest'],
                 }
             )

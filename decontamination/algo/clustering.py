@@ -30,7 +30,7 @@ class Clustering(object):
         Parameters
         ----------
         vectors : np.ndarray
-            Flat input array to be clustered.
+            Input array to be clustered.
         n_clusters : int
             Desired number of clusters.
 
@@ -39,9 +39,43 @@ class Clustering(object):
         Array giving a cluster identifier for each input vector.
         """
 
+        if not isinstance(vectors, np.ndarray) or vectors.ndim != 2:
+
+            raise ValueError('vectors must be a 2D numpy array: (n_samples, n_features)')
+
+        if not isinstance(n_clusters, (int, np.integer)) or n_clusters <= 0:
+
+            raise ValueError('n_clusters must be a strictly positive integer')
+
+        ################################################################################################################
+
+        result = np.full(vectors.shape[0], -1, dtype = int)
+
+        ################################################################################################################
+        # CHECK INPUT                                                                                                  #
         ################################################################################################################
 
         not_nan_mask = ~np.any(np.isnan(vectors), axis = -1)
+
+        n_valid = int(np.count_nonzero(not_nan_mask))
+
+        ################################################################################################################
+
+        if n_valid <= 1:
+
+            if n_valid == 1:
+
+                result[not_nan_mask] = 0
+
+            return result
+
+        ################################################################################################################
+        # CLAMP N_CLUSTERS                                                                                             #
+        ################################################################################################################
+
+        if n_clusters > n_valid:
+
+            n_clusters = n_valid
 
         ################################################################################################################
         # COMPUTE DISTANCES                                                                                            #
@@ -66,15 +100,13 @@ class Clustering(object):
 
         cluster_dict = {}
 
-        result = np.full(vectors.shape[0], -1, dtype = int)
-
         ################################################################################################################
 
         for i in range(vectors.shape[0]):
 
             if not_nan_mask[i]:
 
-                cluster_id = cluster_ids[j]
+                cluster_id = int(cluster_ids[j])
 
                 if cluster_id in cluster_dict:
                     result[i] = cluster_dict[cluster_id] # k
@@ -100,18 +132,30 @@ class Clustering(object):
         Parameters
         ----------
         vectors : np.ndarray
-            Flat input array be averaged.
+            Input array be averaged.
         cluster_ids : np.ndarray
             Array of cluster identifiers.
         """
 
-        result = np.empty_like(vectors)
+        if vectors.shape[0] != cluster_ids.shape[0]:
+
+            raise ValueError('vectors and cluster_ids must have the same length')
+
+        ################################################################################################################
+
+        result = vectors.copy()
+
+        ################################################################################################################
 
         for cluster_id in np.unique(cluster_ids):
 
-            cluster_indices = np.nonzero(cluster_ids == cluster_id)[0]
+            if cluster_id >= 0:
 
-            result[cluster_indices] = np.mean(vectors[cluster_indices], axis = 0)
+                mask = cluster_ids == cluster_id
+
+                result[mask] = np.mean(vectors[mask], axis = 0)
+
+        ################################################################################################################
 
         return result
 

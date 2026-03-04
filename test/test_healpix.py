@@ -111,9 +111,6 @@ def test_rand_ang():
 
     if healpix:
 
-        time_dec = 0
-        time_ref = 0
-
         for nside in [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]:
 
             pixels = np.arange(hp.nside2npix(nside))

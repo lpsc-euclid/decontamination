@@ -145,7 +145,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit()
-    def _diag_cov_matrix(weights: np.ndarray, cov_matrix: np.ndarray, min_weight: float, max_weight: float, m: int, n: int, scale_by_variance: bool, project_to_unit_interval: bool, cdf_span: float, cdf_scale: float) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def _diag_cov_matrix(weights: np.ndarray, cov_matrix: np.ndarray, min_weight: float, max_weight: float, m: int, n: int, scale_by_variance: bool, apply_cdf: bool, cdf_span: float, cdf_scale: float) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
@@ -173,7 +173,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        if project_to_unit_interval:
+        if apply_cdf:
 
             sigma = np.sqrt(np.maximum(np.diag(cov_matrix), 0.0))
 
@@ -181,7 +181,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        if project_to_unit_interval:
+        if apply_cdf:
 
             sqrt2 = math.sqrt(2.0)
 
@@ -205,7 +205,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
                     x = v0[d] * c1 + v1[d] * c2
 
-                    if project_to_unit_interval:
+                    if apply_cdf:
 
                         x = min_weight + delta_weight * 0.5 * (1.0 + math.erf(x / (sqrt2 * cdf_scale * sigma[d])))
 
@@ -217,7 +217,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, min_weight: float = 0.0, max_weight: float = 1.0, scale_by_variance: bool = False, project_to_unit_interval: bool = False, cdf_span: float = 2.0, cdf_scale: float = 2.0, show_progress_bar: bool = False) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, min_weight: float = 0.0, max_weight: float = 1.0, scale_by_variance: bool = False, apply_cdf: bool = False, cdf_span: float = 2.0, cdf_scale: float = 2.0, show_progress_bar: bool = False) -> None:
 
         """
         Trains the neural network.
@@ -312,7 +312,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
             self._m,
             self._n,
             scale_by_variance = scale_by_variance,
-            project_to_unit_interval = project_to_unit_interval,
+            apply_cdf = apply_cdf,
             cdf_span = cdf_span,
             cdf_scale = cdf_scale
         )

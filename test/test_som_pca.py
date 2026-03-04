@@ -79,7 +79,7 @@ def test_centroids_scale_by_variance_true():
          [-0.5794583, 0.56972283, 0.59586126, 0.17732728]]
     ])
 
-    som.train(data, min_weight = -1.0, max_weight = +1.0, scale_by_variance = True, project_to_unit_interval = True, cdf_span = 2.0, cdf_scale = 2.0)
+    som.train(data, min_weight = -1.0, max_weight = +1.0, scale_by_variance = True, apply_cdf = True, cdf_span = 2.0, cdf_scale = 2.0)
 
     #print(decontamination.array_to_string(som.centroids))
 

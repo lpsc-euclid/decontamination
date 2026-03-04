@@ -233,7 +233,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         max_weight : float, default: **1.0**
             Latent space maximum value.
         scale_by_variance : bool
-            If **True**, scales the two principal directions by :math:`\\sqrt{\\lambda}`.
+            If **True**, scales the two principal directions by :math:`\\sqrt{\\lambda}` (before the optional CDF mapping).
         apply_cdf : bool, default: **False**
             If **True**, applies a per-component Gaussian CDF and rescales to :math:`[\\mathrm{min\\_weight}, \\mathrm{max\\_weight}]`.
         cdf_span : float, default: **2.0**

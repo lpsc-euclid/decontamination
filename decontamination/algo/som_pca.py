@@ -189,7 +189,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, min_weight: float = 0.0, max_weight: float = 1.0, scale_by_variance: bool = False, show_progress_bar: bool = False) -> None:
+    def train(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, min_weight: float = 0.0, max_weight: float = 1.0, scale_by_variance: bool = True, show_progress_bar: bool = False) -> None:
 
         """
         Trains the neural network.
@@ -204,7 +204,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
             Latent space minimum value.
         max_weight : float, default: **1.0**
             Latent space maximum value.
-        scale_by_variance : bool, default: **False**
+        scale_by_variance : bool, default: **True**
             If **True**, scales the two principal directions by :math:`\\sqrt{\\lambda}` (sigma units).
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.

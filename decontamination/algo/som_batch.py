@@ -108,6 +108,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 if sigma < SIGMA_MIN:
                     sigma = SIGMA_MIN
 
+                # noinspection PyTypeChecker
                 _train_step2_xpu(
                     numerator,
                     denominator,
@@ -167,6 +168,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 if sigma < SIGMA_MIN:
                     sigma = SIGMA_MIN
 
+                # noinspection PyTypeChecker
                 _train_step2_xpu(
                     numerator,
                     denominator,

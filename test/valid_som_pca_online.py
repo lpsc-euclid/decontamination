@@ -53,7 +53,7 @@ for i in range(2):
         dimension = i * 2 + j
 
         weights_ref = som_ref.get_weights()[:, :, dimension]
-        weights_new = som_new.get_centroids()[:, :, dimension]
+        weights_new = som_new.centroids[:, :, dimension]
 
         weights_diff = (weights_ref - weights_new) / weights_ref
 

@@ -286,7 +286,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         apply_cdf : bool, default: **False**
             If **True**, applies a per-component Gaussian CDF and rescales to :math:`[\\mathrm{min\\_weight},\\mathrm{max\\_weight}]`.
         cdf_gain : float, default: **1.0**
-            When **apply_cdf** is enabled, gain applied in :math:`\\Phi(\\mathrm{cdf\\_gain}x/\\sigma)`. Larger values increase saturation.
+            When **apply_cdf** is enabled, gain applied in :math:`\\Phi(\\mathrm{cdf\\_gain}\\,x/\\sigma)`. Larger values increase saturation.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         """

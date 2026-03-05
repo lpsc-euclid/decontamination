@@ -1,7 +1,7 @@
 Module decontamination.mask
 ===========================
 
-This module provides primitives to handle HEALPix masks (aka maps).
+This module provides primitives for handling HEALPix masks (aka maps).
 
 Multi-Order Coverage (MOC) masks
 --------------------------------

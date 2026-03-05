@@ -393,7 +393,7 @@ class SOM_Abstract(object):
             c_i^1\\equiv\\mathrm{1^\\mathrm{st}\\,bmu}\\equiv\\underset{j}{\\mathrm{arg\\,min}_1}\\lVert x_i-w_j\\rVert
 
         .. math::
-            \\boxed{e_Q\\equiv\\frac{1}{N}\\sum_{i=1}^N\\lVert x_i-w_{c_i^1}\\rVert}
+            \\boxed{e_Q\\equiv\\frac{1}{N}\\sum_{i=0}^{N-1}\\lVert x_i-w_{c_i^1}\\rVert}
 
         """
 
@@ -417,7 +417,7 @@ class SOM_Abstract(object):
             t(x_i)\\equiv\\left\\{\\begin{array}{ll}1&\\lVert c_i^1-c_i^2\\rVert>r\\\\0&\\mathrm{otherwise}\\end{array}\\right.
 
         .. math::
-            \\boxed{e_t\\equiv\\frac{1}{N}\\sum_{i=0}^Nt(x_i)}
+            \\boxed{e_t\\equiv\\frac{1}{N}\\sum_{i=0}^{N-1}t(x_i)}
         """
 
         return self._topographic_errors
@@ -542,11 +542,9 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        result = device_array_empty(shape = 2, dtype = np.float64)
+        result = device_array_zeros(shape = 3, dtype = np.float64)
 
         ################################################################################################################
-
-        n_vectors = 0
 
         if density_generator_builder is not None:
 
@@ -555,9 +553,15 @@ class SOM_Abstract(object):
 
             for vectors, density in tqdm.tqdm(zip(dataset_generator(), density_generator()), disable = not show_progress_bar):
 
-                n_vectors += vectors.shape[0]
-
-                _compute_errors_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](result, self._weights, self._topography, vectors, 2.0 if self._topology == 'square' else 1.0, self._m * self._n)
+                _compute_errors_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
+                    result,
+                    self._weights,
+                    self._topography,
+                    vectors.astype(self._dtype),
+                    density.astype(np.float64),
+                    2.0 if self._topology == 'square' else 1.0,
+                    self._m * self._n
+                )
 
         else:
 
@@ -565,13 +569,23 @@ class SOM_Abstract(object):
 
             for vectors in tqdm.tqdm(dataset_generator(), disable = not show_progress_bar):
 
-                n_vectors += vectors.shape[0]
-
-                _compute_errors_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](result, self._weights, self._topography, vectors, 2.0 if self._topology == 'square' else 1.0, self._m * self._n)
+                _compute_errors_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
+                    result,
+                    self._weights,
+                    self._topography,
+                    vectors.astype(self._dtype),
+                    np.ones(vectors.shape[0], dtype = np.float64),
+                    2.0 if self._topology == 'square' else 1.0,
+                    self._m * self._n
+                )
 
         ################################################################################################################
 
-        return result.copy_to_host() / n_vectors
+        out = result.copy_to_host()
+
+        ################################################################################################################
+
+        return (out[0] / out[2], out[1] / out[2]) if out[2] > 0.0 else (np.nan, np.nan)
 
     ####################################################################################################################
 
@@ -601,7 +615,7 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        result = device_array_zeros(shape = (self._m * self._n, ), dtype = np.int64)
+        result = device_array_zeros(shape = (self._m * self._n, ), dtype = np.float64)
 
         ################################################################################################################
 
@@ -615,8 +629,8 @@ class SOM_Abstract(object):
                 _count_bmus_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
                     result,
                     self._weights,
-                    vectors,
-                    density.astype(np.int64),
+                    vectors.astype(self._dtype),
+                    density.astype(np.float64),
                     self._m * self._n
                 )
 
@@ -629,14 +643,14 @@ class SOM_Abstract(object):
                 _count_bmus_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
                     result,
                     self._weights,
-                    vectors,
-                    np.ones(vectors.shape[0], dtype = np.int64),
+                    vectors.astype(self._dtype),
+                    np.ones(vectors.shape[0], dtype = np.float64),
                     self._m * self._n
                 )
 
         ################################################################################################################
 
-        return result.copy_to_host().reshape((self._m, self._n))
+        return result.copy_to_host().astype(self._dtype).reshape((self._m, self._n))
 
     ####################################################################################################################
 
@@ -661,7 +675,7 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        _find_bmus_kernel[enable_gpu, threads_per_blocks, dataset.shape[0]](result, self._weights, dataset, self._m * self._n)
+        _find_bmus_kernel[enable_gpu, threads_per_blocks, dataset.shape[0]](result, self._weights, dataset.astype(self._dtype), self._m * self._n)
 
         ################################################################################################################
 
@@ -682,7 +696,11 @@ def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndar
         i = jit.grid(1)
         if i < vectors.shape[0]:
 
-            jit.atomic_add(result, _find_bmu_xpu(weights, vectors[i], mn), density[i])
+            d = density[i]
+
+            if d > 0.0:
+
+                jit.atomic_add(result, _find_bmu_xpu(weights, vectors[i], mn), d)
 
         ################################################################################################################
 
@@ -694,7 +712,11 @@ def _count_bmus_kernel(result: np.ndarray, weights: np.ndarray, vectors: np.ndar
 
         for i in nb.prange(vectors.shape[0]):
 
-            jit.atomic_add(result, _find_bmu_xpu(weights, vectors[i], mn), density[i])
+            d = density[i]
+
+            if d > 0.0:
+
+                jit.atomic_add(result, _find_bmu_xpu(weights, vectors[i], mn), d)
 
 ########################################################################################################################
 
@@ -746,7 +768,7 @@ def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 ########################################################################################################################
 
 @jit(kernel = True, parallel = True)
-def _compute_errors_kernel(errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, penalty_dist: float, mn: int) -> None:
+def _compute_errors_kernel(errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, density: np.ndarray, penalty_dist: float, mn: int) -> None:
 
     if jit.is_gpu:
 
@@ -757,7 +779,7 @@ def _compute_errors_kernel(errors: np.ndarray, weights: np.ndarray, topography: 
         i = jit.grid(1)
         if i < vectors.shape[0]:
 
-            _compute_errors_xpu(errors, weights, topography, vectors[i], penalty_dist, mn)
+            _compute_errors_xpu(errors, weights, topography, vectors[i], density[i], penalty_dist, mn)
 
         ################################################################################################################
 
@@ -769,12 +791,16 @@ def _compute_errors_kernel(errors: np.ndarray, weights: np.ndarray, topography: 
 
         for i in nb.prange(vectors.shape[0]):
 
-            _compute_errors_xpu(errors, weights, topography, vectors[i], penalty_dist, mn)
+            _compute_errors_xpu(errors, weights, topography, vectors[i], density[i], penalty_dist, mn)
 
 ########################################################################################################################
 
 @jit(fastmath = True)
-def _compute_errors_xpu(errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, penalty_dist: float, mn: int) -> None:
+def _compute_errors_xpu(errors: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, density: float, penalty_dist: float, mn: int) -> None:
+
+    if not (density > 0.0):
+
+        return
 
     ####################################################################################################################
     # DO BMUS CALCULATION                                                                                              #
@@ -807,10 +833,12 @@ def _compute_errors_xpu(errors: np.ndarray, weights: np.ndarray, topography: np.
     # UPDATE ERRORS                                                                                                    #
     ####################################################################################################################
 
+    jit.atomic_add(errors, 0, density * math.sqrt(min_distance1))
+
     if square_distance_xpu(bmu1, bmu2) > penalty_dist:
 
-        jit.atomic_add(errors, 1, 1.0000000000000000000000)
+        jit.atomic_add(errors, 1, density)
 
-    jit.atomic_add(errors, 0, math.sqrt(min_distance1))
+    jit.atomic_add(errors, 2, density)
 
 ########################################################################################################################

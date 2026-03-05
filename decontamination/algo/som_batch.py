@@ -500,6 +500,10 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 @jit(fastmath = True)
 def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, density: float, sigma: float, mn: int, dim: int) -> None:
 
+    if not (density > 0.0):
+
+        return
+
     ####################################################################################################################
     # DO BMUS CALCULATION                                                                                              #
     ####################################################################################################################

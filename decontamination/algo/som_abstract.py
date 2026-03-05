@@ -502,9 +502,11 @@ class SOM_Abstract(object):
         ################################################################################################################
 
         if normalization == 'sum':
+
             result = np.nansum(result, axis = 2)
 
         elif normalization == 'mean':
+
             result = np.nanmean(result, axis = 2)
 
         else:
@@ -512,7 +514,14 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        return result / np.max(result)
+        result_max = np.nanmax(result)
+
+        if np.isfinite(result_max) and result_max > 0.0:
+
+            return (result / result_max).astype(self._dtype)
+
+        else:
+            raise ValueError('Distance map has no finite positive values.')
 
     ####################################################################################################################
 
@@ -534,6 +543,10 @@ class SOM_Abstract(object):
         threads_per_blocks : int, default: **None** ≡ maximum
             Number of GPU threads per blocks.
         """
+
+        if self._m * self._n < 2:
+
+            return np.nan, np.nan
 
         ################################################################################################################
 
@@ -806,25 +819,44 @@ def _compute_errors_xpu(errors: np.ndarray, weights: np.ndarray, topography: np.
     # DO BMUS CALCULATION                                                                                              #
     ####################################################################################################################
 
-    ###_distance2 = 1.0e10
-    min_distance1 = 1.0e10
+    min_distance2 = 1.0e99
+    min_distance1 = 1.0e99
 
-    min_index2 = 0
-    min_index1 = 0
+    min_index2 = -1
+    min_index1 = -1
 
     for min_index0 in range(mn):
 
         min_distance0 = square_distance_xpu(weights[min_index0], vector)
 
-        if min_distance1 > min_distance0:
+        if min_distance0 != min_distance0:
 
-            ###_distance2 = min_distance1
+            continue
+
+        if min_distance0 < min_distance1:
+
+            if min_index0 != min_index1:
+
+                min_distance2 = min_distance1
+                min_index2 = min_index1
+
             min_distance1 = min_distance0
-
-            min_index2 = min_index1
             min_index1 = min_index0
 
+        elif min_index0 != min_index1 and min_distance0 < min_distance2:
+
+            min_distance2 = min_distance0
+            min_index2 = min_index0
+
     ####################################################################################################################
+
+    if min_index1 < 0 or min_index2 < 0:
+
+        return
+
+    if min_index2 == min_index1:
+
+        return
 
     bmu2 = topography[min_index2]
     bmu1 = topography[min_index1]

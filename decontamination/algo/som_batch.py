@@ -509,11 +509,15 @@ def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np
     ####################################################################################################################
 
     min_distance = 1.0e99
-    min_index = 0
+    min_index = -1
 
     for index in range(mn):
 
         distance = square_distance_xpu(weights[index], vector)
+
+        if distance != distance:
+
+            continue
 
         if min_distance > distance:
 
@@ -521,6 +525,10 @@ def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np
             min_index = index
 
     ####################################################################################################################
+
+    if min_index < 0:
+
+        return
 
     bmu = topography[min_index]
 

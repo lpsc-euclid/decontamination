@@ -405,12 +405,16 @@ def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray
     # DO BMUS CALCULATION                                                                                              #
     ####################################################################################################################
 
-    min_distance = 1.0e10
-    min_index = 0
+    min_distance = 1.0e99
+    min_index = -1
 
     for index in range(mn):
 
         distance = np.sum((weights[index] - vector) ** 2)
+
+        if distance != distance:
+
+            continue
 
         if min_distance > distance:
 
@@ -418,6 +422,10 @@ def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray
             min_index = index
 
     ####################################################################################################################
+
+    if min_index < 0:
+
+        return
 
     bmu1 = topography[min_index]
 

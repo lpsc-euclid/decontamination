@@ -62,14 +62,15 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        self._n_epochs = None
+        self._n_epochs = 0
 
-        self._n_vectors = None
+        self._n_vectors = 0
 
         ################################################################################################################
 
         self._header_extra = {
             'mode': '__MODE__',
+            ##
             'alpha': '_alpha',
             'sigma': '_sigma',
             'n_epochs': '_n_epochs',
@@ -98,7 +99,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit()
-    def _train_step1_epoch(weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, mn: int):
+    def _train_step1_epoch(weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, density: np.ndarray, cur_epoch: int, n_epochs: int, alpha0: float, sigma0: float, mn: int):
 
         ################################################################################################################
 
@@ -116,6 +117,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
                 weights,
                 topography,
                 vectors[i],
+                density[i],
                 alpha,
                 sigma,
                 mn
@@ -125,7 +127,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
     @staticmethod
     @nb.njit()
-    def _train_step1_iter(weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, cur_vector: int, n_vectors: int, alpha0: float, sigma0: float, mn: int):
+    def _train_step1_iter(weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, density: np.ndarray, cur_vector: int, n_vectors: int, alpha0: float, sigma0: float, mn: int):
 
         for i in range(vectors.shape[0]):
 
@@ -143,6 +145,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
                 weights,
                 topography,
                 vectors[i],
+                density[i],
                 alpha,
                 sigma,
                 mn
@@ -171,7 +174,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
         dataset : typing.Union[np.ndarray, typing.Callable]
             Training dataset array or generator builder.
         dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
-            Training dataset weight array or generator builder. **Not implemented yet!**
+            Training dataset weight array or generator builder.
         n_epochs : int, default: **None**
             Optional number of epochs to train for.
         n_vectors : int, default: **None**
@@ -230,12 +233,13 @@ class SOM_Online(som_abstract.SOM_Abstract):
                     dataset_generator = dataset_generator_builder()
                     density_generator = density_generator_builder()
 
-                    for vectors, _ in zip(dataset_generator(), density_generator()):
+                    for vectors, density in zip(dataset_generator(), density_generator()):
 
                         SOM_Online._train_step1_epoch(
                             self._weights,
                             self._topography,
                             vectors.astype(self._dtype),
+                            density.astype(self._dtype),
                             cur_epoch,
                             n_epochs,
                             self._dtype(self._alpha),
@@ -250,10 +254,12 @@ class SOM_Online(som_abstract.SOM_Abstract):
                     dataset_generator = dataset_generator_builder()
 
                     for vectors in dataset_generator():
+
                         SOM_Online._train_step1_epoch(
                             self._weights,
                             self._topography,
                             vectors.astype(self._dtype),
+                            np.ones(vectors.shape[0], dtype = self._dtype),
                             cur_epoch,
                             n_epochs,
                             self._dtype(self._alpha),
@@ -269,7 +275,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
                 ########################################################################################################
 
-                errors = self.compute_errors(dataset, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+                errors = self.compute_errors(dataset, dataset_weights, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
                 self._quantization_errors[cur_epoch] = errors[0]
                 self._topographic_errors[cur_epoch] = errors[1]
@@ -307,7 +313,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
                 dataset_generator = dataset_generator_builder()
                 density_generator = density_generator_builder()
 
-                for vectors, _ in zip(dataset_generator(), density_generator()):
+                for vectors, density in zip(dataset_generator(), density_generator()):
 
                     count = min(vectors.shape[0], n_vectors - cur_vector)
 
@@ -315,6 +321,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
                         self._weights,
                         self._topography,
                         vectors[0: count].astype(self._dtype),
+                        density[0: count].astype(self._dtype),
                         cur_vector,
                         n_vectors,
                         self._dtype(self._alpha),
@@ -344,6 +351,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
                         self._weights,
                         self._topography,
                         vectors[0: count].astype(self._dtype),
+                        np.ones(count, dtype = self._dtype),
                         cur_vector,
                         n_vectors,
                         self._dtype(self._alpha),
@@ -367,7 +375,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
-            errors = self.compute_errors(dataset, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+            errors = self.compute_errors(dataset, dataset_weights, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
             self._quantization_errors[0] = errors[0]
             self._topographic_errors[0] = errors[1]
@@ -382,12 +390,16 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
         if use_best_epoch:
 
-            self._weights = self._history[np.argmin(self._quantization_errors)]
+            self._weights = self._history[np.nanargmin(self._quantization_errors)]
 
 ########################################################################################################################
 
 @nb.njit(fastmath = True)
-def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, alpha: float, sigma: float, mn: int) -> None:
+def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, density: float, alpha: float, sigma: float, mn: int) -> None:
+
+    if not (density > 0.0):
+
+        return
 
     ####################################################################################################################
     # DO BMUS CALCULATION                                                                                              #
@@ -419,6 +431,18 @@ def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray
     # UPDATE WEIGHTS                                                                                                   #
     ####################################################################################################################
 
-    weights += alpha * np.expand_dims(neighborhood_op, -1) * (vector - weights)
+    if density == 1.0:
+
+        weights += alpha * np.expand_dims(neighborhood_op, -1) * (vector - weights)
+
+    else:
+
+        eta = alpha * neighborhood_op
+
+        eta = np.minimum(eta, 1.0 - 1.0e-12)
+
+        eta_eff = 1.0 - np.exp(density * np.log1p(-eta))
+
+        weights += np.expand_dims(eta_eff, -1) * (vector - weights)
 
 ########################################################################################################################

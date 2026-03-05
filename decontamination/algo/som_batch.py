@@ -355,7 +355,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                 ########################################################################################################
 
-                errors = self.compute_errors(dataset, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+                errors = self.compute_errors(dataset, dataset_weights, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
                 self._quantization_errors[cur_epoch] = errors[0]
                 self._topographic_errors[cur_epoch] = errors[1]
@@ -478,7 +478,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
-            errors = self.compute_errors(dataset, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
+            errors = self.compute_errors(dataset, dataset_weights, show_progress_bar = False, enable_gpu = enable_gpu, threads_per_blocks = threads_per_blocks)
 
             self._quantization_errors[0] = errors[0]
             self._topographic_errors[0] = errors[1]

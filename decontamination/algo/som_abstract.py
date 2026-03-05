@@ -516,7 +516,7 @@ class SOM_Abstract(object):
 
     ####################################################################################################################
 
-    def compute_errors(self, dataset: typing.Union[np.ndarray, typing.Callable], show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> typing.Tuple[float, float]:
+    def compute_errors(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> typing.Tuple[float, float]:
 
         """
         For the given input, computes the quantization and topographic errors.
@@ -525,6 +525,8 @@ class SOM_Abstract(object):
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
             Dataset array or generator builder.
+        dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
+            Dataset weight array or generator builder.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**
@@ -535,7 +537,8 @@ class SOM_Abstract(object):
 
         ################################################################################################################
 
-        generator_builder = dataset_to_generator_builder(dataset)
+        dataset_generator_builder = dataset_to_generator_builder(    dataset    )
+        density_generator_builder = dataset_to_generator_builder(dataset_weights)
 
         ################################################################################################################
 
@@ -545,13 +548,26 @@ class SOM_Abstract(object):
 
         n_vectors = 0
 
-        generator = generator_builder()
+        if density_generator_builder is not None:
 
-        for vectors in tqdm.tqdm(generator(), disable = not show_progress_bar):
+            dataset_generator = dataset_generator_builder()
+            density_generator = density_generator_builder()
 
-            n_vectors += vectors.shape[0]
+            for vectors, density in tqdm.tqdm(zip(dataset_generator(), density_generator()), disable = not show_progress_bar):
 
-            _compute_errors_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](result, self._weights, self._topography, vectors, 2.0 if self._topology == 'square' else 1.0, self._m * self._n)
+                n_vectors += vectors.shape[0]
+
+                _compute_errors_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](result, self._weights, self._topography, vectors, 2.0 if self._topology == 'square' else 1.0, self._m * self._n)
+
+        else:
+
+            dataset_generator = dataset_generator_builder()
+
+            for vectors in tqdm.tqdm(dataset_generator(), disable = not show_progress_bar):
+
+                n_vectors += vectors.shape[0]
+
+                _compute_errors_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](result, self._weights, self._topography, vectors, 2.0 if self._topology == 'square' else 1.0, self._m * self._n)
 
         ################################################################################################################
 

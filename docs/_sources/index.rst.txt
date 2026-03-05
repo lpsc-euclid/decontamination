@@ -29,7 +29,7 @@ correlation functions (2PCF) decontaminated from the systematics.
 
     <br />
 
-This tool has been developed for the `Euclid <https://www.esa.int/Science_Exploration/Space_Science/Euclid/>`_ space telescope.
+This tool has been mainly developed for the `Euclid <https://www.esa.int/Science_Exploration/Space_Science/Euclid/>`_ space telescope.
 
 Authors:
  * Jérôme ODIER - jerome.odier@lpsc.in2p3.fr

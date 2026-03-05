@@ -20,6 +20,10 @@ from . import som_abstract, square_distance_xpu, asymptotic_decay_cpu, asymptoti
 
 ########################################################################################################################
 
+SIGMA_MIN = 1.0e-12
+
+########################################################################################################################
+
 # noinspection PyPep8Naming
 class SOM_Batch(som_abstract.SOM_Abstract):
 
@@ -61,14 +65,15 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        self._n_epochs = None
+        self._n_epochs = 0
 
-        self._n_vectors = None
+        self._n_vectors = 0
 
         ################################################################################################################
 
         self._header_extra = {
             'mode': '__MODE__',
+            ##
             'sigma': '_sigma',
             'n_epochs': '_n_epochs',
             'n_vectors': '_n_vectors',
@@ -87,7 +92,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
     @staticmethod
     @jit(kernel = True, parallel = True)
-    def _train_step1_epoch_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, density: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, mn: int) -> None:
+    def _train_step1_epoch_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, density: np.ndarray, cur_epoch: int, n_epochs: int, sigma0: float, mn: int, dim: int) -> None:
 
         if jit.is_gpu:
 
@@ -100,6 +105,9 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                 sigma = sigma0 * asymptotic_decay_gpu(cur_epoch, n_epochs)
 
+                if sigma < SIGMA_MIN:
+                    sigma = SIGMA_MIN
+
                 _train_step2_xpu(
                     numerator,
                     denominator,
@@ -108,7 +116,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                     vectors[i],
                     density[i],
                     sigma,
-                    mn
+                    mn,
+                    dim
                 )
 
             ############################################################################################################
@@ -121,6 +130,9 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             sigma = sigma0 * asymptotic_decay_cpu(cur_epoch, n_epochs)
 
+            if sigma < SIGMA_MIN:
+                sigma = SIGMA_MIN
+
             for i in nb.prange(vectors.shape[0]):
 
                 _train_step2_xpu(
@@ -131,18 +143,15 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                     vectors[i],
                     density[i],
                     sigma,
-                    mn
+                    mn,
+                    dim
                 )
-
-            ############################################################################################################
-
-        jit.syncthreads()
 
     ####################################################################################################################
 
     @staticmethod
     @jit(kernel = True, parallel = True)
-    def _train_step1_iter_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, density: np.ndarray, cur_vector: int, n_vectors: int, sigma0: float, mn: int) -> None:
+    def _train_step1_iter_kernel(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vectors: np.ndarray, density: np.ndarray, cur_vector: int, n_vectors: int, sigma0: float, mn: int, dim: int) -> None:
 
         if jit.is_gpu:
 
@@ -155,6 +164,9 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                 sigma = sigma0 * asymptotic_decay_gpu(cur_vector + i, n_vectors)
 
+                if sigma < SIGMA_MIN:
+                    sigma = SIGMA_MIN
+
                 _train_step2_xpu(
                     numerator,
                     denominator,
@@ -163,7 +175,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                     vectors[i],
                     density[i],
                     sigma,
-                    mn
+                    mn,
+                    dim
                 )
 
             ############################################################################################################
@@ -178,6 +191,9 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                 sigma = sigma0 * asymptotic_decay_cpu(cur_vector + i, n_vectors)
 
+                if sigma < SIGMA_MIN:
+                    sigma = SIGMA_MIN
+
                 _train_step2_xpu(
                     numerator,
                     denominator,
@@ -186,12 +202,9 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                     vectors[i],
                     density[i],
                     sigma,
-                    mn
+                    mn,
+                    dim
                 )
-
-            ############################################################################################################
-
-        jit.syncthreads()
 
     ####################################################################################################################
 
@@ -289,11 +302,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                             self._weights,
                             self._topography,
                             vectors.astype(self._dtype),
-                            density.astype(np.int32),
+                            density.astype(self._dtype),
                             cur_epoch,
                             n_epochs,
                             self._dtype(self._sigma),
-                            self._m * self._n
+                            self._m * self._n,
+                            self._dim
                         )
 
                         gc.collect()
@@ -310,11 +324,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                             self._weights,
                             self._topography,
                             vectors.astype(self._dtype),
-                            np.ones(vectors.shape[0], dtype = np.int32),
+                            np.ones(vectors.shape[0], dtype = self._dtype),
                             cur_epoch,
                             n_epochs,
                             self._dtype(self._sigma),
-                            self._m * self._n
+                            self._m * self._n,
+                            self._dim
                         )
 
                         gc.collect()
@@ -329,16 +344,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                 ########################################################################################################
 
-                self._weights = np.divide(
+                self._weights[:] = self._history[cur_epoch] = np.divide(
                     numerator_host,
                     denominator_host,
                     out = np.zeros_like(numerator_host),
                     where = denominator_host != 0.0
                 )
-
-                ############################################################################################################
-
-                self._history[cur_epoch] = self._weights
 
                 ########################################################################################################
 
@@ -396,11 +407,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                         self._weights,
                         self._topography,
                         vectors[0: count].astype(self._dtype),
-                        density[0: count].astype(np.int32),
+                        density[0: count].astype(self._dtype),
                         cur_vector,
                         n_vectors,
                         self._dtype(self._sigma),
-                        self._m * self._n
+                        self._m * self._n,
+                        self._dim
                     )
 
                     gc.collect()
@@ -427,11 +439,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                         self._weights,
                         self._topography,
                         vectors[0: count].astype(self._dtype),
-                        np.ones(count, dtype = np.int32),
+                        np.ones(count, dtype = self._dtype),
                         cur_vector,
                         n_vectors,
                         self._dtype(self._sigma),
-                        self._m * self._n
+                        self._m * self._n,
+                        self._dim
                     )
 
                     gc.collect()
@@ -454,16 +467,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             ############################################################################################################
 
-            self._weights = np.divide(
+            self._weights[:] = self._history[0] = np.divide(
                 numerator_host,
                 denominator_host,
                 out = np.zeros_like(numerator_host),
                 where = denominator_host != 0.0
             )
-
-            ############################################################################################################
-
-            self._history[0] = self._weights
 
             ############################################################################################################
 
@@ -482,12 +491,12 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
         if use_best_epoch:
 
-            self._weights = self._history[np.argmin(self._quantization_errors)]
+            self._weights[:] = self._history[np.nanargmin(self._quantization_errors)]
 
 ########################################################################################################################
 
 @jit(fastmath = True)
-def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, density: np.ndarray, sigma: float, mn: int) -> None:
+def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np.ndarray, topography: np.ndarray, vector: np.ndarray, density: float, sigma: float, mn: int, dim: int) -> None:
 
     ####################################################################################################################
     # DO BMUS CALCULATION                                                                                              #
@@ -513,20 +522,24 @@ def _train_step2_xpu(numerator: np.ndarray, denominator: np.ndarray, weights: np
     # UPDATE WEIGHTS                                                                                                   #
     ####################################################################################################################
 
+    inv_2sigma2 = 1.0 / (2.0 * sigma * sigma)
+
+    ####################################################################################################################
+
     for i in range(mn):
 
         ################################################################################################################
 
-        neighborhood_i = math.exp(-square_distance_xpu(topography[i], bmu) / (2.0 * sigma ** 2))
+        neighborhood_i = density * math.exp(-square_distance_xpu(topography[i], bmu) * inv_2sigma2)
 
         ################################################################################################################
 
         numerator_i = numerator[i]
 
-        for k in range(vector.shape[0]):
+        for k in range(dim):
 
-            jit.atomic_add(numerator_i, k, density * neighborhood_i * vector[k])
+            jit.atomic_add(numerator_i, k, neighborhood_i * vector[k])
 
-        jit.atomic_add(denominator, i, density * neighborhood_i * 1.0000000)
+        jit.atomic_add(denominator, i, neighborhood_i * 1.0000000)
 
 ########################################################################################################################

@@ -53,6 +53,14 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
+        self._scale_by_variance = False
+
+        self._apply_cdf = False
+
+        self._cdf_gain = 1.0
+
+        ################################################################################################################
+
         self._cov_matrix = np.zeros((dim, dim), dtype = self._dtype)
 
         self._eigenvalues = np.zeros((dim, ), dtype = self._dtype)
@@ -65,6 +73,10 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         self._header_extra = {
             'mode': '__MODE__',
+            ##
+            'scale_by_variance': '_scale_by_variance',
+            'apply_cdf': '_apply_cdf',
+            'cdf_gain': '_cdf_gain',
         }
 
     ####################################################################################################################
@@ -353,7 +365,15 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        if total_w <= 0.0:
+        if total_w > 0.0:
+
+            self._scale_by_variance = scale_by_variance
+
+            self._apply_cdf = apply_cdf
+
+            self._cdf_gain = cdf_gain
+
+        else:
 
             raise ValueError('Empty dataset or total weight is zero.')
 

@@ -252,8 +252,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
                         SOM_Online._train_step1_epoch(
                             self._weights,
                             self._topography,
-                            vectors.astype(self._dtype),
-                            density.astype(self._dtype),
+                            vectors.astype(self._dtype, copy = False),
+                            density.astype(self._dtype, copy = False),
                             cur_epoch,
                             n_epochs,
                             self._dtype(self._alpha),
@@ -272,7 +272,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
                         SOM_Online._train_step1_epoch(
                             self._weights,
                             self._topography,
-                            vectors.astype(self._dtype),
+                            vectors.astype(self._dtype, copy = False),
                             np.ones(vectors.shape[0], dtype = self._dtype),
                             cur_epoch,
                             n_epochs,
@@ -334,8 +334,8 @@ class SOM_Online(som_abstract.SOM_Abstract):
                     SOM_Online._train_step1_iter(
                         self._weights,
                         self._topography,
-                        vectors[0: count].astype(self._dtype),
-                        density[0: count].astype(self._dtype),
+                        vectors[0: count].astype(self._dtype, copy = False),
+                        density[0: count].astype(self._dtype, copy = False),
                         cur_vector,
                         n_vectors,
                         self._dtype(self._alpha),
@@ -364,7 +364,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
                     SOM_Online._train_step1_iter(
                         self._weights,
                         self._topography,
-                        vectors[0: count].astype(self._dtype),
+                        vectors[0: count].astype(self._dtype, copy = False),
                         np.ones(count, dtype = self._dtype),
                         cur_vector,
                         n_vectors,

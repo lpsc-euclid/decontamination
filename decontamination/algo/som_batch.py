@@ -303,8 +303,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                             denominator,
                             self._weights,
                             self._topography,
-                            vectors.astype(self._dtype),
-                            density.astype(self._dtype),
+                            vectors.astype(self._dtype, copy = False),
+                            density.astype(self._dtype, copy = False),
                             cur_epoch,
                             n_epochs,
                             self._dtype(self._sigma),
@@ -325,7 +325,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                             denominator,
                             self._weights,
                             self._topography,
-                            vectors.astype(self._dtype),
+                            vectors.astype(self._dtype, copy = False),
                             np.ones(vectors.shape[0], dtype = self._dtype),
                             cur_epoch,
                             n_epochs,
@@ -342,7 +342,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                 denominator_temp = denominator.copy_to_host()
 
-                denominator_host = np.expand_dims(denominator_temp, axis = -1)
+                denominator_host = denominator_temp[:, np.newaxis]
 
                 ########################################################################################################
 
@@ -350,7 +350,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                     numerator_host,
                     denominator_host,
                     out = np.zeros_like(numerator_host),
-                    where = denominator_host != 0.0
+                    where = denominator_host > FLOAT_EPS
                 )
 
                 ########################################################################################################
@@ -408,8 +408,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                         denominator,
                         self._weights,
                         self._topography,
-                        vectors[0: count].astype(self._dtype),
-                        density[0: count].astype(self._dtype),
+                        vectors[0: count].astype(self._dtype, copy = False),
+                        density[0: count].astype(self._dtype, copy = False),
                         cur_vector,
                         n_vectors,
                         self._dtype(self._sigma),
@@ -440,7 +440,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                         denominator,
                         self._weights,
                         self._topography,
-                        vectors[0: count].astype(self._dtype),
+                        vectors[0: count].astype(self._dtype, copy = False),
                         np.ones(count, dtype = self._dtype),
                         cur_vector,
                         n_vectors,
@@ -465,7 +465,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             denominator_temp = denominator.copy_to_host()
 
-            denominator_host = np.expand_dims(denominator_temp, axis = -1)
+            denominator_host = denominator_temp[:, np.newaxis]
 
             ############################################################################################################
 
@@ -473,7 +473,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 numerator_host,
                 denominator_host,
                 out = np.zeros_like(numerator_host),
-                where = denominator_host != 0.0
+                where = denominator_host > FLOAT_EPS
             )
 
             ############################################################################################################

@@ -20,7 +20,7 @@ from . import som_abstract, square_distance_xpu, asymptotic_decay_cpu, asymptoti
 
 ########################################################################################################################
 
-SIGMA_MIN = 1.0e-12
+FLOAT_EPS = 1.0e-12
 
 ########################################################################################################################
 
@@ -105,8 +105,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                 sigma = sigma0 * asymptotic_decay_gpu(cur_epoch, n_epochs)
 
-                if sigma < SIGMA_MIN:
-                    sigma = SIGMA_MIN
+                if sigma < FLOAT_EPS:
+                    sigma = FLOAT_EPS
 
                 # noinspection PyTypeChecker
                 _train_step2_xpu(
@@ -131,8 +131,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
             sigma = sigma0 * asymptotic_decay_cpu(cur_epoch, n_epochs)
 
-            if sigma < SIGMA_MIN:
-                sigma = SIGMA_MIN
+            if sigma < FLOAT_EPS:
+                sigma = FLOAT_EPS
 
             for i in nb.prange(vectors.shape[0]):
 
@@ -165,8 +165,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                 sigma = sigma0 * asymptotic_decay_gpu(cur_vector + i, n_vectors)
 
-                if sigma < SIGMA_MIN:
-                    sigma = SIGMA_MIN
+                if sigma < FLOAT_EPS:
+                    sigma = FLOAT_EPS
 
                 # noinspection PyTypeChecker
                 _train_step2_xpu(
@@ -193,8 +193,8 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                 sigma = sigma0 * asymptotic_decay_cpu(cur_vector + i, n_vectors)
 
-                if sigma < SIGMA_MIN:
-                    sigma = SIGMA_MIN
+                if sigma < FLOAT_EPS:
+                    sigma = FLOAT_EPS
 
                 _train_step2_xpu(
                     numerator,

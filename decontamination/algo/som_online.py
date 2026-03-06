@@ -17,6 +17,10 @@ from . import som_abstract, asymptotic_decay_cpu, dataset_to_generator_builder
 
 ########################################################################################################################
 
+FLOAT_EPS = 1.0e-12
+
+########################################################################################################################
+
 # noinspection PyPep8Naming
 class SOM_Online(som_abstract.SOM_Abstract):
 
@@ -106,8 +110,13 @@ class SOM_Online(som_abstract.SOM_Abstract):
         decay_function = asymptotic_decay_cpu(cur_epoch, n_epochs)
 
         alpha = alpha0 * decay_function
-
         sigma = sigma0 * decay_function
+
+        if alpha < FLOAT_EPS:
+            alpha = FLOAT_EPS
+
+        if sigma < FLOAT_EPS:
+            sigma = FLOAT_EPS
 
         ################################################################################################################
 
@@ -136,8 +145,13 @@ class SOM_Online(som_abstract.SOM_Abstract):
             decay_function = asymptotic_decay_cpu(cur_vector + i, n_vectors)
 
             alpha = alpha0 * decay_function
-
             sigma = sigma0 * decay_function
+
+            if alpha < FLOAT_EPS:
+                alpha = FLOAT_EPS
+
+            if sigma < FLOAT_EPS:
+                sigma = FLOAT_EPS
 
             ############################################################################################################
 
@@ -439,18 +453,18 @@ def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray
     # UPDATE WEIGHTS                                                                                                   #
     ####################################################################################################################
 
-    if density == 1.0:
+    eta = alpha * neighborhood_op
 
-        weights += alpha * np.expand_dims(neighborhood_op, -1) * (vector - weights)
+    ####################################################################################################################
 
-    else:
+    if density != 1.0:
 
-        eta = alpha * neighborhood_op
+        eta = np.minimum(eta, 1.0 - FLOAT_EPS)
 
-        eta = np.minimum(eta, 1.0 - 1.0e-12)
+        eta = 1.0 - np.exp(density * np.log1p(-eta))
 
-        eta_eff = 1.0 - np.exp(density * np.log1p(-eta))
+    ####################################################################################################################
 
-        weights += np.expand_dims(eta_eff, -1) * (vector - weights)
+    weights += np.expand_dims(eta, -1) * (vector - weights)
 
 ########################################################################################################################

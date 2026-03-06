@@ -189,17 +189,17 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        inv = 1.0 / sum_w
+        inv_sum_w = 1.0 / sum_w
 
         ################################################################################################################
 
         for j in range(dim):
 
-            cov_matrix[j, j] = m2_upper[j, j] * inv
+            cov_matrix[j, j] = m2_upper[j, j] * inv_sum_w
 
             for k in range(j + 1, dim):
 
-                v = m2_upper[j, k] * inv
+                v = m2_upper[j, k] * inv_sum_w
 
                 cov_matrix[j, k] = v
                 cov_matrix[k, j] = v

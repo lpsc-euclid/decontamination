@@ -465,6 +465,6 @@ def _train_step2(weights: np.ndarray, topography: np.ndarray, vector: np.ndarray
 
     ####################################################################################################################
 
-    weights += np.expand_dims(eta, -1) * (vector - weights)
+    weights += eta[:, np.newaxis] * (vector - weights)
 
 ########################################################################################################################

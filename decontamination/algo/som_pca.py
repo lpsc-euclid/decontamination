@@ -47,6 +47,10 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     def __init__(self, m: int, n: int, dim: int, dtype: typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]] = np.float32, topology: typing.Optional[str] = None):
 
+        if dim < 2:
+
+            raise ValueError('SOM_PCA requires dim >= 2.')
+
         ################################################################################################################
 
         super().__init__(m, n, dim, dtype, topology)
@@ -129,7 +133,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
             w = weights[i]
 
-            if w <= 0.0:
+            if (not np.isfinite(w)) or (w <= 0.0):
 
                 continue
 
@@ -338,8 +342,8 @@ class SOM_PCA(som_abstract.SOM_Abstract):
                     mean,
                     m2_upper,
                     delta,
-                    vectors.astype(np.float64),
-                    weights.astype(np.float64),
+                    vectors.astype(np.float64, copy = False),
+                    weights.astype(np.float64, copy = False),
                     self._dim
                 )
 
@@ -356,7 +360,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
                     mean,
                     m2_upper,
                     delta,
-                    vectors.astype(np.float64),
+                    vectors.astype(np.float64, copy = False),
                     np.ones(vectors.shape[0], dtype = np.float64),
                     self._dim
                 )
@@ -401,13 +405,13 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        self._cov_matrix[:] = cov_matrix64.astype(self._dtype)
+        self._cov_matrix[:] = cov_matrix64.astype(self._dtype, copy = False)
 
-        self._eigenvalues[:] = eigenvalues64.astype(self._dtype)
-        self._eigenvectors[:] = eigenvectors64.astype(self._dtype)
+        self._eigenvalues[:] = eigenvalues64.astype(self._dtype, copy = False)
+        self._eigenvectors[:] = eigenvectors64.astype(self._dtype, copy = False)
 
         ################################################################################################################
 
-        self._weights[:] = weights64.astype(self._dtype).reshape(self._weights.shape)
+        self._weights[:] = weights64.astype(self._dtype, copy = False).reshape(self._weights.shape)
 
 ########################################################################################################################

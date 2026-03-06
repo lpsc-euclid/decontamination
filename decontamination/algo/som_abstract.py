@@ -771,6 +771,10 @@ def _find_bmu_xpu(weights: np.ndarray, vector: np.ndarray, mn: int) -> int:
 
         distance = square_distance_xpu(weights[index], vector)
 
+        if distance != distance:
+
+            continue
+
         if min_distance > distance:
 
             min_distance = distance
@@ -833,7 +837,7 @@ def _compute_errors_xpu(errors: np.ndarray, weights: np.ndarray, topography: np.
 
             continue
 
-        if min_distance0 < min_distance1:
+        if min_distance1 > min_distance0:
 
             if min_index0 != min_index1:
 
@@ -843,7 +847,7 @@ def _compute_errors_xpu(errors: np.ndarray, weights: np.ndarray, topography: np.
             min_distance1 = min_distance0
             min_index1 = min_index0
 
-        elif min_index0 != min_index1 and min_distance0 < min_distance2:
+        elif min_index0 != min_index1 and min_distance2 > min_distance0:
 
             min_distance2 = min_distance0
             min_index2 = min_index0

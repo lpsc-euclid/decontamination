@@ -20,7 +20,7 @@ from . import dataset_to_generator_builder
 class Covariance(object):
 
     """
-    Covariance calculation running with constant memory usage.
+    Covariance calculation with constant memory usage.
 
     Parameters
     ----------

@@ -28,6 +28,12 @@ Self Organizing Maps (SOMs) are neural networks that transform high-dimensional 
 .. automodule:: decontamination.algo.hyparam_finder_som
    :members:
 
+Covariance
+----------
+
+.. automodule:: decontamination.algo.covariance
+   :members:
+
 Clustering
 ----------
 

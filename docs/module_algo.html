@@ -393,7 +393,7 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_pca.</span></span><span class="sig-name descname"><span class="pre">SOM_PCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.som_pca.SOM_PCA'"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract" title="decontamination.algo.som_abstract.SOM_Abstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">SOM_Abstract</span></code></a></p>
-<p>Self Organizing Maps that span the first two principal components. It runs with constant memory usage.</p>
+<p>Self Organizing Maps that span the first two principal components running with constant memory usage.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>A rule of thumb to set the size of the grid for a dimensionality reduction task is that it should contain <span class="math notranslate nohighlight">\(5\sqrt{N}\)</span> neurons where N is the number of samples in the dataset to analyze.</p>
@@ -472,7 +472,10 @@
 <td><p>Saves the trained neural network to a HDF5 file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.train" title="decontamination.algo.som_pca.SOM_PCA.train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></a>(dataset[, dataset_weights, ...])</p></td>
-<td><p>Trains the neural network.</p></td>
+<td><p>Trains the neural network from the given dataset.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.train_from_cov_matrix" title="decontamination.algo.som_pca.SOM_PCA.train_from_cov_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_from_cov_matrix</span></code></a>(cov_matrix[, ...])</p></td>
+<td><p>Trains the neural network from the given covariance matrix.</p></td>
 </tr>
 </tbody>
 </table>
@@ -499,13 +502,38 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.train">
 <span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_by_variance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_cdf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdf_gain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.train" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.som_pca.SOM_PCA.train'"></a></dt>
-<dd><p>Trains the neural network.</p>
+<dd><p>Trains the neural network from the given dataset.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Training dataset array or generator builder.</p>
 </dd>
 <dt><strong>dataset_weights</strong><span class="classifier">Union[np.ndarray, Callable], default: <strong>None</strong></span></dt><dd><p>Training dataset weight array or generator builder.</p>
+</dd>
+<dt><strong>min_weight</strong><span class="classifier">float, default: <strong>0.0</strong></span></dt><dd><p>Latent space minimum value.</p>
+</dd>
+<dt><strong>max_weight</strong><span class="classifier">float, default: <strong>1.0</strong></span></dt><dd><p>Latent space maximum value.</p>
+</dd>
+<dt><strong>scale_by_variance</strong><span class="classifier">bool</span></dt><dd><p>If <strong>True</strong>, scales the two principal directions by <span class="math notranslate nohighlight">\(\sqrt{\lambda}\)</span> (before the optional CDF mapping).</p>
+</dd>
+<dt><strong>apply_cdf</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, applies a per-component Gaussian CDF and rescales to <span class="math notranslate nohighlight">\([\mathrm{min\_weight},\mathrm{max\_weight}]\)</span>.</p>
+</dd>
+<dt><strong>cdf_gain</strong><span class="classifier">float, default: <strong>1.0</strong></span></dt><dd><p>When <strong>apply_cdf</strong> is enabled, gain applied in <span class="math notranslate nohighlight">\(\Phi(\mathrm{cdf\_gain}\times x/\sigma)\)</span>. Larger values increase saturation.</p>
+</dd>
+<dt><strong>show_progress_bar</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.som_pca.SOM_PCA.train_from_cov_matrix">
+<span class="sig-name descname"><span class="pre">train_from_cov_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cov_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_by_variance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_cdf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdf_gain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#decontamination.algo.som_pca.SOM_PCA.train_from_cov_matrix" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.som_pca.SOM_PCA.train_from_cov_matrix'"></a></dt>
+<dd><p>Trains the neural network from the given covariance matrix.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>cov_matrix</strong><span class="classifier">np.ndarray</span></dt><dd><p>Covariance matrix.</p>
 </dd>
 <dt><strong>min_weight</strong><span class="classifier">float, default: <strong>0.0</strong></span></dt><dd><p>Latent space minimum value.</p>
 </dd>
@@ -709,7 +737,7 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_online.SOM_Online">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_online.</span></span><span class="sig-name descname"><span class="pre">SOM_Online</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.som_online.SOM_Online" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.som_online.SOM_Online'"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract" title="decontamination.algo.som_abstract.SOM_Abstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">SOM_Abstract</span></code></a></p>
-<p>Self Organizing Maps (standard online implementation). It runs with constant memory usage.</p>
+<p>Self Organizing Maps (standard online implementation) running with constant memory usage.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>A rule of thumb to set the size of the grid for a dimensionality reduction task is that it should contain <span class="math notranslate nohighlight">\(5\sqrt{N}\)</span> neurons where N is the number of samples in the dataset to analyze.</p>
@@ -1026,7 +1054,7 @@
 <dt class="sig sig-object py" id="decontamination.algo.som_batch.SOM_Batch">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">decontamination.algo.som_batch.</span></span><span class="sig-name descname"><span class="pre">SOM_Batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">&lt;numeric</span> <span class="pre">type&gt;</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;class</span> <span class="pre">'np.float32'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.som_batch.SOM_Batch" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.som_batch.SOM_Batch'"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#decontamination.algo.som_abstract.SOM_Abstract" title="decontamination.algo.som_abstract.SOM_Abstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">SOM_Abstract</span></code></a></p>
-<p>Self Organizing Maps (standard batch implementation). It runs with constant memory usage.</p>
+<p>Self Organizing Maps (standard batch implementation) running with constant memory usage.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>A rule of thumb to set the size of the grid for a dimensionality reduction task is that it should contain <span class="math notranslate nohighlight">\(5\sqrt{N}\)</span> neurons where N is the number of samples in the dataset to analyze.</p>
@@ -1424,6 +1452,31 @@
 </dd></dl>
 </dd></dl>
 </section>
+<section id="module-decontamination.algo.covariance">
+<span id="covariance"></span><h2>Covariance<a class="headerlink" href="#module-decontamination.algo.covariance" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#module-decontamination.algo.covariance'"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="decontamination.algo.covariance.Covariance">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">decontamination.algo.covariance.</span></span><span class="sig-name descname"><span class="pre">Covariance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decontamination.algo.covariance.Covariance" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.covariance.Covariance'"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Covariance calculation (Welford method) running with constant memory usage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>Dimensionality of the input data.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>covariance</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+</section>
 <section id="module-decontamination.algo.clustering">
 <span id="clustering"></span><h2>Clustering<a class="headerlink" href="#module-decontamination.algo.clustering" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#module-decontamination.algo.clustering'"></a></h2>
 <dl class="py class">
@@ -1645,6 +1698,7 @@
 <li><a :data-current="activeSection === '#decontamination.algo.som_pca.SOM_PCA.eigenvectors'" class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.eigenvectors"><code class="docutils literal notranslate"><span class="pre">SOM_PCA.eigenvectors</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.algo.som_pca.SOM_PCA.orders'" class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.orders"><code class="docutils literal notranslate"><span class="pre">SOM_PCA.orders</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.algo.som_pca.SOM_PCA.train'" class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.train"><code class="docutils literal notranslate"><span class="pre">SOM_PCA.train()</span></code></a></li>
+<li><a :data-current="activeSection === '#decontamination.algo.som_pca.SOM_PCA.train_from_cov_matrix'" class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.train_from_cov_matrix"><code class="docutils literal notranslate"><span class="pre">SOM_PCA.train_from_cov_matrix()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.algo.som_pca.SOM_PCA.centroids'" class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.centroids"><code class="docutils literal notranslate"><span class="pre">SOM_PCA.centroids</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.algo.som_pca.SOM_PCA.compute_errors'" class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.compute_errors"><code class="docutils literal notranslate"><span class="pre">SOM_PCA.compute_errors()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.algo.som_pca.SOM_PCA.dim'" class="reference internal" href="#decontamination.algo.som_pca.SOM_PCA.dim"><code class="docutils literal notranslate"><span class="pre">SOM_PCA.dim</span></code></a></li>
@@ -1720,6 +1774,10 @@
 <li><a :data-current="activeSection === '#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.find'" class="reference internal" href="#decontamination.algo.hyparam_finder_som.HypParamFinder_SOM.find"><code class="docutils literal notranslate"><span class="pre">HypParamFinder_SOM.find()</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-decontamination.algo.covariance'" class="reference internal" href="#module-decontamination.algo.covariance">Covariance</a><ul>
+<li><a :data-current="activeSection === '#decontamination.algo.covariance.Covariance'" class="reference internal" href="#decontamination.algo.covariance.Covariance"><code class="docutils literal notranslate"><span class="pre">Covariance</span></code></a></li>
 </ul>
 </li>
 <li><a :data-current="activeSection === '#module-decontamination.algo.clustering'" class="reference internal" href="#module-decontamination.algo.clustering">Clustering</a><ul>

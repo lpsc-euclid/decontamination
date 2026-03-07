@@ -20,7 +20,12 @@ from . import dataset_to_generator_builder
 class Covariance(object):
 
     """
-    Covariance.
+    Covariance calculation (Welford method) running with constant memory usage.
+
+    Parameters
+    ----------
+    dim : int
+        Dimensionality of the input data.
     """
 
     def __init__(self, dim: int):

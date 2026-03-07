@@ -6,15 +6,13 @@
 # license: CeCILL-C
 ########################################################################################################################
 
-import gc
 import math
-import tqdm
 import typing
 
 import numpy as np
 import numba as nb
 
-from . import som_abstract, dataset_to_generator_builder
+from . import covariance, som_abstract
 
 ########################################################################################################################
 
@@ -57,6 +55,10 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
+        self._covariance = covariance.Covariance(dim)
+
+        ################################################################################################################
+
         self._scale_by_variance = False
 
         self._apply_cdf = False
@@ -65,11 +67,11 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        self._cov_matrix = np.zeros((dim, dim), dtype = self._dtype)
+        self._cov_matrix = np.zeros((dim, dim), dtype = np.float64)
 
-        self._eigenvalues = np.zeros((dim, ), dtype = self._dtype)
+        self._eigenvalues = np.zeros((dim, ), dtype = np.float64)
 
-        self._eigenvectors = np.zeros((dim, dim), dtype = self._dtype)
+        self._eigenvectors = np.zeros((dim, dim), dtype = np.float64)
 
         self._orders = np.zeros((dim, ), dtype = np.int64)
 
@@ -118,95 +120,6 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         """Order of importance of the components."""
 
         return self._orders
-
-    ####################################################################################################################
-
-    @staticmethod
-    @nb.njit()
-    def _update_welford_cov_sums(sum_w: float, mean: np.ndarray, m2_upper: np.ndarray, delta: np.ndarray, vectors: np.ndarray, weights: np.ndarray, dim: int) -> float:
-
-        ################################################################################################################
-
-        for i in range(vectors.shape[0]):
-
-            ############################################################################################################
-
-            w = weights[i]
-
-            if (not np.isfinite(w)) or (w <= 0.0):
-
-                continue
-
-            x = vectors[i]
-
-            ############################################################################################################
-
-            if np.all(np.isfinite(x)):
-
-                sum_w_new = sum_w + w
-
-                a = w / sum_w_new
-
-                ########################################################################################################
-
-                for d in range(dim):
-
-                    delta[d] = x[d] - mean[d]
-
-                ########################################################################################################
-
-                for d in range(dim):
-
-                    mean[d] += a * delta[d]
-
-                ########################################################################################################
-
-                for j in range(dim):
-
-                    dj = delta[j]
-
-                    for k in range(j, dim):
-
-                        m2_upper[j, k] += w * dj * (x[k] - mean[k])
-
-                ########################################################################################################
-
-                sum_w = sum_w_new
-
-        ################################################################################################################
-
-        return sum_w
-
-    ####################################################################################################################
-
-    @staticmethod
-    @nb.njit()
-    def _finalize_welford_cov(m2_upper: np.ndarray, sum_w: float, dim: int) -> np.ndarray:
-
-        ################################################################################################################
-
-        cov_matrix = np.empty((dim, dim), dtype = np.float64)
-
-        ################################################################################################################
-
-        inv_sum_w = 1.0 / sum_w
-
-        ################################################################################################################
-
-        for j in range(dim):
-
-            cov_matrix[j, j] = m2_upper[j, j] * inv_sum_w
-
-            for k in range(j + 1, dim):
-
-                v = m2_upper[j, k] * inv_sum_w
-
-                cov_matrix[j, k] = v
-                cov_matrix[k, j] = v
-
-        ################################################################################################################
-
-        return cov_matrix
 
     ####################################################################################################################
 
@@ -285,7 +198,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
     def train(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, min_weight: float = 0.0, max_weight: float = 1.0, scale_by_variance: bool = False, apply_cdf: bool = False, cdf_gain: float = 1.0, show_progress_bar: bool = False) -> None:
 
         """
-        Trains the neural network.
+        Trains the neural network from the given dataset.
 
         Parameters
         ----------
@@ -293,6 +206,47 @@ class SOM_PCA(som_abstract.SOM_Abstract):
             Training dataset array or generator builder.
         dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
             Training dataset weight array or generator builder.
+        min_weight : float, default: **0.0**
+            Latent space minimum value.
+        max_weight : float, default: **1.0**
+            Latent space maximum value.
+        scale_by_variance : bool
+            If **True**, scales the two principal directions by :math:`\\sqrt{\\lambda}` (before the optional CDF mapping).
+        apply_cdf : bool, default: **False**
+            If **True**, applies a per-component Gaussian CDF and rescales to :math:`[\\mathrm{min\\_weight},\\mathrm{max\\_weight}]`.
+        cdf_gain : float, default: **1.0**
+            When **apply_cdf** is enabled, gain applied in :math:`\\Phi(\\mathrm{cdf\\_gain}\\times x/\\sigma)`. Larger values increase saturation.
+        show_progress_bar : bool, default: **False**
+            Specifies whether to display a progress bar.
+        """
+
+        ################################################################################################################
+
+        cov_matrix = self._covariance.covariance(dataset, dataset_weights, show_progress_bar = show_progress_bar)
+
+        ################################################################################################################
+
+        self.train_from_cov_matrix(
+            cov_matrix,
+            min_weight = min_weight,
+            max_weight = max_weight,
+            scale_by_variance = scale_by_variance,
+            apply_cdf = apply_cdf,
+            cdf_gain = cdf_gain,
+            show_progress_bar = show_progress_bar
+        )
+
+    ####################################################################################################################
+
+    def train_from_cov_matrix(self, cov_matrix: np.ndarray, min_weight: float = 0.0, max_weight: float = 1.0, scale_by_variance: bool = False, apply_cdf: bool = False, cdf_gain: float = 1.0, show_progress_bar: bool = False) -> None:
+
+        """
+        Trains the neural network from the given covariance matrix.
+
+        Parameters
+        ----------
+        cov_matrix : np.ndarray
+            Covariance matrix.
         min_weight : float, default: **0.0**
             Latent space minimum value.
         max_weight : float, default: **1.0**
@@ -317,78 +271,12 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        dataset_generator_builder = dataset_to_generator_builder(    dataset    )
-        weight_generator_builder = dataset_to_generator_builder(dataset_weights)
-
-        ################################################################################################################
-
-        total_w = 0.0
-
-        mean = np.zeros((self._dim, ), dtype = np.float64)
-        m2_upper = np.zeros((self._dim, self._dim, ), dtype = np.float64)
-        delta = np.empty((self._dim, ), dtype = np.float64)
-
-        ################################################################################################################
-
-        if weight_generator_builder is not None:
-
-            dataset_generator = dataset_generator_builder()
-            weight_generator = weight_generator_builder()
-
-            for vectors, weights in tqdm.tqdm(zip(dataset_generator(), weight_generator()), disable = not show_progress_bar):
-
-                total_w = SOM_PCA._update_welford_cov_sums(
-                    total_w,
-                    mean,
-                    m2_upper,
-                    delta,
-                    vectors.astype(np.float64, copy = False),
-                    weights.astype(np.float64, copy = False),
-                    self._dim
-                )
-
-                gc.collect()
-
-        else:
-
-            dataset_generator = dataset_generator_builder()
-
-            for vectors in tqdm.tqdm(dataset_generator(), disable = not show_progress_bar):
-
-                total_w = SOM_PCA._update_welford_cov_sums(
-                    total_w,
-                    mean,
-                    m2_upper,
-                    delta,
-                    vectors.astype(np.float64, copy = False),
-                    np.ones(vectors.shape[0], dtype = np.float64),
-                    self._dim
-                )
-
-                gc.collect()
-
-        ################################################################################################################
-
-        if total_w > 0.0:
-
-            self._scale_by_variance = scale_by_variance
-
-            self._apply_cdf = apply_cdf
-
-            self._cdf_gain = cdf_gain
-
-        else:
-
-            raise ValueError('Empty dataset or total weight is zero.')
-
-        ################################################################################################################
-
-        cov_matrix64 = SOM_PCA._finalize_welford_cov(m2_upper, total_w, self._dim)
+        self._cov_matrix[:] = cov_matrix
 
         ################################################################################################################
 
         eigenvalues64, eigenvectors64, orders64, weights64 = SOM_PCA._diag_cov_matrix(
-            cov_matrix64,
+            self._cov_matrix,
             min_weight,
             max_weight,
             self._m,
@@ -403,12 +291,8 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         self._orders[:] = orders64
 
-        ################################################################################################################
-
-        self._cov_matrix[:] = cov_matrix64.astype(self._dtype, copy = False)
-
-        self._eigenvalues[:] = eigenvalues64.astype(self._dtype, copy = False)
-        self._eigenvectors[:] = eigenvectors64.astype(self._dtype, copy = False)
+        self._eigenvalues[:] = eigenvalues64
+        self._eigenvectors[:] = eigenvectors64
 
         ################################################################################################################
 

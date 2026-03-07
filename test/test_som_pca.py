@@ -25,7 +25,14 @@ som = decontamination.SOM_PCA(4, 4, 4, dtype = np.float32, topology = 'square')
 
 def test_centroids_scale_by_variance_false():
 
-    expected = np.array([
+    expected_cov_matrix = np.array([
+        [0.08333389, -0.0013265, -0.00008147, 0.00040532],
+        [-0.0013265, 0.08383795, -0.00023583, -0.00005658],
+        [-0.00008147, -0.00023583, 0.08299325, 0.00034863],
+        [0.00040532, -0.00005658, 0.00034863, 0.0824191],
+    ])
+
+    expected_centroids = np.array([
         [[0.7994139, -0.78366053, -0.83449596, -0.22456639],
          [0.68968296, -0.7658925, -0.22076944, 0.0108643],
          [0.57995194, -0.74812454, 0.3929571, 0.24629499],
@@ -49,15 +56,24 @@ def test_centroids_scale_by_variance_false():
 
     som.train(data, min_weight = -1.0, max_weight = +1.0, scale_by_variance = False)
 
+    #print(decontamination.array_to_string(som.cov_matrix))
     #print(decontamination.array_to_string(som.centroids))
 
-    assert np.allclose(som.centroids, expected)
+    assert np.allclose(som.cov_matrix, expected_cov_matrix)
+    assert np.allclose(som.centroids, expected_centroids)
 
 ####################################################################################################################
 
 def test_centroids_scale_by_variance_true():
 
-    expected = np.array([
+    expected_cov_matrix = np.array([
+        [0.08333389, -0.0013265, -0.00008147, 0.00040532],
+        [-0.0013265, 0.08383795, -0.00023583, -0.00005658],
+        [-0.00008147, -0.00023583, 0.08299325, 0.00034863],
+        [0.00040532, -0.00005658, 0.00034863, 0.0824191],
+    ])
+
+    expected_centroids = np.array([
         [[0.77641857, -0.6989547, -0.6326365, -0.44679594],
          [0.7069516, -0.6879809, -0.1878992, 0.02605042],
          [0.6243047, -0.67674655, 0.32988447, 0.48963928],
@@ -81,8 +97,10 @@ def test_centroids_scale_by_variance_true():
 
     som.train(data, min_weight = -1.0, max_weight = +1.0, scale_by_variance = True, apply_cdf = True, cdf_gain = 1.0)
 
+    #print(decontamination.array_to_string(som.cov_matrix))
     #print(decontamination.array_to_string(som.centroids))
 
-    assert np.allclose(som.centroids, expected)
+    assert np.allclose(som.cov_matrix, expected_cov_matrix)
+    assert np.allclose(som.centroids, expected_centroids)
 
 ########################################################################################################################

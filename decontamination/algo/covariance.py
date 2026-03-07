@@ -21,16 +21,7 @@ class Covariance(object):
 
     """
     Covariance calculation with constant memory usage.
-
-    Parameters
-    ----------
-    dim : int
-        Dimensionality of the input data.
     """
-
-    def __init__(self, dim: int):
-
-        self._dim = dim
 
     ####################################################################################################################
 
@@ -125,13 +116,16 @@ class Covariance(object):
 
     ####################################################################################################################
 
-    def compute(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, show_progress_bar: bool = False):
+    @staticmethod
+    def compute(dim: int, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, show_progress_bar: bool = False):
 
         """
         Computes the covariance matrix (Welford method) of the given dataset.
 
         Parameters
         ----------
+        dim : int
+            Dimensionality of the input data.
         dataset : typing.Union[np.ndarray, typing.Callable]
             Dataset array or generator builder.
         dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
@@ -153,9 +147,9 @@ class Covariance(object):
 
         total_w = 0.0
 
-        mean = np.zeros((self._dim, ), dtype = np.float64)
-        m2_upper = np.zeros((self._dim, self._dim, ), dtype = np.float64)
-        delta = np.empty((self._dim, ), dtype = np.float64)
+        mean = np.zeros((dim, ), dtype = np.float64)
+        m2_upper = np.zeros((dim, dim, ), dtype = np.float64)
+        delta = np.empty((dim, ), dtype = np.float64)
 
         ################################################################################################################
 
@@ -173,7 +167,7 @@ class Covariance(object):
                     delta,
                     vectors.astype(np.float64, copy = False),
                     weights.astype(np.float64, copy = False),
-                    self._dim
+                    dim
                 )
 
                 gc.collect()
@@ -191,7 +185,7 @@ class Covariance(object):
                     delta,
                     vectors.astype(np.float64, copy = False),
                     np.ones(vectors.shape[0], dtype = np.float64),
-                    self._dim
+                    dim
                 )
 
                 gc.collect()
@@ -200,7 +194,7 @@ class Covariance(object):
 
         if total_w > 0.0:
 
-            return Covariance._finalize_welford_cov(m2_upper, total_w, self._dim)
+            return Covariance._finalize_welford_cov(m2_upper, total_w, dim)
 
         else:
 

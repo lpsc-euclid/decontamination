@@ -55,10 +55,6 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        self._covariance = covariance.Covariance(dim)
-
-        ################################################################################################################
-
         self._scale_by_variance = False
 
         self._apply_cdf = False
@@ -222,7 +218,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        cov_matrix = self._covariance.compute(dataset, dataset_weights, show_progress_bar = show_progress_bar)
+        cov_matrix = covariance.Covariance.compute(self._dim, dataset, dataset_weights, show_progress_bar = show_progress_bar)
 
         ################################################################################################################
 

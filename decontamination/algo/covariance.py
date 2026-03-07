@@ -20,7 +20,7 @@ from . import dataset_to_generator_builder
 class Covariance(object):
 
     """
-    Covariance calculation (Welford method) running with constant memory usage.
+    Covariance calculation running with constant memory usage.
 
     Parameters
     ----------
@@ -60,8 +60,6 @@ class Covariance(object):
 
                 sum_w_new = sum_w + w
 
-                a = w / sum_w_new
-
                 ########################################################################################################
 
                 for d in range(dim):
@@ -69,6 +67,8 @@ class Covariance(object):
                     delta[d] = x[d] - mean[d]
 
                 ########################################################################################################
+
+                a = w / sum_w_new
 
                 for d in range(dim):
 
@@ -126,7 +126,24 @@ class Covariance(object):
     ####################################################################################################################
 
     def covariance(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, show_progress_bar: bool = False):
-        
+
+        """
+        Computes the covariance matrix (Welford method) of the given dataset.
+
+        Parameters
+        ----------
+        dataset : typing.Union[np.ndarray, typing.Callable]
+            Dataset array or generator builder.
+        dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
+            Dataset weight array or generator builder.
+        show_progress_bar : bool, default: **False**
+            Specifies whether to display a progress bar.
+
+        Returns
+        -------
+        The covariance matrix of the given dataset.
+        """
+
         ################################################################################################################
 
         dataset_generator_builder = dataset_to_generator_builder(    dataset    )

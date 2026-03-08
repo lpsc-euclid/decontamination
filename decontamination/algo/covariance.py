@@ -120,7 +120,7 @@ class Covariance(object):
     def compute(dim: int, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, show_progress_bar: bool = False):
 
         """
-        Computes the covariance matrix (Welford method) of the given dataset.
+        Computes the covariance matrix of the given dataset using Welford's algorithm.
 
         Parameters
         ----------

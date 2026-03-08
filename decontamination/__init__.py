@@ -50,6 +50,8 @@ from .algo.regression_basic import Regression_Basic
 
 from .algo.hyparam_finder_som import HypParamFinder_SOM
 
+from .algo.covariance import Covariance
+
 from .algo.clustering import Clustering
 
 from .algo.selection import Selection
@@ -121,6 +123,7 @@ __all__ = [
     'SOM_Abstract', 'SOM_PCA', 'SOM_Batch', 'SOM_Online',
     'Regression_Abstract', 'Regression_Basic',
     'HypParamFinder_SOM',
+    'Covariance',
     'Clustering',
     'Selection',
     'get_bounding_box', 'get_full_sky', 'catalog_to_number_density',

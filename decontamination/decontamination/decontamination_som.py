@@ -539,13 +539,15 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
     ####################################################################################################################
 
     # noinspection PyArgumentList
-    def train(self, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, use_best_epoch: bool = True, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> None:
+    def train(self, cov_matrix: typing.Optional[np.ndarray] = None, n_epochs: typing.Optional[int] = None, n_vectors: typing.Optional[int] = None, use_best_epoch: bool = True, stop_quantization_error: typing.Optional[float] = None, stop_topographic_error: typing.Optional[float] = None, show_progress_bar: bool = True, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> None:
 
         """
         Trains the neural network. Use either the "*number of epochs*" training method by specifying `n_epochs` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_epochs}\\}-1`) or the "*number of vectors*" training method by specifying `n_vectors` (then :math:`e\\equiv 0\\dots\\{e_\\mathrm{tot}\\equiv\\mathrm{n\\_vectors}\\}-1`).
 
         Parameters
         ----------
+        cov_matrix : np.ndarray, default: **None**
+            Optional covariance matrix precomputed using class :class:`Covariance <decontamination.algo.covariance.Covariance>`.
         n_epochs : int, default: **None**
             Optional number of epochs to train for.
         n_vectors : int, default: **None**
@@ -568,7 +570,13 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         # PCA TRAINING                                                                                                 #
         ################################################################################################################
 
-        self._pca.train(self._footprint_systematics, dataset_weights = self._corrected_galaxy_number_density, min_weight = 0.0, max_weight = 1.0)
+        if cov_matrix is not None:
+
+            self._pca.train_from_cov_matrix(cov_matrix, min_weight = 0.0, max_weight = 1.0)
+
+        else:
+
+            self._pca.train(self._footprint_systematics, dataset_weights = self._corrected_galaxy_number_density, min_weight = 0.0, max_weight = 1.0)
 
         ################################################################################################################
         # SOM TRAINING                                                                                                 #

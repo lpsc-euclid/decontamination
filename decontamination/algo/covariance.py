@@ -215,7 +215,7 @@ class Covariance(object):
         cov_matrix : np.ndarray
             The covariance matrix to be diagonalized.
         sort: bool, default: **True**
-            Sort eigenvalues and eigenvectors by eigenvalue.
+            If **True**, eigenvalues and eigenvectors are sorted by decreasing eigenvalue.
 
         Returns
         -------

@@ -237,7 +237,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
     def train_from_cov_matrix(self, cov_matrix: np.ndarray, min_weight: float = 0.0, max_weight: float = 1.0, scale_by_variance: bool = False, apply_cdf: bool = False, cdf_gain: float = 1.0, show_progress_bar: bool = False) -> None:
 
         """
-        Trains the neural network from the given covariance matrix.
+        Trains the neural network from the given covariance matrix precomputed using class :class:`Covariance <decontamination.algo.covariance.Covariance>`
 
         Parameters
         ----------

@@ -135,7 +135,8 @@ class Covariance(object):
 
         Returns
         -------
-        The covariance matrix of the given dataset.
+        np.ndarray
+            The covariance matrix of the given dataset.
         """
 
         ################################################################################################################
@@ -200,4 +201,45 @@ class Covariance(object):
 
             raise ValueError('Empty dataset or total weight is zero.')
 
-#######################################################################################################################
+    ####################################################################################################################
+
+    @staticmethod
+    @nb.njit()
+    def diagonalize(cov_matrix: np.ndarray, sort: bool = True) -> typing.Tuple[np.ndarray, np.ndarray]:
+
+        """
+        Diagonalizes the given covariance matrix.
+
+        Parameters
+        ----------
+        cov_matrix : np.ndarray
+            The covariance matrix to be diagonalized.
+        sort: bool, default: **True**
+            Sort by eigenvalue.
+
+        Returns
+        -------
+        np.ndarray
+            The eigenvalues.
+        np.ndarray
+            The eigenvectors.
+        """
+
+        ################################################################################################################
+
+        eigenvalues, eigenvectors = np.linalg.eigh(cov_matrix)
+
+        ################################################################################################################
+
+        if sort:
+
+            orders = np.argsort(eigenvalues)[:: -1]
+
+            eigenvalues = np.take(eigenvalues, orders, axis = 0)
+            eigenvectors = np.take(eigenvectors, orders, axis = 1)
+
+        ################################################################################################################
+
+        return eigenvalues, eigenvectors
+
+########################################################################################################################

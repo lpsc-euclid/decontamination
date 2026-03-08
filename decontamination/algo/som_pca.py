@@ -16,6 +16,10 @@ from . import covariance, som_abstract
 
 ########################################################################################################################
 
+covariance_diagonalize = covariance.Covariance.diagonalize
+
+########################################################################################################################
+
 # noinspection PyPep8Naming, DuplicatedCode
 class SOM_PCA(som_abstract.SOM_Abstract):
 
@@ -69,8 +73,6 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         self._eigenvectors = np.zeros((dim, dim), dtype = np.float64)
 
-        self._orders = np.zeros((dim, ), dtype = np.int64)
-
         ################################################################################################################
 
         self._header_extra = {
@@ -110,15 +112,6 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
     ####################################################################################################################
 
-    @property
-    def orders(self) -> np.ndarray:
-
-        """Order of importance of the components."""
-
-        return self._orders
-
-    ####################################################################################################################
-
     @staticmethod
     @nb.njit()
     def _diag_cov_matrix(cov_matrix: np.ndarray, min_weight: float, max_weight: float, m: int, n: int, dim: int, scale_by_variance: bool, apply_cdf: bool, cdf_gain: float) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
@@ -129,25 +122,20 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        eigenvalues, eigenvectors = np.linalg.eigh(cov_matrix)
-
-        orders = np.argsort(eigenvalues)[:: -1]
-
-        order0 = orders[0]
-        order1 = orders[1]
+        eigenvalues, eigenvectors = covariance_diagonalize(cov_matrix, sort = True)
 
         ################################################################################################################
 
-        v0 = eigenvectors[:, order0]
-        v1 = eigenvectors[:, order1]
+        v0 = eigenvectors[:, 0]
+        v1 = eigenvectors[:, 1]
 
         if scale_by_variance:
 
-            ev0 = eigenvalues[order0]
+            ev0 = eigenvalues[0]
             if ev0 > 0.0:
                 v0 = v0 * np.sqrt(ev0)
 
-            ev1 = eigenvalues[order1]
+            ev1 = eigenvalues[1]
             if ev1 > 0.0:
                 v1 = v1 * np.sqrt(ev1)
 
@@ -187,7 +175,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        return eigenvalues, eigenvectors, orders, weights
+        return eigenvalues, eigenvectors, weights
 
     ####################################################################################################################
 
@@ -271,7 +259,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        eigenvalues64, eigenvectors64, orders64, weights64 = SOM_PCA._diag_cov_matrix(
+        eigenvalues64, eigenvectors64, weights64 = SOM_PCA._diag_cov_matrix(
             self._cov_matrix,
             min_weight,
             max_weight,
@@ -284,8 +272,6 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         )
 
         ################################################################################################################
-
-        self._orders[:] = orders64
 
         self._eigenvalues[:] = eigenvalues64
         self._eigenvectors[:] = eigenvectors64

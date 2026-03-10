@@ -1468,6 +1468,9 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#decontamination.algo.covariance.Covariance.diagonalize" title="decontamination.algo.covariance.Covariance.diagonalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diagonalize</span></code></a>(cov_matrix[, sort])</p></td>
 <td><p>Diagonalizes the given covariance matrix.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#decontamination.algo.covariance.Covariance.project_pca" title="decontamination.algo.covariance.Covariance.project_pca"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project_pca</span></code></a>(dataset, eigenvectors)</p></td>
+<td><p>Projects a dataset onto the Principal Component Analysis (PCA) basis.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py method">
@@ -1497,7 +1500,7 @@
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="decontamination.algo.covariance.Covariance.diagonalize">
-<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">diagonalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cov_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.algo.covariance.Covariance.diagonalize" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.covariance.Covariance.diagonalize'"></a></dt>
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">diagonalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cov_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#decontamination.algo.covariance.Covariance.diagonalize" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.covariance.Covariance.diagonalize'"></a></dt>
 <dd><p>Diagonalizes the given covariance matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1514,7 +1517,20 @@
 </dd>
 <dt>np.ndarray</dt><dd><p>The eigenvectors. If <strong>sort</strong> is <strong>True</strong>, eigenvectors are sorted.</p>
 </dd>
-<dt>Optional[np.ndarray]</dt><dd><p>If <strong>sort</strong> is <strong>True</strong>, order of importance of the components, else <strong>None</strong>.</p>
+<dt>np.ndarray</dt><dd><p>If <strong>sort</strong> is <strong>True</strong>, order of importance of the components, else <span class="math notranslate nohighlight">\([0,1,\dots,\mathrm{dim}-1]\)</span>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="decontamination.algo.covariance.Covariance.project_pca">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">project_pca</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eigenvectors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.covariance.Covariance.project_pca" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.covariance.Covariance.project_pca'"></a></dt>
+<dd><p>Projects a dataset onto the Principal Component Analysis (PCA) basis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>np.ndarray</dt><dd><p>The dataset projected onto the PCA basis.</p>
 </dd>
 </dl>
 </dd>
@@ -1825,6 +1841,7 @@
 <li><a :data-current="activeSection === '#decontamination.algo.covariance.Covariance'" class="reference internal" href="#decontamination.algo.covariance.Covariance"><code class="docutils literal notranslate"><span class="pre">Covariance</span></code></a><ul>
 <li><a :data-current="activeSection === '#decontamination.algo.covariance.Covariance.compute'" class="reference internal" href="#decontamination.algo.covariance.Covariance.compute"><code class="docutils literal notranslate"><span class="pre">Covariance.compute()</span></code></a></li>
 <li><a :data-current="activeSection === '#decontamination.algo.covariance.Covariance.diagonalize'" class="reference internal" href="#decontamination.algo.covariance.Covariance.diagonalize"><code class="docutils literal notranslate"><span class="pre">Covariance.diagonalize()</span></code></a></li>
+<li><a :data-current="activeSection === '#decontamination.algo.covariance.Covariance.project_pca'" class="reference internal" href="#decontamination.algo.covariance.Covariance.project_pca"><code class="docutils literal notranslate"><span class="pre">Covariance.project_pca()</span></code></a></li>
 </ul>
 </li>
 </ul>

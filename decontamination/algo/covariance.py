@@ -205,7 +205,7 @@ class Covariance(object):
 
     @staticmethod
     @nb.njit()
-    def diagonalize(cov_matrix: np.ndarray, sort: bool = True) -> typing.Tuple[np.ndarray, np.ndarray, typing.Optional[np.ndarray]]:
+    def diagonalize(cov_matrix: np.ndarray, sort: bool = True) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
         """
         Diagonalizes the given covariance matrix.
@@ -223,9 +223,13 @@ class Covariance(object):
             The eigenvalues. If **sort** is **True**, eigenvalues are sorted.
         np.ndarray
             The eigenvectors. If **sort** is **True**, eigenvectors are sorted.
-        typing.Optional[np.ndarray]
-            If **sort** is **True**, order of importance of the components, else **None**.
+        np.ndarray
+            If **sort** is **True**, order of importance of the components, else :math:`[0,1,\\dots,\\mathrm{dim}-1]`.
         """
+
+        if cov_matrix.shape[0] != cov_matrix.shape[1]:
+
+            raise ValueError('Input covariance matrix is not square.')
 
         ################################################################################################################
 
@@ -233,19 +237,43 @@ class Covariance(object):
 
         ################################################################################################################
 
-        if not sort:
-
-            orders = None
-
-        else:
+        if sort:
 
             orders = np.argsort(eigenvalues)[:: -1]
 
             eigenvalues = np.take(eigenvalues, orders, axis = 0)
             eigenvectors = np.take(eigenvectors, orders, axis = 1)
 
+        else:
+
+            orders = np.arange(cov_matrix.shape[0], dtype = np.int64)
+
         ################################################################################################################
 
         return eigenvalues, eigenvectors, orders
+
+    ####################################################################################################################
+
+    @staticmethod
+    @nb.njit()
+    def project_pca(dataset: np.ndarray, eigenvectors: np.ndarray) -> np.ndarray:
+
+        """
+        Projects a dataset onto the Principal Component Analysis (PCA) basis.
+
+        Parameters:
+        -----------
+        dataset : np.ndarray
+            Input dataset of shape :math:`(n,\\mathrm{dim})`.
+        eigenvectors : np.ndarray
+            Eigenvector matrix of shape :math:`(\\mathrm{dim},\\mathrm{dim})`.
+
+        Returns
+        -------
+        np.ndarray
+            The dataset projected onto the PCA basis.
+        """
+
+        return np.dot(dataset, np.linalg.inv(eigenvectors).T)
 
 ########################################################################################################################

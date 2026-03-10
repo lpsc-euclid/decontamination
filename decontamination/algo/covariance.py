@@ -205,7 +205,7 @@ class Covariance(object):
 
     @staticmethod
     @nb.njit()
-    def diagonalize(cov_matrix: np.ndarray, sort: bool = True) -> typing.Tuple[np.ndarray, np.ndarray]:
+    def diagonalize(cov_matrix: np.ndarray, sort: bool = True) -> typing.Tuple[np.ndarray, np.ndarray, typing.Optional[np.ndarray]]:
 
         """
         Diagonalizes the given covariance matrix.
@@ -223,6 +223,8 @@ class Covariance(object):
             The eigenvalues.
         np.ndarray
             The eigenvectors.
+        typing.Optional[np.ndarray]
+            If `sort` is **True**, order of importance of the components, else **None**.
         """
 
         ################################################################################################################
@@ -231,7 +233,11 @@ class Covariance(object):
 
         ################################################################################################################
 
-        if sort:
+        if not sort:
+
+            orders = None
+
+        else:
 
             orders = np.argsort(eigenvalues)[:: -1]
 
@@ -240,6 +246,6 @@ class Covariance(object):
 
         ################################################################################################################
 
-        return eigenvalues, eigenvectors
+        return eigenvalues, eigenvectors, orders
 
 ########################################################################################################################

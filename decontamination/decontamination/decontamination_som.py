@@ -221,7 +221,7 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
     @property
     def weights(self) -> np.ndarray:
 
-        """Weights in the latent space with the shape `[m * n, dim]`."""
+        """Weights in the latent space with the shape :math:`[\\mathrm{m}\\times\\mathrm{n},\\mathrm{dim}]`."""
 
         return self._som.weights
 
@@ -230,7 +230,7 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
     @property
     def centroids(self) -> np.ndarray:
 
-        """Weights in the latent space with the shape `[m, n, dim]`."""
+        """Weights in the latent space with the shape :math:`[\\mathrm{m},\\mathrm{n},\\mathrm{dim}]`."""
 
         return self._som.centroids
 
@@ -553,7 +553,7 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
         n_vectors : int, default: **None**
             Optional number of vectors to train for.
         use_best_epoch : bool, default: **True**
-            ???
+            If **True**, keep the weights from the epoch with the lowest quantization error instead of the last epoch.
         stop_quantization_error : float, default: **None**
             Stop the training if quantization_error < stop_quantization_error.
         stop_topographic_error : float, default: **None**
@@ -729,9 +729,9 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
 
         Parameters
         ----------
-        density: float, default: **20**
+        density : float, default: **20**
             ???
-        seed: int, default: **None**
+        seed : int, default: **None**
             ???
         """
 
@@ -746,9 +746,9 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
 
         Parameters
         ----------
-        density: float, default: **20**
+        density : float, default: **20**
             ???
-        seed: int, default: **None**
+        seed : int, default: **None**
             ???
         """
 
@@ -763,9 +763,9 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
 
         Parameters
         ----------
-        density: float, default: **20**
+        density : float, default: **20**
             ???
-        seed: int, default: **None**
+        seed : int, default: **None**
             ???
         """
 
@@ -780,9 +780,9 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
 
         Parameters
         ----------
-        density: float, default: **20**
+        density : float, default: **20**
             ???
-        seed: int, default: **None**
+        seed : int, default: **None**
             ???
         """
 

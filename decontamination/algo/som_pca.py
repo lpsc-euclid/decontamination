@@ -198,9 +198,9 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         Parameters
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
-            Training dataset array or generator builder.
+            Training dataset array of shape :math:`(N_\\mathrm{samples},\\mathrm{dim})` or generator builder.
         dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
-            Training dataset weight array or generator builder.
+            Training dataset weight array of shape :math:`(N_\\mathrm{samples},)` or generator builder.
         min_weight : float, default: **0.0**
             Latent space minimum value.
         max_weight : float, default: **1.0**

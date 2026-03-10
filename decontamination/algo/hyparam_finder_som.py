@@ -24,15 +24,15 @@ class HypParamFinder_SOM(object):
     Parameters
     ----------
     dataset : typing.Union[np.ndarray, typing.Callable]
-        Training dataset array or generator builder.
+        Training dataset array of shape :math:`(N_\\mathrm{samples},\\mathrm{dim})` or generator builder.
     dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
-        Training dataset weight array or generator builder.
+        Training dataset weight array of shape :math:`(N_\\mathrm{samples},)` or generator builder.
     topology : str, default: **None** ≡ **'hexagonal'**
         Neural network topology, either **'square'** or **'hexagonal'**.
     batch : bool, default: **True**
-        ???
+        If **True**, use the Batch SOM instead of the Online SOM.
     use_best_epoch : bool, default: **True**
-        ???
+        If **True**, keep the weights from the epoch with the lowest quantization error instead of the last epoch.
     show_progress_bar : bool, default: **False**
         Specifies whether to display a progress bar.
     enable_gpu : bool, default: **True**

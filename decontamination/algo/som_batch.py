@@ -229,15 +229,15 @@ class SOM_Batch(som_abstract.SOM_Abstract):
         Parameters
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
-            Training dataset array or generator builder.
+            Training dataset array of shape :math:`(N_\\mathrm{samples},\\mathrm{dim})` or generator builder.
         dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
-            Training dataset weight array or generator builder.
+            Training dataset weight array of shape :math:`(N_\\mathrm{samples},)` or generator builder.
         n_epochs : int, default: **None**
             Optional number of epochs to train for.
         n_vectors : int, default: **None**
             Optional number of vectors to train for.
         use_best_epoch : bool, default: **True**
-            ???
+            If **True**, keep the weights from the epoch with the lowest quantization error instead of the last epoch.
         stop_quantization_error : float, default: **None**
             Stops training if quantization_error < stop_quantization_error.
         stop_topographic_error : float, default: **None**

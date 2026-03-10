@@ -533,9 +533,9 @@ class SOM_Abstract(object):
         Parameters
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
-            Dataset array or generator builder.
+            Dataset array of shape :math:`(N_\\mathrm{samples},\\mathrm{dim})` or generator builder.
         dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
-            Dataset weight array or generator builder.
+            Dataset weight array of shape :math:`(N_\\mathrm{samples},)` or generator builder.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**
@@ -605,14 +605,14 @@ class SOM_Abstract(object):
     def get_activation_map(self, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, show_progress_bar: bool = False, enable_gpu: bool = True, threads_per_blocks: typing.Optional[int] = None) -> np.ndarray:
 
         """
-        For the given input, returns a matrix where the element i,j is the number of times that the neuron i,j have been activated.
+        For the given input, returns a matrix where the element :math:`i,j` is the number of times that the neuron :math:`i,j` have been activated.
 
         Parameters
         ----------
         dataset : typing.Union[np.ndarray, typing.Callable]
-            Dataset array or generator builder.
+            Dataset array of shape :math:`(N_\\mathrm{samples},\\mathrm{dim})` or generator builder.
         dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
-            Training dataset weight array or generator builder.
+            Training dataset weight array of shape :math:`(N_\\mathrm{samples},)` or generator builder.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         enable_gpu : bool, default: **True**
@@ -675,7 +675,7 @@ class SOM_Abstract(object):
         Parameters
         ----------
         dataset : np.ndarray
-            Dataset array.
+            Dataset array of shape :math:`(N_\\mathrm{samples},\\mathrm{dim})`.
         enable_gpu : bool, default: **True**
             If available, run on GPU rather than CPU.
         threads_per_blocks : int, default: **None** ≡ maximum

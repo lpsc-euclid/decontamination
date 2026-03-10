@@ -127,9 +127,9 @@ class Covariance(object):
         dim : int
             Dimensionality of the input data.
         dataset : typing.Union[np.ndarray, typing.Callable]
-            Dataset array  of shape :math:`(\\mathrm{n\\_samples},\\mathrm{dim})` or generator builder.
+            Dataset array of shape :math:`(N_\\mathrm{samples},\\mathrm{dim})` or generator builder.
         dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
-            Dataset weight array of shape :math:`(\\mathrm{n\\_samples},)` or generator builder.
+            Dataset weight array of shape :math:`(N_\\mathrm{samples},)` or generator builder.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
 
@@ -214,7 +214,7 @@ class Covariance(object):
         ----------
         cov_matrix : np.ndarray
             The covariance matrix to be diagonalized.
-        sort: bool, default: **True**
+        sort : bool, default: **True**
             If **True**, eigenvalues and eigenvectors are sorted by decreasing eigenvalue.
 
         Returns
@@ -264,7 +264,7 @@ class Covariance(object):
         Parameters
         ----------
         dataset : np.ndarray
-            Input dataset of shape :math:`(\\mathrm{n\\_samples},\\mathrm{dim})`.
+            Input dataset of shape :math:`(N_\\mathrm{samples},\\mathrm{dim})`.
         eigenvectors : np.ndarray
             Eigenvector matrix of shape :math:`(\\mathrm{dim},\\mathrm{dim})`.
 

@@ -368,7 +368,7 @@ class SOM_Abstract(object):
     @property
     def weights(self) -> np.ndarray:
 
-        """Neural network weights with the shape `[m * n, dim]`."""
+        """Neural network weights with the shape :math:`[\\mathrm{m}\\times\\mathrm{n},\\mathrm{dim}]`."""
 
         return self._weights.reshape((self._m * self._n, self._dim))
 
@@ -377,7 +377,7 @@ class SOM_Abstract(object):
     @property
     def centroids(self) -> np.ndarray:
 
-        """Neural network weights with the shape `[m, n, dim]`."""
+        """Neural network weights with the shape :math:`[\\mathrm{m},\\mathrm{n},\\mathrm{dim}]`."""
 
         return self._weights.reshape((self._m, self._n, self._dim))
 

@@ -220,11 +220,11 @@ class Covariance(object):
         Returns
         -------
         np.ndarray
-            The eigenvalues.
+            The eigenvalues. If **sort** is **True**, eigenvalues are sorted.
         np.ndarray
-            The eigenvectors.
+            The eigenvectors. If **sort** is **True**, eigenvectors are sorted.
         typing.Optional[np.ndarray]
-            If `sort` is **True**, order of importance of the components, else **None**.
+            If **sort** is **True**, order of importance of the components, else **None**.
         """
 
         ################################################################################################################

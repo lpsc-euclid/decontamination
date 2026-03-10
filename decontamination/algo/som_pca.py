@@ -206,11 +206,11 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         max_weight : float, default: **1.0**
             Latent space maximum value.
         scale_by_variance : bool
-            If **True**, scales the two principal directions by :math:`\\sqrt{\\lambda}` (before the optional CDF mapping).
+            If **True**, scales the two principal directions by :math:`\\sqrt{\\lambda_i}` (before the optional CDF mapping).
         apply_cdf : bool, default: **False**
             If **True**, applies a per-component Gaussian CDF and rescales to :math:`[\\mathrm{min\\_weight},\\mathrm{max\\_weight}]`.
         cdf_gain : float, default: **1.0**
-            When **apply_cdf** is enabled, gain applied in :math:`\\Phi(\\mathrm{cdf\\_gain}\\times x/\\sigma)`. Larger values increase saturation.
+            When **apply_cdf** is **True**, gain applied in :math:`\\Phi(\\mathrm{cdf\\_gain}\\times x/\\sigma)`. Larger values increase saturation.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         """
@@ -247,11 +247,11 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         max_weight : float, default: **1.0**
             Latent space maximum value.
         scale_by_variance : bool
-            If **True**, scales the two principal directions by :math:`\\sqrt{\\lambda}` (before the optional CDF mapping).
+            If **True**, scales the two principal directions by :math:`\\sqrt{\\lambda_i}` (before the optional CDF mapping).
         apply_cdf : bool, default: **False**
             If **True**, applies a per-component Gaussian CDF and rescales to :math:`[\\mathrm{min\\_weight},\\mathrm{max\\_weight}]`.
         cdf_gain : float, default: **1.0**
-            When **apply_cdf** is enabled, gain applied in :math:`\\Phi(\\mathrm{cdf\\_gain}\\times x/\\sigma)`. Larger values increase saturation.
+            When **apply_cdf** is **True**, gain applied in :math:`\\Phi(\\mathrm{cdf\\_gain}\\times x/\\sigma)`. Larger values increase saturation.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         """

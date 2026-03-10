@@ -1482,9 +1482,9 @@
 <dd class="field-odd"><dl>
 <dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>Dimensionality of the input data.</p>
 </dd>
-<dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Dataset array or generator builder.</p>
+<dt><strong>dataset</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Dataset array  of shape <span class="math notranslate nohighlight">\((\mathrm{n\_samples},\mathrm{dim})\)</span> or generator builder.</p>
 </dd>
-<dt><strong>dataset_weights</strong><span class="classifier">Union[np.ndarray, Callable], default: <strong>None</strong></span></dt><dd><p>Dataset weight array or generator builder.</p>
+<dt><strong>dataset_weights</strong><span class="classifier">Union[np.ndarray, Callable], default: <strong>None</strong></span></dt><dd><p>Dataset weight array of shape <span class="math notranslate nohighlight">\((\mathrm{n\_samples},)\)</span> or generator builder.</p>
 </dd>
 <dt><strong>show_progress_bar</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>Specifies whether to display a progress bar.</p>
 </dd>
@@ -1528,9 +1528,17 @@
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">project_pca</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eigenvectors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#decontamination.algo.covariance.Covariance.project_pca" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#decontamination.algo.covariance.Covariance.project_pca'"></a></dt>
 <dd><p>Projects a dataset onto the Principal Component Analysis (PCA) basis.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt>np.ndarray</dt><dd><p>The dataset projected onto the PCA basis.</p>
+<dt><strong>dataset</strong><span class="classifier">np.ndarray</span></dt><dd><p>Input dataset of shape <span class="math notranslate nohighlight">\((\mathrm{n\_samples},\mathrm{dim})\)</span>.</p>
+</dd>
+<dt><strong>eigenvectors</strong><span class="classifier">np.ndarray</span></dt><dd><p>Eigenvector matrix of shape <span class="math notranslate nohighlight">\((\mathrm{dim},\mathrm{dim})\)</span>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>np.ndarray</dt><dd><p>The dataset projected onto the PCA basis <span class="math notranslate nohighlight">\(\equiv\mathrm{dataset}\cdot\left(\mathrm{eigenvectors}^{-1}\right)^T\)</span>.</p>
 </dd>
 </dl>
 </dd>

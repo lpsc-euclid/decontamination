@@ -127,9 +127,9 @@ class Covariance(object):
         dim : int
             Dimensionality of the input data.
         dataset : typing.Union[np.ndarray, typing.Callable]
-            Dataset array or generator builder.
+            Dataset array  of shape :math:`(\\mathrm{n\\_samples},\\mathrm{dim})` or generator builder.
         dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
-            Dataset weight array or generator builder.
+            Dataset weight array of shape :math:`(\\mathrm{n\\_samples},)` or generator builder.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
 
@@ -261,17 +261,17 @@ class Covariance(object):
         """
         Projects a dataset onto the Principal Component Analysis (PCA) basis.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         dataset : np.ndarray
-            Input dataset of shape :math:`(n,\\mathrm{dim})`.
+            Input dataset of shape :math:`(\\mathrm{n\\_samples},\\mathrm{dim})`.
         eigenvectors : np.ndarray
             Eigenvector matrix of shape :math:`(\\mathrm{dim},\\mathrm{dim})`.
 
         Returns
         -------
         np.ndarray
-            The dataset projected onto the PCA basis.
+            The dataset projected onto the PCA basis :math:`\\equiv\\mathrm{dataset}\\cdot\\left(\\mathrm{eigenvectors}^{-1}\\right)^T`.
         """
 
         return np.dot(dataset, np.linalg.inv(eigenvectors).T)

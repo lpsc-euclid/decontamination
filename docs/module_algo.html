@@ -516,7 +516,7 @@
 </dd>
 <dt><strong>scale_by_variance</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, scales the two principal directions by <span class="math notranslate nohighlight">\(\sigma_{k=\{1,2\}}=\sqrt{\lambda_k}\)</span> (before the optional CDF mapping).</p>
 </dd>
-<dt><strong>apply_cdf</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, applies a per-component Gaussian CDF and rescales to <span class="math notranslate nohighlight">\([\mathrm{min\_weight},\mathrm{max\_weight}]\)</span>.</p>
+<dt><strong>apply_cdf</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, applies a per-component Gaussian CDF and rescales to <span class="math notranslate nohighlight">\(]\mathrm{min\_weight},\mathrm{max\_weight}[\)</span>.</p>
 </dd>
 <dt><strong>cdf_gain</strong><span class="classifier">float, default: <strong>1.0</strong></span></dt><dd><dl>
 <dt>When <strong>apply_cdf</strong> is <strong>True</strong>, gain applied in Gaussian CDF. Larger values increase saturation.</dt><dd><div class="math notranslate nohighlight">

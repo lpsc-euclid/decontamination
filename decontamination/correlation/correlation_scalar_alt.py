@@ -26,6 +26,9 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
     """
     Galaxy-galaxy 2pt correlation functions (2PCF), standalone implementation. Scalar-scalar (≡ ΚΚ) correlations.
 
+    .. note::
+        If `data2` is provided, cross-correlations are computed; otherwise auto-correlations are computed.
+
     Parameters
     ----------
     nside : int
@@ -35,7 +38,7 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
     footprint : np.ndarray
         HEALPix indices of the region where correlation must be calculated.
     data1 : np.ndarray
-        ???
+        Scalar values of the first field on `footprint`.
     min_sep : float
         Minimum galaxy separation being considered (in arcmins).
     max_sep : float
@@ -43,11 +46,11 @@ class Correlation_ScalarAlt(correlation_abstract.Correlation_Abstract):
     n_bins : int
         Number of angular bins.
     data2 : np.ndarray, default: **None**
-        ???
+        Optional scalar values of the second field on `footprint` for cross-correlations.
     data1_weights : np.ndarray, default: **None**
-        ???
+        Weights for objects of the first catalog.
     data2_weights : np.ndarray, default: **None**
-        ???
+        Weights for objects of the second catalog.
     """
 
     ####################################################################################################################

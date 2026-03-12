@@ -59,7 +59,7 @@ class Correlation_Abstract(abc.ABC):
     @property
     def n_bins(self) -> int:
 
-        """ Number of angular bins."""
+        """Number of angular bins."""
 
         return self._n_bins
 
@@ -79,26 +79,26 @@ class Correlation_Abstract(abc.ABC):
         1st Landy & Szalay estimator (1993):
 
         .. math::
-            \\hat{\\xi}=\\frac{DD-2DR-RR}{RR}
+            \\hat{\\xi}=\\frac{DD-2DR+RR}{RR}
 
         2nd Landy & Szalay estimator (1993):
 
         .. math::
-            \\hat{\\xi}=\\frac{DD-DR-RD-RR}{RR}
+            \\hat{\\xi}=\\frac{DD-DR-RD+RR}{RR}
 
         Parameters
         ----------
         estimator : str
-            Estimator being considered ("dd", "rr", "dr", "rd", "peebles_hauser", "landy_szalay_1", "landy_szalay_2").
+            Estimator to compute ("dd", "rr", "dr", "rd", "peebles_hauser", "landy_szalay_1", "landy_szalay_2").
 
         Returns
         -------
         np.ndarray
-            The bin of angles :math:`\\theta` (in arcmins).
+            Bin centers :math:`\\theta` (in arcmins).
         np.ndarray
-            The angular correlations function :math:`\\xi(\\theta)`.
+            Angular correlations function :math:`\\xi(\\theta)`.
         np.ndarray
-            The angular correlation function errors :math:`\\sigma_\\xi(\\theta)`.
+            1σ uncertainties :math:`\\sigma_\\xi(\\theta)=\\sqrt{var(\\xi(\\theta))}`.
         """
 
         return (

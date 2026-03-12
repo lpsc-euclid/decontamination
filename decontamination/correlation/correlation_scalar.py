@@ -31,6 +31,9 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
     """
     Galaxy-galaxy 2pt correlation functions (2PCF) using the TreeCorr library. Scalar-scalar (≡ ΚΚ) correlations.
 
+    .. note::
+        If `data2` is provided, cross-correlations are computed; otherwise auto-correlations are computed.
+
     Parameters
     ----------
     nside : int
@@ -40,7 +43,7 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
     footprint : np.ndarray
         HEALPix indices of the region where correlation must be calculated.
     data1 : np.ndarray
-        ???
+        Scalar values of the first field on `footprint`.
     min_sep : float
         Minimum galaxy separation being considered (in arcmins).
     max_sep : float
@@ -49,14 +52,14 @@ class Correlation_Scalar(correlation_abstract.Correlation_Abstract):
         Number of angular bins.
     bin_slop : float = **None**
         Optional precision parameter (see `TreeCorr documentation <https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop>`_).
-    n_threads : int, default: **None** ≡ the number of cpu cores
+    n_threads : int, default: **None** ≡ the number of CPU cores
         Optional number of OpenMP threads to use during the calculation.
     data2 : np.ndarray, default: **None**
-        ???
+        Optional scalar values of the second field on `footprint` for cross-correlations.
     data1_weights : np.ndarray, default: **None**
-        ???
+        Weights for objects of the first catalog.
     data2_weights : np.ndarray, default: **None**
-        ???
+        Weights for objects of the second catalog.
     """
 
     ####################################################################################################################

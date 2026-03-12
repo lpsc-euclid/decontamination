@@ -30,6 +30,9 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
     """
     Galaxy-galaxy 2pt correlation functions (2PCF) using the TreeCorr library. Count-count (≡ NN) correlations.
 
+    .. note::
+        If `data2_lon` and `data2_lat` are provided, cross-correlations are computed; otherwise auto-correlations are computed.
+
     Parameters
     ----------
     data1_lon : np.ndarray
@@ -44,16 +47,16 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
         Number of angular bins.
     bin_slop : float = **None**
         Optional precision parameter (see `TreeCorr documentation <https://rmjarvis.github.io/TreeCorr/_build/html/binning.html#bin-slop>`_).
-    n_threads : int, default: **None** ≡ the number of cpu cores
+    n_threads : int, default: **None** ≡ the number of CPU cores
         Optional number of OpenMP threads to use during the calculation.
     data2_lon : np.ndarray, default: **None**
-        ???
+        Optional longitudes of the second catalog (degrees) for cross-correlations.
     data2_lat : np.ndarray, default: **None**
-        ???
+        Optional latitudes of the second catalog (degrees) for cross-correlations.
     data1_weights : np.ndarray, default: **None**
-        ???
+        Weights for objects of the first catalog.
     data2_weights : np.ndarray, default: **None**
-        ???
+        Weights for objects of the second catalog.
     """
 
     ####################################################################################################################
@@ -140,7 +143,7 @@ class Correlation_PairCount(correlation_abstract.Correlation_Abstract):
 
         ################################################################################################################
 
-        raise ValueError('Invalid estimator (`dd`, `rr`, `dr`, `rd`, `peebles_hauser`, `landy_szalay1`, `landy_szalay_2` are authorized)')
+        raise ValueError('Invalid estimator (`dd`, `rr`, `dr`, `rd`, `peebles_hauser`, `landy_szalay_1`, `landy_szalay_2` are authorized)')
 
     ####################################################################################################################
 

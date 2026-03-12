@@ -180,9 +180,9 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
                 for d in range(dim):
 
-                    x = v0[d] * c1 + v1[d] * c2
+                    w = v0[d] * c1 + v1[d] * c2
 
-                    weights[i, j, d] = min_weight + (max_weight - min_weight) * 0.5 * (1.0 + math.erf(x * cdf_scale[d])) if apply_cdf else x
+                    weights[i, j, d] = min_weight + (max_weight - min_weight) * 0.5 * (1.0 + math.erf(w * cdf_scale[d])) if apply_cdf else w
 
         ################################################################################################################
 
@@ -206,11 +206,13 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         max_weight : float, default: **1.0**
             Latent space maximum value.
         scale_by_variance : bool
-            If **True**, scales the two principal directions by :math:`\\sqrt{\\lambda_i}` (before the optional CDF mapping).
+            If **True**, scales the two principal directions by :math:`\\sigma_{k=\\{1,2\\}}=\\sqrt{\\lambda_k}` (before the optional CDF mapping).
         apply_cdf : bool, default: **False**
             If **True**, applies a per-component Gaussian CDF and rescales to :math:`[\\mathrm{min\\_weight},\\mathrm{max\\_weight}]`.
         cdf_gain : float, default: **1.0**
-            When **apply_cdf** is **True**, gain applied in :math:`\\Phi(\\mathrm{cdf\\_gain}\\times x/\\sigma)`. Larger values increase saturation.
+            When **apply_cdf** is **True**, gain applied in Gaussian CDF. Larger values increase saturation.
+                .. math::
+                    w_{i,j,k}=\\mathrm{min\\_weight}+(\\mathrm{max\\_weight}-\\mathrm{min\\_weight})\\frac{1}{2}\\left[1+\\mathrm{erf}\\left(\\frac{\\mathrm{cdf\\_gain}\\times w^\\mathrm{orig}_{i,j,k}}{\\sqrt{2}\\sigma_k}\\right)\\right]
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         """

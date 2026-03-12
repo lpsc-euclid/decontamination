@@ -25,21 +25,21 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
     Parameters
     ----------
     nside: int
-        ???
+        The HEALPix nside parameter.
     footprint : np.ndarray
-        ???
+        HEALPix indices of the observed region (shape :math:`(N_\\mathrm{HEALPix\\,pixels},))`.
     coverage : np.ndarray
-        ???
+        Fraction of observed sky within the footprint (shape :math:`(N_\\mathrm{HEALPix\\,pixels},))`.
     footprint_systematics : typing.Union[np.ndarray, typing.Callable]
-        Dataset array or generator builder of systematics for the footprint.
+        Dataset array (shape :math:`(N_\\mathrm{HEALPix\\,pixels},\\mathrm{dim}))` or generator builder of systematics within the footprint.
     galaxy_number_density : typing.Union[np.ndarray, typing.Callable]
-        Dataset array or generator builder of galaxy number density.
+        Dataset array (shape :math:`(N_\\mathrm{HEALPix\\,pixels},))` or generator builder of galaxy number density within the footprint.
     m : int
         Number of neuron rows.
     n : int
         Number of neuron columns.
     dim : int
-        Dimensionality of the input data.
+        Dimensionality of the systematics.
     batch : bool
         Specifies whether to train in parallel (**True**) or iteratively (**False**).
     dtype : typing.Type[typing.Union[np.float32, np.float64, float, np.int32, np.int64, int]], default: **np.float32**

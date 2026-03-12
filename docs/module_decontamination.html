@@ -193,21 +193,21 @@
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>nside: int</strong></dt><dd><p>???</p>
+<dt><strong>nside: int</strong></dt><dd><p>The HEALPix nside parameter.</p>
 </dd>
-<dt><strong>footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>???</p>
+<dt><strong>footprint</strong><span class="classifier">np.ndarray</span></dt><dd><p>HEALPix indices of the observed region (shape <span class="math notranslate nohighlight">\((N_\mathrm{HEALPix\,pixels},))\)</span>.</p>
 </dd>
-<dt><strong>coverage</strong><span class="classifier">np.ndarray</span></dt><dd><p>???</p>
+<dt><strong>coverage</strong><span class="classifier">np.ndarray</span></dt><dd><p>Fraction of observed sky within the footprint (shape <span class="math notranslate nohighlight">\((N_\mathrm{HEALPix\,pixels},))\)</span>.</p>
 </dd>
-<dt><strong>footprint_systematics</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Dataset array or generator builder of systematics for the footprint.</p>
+<dt><strong>footprint_systematics</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Dataset array (shape <span class="math notranslate nohighlight">\((N_\mathrm{HEALPix\,pixels},\mathrm{dim}))\)</span> or generator builder of systematics within the footprint.</p>
 </dd>
-<dt><strong>galaxy_number_density</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Dataset array or generator builder of galaxy number density.</p>
+<dt><strong>galaxy_number_density</strong><span class="classifier">Union[np.ndarray, Callable]</span></dt><dd><p>Dataset array (shape <span class="math notranslate nohighlight">\((N_\mathrm{HEALPix\,pixels},))\)</span> or generator builder of galaxy number density within the footprint.</p>
 </dd>
 <dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>Number of neuron rows.</p>
 </dd>
 <dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>Number of neuron columns.</p>
 </dd>
-<dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>Dimensionality of the input data.</p>
+<dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>Dimensionality of the systematics.</p>
 </dd>
 <dt><strong>batch</strong><span class="classifier">bool</span></dt><dd><p>Specifies whether to train in parallel (<strong>True</strong>) or iteratively (<strong>False</strong>).</p>
 </dd>

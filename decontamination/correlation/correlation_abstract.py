@@ -98,7 +98,7 @@ class Correlation_Abstract(abc.ABC):
         np.ndarray
             Angular correlations function :math:`\\xi(\\theta)`.
         np.ndarray
-            1σ uncertainties :math:`\\sigma_\\xi(\\theta)=\\sqrt{var(\\xi(\\theta))}`.
+            1σ uncertainties :math:`\\sigma_\\xi(\\theta)=\\sqrt{\\mathrm{var}(\\xi(\\theta))}`.
         """
 
         return (

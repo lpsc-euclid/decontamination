@@ -722,70 +722,70 @@ class Decontamination_SOM(decontamination_abstract.Decontamination_Abstract):
 
     ####################################################################################################################
 
-    def generate_data_catalog(self, density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
+    def generate_data_catalog(self, mean_density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
 
         """
         ???
 
         Parameters
         ----------
-        density : float, default: **20**
-            ???
+        mean_density : float, default: **20**
+            Mean number of galaxies per HEALPix pixel.
         seed : int, default: **None**
-            ???
+            Optional seed for random generator.
         """
 
-        return self._generate_catalog(self._galaxy_number_density, mult_factor = density / np.mean(self._galaxy_number_density), seed = seed)
+        return self._generate_catalog(self._galaxy_number_density, mult_factor = mean_density / np.mean(self._galaxy_number_density), seed = seed)
 
     ####################################################################################################################
 
-    def generate_uniform_catalog(self, density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
+    def generate_uniform_catalog(self, mean_density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
 
         """
         ???
 
         Parameters
         ----------
-        density : float, default: **20**
-            ???
+        mean_density : float, default: **20**
+            Mean number of galaxies per HEALPix pixel.
         seed : int, default: **None**
-            ???
+            Optional seed for random generator.
         """
 
-        return self._generate_catalog(self._coverage, mult_factor = density, seed = seed)
+        return self._generate_catalog(self._coverage, mult_factor = mean_density, seed = seed)
 
     ####################################################################################################################
 
-    def generate_visibility_catalog(self, density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
+    def generate_visibility_catalog(self, mean_density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
 
         """
         ???
 
         Parameters
         ----------
-        density : float, default: **20**
-            ???
+        mean_density : float, default: **20**
+            Mean number of galaxies per HEALPix pixel.
         seed : int, default: **None**
-            ???
+            Optional seed for random generator.
         """
 
-        return self._generate_catalog(self.visibility, mult_factor = density, seed = seed)
+        return self._generate_catalog(self.visibility, mult_factor = mean_density, seed = seed)
 
     ####################################################################################################################
 
-    def generate_clustered_visibility_catalog(self, density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
+    def generate_clustered_visibility_catalog(self, mean_density: float = 20.0, seed: typing.Optional[int] = None) -> np.ndarray:
 
         """
         ???
 
         Parameters
         ----------
-        density : float, default: **20**
-            ???
+        mean_density : float, default: **20**
+            Mean number of galaxies per HEALPix pixel.
         seed : int, default: **None**
-            ???
+            Optional seed for random generator.
         """
 
-        return self._generate_catalog(self.clustered_visibility, mult_factor = density, seed = seed)
+        return self._generate_catalog(self.clustered_visibility, mult_factor = mean_density, seed = seed)
 
 ########################################################################################################################

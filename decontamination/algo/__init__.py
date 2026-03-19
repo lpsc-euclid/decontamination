@@ -12,7 +12,7 @@ import numpy as np
 import numba as nb
 import numba.cuda as cu
 
-from .. import jit
+from ..jit import jit
 
 ########################################################################################################################
 # DATASET UTILITIES                                                                                                    #

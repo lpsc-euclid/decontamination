@@ -208,11 +208,11 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         scale_by_variance : bool, default: **False**
             If **True**, scales the two principal directions by :math:`\\sigma_{k=\\{1,2\\}}=\\sqrt{\\lambda_k}` (before the optional CDF mapping).
         apply_cdf : bool, default: **False**
-            If **True**, applies a per-component Gaussian CDF and rescales to :math:`]\\mathrm{min\\_weight},\\mathrm{max\\_weight}[`.
-        cdf_gain : float, default: **1.0**
-            When **apply_cdf** is **True**, gain applied in Gaussian CDF. Larger values increase saturation.
+            If **True**, applies a per-component Gaussian CDF and rescales the latent space to :math:`]\\mathrm{min\\_weight},\\mathrm{max\\_weight}[`.
                 .. math::
                     w_{i,j,k}=\\mathrm{min\\_weight}+(\\mathrm{max\\_weight}-\\mathrm{min\\_weight})\\frac{1}{2}\\left[1+\\mathrm{erf}\\left(\\frac{\\mathrm{cdf\\_gain}\\times w^\\mathrm{orig}_{i,j,k}}{\\sqrt{2}\\sigma_k}\\right)\\right]
+        cdf_gain : float, default: **1.0**
+            When **apply_cdf** is **True**, gain applied in Gaussian CDF. Larger values increase saturation.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         """
@@ -251,11 +251,11 @@ class SOM_PCA(som_abstract.SOM_Abstract):
         scale_by_variance : bool, default: **False**
             If **True**, scales the two principal directions by :math:`\\sigma_{k=\\{1,2\\}}=\\sqrt{\\lambda_k}` (before the optional CDF mapping).
         apply_cdf : bool, default: **False**
-            If **True**, applies a per-component Gaussian CDF and rescales to :math:`]\\mathrm{min\\_weight},\\mathrm{max\\_weight}[`.
-        cdf_gain : float, default: **1.0**
-            When **apply_cdf** is **True**, gain applied in Gaussian CDF. Larger values increase saturation.
+            If **True**, applies a per-component Gaussian CDF and rescales the latent space to :math:`]\\mathrm{min\\_weight},\\mathrm{max\\_weight}[`.
                 .. math::
                     w_{i,j,k}=\\mathrm{min\\_weight}+(\\mathrm{max\\_weight}-\\mathrm{min\\_weight})\\frac{1}{2}\\left[1+\\mathrm{erf}\\left(\\frac{\\mathrm{cdf\\_gain}\\times w^\\mathrm{orig}_{i,j,k}}{\\sqrt{2}\\sigma_k}\\right)\\right]
+        cdf_gain : float, default: **1.0**
+            When **apply_cdf** is **True**, gain applied in Gaussian CDF. Larger values increase saturation.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
         """

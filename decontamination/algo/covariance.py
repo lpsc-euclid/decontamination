@@ -87,7 +87,15 @@ class Covariance(object):
 
     @staticmethod
     @nb.njit()
-    def _finalize_welford_cov(m2_upper: np.ndarray, sum_w: float, dim: int) -> np.ndarray:
+    def _finalize_welford_cov(m2_upper: np.ndarray, sum_w: float, dim: int, ddof: int) -> np.ndarray:
+
+        ################################################################################################################
+
+        norm = sum_w - ddof
+
+        if norm <= 0.0:
+
+            raise ValueError('Empty dataset or degrees of freedom <= 0.')
 
         ################################################################################################################
 
@@ -95,17 +103,13 @@ class Covariance(object):
 
         ################################################################################################################
 
-        inv_sum_w = 1.0 / sum_w
-
-        ################################################################################################################
-
         for j in range(dim):
 
-            cov_matrix[j, j] = m2_upper[j, j] * inv_sum_w
+            cov_matrix[j, j] = m2_upper[j, j] / norm
 
             for k in range(j + 1, dim):
 
-                v = m2_upper[j, k] * inv_sum_w
+                v = m2_upper[j, k] / norm
 
                 cov_matrix[j, k] = v
                 cov_matrix[k, j] = v
@@ -117,7 +121,7 @@ class Covariance(object):
     ####################################################################################################################
 
     @staticmethod
-    def compute(dim: int, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, show_progress_bar: bool = False):
+    def compute(dim: int, dataset: typing.Union[np.ndarray, typing.Callable], dataset_weights: typing.Optional[typing.Union[np.ndarray, typing.Callable]] = None, ddof: int = 1, show_progress_bar: bool = False):
 
         """
         Computes the covariance matrix of the given dataset using Welford's algorithm.
@@ -130,6 +134,8 @@ class Covariance(object):
             Dataset array of shape :math:`(N_\\mathrm{samples},\\mathrm{dim})` or generator builder.
         dataset_weights : typing.Union[np.ndarray, typing.Callable], default: **None**
             Dataset weight array of shape :math:`(N_\\mathrm{samples},)` or generator builder.
+        ddof : int, default: **1**
+            Delta degrees of freedom. Controls the bias of the estimate; normalization is :math:`N-\\mathrm{ddof}`.
         show_progress_bar : bool, default: **False**
             Specifies whether to display a progress bar.
 
@@ -138,6 +144,12 @@ class Covariance(object):
         np.ndarray
             The covariance matrix of the given dataset.
         """
+
+        ################################################################################################################
+
+        if ddof < 0:
+
+            raise ValueError('ddof must be greater than or equal to zero.')
 
         ################################################################################################################
 
@@ -193,13 +205,7 @@ class Covariance(object):
 
         ################################################################################################################
 
-        if total_w > 0.0:
-
-            return Covariance._finalize_welford_cov(m2_upper, total_w, dim)
-
-        else:
-
-            raise ValueError('Empty dataset or total weight is zero.')
+        return Covariance._finalize_welford_cov(m2_upper, total_w, dim, ddof)
 
     ####################################################################################################################
 

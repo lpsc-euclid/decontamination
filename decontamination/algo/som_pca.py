@@ -219,7 +219,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        cov_matrix = covariance.Covariance.compute(self._dim, dataset, dataset_weights, show_progress_bar = show_progress_bar)
+        cov_matrix = covariance.Covariance.compute(self._dim, dataset, dataset_weights, ddof = 1, show_progress_bar = show_progress_bar)
 
         ################################################################################################################
 

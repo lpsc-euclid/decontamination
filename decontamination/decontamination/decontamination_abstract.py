@@ -97,136 +97,328 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit(fastmath = True)
-    def _compute_equal_sky_area_edges_step2(result_edges: np.ndarray, result_centers: np.ndarray, hits: np.ndarray, vals: np.ndarray, minimum: np.ndarray, maximum: np.ndarray, n_bins: int) -> None:
+    @nb.njit()
+    def _compute_default_temp_n_bins(n_bins: int, n_vectors: int) -> int:
 
         ################################################################################################################
 
-        idx = 0
-
-        acc_n = 0.0
-        acc_v = 0.0
-
-        area = np.sum(hits) / n_bins
+        min_bins = 32 * n_bins
+        max_bins = 256 * n_bins
 
         ################################################################################################################
 
-        for j in range(hits.shape[0]):
+        if n_vectors <= 0:
 
-            cur_n = hits[j]
-            cur_v = vals[j]
-
-            if cur_n == 0:
-
-                continue
-
-            acc_n += cur_n
-            acc_v += cur_v
-
-            if acc_n >= area or j == hits.shape[0] - 1:
-
-                ########################################################################################################
-
-                excess_n = acc_n - area
-
-                excess_v = cur_v * (excess_n / cur_n)
-
-                ########################################################################################################
-
-                result_edges[idx + 1] = ((j + (cur_n - excess_n) / cur_n) / hits.shape[0]) * (maximum - minimum) + minimum
-
-                result_centers[idx + 0] = (acc_v - excess_v) / (acc_n - excess_n)
-
-                ########################################################################################################
-
-                idx += 1
-
-                acc_n = excess_n
-                acc_v = excess_v
+            return max(min_bins, 1)
 
         ################################################################################################################
 
-        result_edges[0x0000] = minimum
-        result_edges[n_bins] = maximum
+        return int(max(min_bins, min(max_bins, 2.0 * np.sqrt(float(n_vectors)))))
 
     ####################################################################################################################
 
     @staticmethod
-    def compute_equal_sky_area_edges_and_stats(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, temp_n_bins: typing.Optional[float] = None, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, float]:
+    def _accumulate_global_stats(vectors: np.ndarray, dim: typing.Optional[int], n_vectors: typing.Optional[np.ndarray], sum1: typing.Optional[np.ndarray], sum2: typing.Optional[np.ndarray], minima: typing.Optional[np.ndarray], maxima: typing.Optional[np.ndarray]) -> typing.Tuple[int, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
 
-        dim = systematics.shape[0]
+        if vectors.ndim != 2:
+
+            raise ValueError('Chunks must have shape (dim, n_vectors)')
 
         ################################################################################################################
 
-        generator_builder = dataset_to_generator_builder(systematics)
+        if dim is None:
+
+            dim = vectors.shape[0]
+
+            n_vectors = np.zeros(dim, dtype = np.int64)
+
+            sum1 = np.zeros(dim, dtype = np.float64)
+            sum2 = np.zeros(dim, dtype = np.float64)
+
+            minima = np.full(dim, +np.inf, dtype = np.float64)
+            maxima = np.full(dim, -np.inf, dtype = np.float64)
+
+        elif vectors.shape[0] != dim:
+
+            raise ValueError('Inconsistent number of systematics across chunks')
 
         ################################################################################################################
-        # COMPUTE STATISTICS                                                                                           #
-        ################################################################################################################
 
-        n_iters = 0
-        n_vectors = 0
-
-        sum1 = np.full(dim, 0.0, dtype = np.float32)
-        sum2 = np.full(dim, 0.0, dtype = np.float32)
-
-        minima = np.full(dim, +np.inf, dtype = np.float32)
-        maxima = np.full(dim, -np.inf, dtype = np.float32)
+        valid_mask = np.all(np.isfinite(vectors), axis = 0)
 
         ################################################################################################################
 
-        generator = generator_builder()
+        if np.any(valid_mask):
 
-        for vectors in tqdm.tqdm(generator(), total = None, disable = not show_progress_bar):
-
-            n_iters += 0x00000000000001
-            n_vectors += vectors.shape[1]
+            valid_vectors = vectors[:, valid_mask].astype(np.float64, copy = False)
 
             for i in range(dim):
 
-                systematics = vectors[i]
+                systematic = valid_vectors[i]
 
-                sum1[i] += np.nansum(systematics ** 1)
-                sum2[i] += np.nansum(systematics ** 2)
+                n_vectors[i] += systematic.size
 
-                minimum = np.nanmin(systematics)
+                sum1[i] += np.sum(systematic ** 1)
+                sum2[i] += np.sum(systematic ** 2)
+
+                minimum = np.min(systematic)
+                maximum = np.max(systematic)
 
                 if minima[i] > minimum:
                     minima[i] = minimum
-
-                maximum = np.nanmax(systematics)
 
                 if maxima[i] < maximum:
                     maxima[i] = maximum
 
         ################################################################################################################
 
-        means = sum1 / n_vectors
+        return dim, n_vectors, sum1, sum2, minima, maxima
 
-        rmss = np.sqrt(sum2 / n_vectors)
+    ####################################################################################################################
 
-        stds = np.sqrt((sum2 - (sum1 ** 2) / n_vectors) / (n_vectors - 1))
-
-        ################################################################################################################
-        # ESTIMATE BINNING                                                                                             #
-        ################################################################################################################
-
-        default_n_bins = np.int64(10.0 * n_bins * (1.0 + np.log2(n_vectors)))
-
-        print('default_n_bins', default_n_bins)
+    @staticmethod
+    def _accumulate_temporary_histograms(vectors: np.ndarray, dim: int, tmp_n_bins: np.ndarray, minima: np.ndarray, maxima: np.ndarray, hits: typing.List[np.ndarray]) -> None:
 
         ################################################################################################################
 
-        tmp_n_bins = np.full(dim, default_n_bins if temp_n_bins is None else temp_n_bins, np.int64)
+        valid_mask = np.all(np.isfinite(vectors), axis = 0)
 
         ################################################################################################################
-        # BUILD HISTOGRAMS                                                                                             #
+
+        if np.any(valid_mask):
+
+            valid_vectors = vectors[:, valid_mask]
+
+            for i in range(dim):
+
+                systematic = valid_vectors[i]
+
+                if maxima[i] > minima[i]:
+
+                    hits[i] += np.histogram(systematic.astype(np.float64, copy = False), bins = tmp_n_bins[i], range = (minima[i], maxima[i]))[0]
+
+    ####################################################################################################################
+
+    @staticmethod
+    @nb.njit()
+    def _build_equal_sky_area_edges(result_edges: np.ndarray, hits: np.ndarray, minimum: float, maximum: float, n_bins: int) -> None:
+
         ################################################################################################################
 
-        hits = [np.zeros(tmp_n_bins[i], dtype = np.float32) for i in range(dim)]
-        vals = [np.zeros(tmp_n_bins[i], dtype = np.float32) for i in range(dim)]
+        result_edges[0x0000] = minimum
+        result_edges[n_bins] = maximum
+
+        if not (maximum > minimum):
+
+            result_edges[1: n_bins] = minimum
+
+            return
+
+        ################################################################################################################
+
+        total_hits = np.sum(hits)
+
+        if not (total_hits > 0.0):
+
+            result_edges[1: n_bins] = minimum
+
+            return
+
+        ################################################################################################################
+
+        idx = 0
+
+        acc_hits = 0.0
+
+        bin_hits = total_hits / n_bins
+
+        ################################################################################################################
+
+        for j in range(hits.shape[0]):
+
+            ############################################################################################################
+
+            tmp_hits = hits[j]
+
+            if tmp_hits <= 0.0:
+
+                continue
+
+            ############################################################################################################
+
+            take_hits = 0.0
+
+            while take_hits < tmp_hits and idx < n_bins - 1:
+
+                need_hits = bin_hits - acc_hits
+                left_hits = tmp_hits - take_hits
+
+                if left_hits < need_hits:
+
+                    acc_hits += left_hits
+                    take_hits = tmp_hits
+
+                else:
+
+                    take_hits += need_hits
+
+                    result_edges[idx + 1] = ((j + take_hits / tmp_hits) / hits.shape[0]) * (maximum - minimum) + minimum
+
+                    acc_hits = 0.0
+
+                    idx += 1
+
+        ################################################################################################################
+
+        result_edges[idx + 1: n_bins] = maximum
+
+    ####################################################################################################################
+
+    @staticmethod
+    def _accumulate_bin_centers(vectors: np.ndarray, dim: int, n_bins: int, minima: np.ndarray, maxima: np.ndarray, result_edges: np.ndarray, result_sum: np.ndarray, result_count: np.ndarray) -> None:
+
+        ################################################################################################################
+
+        valid_mask = np.all(np.isfinite(vectors), axis = 0)
+
+        ################################################################################################################
+
+        if np.any(valid_mask):
+
+            valid_vectors = vectors[:, valid_mask].astype(np.float64, copy = False)
+
+            for i in range(dim):
+
+                systematic = valid_vectors[i]
+
+                if maxima[i] > minima[i]:
+
+                    indices = np.clip(np.searchsorted(result_edges[i], systematic, side = 'right') - 1, 0, n_bins - 1)
+
+                    result_sum[i] += np.bincount(indices, weights = systematic, minlength = n_bins)
+                    result_count[i] += np.bincount(indices, weights =    None   , minlength = n_bins)
+
+                else:
+
+                    result_sum[i, 0x0000] += np.sum(systematic)
+                    result_count[i, 0x0000] += systematic.size
+
+    ####################################################################################################################
+
+    @staticmethod
+    def compute_equal_sky_area_edges_and_stats(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, temp_n_bins: typing.Optional[int] = None, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+
+        ################################################################################################################
+
+        if n_bins <= 0:
+
+            raise ValueError('`n_bins` must be > 0')
+
+        ################################################################################################################
+
+        generator_builder = dataset_to_generator_builder(systematics)
+
+        if generator_builder is None:
+
+            raise ValueError('`systematics` must not be None')
+
+        ################################################################################################################
+        # PASS 1: COMPUTE GLOBAL STATISTICS                                                                            #
+        ################################################################################################################
+
+        dim = None
+        n_vectors = None
+
+        sum1 = None
+        sum2 = None
+
+        minima = None
+        maxima = None
+
+        ################################################################################################################
+
+        n_iters = 0
+
+        generator = generator_builder()
+
+        for vectors in tqdm.tqdm(generator(), total = None, disable = not show_progress_bar):
+
+            dim, n_vectors, sum1, sum2, minima, maxima = Decontamination_Abstract._accumulate_global_stats(
+                vectors,
+                dim,
+                n_vectors,
+                sum1,
+                sum2,
+                minima,
+                maxima
+            )
+
+            n_iters += 1
+
+        ################################################################################################################
+
+        if dim is None:
+
+            raise ValueError('Empty dataset')
+
+        if np.any(n_vectors <= 0):
+
+            raise ValueError('At least one systematic contains no finite value')
+
+        ################################################################################################################
+
+        means = np.divide(
+            sum1,
+            n_vectors,
+            out = np.full(dim, np.nan, dtype = np.float64),
+            where = n_vectors > 0
+        )
+
+        rmss = np.sqrt(np.divide(
+            sum2,
+            n_vectors,
+            out = np.full(dim, np.nan, dtype = np.float64),
+            where = n_vectors > 0
+        ))
+
+        vars = np.divide(
+            sum2 - (sum1 * sum1) / n_vectors,
+            n_vectors - 1,
+            out = np.full(dim, np.nan, dtype = np.float64),
+            where = n_vectors > 1
+        )
+
+        ################################################################################################################
+
+        stds = np.sqrt(np.maximum(0.0, vars,))
+
+        ################################################################################################################
+        # PASS 2: BUILD TEMPORARY HISTOGRAMS                                                                           #
+        ################################################################################################################
+
+        if temp_n_bins is None:
+
+            tmp_n_bins = np.empty(dim, dtype = np.int64)
+
+            for i in range(dim):
+
+                tmp_n_bins[i] = Decontamination_Abstract._compute_default_temp_n_bins(n_bins, int(n_vectors[i]))
+
+        else:
+
+            if temp_n_bins >= n_bins:
+
+                tmp_n_bins = np.full(dim, temp_n_bins, dtype = np.int64)
+
+            else:
+
+                raise ValueError('`temp_n_bins` must be >= `n_bins`')
+
+        ################################################################################################################
+
+        hits = [np.zeros(tmp_n_bins[i], dtype = np.float64) for i in range(dim)]
 
         ################################################################################################################
 
@@ -234,38 +426,78 @@ class Decontamination_Abstract(object):
 
         for vectors in tqdm.tqdm(generator(), total = n_iters, disable = not show_progress_bar):
 
-            for i in range(dim):
-
-                temp, _ = np.histogram(vectors[i, :], bins = tmp_n_bins[i], range = (minima[i], maxima[i]), weights = None)
-                hits[i] += temp
-
-                temp, _ = np.histogram(vectors[i, :], bins = tmp_n_bins[i], range = (minima[i], maxima[i]), weights = vectors[i, :])
-                vals[i] += temp
+            Decontamination_Abstract._accumulate_temporary_histograms(
+                vectors,
+                dim,
+                tmp_n_bins,
+                minima,
+                maxima,
+                hits
+            )
 
         ################################################################################################################
-        # REBIN HISTOGRAMS                                                                                             #
+        # BUILD FINAL EDGES                                                                                            #
         ################################################################################################################
 
-        result_edges = np.empty((dim, n_bins + 1), dtype = np.float32)
-        result_centers = np.empty((dim, n_bins + 0), dtype = np.float32)
+        result_edges = np.empty((dim, n_bins + 1), dtype = np.float64)
 
         ################################################################################################################
 
         for i in range(dim):
 
-            Decontamination_Abstract._compute_equal_sky_area_edges_step2(
+            Decontamination_Abstract._build_equal_sky_area_edges(
                 result_edges[i],
-                result_centers[i],
                 hits[i],
-                vals[i],
-                minima[i],
-                maxima[i],
+                float(minima[i]),
+                float(maxima[i]),
                 n_bins
             )
 
         ################################################################################################################
+        # PASS 3: COMPUTE EXACT BIN CENTERS                                                                            #
+        ################################################################################################################
 
-        return result_edges, result_centers, minima, maxima, means, rmss, stds, n_vectors
+        result_sum = np.zeros((dim, n_bins), dtype = np.float64)
+        result_count = np.zeros((dim, n_bins), dtype = np.int64)
+
+        ################################################################################################################
+
+        generator = generator_builder()
+
+        for vectors in tqdm.tqdm(generator(), total = n_iters, disable = not show_progress_bar):
+
+            Decontamination_Abstract._accumulate_bin_centers(
+                vectors,
+                dim,
+                n_bins,
+                minima,
+                maxima,
+                result_edges,
+                result_sum,
+                result_count
+            )
+
+        ################################################################################################################
+
+        result_centers = np.divide(
+            result_sum,
+            result_count,
+            out = np.full((dim, n_bins), np.nan, dtype = np.float64),
+            where = result_count > 0
+        )
+
+        ################################################################################################################
+
+        return (
+            result_edges,
+            result_centers,
+            minima,
+            maxima,
+            means,
+            rmss,
+            stds,
+            n_vectors
+        )
 
     ####################################################################################################################
 

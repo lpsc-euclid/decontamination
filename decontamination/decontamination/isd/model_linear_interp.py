@@ -38,7 +38,7 @@ def model_linear_interp(all_syst_centers: np.ndarray, all_syst_corrs: np.ndarray
 
         chi2_ini = (diff_ini.T @ inv_cov @ diff_ini)[0][0]
 
-        ####################################################################################################################
+        ################################################################################################################
 
         all_syst_correction_weights.append(correction_weights)
 

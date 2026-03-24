@@ -1,6 +1,12 @@
 Module decontamination.decontamination
 ======================================
 
+Abstract class
+--------------
+
+.. automodule:: decontamination.decontamination.decontamination_abstract
+   :members:
+
 *Self-Organizing Map* method
 ----------------------------
 

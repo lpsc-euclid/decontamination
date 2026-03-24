@@ -13,6 +13,7 @@ import typing
 import numpy as np
 import numba as nb
 
+from ..logging import logger
 from . import som_abstract, asymptotic_decay_cpu, dataset_to_generator_builder
 
 ########################################################################################################################
@@ -298,7 +299,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
                    and                                 \
                    errors[1] <= stop_topographic_error:
 
-                    print('Stopping at epoch #{}.'.format(cur_epoch))
+                    logger.info('Stopping at epoch #{}.'.format(cur_epoch))
 
                     break
 

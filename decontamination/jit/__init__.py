@@ -21,6 +21,7 @@ from collections.abc import Sequence
 
 from . import atomic
 from . import processor
+from ..logging import logger
 
 ########################################################################################################################
 
@@ -386,7 +387,7 @@ class Kernel:
 
                 if kernel_params[0]:
 
-                    print('Will emulate a GPU kernel...', file = sys.stderr, flush = True)
+                    logger.info('Will emulate a GPU kernel...', file = sys.stderr, flush = True)
 
                 ########################################################################################################
                 # RUN CPU KERNEL                                                                                       #

@@ -12,6 +12,7 @@ import typing
 import numpy as np
 import numba as nb
 
+from ..logging import logger
 from ..algo import dataset_to_generator_builder
 from ..generator import generator_number_density
 
@@ -547,6 +548,10 @@ class Decontamination_Abstract(object):
         else:
 
             raise ValueError('`temp_n_bins` must be >= `n_bins`')
+
+        ################################################################################################################
+
+        logger.info(f'Using {tmp_n_bins[0]} temporary bins for equal-area approximation')
 
         ################################################################################################################
 

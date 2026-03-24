@@ -14,6 +14,7 @@ import typing
 import numpy as np
 import numba as nb
 
+from ..logging import logger
 from .. import jit, device_array_zeros
 
 from . import som_abstract, square_distance_xpu, asymptotic_decay_cpu, asymptotic_decay_gpu, dataset_to_generator_builder
@@ -364,7 +365,7 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                    and                                 \
                    errors[1] <= stop_topographic_error:
 
-                    print('Stopping at epoch #{}.'.format(cur_epoch))
+                    logger.info('Stopping at epoch #{}.'.format(cur_epoch))
 
                     break
 

@@ -377,7 +377,12 @@ class Decontamination_Abstract(object):
             Number of bins to build for each systematic.
         temp_n_bins : int, default: **None**
             Number of temporary histogram bins used when **exact = False**.
-            If **None**, an automatic value is used.
+            If **None**, the value is set to:
+
+            .. math::
+                n_\\mathrm{temp} = \\max\\left(32\\,n_\\mathrm{bins},
+                \\min\\left(256\\,n_\\mathrm{bins},\\,2\\sqrt{N_\\mathrm{vectors}}\\right)\\right)
+
         exact : bool, default: **False**
             If **True**, computes exact equal-area binning. If **False**, computes chunk-based approximate edges.
         show_progress_bar : bool, default: **False**

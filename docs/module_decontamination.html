@@ -208,7 +208,10 @@
 <dt><strong>n_bins</strong><span class="classifier">int</span></dt><dd><p>Number of bins to build for each systematic.</p>
 </dd>
 <dt><strong>temp_n_bins</strong><span class="classifier">int, default: <strong>None</strong></span></dt><dd><p>Number of temporary histogram bins used when <strong>exact = False</strong>.
-If <strong>None</strong>, an automatic value is used.</p>
+If <strong>None</strong>, the value is set to:</p>
+<div class="math notranslate nohighlight">
+\[n_\mathrm{temp} = \max\left(32\,n_\mathrm{bins},
+\min\left(256\,n_\mathrm{bins},\,2\sqrt{N_\mathrm{vectors}}\right)\right)\]</div>
 </dd>
 <dt><strong>exact</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, computes exact equal-area binning. If <strong>False</strong>, computes chunk-based approximate edges.</p>
 </dd>
@@ -727,7 +730,10 @@ If <strong>None</strong>, an automatic value is used.</p>
 <dt><strong>n_bins</strong><span class="classifier">int</span></dt><dd><p>Number of bins to build for each systematic.</p>
 </dd>
 <dt><strong>temp_n_bins</strong><span class="classifier">int, default: <strong>None</strong></span></dt><dd><p>Number of temporary histogram bins used when <strong>exact = False</strong>.
-If <strong>None</strong>, an automatic value is used.</p>
+If <strong>None</strong>, the value is set to:</p>
+<div class="math notranslate nohighlight">
+\[n_\mathrm{temp} = \max\left(32\,n_\mathrm{bins},
+\min\left(256\,n_\mathrm{bins},\,2\sqrt{N_\mathrm{vectors}}\right)\right)\]</div>
 </dd>
 <dt><strong>exact</strong><span class="classifier">bool, default: <strong>False</strong></span></dt><dd><p>If <strong>True</strong>, computes exact equal-area binning. If <strong>False</strong>, computes chunk-based approximate edges.</p>
 </dd>

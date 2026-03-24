@@ -25,11 +25,15 @@ def model_linear_interp(all_syst_centers: np.ndarray, all_syst_corrs: np.ndarray
     for i in range(np.shape(all_syst_corrs)[0]):
 
         ################################################################################################################
+        # COMPUTE CORRECTION                                                                                           #
+        ################################################################################################################
 
         interp_functions = interp1d(all_syst_centers[i], all_syst_corrs[i], fill_value = 'extrapolate')
 
         correction_weights = 1.0 / (interp_functions(all_systs[i]))
 
+        ################################################################################################################
+        # COMPUTE χ²                                                                                                   #
         ################################################################################################################
 
         diff_ini = (all_syst_corrs[i] - 1).reshape(-1, 1)
@@ -41,7 +45,6 @@ def model_linear_interp(all_syst_centers: np.ndarray, all_syst_corrs: np.ndarray
         ################################################################################################################
 
         all_syst_correction_weights.append(correction_weights)
-
         all_syst_delta_chi2.append(chi2_ini)
 
     ####################################################################################################################

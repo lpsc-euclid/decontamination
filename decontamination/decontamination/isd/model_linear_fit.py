@@ -23,11 +23,15 @@ def model_linear_fit(all_syst_centers: np.ndarray, all_syst_corrs: np.ndarray, a
     for i in range(len(all_syst_corrs)):
 
         ################################################################################################################
+        # COMPUTE CORRECTION                                                                                           #
+        ################################################################################################################
 
         params = np.polyfit(all_syst_centers[i], all_syst_corrs[i], deg = 1)
 
         correction_weights = 1.0 / (params[0] * all_systs[i] + params[1])
 
+        ################################################################################################################
+        # COMPUTE Δχ²                                                                                                  #
         ################################################################################################################
 
         diff_ini = (all_syst_corrs[i] - 1.0000000000000000000000000000000000000000000).reshape(-1, 1)
@@ -38,12 +42,12 @@ def model_linear_fit(all_syst_centers: np.ndarray, all_syst_corrs: np.ndarray, a
         chi2_ini = (diff_ini.T @ inv_cov @ diff_ini)[0][0]
         chi2_new = (diff_new.T @ inv_cov @ diff_new)[0][0]
 
+        delta_chi2 = chi2_ini - chi2_new
+
         ################################################################################################################
 
         all_syst_correction_weights.append(correction_weights)
-
-        all_syst_delta_chi2.append(chi2_ini - chi2_new)
-
+        all_syst_delta_chi2.append(delta_chi2)
         all_syst_params.append(params)
 
     ####################################################################################################################

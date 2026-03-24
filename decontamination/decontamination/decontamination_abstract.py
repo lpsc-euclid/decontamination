@@ -52,7 +52,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @property
-    def footprint(self) -> int:
+    def footprint(self) -> np.ndarray:
 
         """Footprint."""
 
@@ -61,7 +61,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @property
-    def coverage(self) -> int:
+    def coverage(self) -> np.ndarray:
 
         """Coverage."""
 
@@ -70,7 +70,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @property
-    def footprint_systematics(self) -> int:
+    def footprint_systematics(self) -> np.ndarray:
 
         """Footprint systematics."""
 
@@ -79,7 +79,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @property
-    def galaxy_number_density(self) -> int:
+    def galaxy_number_density(self) -> np.ndarray:
 
         """Galaxy number density."""
 
@@ -88,7 +88,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @property
-    def corrected_galaxy_number_density(self) -> int:
+    def corrected_galaxy_number_density(self) -> np.ndarray:
 
         """Coverage-corrected galaxy number density."""
 

@@ -255,7 +255,11 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @staticmethod
-    def _accumulate_temporary_histograms(vectors: np.ndarray, valid_mask: np.ndarray, dim: int, tmp_n_bins: np.ndarray, minima: np.ndarray, maxima: np.ndarray, hits: typing.List[np.ndarray]) -> None:
+    def _accumulate_temporary_histograms(vectors: np.ndarray, dim: int, tmp_n_bins: np.ndarray, minima: np.ndarray, maxima: np.ndarray, hits: typing.List[np.ndarray]) -> None:
+
+        ################################################################################################################
+
+        valid_mask = np.all(np.isfinite(vectors), axis=0)
 
         ################################################################################################################
 
@@ -274,7 +278,11 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @staticmethod
-    def _accumulate_bin_centers(vectors: np.ndarray, valid_mask: np.ndarray, dim: int, n_bins: int, minima: np.ndarray, maxima: np.ndarray, result_edges: np.ndarray, result_sum: np.ndarray, result_count: np.ndarray) -> None:
+    def _accumulate_bin_centers(vectors: np.ndarray, dim: int, n_bins: int, minima: np.ndarray, maxima: np.ndarray, result_edges: np.ndarray, result_sum: np.ndarray, result_count: np.ndarray) -> None:
+
+        ################################################################################################################
+
+        valid_mask = np.all(np.isfinite(vectors), axis=0)
 
         ################################################################################################################
 
@@ -295,8 +303,8 @@ class Decontamination_Abstract(object):
 
                 else:
 
-                    result_sum[i, 0x0000] += np.sum(systematic)
-                    result_count[i, 0x0000] += systematic.size
+                    result_sum[i, 0] += np.sum(systematic)
+                    result_count[i, 0] += systematic.size
 
     ####################################################################################################################
 
@@ -509,6 +517,8 @@ class Decontamination_Abstract(object):
 
         if exact:
 
+            ############################################################################################################
+
             if n_bins > result_n_vectors:
 
                 raise ValueError('`n_bins` must be <= number of valid vectors when `exact` is True')
@@ -516,6 +526,8 @@ class Decontamination_Abstract(object):
             if len(exact_chunks) == 0:
 
                 raise ValueError('No valid vectors available for exact mode')
+
+            ############################################################################################################
 
             result_edges, result_centers = Decontamination_Abstract._compute_exact_equal_sky_area_edges_and_centers(
                 np.concatenate(exact_chunks, axis = 1),
@@ -563,11 +575,8 @@ class Decontamination_Abstract(object):
 
         for vectors in tqdm.tqdm(generator(), total = n_iters, disable = not show_progress_bar):
 
-            valid_mask = np.all(np.isfinite(vectors), axis = 0)
-
             Decontamination_Abstract._accumulate_temporary_histograms(
                 vectors,
-                valid_mask,
                 dim,
                 tmp_n_bins,
                 result_minima,
@@ -606,11 +615,8 @@ class Decontamination_Abstract(object):
 
         for vectors in tqdm.tqdm(generator(), total = n_iters, disable = not show_progress_bar):
 
-            valid_mask = np.all(np.isfinite(vectors), axis = 0)
-
             Decontamination_Abstract._accumulate_bin_centers(
                 vectors,
-                valid_mask,
                 dim,
                 n_bins,
                 result_minima,

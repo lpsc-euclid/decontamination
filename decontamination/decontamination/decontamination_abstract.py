@@ -385,7 +385,7 @@ class Decontamination_Abstract(object):
         n_bins : int
             Number of bins to build for each systematic.
         temp_n_bins : int, default: **None**
-            Number of temporary histogram bins used when **exact = False**.
+            Number of temporary histogram bins used when **exact** = **False**.
             If **None**, the value is set to:
 
             .. math::

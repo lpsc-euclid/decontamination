@@ -71,7 +71,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @property
-    def footprint_systematics(self) -> np.ndarray:
+    def footprint_systematics(self) -> typing.Union[np.ndarray, typing.Callable]:
 
         """Footprint systematics."""
 
@@ -80,7 +80,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @property
-    def galaxy_number_density(self) -> np.ndarray:
+    def galaxy_number_density(self) -> typing.Union[np.ndarray, typing.Callable]:
 
         """Galaxy number density."""
 
@@ -282,7 +282,7 @@ class Decontamination_Abstract(object):
 
         ################################################################################################################
 
-        valid_mask = np.all(np.isfinite(vectors), axis=0)
+        valid_mask = np.all(np.isfinite(vectors), axis = 0)
 
         ################################################################################################################
 
@@ -299,12 +299,12 @@ class Decontamination_Abstract(object):
                     indices = np.clip(np.searchsorted(result_edges[i], systematic, side = 'right') - 1, 0, n_bins - 1)
 
                     result_sum[i] += np.bincount(indices, weights = systematic, minlength = n_bins)
-                    result_count[i] += np.bincount(indices, weights = None, minlength = n_bins)
+                    result_count[i] += np.bincount(indices, weights =    None   , minlength = n_bins)
 
                 else:
 
-                    result_sum[i, 0] += np.sum(systematic)
-                    result_count[i, 0] += systematic.size
+                    result_sum[i] += systematic[0]
+                    result_count[i] += 0x00000000001
 
     ####################################################################################################################
 

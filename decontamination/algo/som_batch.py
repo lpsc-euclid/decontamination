@@ -297,15 +297,19 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                     dataset_generator = dataset_generator_builder()
                     density_generator = density_generator_builder()
 
-                    for vectors, density in zip(dataset_generator(), density_generator()):
+                    for vectors_chunk, weight_chunk in zip(dataset_generator(), density_generator()):
 
-                        SOM_Batch._train_step1_epoch_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
+                        if vectors_chunk.shape[1] != weight_chunk.shape[0]:
+
+                            raise ValueError('`dataset` and `dataset_weights` chunks must be aligned')
+
+                        SOM_Batch._train_step1_epoch_kernel[enable_gpu, threads_per_blocks, vectors_chunk.shape[0]](
                             numerator,
                             denominator,
                             self._weights,
                             self._topography,
-                            vectors.astype(self._dtype, copy = False),
-                            density.astype(self._dtype, copy = False),
+                            vectors_chunk.astype(self._dtype, copy = False),
+                            weight_chunk.astype(self._dtype, copy = False),
                             cur_epoch,
                             n_epochs,
                             self._dtype(self._sigma),
@@ -319,15 +323,15 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                     dataset_generator = dataset_generator_builder()
 
-                    for vectors in dataset_generator():
+                    for vectors_chunk in dataset_generator():
 
-                        SOM_Batch._train_step1_epoch_kernel[enable_gpu, threads_per_blocks, vectors.shape[0]](
+                        SOM_Batch._train_step1_epoch_kernel[enable_gpu, threads_per_blocks, vectors_chunk.shape[0]](
                             numerator,
                             denominator,
                             self._weights,
                             self._topography,
-                            vectors.astype(self._dtype, copy = False),
-                            np.ones(vectors.shape[0], dtype = self._dtype),
+                            vectors_chunk.astype(self._dtype, copy = False),
+                            np.ones(vectors_chunk.shape[0], dtype = self._dtype),
                             cur_epoch,
                             n_epochs,
                             self._dtype(self._sigma),
@@ -400,17 +404,21 @@ class SOM_Batch(som_abstract.SOM_Abstract):
                 dataset_generator = dataset_generator_builder()
                 density_generator = density_generator_builder()
 
-                for vectors, density in zip(dataset_generator(), density_generator()):
+                for vectors_chunk, weight_chunk in zip(dataset_generator(), density_generator()):
 
-                    count = min(vectors.shape[0], n_vectors - cur_vector)
+                    if vectors_chunk.shape[1] != weight_chunk.shape[0]:
+
+                        raise ValueError('`dataset` and `dataset_weights` chunks must be aligned')
+
+                    count = min(vectors_chunk.shape[0], n_vectors - cur_vector)
 
                     SOM_Batch._train_step1_iter_kernel[enable_gpu, threads_per_blocks, count](
                         numerator,
                         denominator,
                         self._weights,
                         self._topography,
-                        vectors[0: count].astype(self._dtype, copy = False),
-                        density[0: count].astype(self._dtype, copy = False),
+                        vectors_chunk[0: count].astype(self._dtype, copy = False),
+                        weight_chunk[0: count].astype(self._dtype, copy = False),
                         cur_vector,
                         n_vectors,
                         self._dtype(self._sigma),
@@ -432,16 +440,16 @@ class SOM_Batch(som_abstract.SOM_Abstract):
 
                 dataset_generator = dataset_generator_builder()
 
-                for vectors in dataset_generator():
+                for vectors_chunk in dataset_generator():
 
-                    count = min(vectors.shape[0], n_vectors - cur_vector)
+                    count = min(vectors_chunk.shape[0], n_vectors - cur_vector)
 
                     SOM_Batch._train_step1_iter_kernel[enable_gpu, threads_per_blocks, count](
                         numerator,
                         denominator,
                         self._weights,
                         self._topography,
-                        vectors[0: count].astype(self._dtype, copy = False),
+                        vectors_chunk[0: count].astype(self._dtype, copy = False),
                         np.ones(count, dtype = self._dtype),
                         cur_vector,
                         n_vectors,

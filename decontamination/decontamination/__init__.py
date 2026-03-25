@@ -18,7 +18,7 @@ from ..algo import dataset_to_generator_builder
 ########################################################################################################################
 
 @nb.njit()
-def estimate_temp_n_bins(n_bins: int, n_vectors: int) -> int:
+def estimate_n_temp_bins(n_bins: int, n_vectors: int) -> int:
 
     ####################################################################################################################
 
@@ -38,7 +38,7 @@ def estimate_temp_n_bins(n_bins: int, n_vectors: int) -> int:
 ########################################################################################################################
 
 @nb.njit()
-def _build_equal_sky_area_edges(result_edges: np.ndarray, hits: np.ndarray, minimum: float, maximum: float, n_bins: int) -> None:
+def _build_equal_area_edges(result_edges: np.ndarray, hits: np.ndarray, minimum: float, maximum: float, n_bins: int) -> None:
 
     ####################################################################################################################
 
@@ -111,11 +111,11 @@ def _build_equal_sky_area_edges(result_edges: np.ndarray, hits: np.ndarray, mini
 
 ########################################################################################################################
 
-def _accumulate_global_stats(vectors: np.ndarray, dim: typing.Optional[int], n_vectors: int, sum1: typing.Optional[np.ndarray], sum2: typing.Optional[np.ndarray], minima: typing.Optional[np.ndarray], maxima: typing.Optional[np.ndarray]) -> typing.Tuple[int, int, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+def _accumulate_global_stats(systematics: np.ndarray, dim: typing.Optional[int], n_vectors: int, sum1: typing.Optional[np.ndarray], sum2: typing.Optional[np.ndarray], minima: typing.Optional[np.ndarray], maxima: typing.Optional[np.ndarray]) -> typing.Tuple[int, int, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
 
     ####################################################################################################################
 
-    if vectors.ndim != 2:
+    if systematics.ndim != 2:
 
         raise ValueError('Chunks must have shape (dim, n_vectors)')
 
@@ -123,7 +123,7 @@ def _accumulate_global_stats(vectors: np.ndarray, dim: typing.Optional[int], n_v
 
     if dim is None:
 
-        dim = vectors.shape[0]
+        dim = systematics.shape[0]
 
         n_vectors = 0
 
@@ -133,25 +133,25 @@ def _accumulate_global_stats(vectors: np.ndarray, dim: typing.Optional[int], n_v
         minima = np.full(dim, +np.inf, dtype = np.float64)
         maxima = np.full(dim, -np.inf, dtype = np.float64)
 
-    elif vectors.shape[0] != dim:
+    elif systematics.shape[0] != dim:
 
         raise ValueError('Inconsistent number of systematics across chunks')
 
     ####################################################################################################################
 
-    valid_mask = np.all(np.isfinite(vectors), axis = 0)
+    valid_mask = np.all(np.isfinite(systematics), axis = 0)
 
     ####################################################################################################################
 
     if np.any(valid_mask):
 
-        valid_vectors = vectors[:, valid_mask].astype(np.float64, copy = False)
+        valid_systematics = systematics[:, valid_mask].astype(np.float64, copy = False)
 
-        n_vectors += valid_vectors.shape[1]
+        n_vectors += valid_systematics.shape[1]
 
         for i in range(dim):
 
-            systematic = valid_vectors[i]
+            systematic = valid_systematics[i]
 
             sum1[i] += np.sum(systematic ** 1)
             sum2[i] += np.sum(systematic ** 2)
@@ -171,21 +171,21 @@ def _accumulate_global_stats(vectors: np.ndarray, dim: typing.Optional[int], n_v
 
 ########################################################################################################################
 
-def _accumulate_temporary_histograms(vectors: np.ndarray, dim: int, tmp_n_bins: np.ndarray, minima: np.ndarray, maxima: np.ndarray, hits: typing.List[np.ndarray]) -> None:
+def _accumulate_temporary_histograms(systematics: np.ndarray, dim: int, tmp_n_bins: np.ndarray, minima: np.ndarray, maxima: np.ndarray, hits: typing.List[np.ndarray]) -> None:
 
     ####################################################################################################################
 
-    valid_mask = np.all(np.isfinite(vectors), axis=0)
+    valid_mask = np.all(np.isfinite(systematics), axis = 0)
 
     ####################################################################################################################
 
     if np.any(valid_mask):
 
-        valid_vectors = vectors[:, valid_mask]
+        valid_systematics = systematics[:, valid_mask]
 
         for i in range(dim):
 
-            systematic = valid_vectors[i]
+            systematic = valid_systematics[i]
 
             if maxima[i] > minima[i]:
 
@@ -193,28 +193,29 @@ def _accumulate_temporary_histograms(vectors: np.ndarray, dim: int, tmp_n_bins: 
 
 ########################################################################################################################
 
-def _accumulate_bin_centers(vectors: np.ndarray, dim: int, n_bins: int, minima: np.ndarray, maxima: np.ndarray, result_edges: np.ndarray, result_sum: np.ndarray, result_count: np.ndarray) -> None:
+# noinspection DuplicatedCode
+def _accumulate_bin_centers(systematics: np.ndarray, dim: int, n_bins: int, minima: np.ndarray, maxima: np.ndarray, result_edges: np.ndarray, result_sum: np.ndarray, result_count: np.ndarray) -> None:
 
     ####################################################################################################################
 
-    valid_mask = np.all(np.isfinite(vectors), axis = 0)
+    valid_mask = np.all(np.isfinite(systematics), axis = 0)
 
     ####################################################################################################################
 
     if np.any(valid_mask):
 
-        valid_vectors = vectors[:, valid_mask].astype(np.float64, copy = False)
+        valid_systematics = systematics[:, valid_mask].astype(np.float64, copy = False)
 
         for i in range(dim):
 
-            systematic = valid_vectors[i]
+            systematic = valid_systematics[i]
 
             if maxima[i] > minima[i]:
 
                 indices = np.clip(np.searchsorted(result_edges[i], systematic, side = 'right') - 1, 0, n_bins - 1)
 
                 result_sum[i] += np.bincount(indices, weights = systematic, minlength = n_bins)
-                result_count[i] += np.bincount(indices, weights =    None   , minlength = n_bins)
+                result_count[i] += np.bincount(indices, weights = None, minlength = n_bins)
 
             else:
 
@@ -223,11 +224,11 @@ def _accumulate_bin_centers(vectors: np.ndarray, dim: int, n_bins: int, minima: 
 
 ########################################################################################################################
 
-def _compute_exact_equal_sky_area_edges_and_centers(vectors: np.ndarray, n_bins: int) -> typing.Tuple[np.ndarray, np.ndarray]:
+def _compute_exact_equal_area_edges_and_centers(systematics: np.ndarray, n_bins: int) -> typing.Tuple[np.ndarray, np.ndarray]:
 
     ####################################################################################################################
 
-    dim = vectors.shape[0]
+    dim = systematics.shape[0]
 
     ####################################################################################################################
 
@@ -240,7 +241,7 @@ def _compute_exact_equal_sky_area_edges_and_centers(vectors: np.ndarray, n_bins:
 
         ################################################################################################################
 
-        systematic = np.sort(vectors[i].astype(np.float64, copy = False))
+        systematic = np.sort(systematics[i].astype(np.float64, copy = False))
 
         chunks = np.array_split(systematic, n_bins)
 
@@ -281,15 +282,18 @@ def _compute_exact_equal_sky_area_edges_and_centers(vectors: np.ndarray, n_bins:
 
 ########################################################################################################################
 
-def compute_equal_area_binning_and_statistics(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, temp_n_bins: typing.Optional[int] = None, exact: bool = False, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, int]:
+def compute_equal_area_binning_and_statistics(systematics: typing.Union[np.ndarray, typing.Callable], n_bins: int, n_temp_bins: typing.Optional[int] = None, exact: bool = False, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, int]:
 
     """
     Computes equal-area binning and global statistics for a set of systematics.
 
-    The input data can be provided either as a full array or as a generator builder yielding chunks. Only vectors for which all systematic values are finite are kept. Two modes are available:
+    The input data can be provided either as a full array or as a generator builder yielding chunks. Two modes are available:
 
-    - **exact = True**: exact equal-area binning, requiring all valid vectors to be kept in memory.
-    - **exact = False**: chunk-based approximation of the bin edges using temporary histograms, while keeping exact bin centers for the resulting edges.
+    - **exact** = **True**: exact equal-area binning, requiring all valid vectors to be kept in memory.
+    - **exact** = **False**: chunk-based approximation of the bin edges using temporary histograms.
+
+    .. note::
+        A vector of systematics is discarded if at least one of its components is not finite.
 
     Parameters
     ----------
@@ -297,14 +301,8 @@ def compute_equal_area_binning_and_statistics(systematics: typing.Union[np.ndarr
         Input array of shape :math:`(\\mathrm{dim},N_\\mathrm{vectors})` or generator builder.
     n_bins : int
         Number of bins to build for each systematic.
-    temp_n_bins : int, default: **None**
+    n_temp_bins : typing.Optional[int], default: **None** ≡ :math:`\\max\\left(32\\,n_\\mathrm{bins},\\min\\left(256\\,n_\\mathrm{bins},\\,2\\sqrt{n_\\mathrm{vectors}}\\right)\\right)`
         Number of temporary histogram bins used when **exact** = **False**.
-        If **None**, the value is set to:
-
-        .. math::
-            n_\\mathrm{temp} = \\max\\left(32\\,n_\\mathrm{bins},
-            \\min\\left(256\\,n_\\mathrm{bins},\\,2\\sqrt{N_\\mathrm{vectors}}\\right)\\right)
-
     exact : bool, default: **False**
         If **True**, computes exact equal-area binning. If **False**, computes chunk-based approximate edges.
     show_progress_bar : bool, default: **False**
@@ -365,10 +363,10 @@ def compute_equal_area_binning_and_statistics(systematics: typing.Union[np.ndarr
 
     exact_chunks = [] if exact else None
 
-    for vectors in tqdm.tqdm(generator(), total = None, disable = not show_progress_bar):
+    for systematics_chunk in tqdm.tqdm(generator(), total = None, disable = not show_progress_bar):
 
         dim, result_n_vectors, sum1, sum2, result_minima, result_maxima, valid_mask = _accumulate_global_stats(
-            vectors,
+            systematics_chunk,
             dim,
             result_n_vectors,
             sum1,
@@ -381,7 +379,7 @@ def compute_equal_area_binning_and_statistics(systematics: typing.Union[np.ndarr
 
         if exact and np.any(valid_mask):
 
-            exact_chunks.append(vectors[:, valid_mask].astype(np.float64, copy = False))
+            exact_chunks.append(systematics_chunk[:, valid_mask].astype(np.float64, copy = False))
 
         ################################################################################################################
 
@@ -442,7 +440,7 @@ def compute_equal_area_binning_and_statistics(systematics: typing.Union[np.ndarr
 
         ################################################################################################################
 
-        result_edges, result_centers = _compute_exact_equal_sky_area_edges_and_centers(
+        result_edges, result_centers = _compute_exact_equal_area_edges_and_centers(
             np.concatenate(exact_chunks, axis = 1),
             n_bins
         )
@@ -462,17 +460,17 @@ def compute_equal_area_binning_and_statistics(systematics: typing.Union[np.ndarr
     # PASS 2: BUILD TEMPORARY HISTOGRAMS                                                                               #
     ####################################################################################################################
 
-    if temp_n_bins is None:
+    if n_temp_bins is None:
 
-        tmp_n_bins = np.full(dim, estimate_temp_n_bins(n_bins, int(result_n_vectors)), dtype = np.int64)
+        tmp_n_bins = np.full(dim, estimate_n_temp_bins(n_bins, int(result_n_vectors)), dtype = np.int64)
 
-    elif temp_n_bins >= n_bins:
+    elif n_temp_bins >= n_bins:
 
-        tmp_n_bins = np.full(dim, temp_n_bins, dtype = np.int64)
+        tmp_n_bins = np.full(dim, n_temp_bins, dtype = np.int64)
 
     else:
 
-        raise ValueError('`temp_n_bins` must be >= `n_bins`')
+        raise ValueError('`n_temp_bins` must be >= `n_bins`')
 
     ####################################################################################################################
 
@@ -486,10 +484,10 @@ def compute_equal_area_binning_and_statistics(systematics: typing.Union[np.ndarr
 
     generator = generator_builder()
 
-    for vectors in tqdm.tqdm(generator(), total = n_iters, disable = not show_progress_bar):
+    for systematics_chunk in tqdm.tqdm(generator(), total = n_iters, disable = not show_progress_bar):
 
         _accumulate_temporary_histograms(
-            vectors,
+            systematics_chunk,
             dim,
             tmp_n_bins,
             result_minima,
@@ -507,7 +505,7 @@ def compute_equal_area_binning_and_statistics(systematics: typing.Union[np.ndarr
 
     for i in range(dim):
 
-        _build_equal_sky_area_edges(
+        _build_equal_area_edges(
             result_edges[i],
             hits[i],
             float(result_minima[i]),
@@ -526,10 +524,10 @@ def compute_equal_area_binning_and_statistics(systematics: typing.Union[np.ndarr
 
     generator = generator_builder()
 
-    for vectors in tqdm.tqdm(generator(), total = n_iters, disable = not show_progress_bar):
+    for systematics_chunk in tqdm.tqdm(generator(), total = n_iters, disable = not show_progress_bar):
 
         _accumulate_bin_centers(
-            vectors,
+            systematics_chunk,
             dim,
             n_bins,
             result_minima,
@@ -562,17 +560,8 @@ def compute_equal_area_binning_and_statistics(systematics: typing.Union[np.ndarr
 
 ########################################################################################################################
 
-def _accumulate_equal_area_correlation_chunk(
-    systematics: np.ndarray,
-    galaxy_number_density: np.ndarray,
-    dim: typing.Optional[int],
-    n_bins: int,
-    edges: np.ndarray,
-    result_sum_density: typing.Optional[np.ndarray],
-    result_num_pixels: typing.Optional[np.ndarray],
-    result_total_density: typing.Optional[np.ndarray],
-    result_total_pixels: typing.Optional[np.ndarray]
-) -> typing.Tuple[int, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+# noinspection DuplicatedCode
+def _accumulate_equal_area_correlation_chunk(systematics: np.ndarray, galaxy_number_density: np.ndarray, dim: typing.Optional[int], n_bins: int, edges: np.ndarray, result_sum_density: typing.Optional[np.ndarray], result_num_pixels: typing.Optional[np.ndarray], result_total_density: typing.Optional[np.ndarray], result_total_pixels: typing.Optional[np.ndarray]) -> typing.Tuple[int, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
 
     ####################################################################################################################
 
@@ -655,22 +644,21 @@ def compute_equal_area_correlation(systematics: typing.Union[np.ndarray, typing.
     For each systematic and each bin, the returned value is:
 
     .. math::
-        C_i = \\frac{\\langle n_\\mathrm{gal} \\rangle_{\\mathrm{bin},i}}{\\langle n_\\mathrm{gal} \\rangle}
+        C_i=\\frac{\\langle n_\\mathrm{gal}\\rangle_{\\mathrm{bin},i}}{\\langle n_\\mathrm{gal}\\rangle}
 
     where :math:`\\langle n_\\mathrm{gal} \\rangle_{\\mathrm{bin},i}` is the mean galaxy number density in bin
-    :math:`i`, and :math:`\\langle n_\\mathrm{gal} \\rangle` is the global mean galaxy number density computed on the
-    valid footprint for the considered systematic.
+    :math:`i`, and :math:`\\langle n_\\mathrm{gal} \\rangle` is the global mean galaxy number density
+    computed on the valid footprint for the considered systematic.
 
-    A pair `(systematic, galaxy_number_density)` is skipped whenever at least one of the two values is not finite.
+    .. note::
+        A pair `(systematics, galaxy_number_density)` is discarded if at least one of the two values is not finite.
 
     Parameters
     ----------
     systematics : typing.Union[np.ndarray, typing.Callable]
-        Input array of shape :math:`(\\mathrm{dim},N_\\mathrm{vectors})` or generator builder yielding chunks of the
-        same shape.
+        Systematics of shape :math:`(\\mathrm{dim},N_\\mathrm{vectors})` or generator builder.
     galaxy_number_density : typing.Union[np.ndarray, typing.Callable]
-        Input array of shape :math:`(N_\\mathrm{vectors},)` or generator builder yielding aligned chunks of the same
-        shape.
+        Galaxy number density of shape :math:`(N_\\mathrm{vectors},)` or generator builder.
     edges : np.ndarray
         Array of shape :math:`(\\mathrm{dim},n_\\mathrm{bins}+1)` containing the bin edges for each systematic.
 
@@ -682,7 +670,7 @@ def compute_equal_area_correlation(systematics: typing.Union[np.ndarray, typing.
 
     ####################################################################################################################
 
-    systematics_generator_builder           = dataset_to_generator_builder(systematics          )
+    systematics_generator_builder = dataset_to_generator_builder(systematics)
     galaxy_number_density_generator_builder = dataset_to_generator_builder(galaxy_number_density)
 
     ####################################################################################################################
@@ -691,21 +679,17 @@ def compute_equal_area_correlation(systematics: typing.Union[np.ndarray, typing.
 
         raise ValueError('`systematics` must not be None')
 
+    ####################################################################################################################
+
     if galaxy_number_density_generator_builder is None:
 
         raise ValueError('`galaxy_number_density` must not be None')
 
     ####################################################################################################################
 
-    if edges.ndim != 2:
-
-        raise ValueError('`edges` must have shape (dim, n_bins + 1)')
-
-    ####################################################################################################################
-
     n_bins = edges.shape[1] - 1
 
-    if n_bins <= 0:
+    if edges.ndim != 2 or n_bins <= 0:
 
         raise ValueError('`edges` must have shape (dim, n_bins + 1) with n_bins > 0')
 
@@ -721,7 +705,7 @@ def compute_equal_area_correlation(systematics: typing.Union[np.ndarray, typing.
 
     ####################################################################################################################
 
-    systematics_generator           = systematics_generator_builder          ()
+    systematics_generator = systematics_generator_builder()
     galaxy_number_density_generator = galaxy_number_density_generator_builder()
 
     ####################################################################################################################

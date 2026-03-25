@@ -16,6 +16,7 @@ from ..generator import generator_number_density
 ########################################################################################################################
 
 from . import compute_equal_area_binning_and_statistics as _compute_binning
+from . import compute_equal_area_correlation as _compute_correlation
 
 ########################################################################################################################
 
@@ -101,6 +102,12 @@ class Decontamination_Abstract(object):
     def compute_equal_area_binning_and_statistics(self, n_bins: int, temp_n_bins: typing.Optional[int] = None, exact: bool = False, show_progress_bar: bool = False) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, int]:
 
         return _compute_binning(self._footprint_systematics, n_bins, temp_n_bins, exact, show_progress_bar)
+
+    ####################################################################################################################
+
+    def compute_equal_area_correlation(self, galaxy_number_density: np.ndarray, edges: np.ndarray) -> np.ndarray:
+
+        return _compute_correlation(self._footprint_systematics, galaxy_number_density, edges)
 
     ####################################################################################################################
 

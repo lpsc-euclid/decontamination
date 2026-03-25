@@ -171,15 +171,19 @@ class Covariance(object):
             dataset_generator = dataset_generator_builder()
             weight_generator = weight_generator_builder()
 
-            for vectors, weights in tqdm.tqdm(zip(dataset_generator(), weight_generator()), disable = not show_progress_bar):
+            for vectors_chunk, weights_chunk in tqdm.tqdm(zip(dataset_generator(), weight_generator()), disable = not show_progress_bar):
+
+                if vectors_chunk.shape[1] != weights_chunk.shape[0]:
+
+                    raise ValueError('`dataset` and `dataset_weights` chunks must be aligned')
 
                 total_w = Covariance._update_welford_cov_sums(
                     total_w,
                     mean,
                     m2_upper,
                     delta,
-                    vectors.astype(np.float64, copy = False),
-                    weights.astype(np.float64, copy = False),
+                    vectors_chunk.astype(np.float64, copy = False),
+                    weights_chunk.astype(np.float64, copy = False),
                     dim
                 )
 
@@ -189,15 +193,15 @@ class Covariance(object):
 
             dataset_generator = dataset_generator_builder()
 
-            for vectors in tqdm.tqdm(dataset_generator(), disable = not show_progress_bar):
+            for vectors_chunk in tqdm.tqdm(dataset_generator(), disable = not show_progress_bar):
 
                 total_w = Covariance._update_welford_cov_sums(
                     total_w,
                     mean,
                     m2_upper,
                     delta,
-                    vectors.astype(np.float64, copy = False),
-                    np.ones(vectors.shape[0], dtype = np.float64),
+                    vectors_chunk.astype(np.float64, copy = False),
+                    np.ones(vectors_chunk.shape[0], dtype = np.float64),
                     dim
                 )
 

@@ -29,7 +29,31 @@ class Decontamination_Abstract(object):
 
     ####################################################################################################################
 
-    def __init__(self, nside: int, footprint: np.ndarray, coverage: np.ndarray, footprint_systematics: typing.Union[np.ndarray, typing.Callable], galaxy_number_density: np.ndarray):
+    @staticmethod
+    def build_corrected_galaxy_number_density(galaxy_number_density, coverage):
+
+        return np.divide(galaxy_number_density, coverage, out = np.zeros_like(coverage), where = coverage > 0.0)
+
+    ####################################################################################################################
+
+    @staticmethod
+    def build_corrected_galaxy_number_density_generator(galaxy_number_density, coverage):
+
+        def builder():
+
+            for galaxy_number_density_chunk, coverage_chunk in zip(galaxy_number_density(), coverage()):
+
+                if galaxy_number_density_chunk.shape[0] != coverage_chunk.shape[0]:
+
+                    raise ValueError('`galaxy_number_density` and `coverage` chunks must be aligned')
+
+                yield Decontamination_Abstract.build_corrected_galaxy_number_density(galaxy_number_density_chunk, coverage_chunk)
+
+        return builder
+
+    ####################################################################################################################
+
+    def __init__(self, nside: int, footprint: typing.Union[np.ndarray, typing.Callable], coverage: typing.Union[np.ndarray, typing.Callable], footprint_systematics: typing.Union[np.ndarray, typing.Callable], galaxy_number_density: typing.Union[np.ndarray, typing.Callable]):
 
         ################################################################################################################
 
@@ -41,7 +65,17 @@ class Decontamination_Abstract(object):
 
         ################################################################################################################
 
-        self._corrected_galaxy_number_density = galaxy_number_density / coverage
+        if isinstance(galaxy_number_density, np.ndarray) and isinstance(coverage, np.ndarray):
+
+            self._corrected_galaxy_number_density = self.build_corrected_galaxy_number_density(galaxy_number_density, coverage)
+
+        elif callable(galaxy_number_density) and callable(coverage):
+
+            self._corrected_galaxy_number_density = self.build_corrected_galaxy_number_density_generator(galaxy_number_density, coverage)
+
+        else:
+
+            raise ValueError("`galaxy_number_density` and `coverage` must both be arrays or both be callable")
 
     ####################################################################################################################
 
@@ -55,7 +89,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @property
-    def footprint(self) -> np.ndarray:
+    def footprint(self) -> typing.Union[np.ndarray, typing.Callable]:
 
         """Footprint."""
 
@@ -64,7 +98,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @property
-    def coverage(self) -> np.ndarray:
+    def coverage(self) -> typing.Union[np.ndarray, typing.Callable]:
 
         """Coverage."""
 
@@ -82,7 +116,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @property
-    def galaxy_number_density(self) -> np.ndarray:
+    def galaxy_number_density(self) -> typing.Union[np.ndarray, typing.Callable]:
 
         """Galaxy number density."""
 
@@ -91,7 +125,7 @@ class Decontamination_Abstract(object):
     ####################################################################################################################
 
     @property
-    def corrected_galaxy_number_density(self) -> np.ndarray:
+    def corrected_galaxy_number_density(self) -> typing.Union[np.ndarray, typing.Callable]:
 
         """Coverage-corrected galaxy number density."""
 

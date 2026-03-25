@@ -313,7 +313,7 @@ def compute_equal_area_binning_and_statistics(systematics: typing.Union[np.ndarr
     result_edges : np.ndarray
         Array of shape :math:`(\\mathrm{dim},n_\\mathrm{bins}+1)` containing the bin edges for each systematic.
     result_centers : np.ndarray
-        Array of shape :math:`(\\mathrm{dim},n_\\mathrm{bins})` containing the mean value in each bin.
+        Array of shape :math:`(\\mathrm{dim},n_\\mathrm{bins}+0)` containing the mean value in each bin.
     result_minima : np.ndarray
         Array of shape :math:`(\\mathrm{dim},)` containing the minimum value of each systematic.
     result_maxima : np.ndarray

@@ -1,10 +1,10 @@
 Module decontamination.decontamination
 ======================================
 
-Abstract class
---------------
+Global functions
+----------------
 
-.. automodule:: decontamination.decontamination.decontamination_abstract
+.. automodule:: decontamination.decontamination
    :members:
 
 *Self-Organizing Map* method

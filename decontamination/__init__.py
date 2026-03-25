@@ -102,6 +102,8 @@ from decontamination.correlation.correlation_scalar_alt import Correlation_Scala
 # DECONTAMINATION                                                                                                      #
 ########################################################################################################################
 
+from .decontamination import compute_equal_area_binning_and_statistics, compute_equal_area_correlation
+
 from .decontamination.decontamination_abstract import Decontamination_Abstract
 
 from .decontamination.decontamination_som import Decontamination_SOM
@@ -138,6 +140,7 @@ __all__ = [
     'display_healpix', 'display_catalog',
     'Generator_Uniform', 'Generator_NumberDensity', 'Generator_FullSkyUniform',
     'Correlation_Abstract', 'Correlation_PairCount', 'Correlation_Scalar',
+    'compute_equal_area_binning_and_statistics', 'compute_equal_area_correlation',
     'Decontamination_Abstract', 'Decontamination_SOM',
 ]
 

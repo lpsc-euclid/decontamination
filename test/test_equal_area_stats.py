@@ -86,13 +86,13 @@ def test_exact_vs_approx(n_bins):
 
     ####################################################################################################################
 
-    exact = decontamination.Decontamination_Abstract.compute_equal_area_binning_and_statistics(
+    exact = decontamination.compute_equal_area_binning_and_statistics(
         data,
         n_bins = 20,
         exact = True
     )
 
-    approx = decontamination.Decontamination_Abstract.compute_equal_area_binning_and_statistics(
+    approx = decontamination.compute_equal_area_binning_and_statistics(
         _make_generator(data, 512),
         n_bins = 20,
         exact = False
@@ -131,7 +131,7 @@ def test_nan_rejection():
 
     ####################################################################################################################
 
-    edges, centers, minima, maxima, means, rmss, stds, n = decontamination.Decontamination_Abstract.compute_equal_area_binning_and_statistics(data, n_bins = 10)
+    edges, centers, minima, maxima, means, rmss, stds, n = decontamination.compute_equal_area_binning_and_statistics(data, n_bins = 10)
 
     ####################################################################################################################
 
@@ -149,13 +149,13 @@ def test_generator_vs_array():
 
     ####################################################################################################################
 
-    res_array = decontamination.Decontamination_Abstract.compute_equal_area_binning_and_statistics(
+    res_array = decontamination.compute_equal_area_binning_and_statistics(
         data,
         n_bins = 15,
         exact = True
     )
 
-    res_gen = decontamination.Decontamination_Abstract.compute_equal_area_binning_and_statistics(
+    res_gen = decontamination.compute_equal_area_binning_and_statistics(
         _make_generator(data, 256),
         n_bins = 15,
         exact = False
@@ -179,7 +179,7 @@ def test_edges_and_centers_validity():
 
     ####################################################################################################################
 
-    edges, centers, minima, maxima, *_ = decontamination.Decontamination_Abstract.compute_equal_area_binning_and_statistics(data, n_bins = 25)
+    edges, centers, minima, maxima, *_ = decontamination.compute_equal_area_binning_and_statistics(data, n_bins = 25)
 
     ####################################################################################################################
 

@@ -219,8 +219,8 @@ def _accumulate_bin_centers(systematics: np.ndarray, dim: int, n_bins: int, mini
 
             else:
 
-                result_sum[i] += systematic[0]
-                result_count[i] += 0x00000000001
+                result_sum[i] += np.sum(systematic)
+                result_count[i] += systematic.size
 
 ########################################################################################################################
 

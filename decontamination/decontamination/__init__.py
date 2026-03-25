@@ -739,7 +739,7 @@ def compute_equal_area_correlation(systematics: typing.Union[np.ndarray, typing.
 
     ####################################################################################################################
 
-    global_mean_density = np.divide(
+    mean_density_global = np.divide(
         total_density,
         total_pixels,
         out = np.full(dim, np.nan, dtype = np.float64), where = total_pixels > 0
@@ -755,9 +755,9 @@ def compute_equal_area_correlation(systematics: typing.Union[np.ndarray, typing.
 
     return np.divide(
         mean_density_per_bin,
-        global_mean_density[:, np.newaxis],
+        mean_density_global[:, np.newaxis],
         out = np.full((dim, n_bins), np.nan, dtype = np.float64),
-        where = np.isfinite(global_mean_density[:, np.newaxis]) & (global_mean_density[:, np.newaxis] != 0.0)
+        where = np.isfinite(mean_density_global[:, np.newaxis]) & (mean_density_global[:, np.newaxis] != 0.0)
     )
 
 ########################################################################################################################

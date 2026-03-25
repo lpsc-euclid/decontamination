@@ -599,36 +599,37 @@ def _accumulate_equal_area_correlation_chunk(systematics: np.ndarray, galaxy_num
 
     ####################################################################################################################
 
-    density = galaxy_number_density.astype(np.float64, copy = False)
+    systematics = systematics.astype(np.float64, copy = False)
+    galaxy_number_density = galaxy_number_density.astype(np.float64, copy = False)
 
     ####################################################################################################################
 
-    for i in range(dim):
+    valid_mask = np.all(np.isfinite(systematics), axis = 0) & np.isfinite(galaxy_number_density)
 
-        systematic = systematics[i].astype(np.float64, copy = False)
+    ####################################################################################################################
 
-        valid_mask = np.isfinite(systematic) & np.isfinite(density)
+    if np.any(valid_mask):
 
-        if np.any(valid_mask):
+        valid_systematics = systematics[:, valid_mask]
+        valid_galaxy_number_density = galaxy_number_density[valid_mask]
 
-            ############################################################################################################
-
-            valid_systematic = systematic[valid_mask]
-            valid_density = density[valid_mask]
+        for i in range(dim):
 
             ############################################################################################################
 
-            indices = np.clip(np.searchsorted(edges[i], valid_systematic, side = 'right') - 1, 0, n_bins - 1)
+            systematic = valid_systematics[i]
+
+            indices = np.clip(np.searchsorted(edges[i], systematic, side = 'right') - 1, 0, n_bins - 1)
 
             ############################################################################################################
 
-            result_sum_density[i] += np.bincount(indices, weights = valid_density, minlength = n_bins)
+            result_sum_density[i] += np.bincount(indices, weights = valid_galaxy_number_density, minlength = n_bins)
             result_num_pixels[i] += np.bincount(indices, weights = None, minlength = n_bins)
 
             ############################################################################################################
 
-            result_total_density[i] += np.sum(valid_density)
-            result_total_pixels[i] += valid_density.size
+            result_total_density[i] += np.sum(valid_galaxy_number_density)
+            result_total_pixels[i] += valid_galaxy_number_density.size
 
     ####################################################################################################################
 

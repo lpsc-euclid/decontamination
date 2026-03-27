@@ -117,13 +117,13 @@ def _accumulate_global_stats(systematics: np.ndarray, dim: typing.Optional[int],
 
     if systematics.ndim != 2:
 
-        raise ValueError('Chunks must have shape (dim, n_vectors)')
+        raise ValueError('Chunks must have shape (n_vectors, dim)')
 
     ####################################################################################################################
 
     if dim is None:
 
-        dim = systematics.shape[0]
+        dim = systematics.shape[1]
 
         n_vectors = 0
 
@@ -133,27 +133,27 @@ def _accumulate_global_stats(systematics: np.ndarray, dim: typing.Optional[int],
         minima = np.full(dim, +np.inf, dtype = np.float64)
         maxima = np.full(dim, -np.inf, dtype = np.float64)
 
-    elif systematics.shape[0] != dim:
+    elif systematics.shape[1] != dim:
 
         raise ValueError('Inconsistent number of systematics across chunks')
 
     ####################################################################################################################
 
-    valid_mask = np.all(np.isfinite(systematics), axis = 0)
+    valid_mask = np.all(np.isfinite(systematics), axis = 1)
 
     ####################################################################################################################
 
     if np.any(valid_mask):
 
-        valid_systematics = systematics[:, valid_mask].astype(np.float64, copy = False)
+        valid_systematics = systematics[valid_mask].astype(np.float64, copy = False)
 
-        n_vectors += valid_systematics.shape[1]
+        n_vectors += valid_systematics.shape[0]
 
         for i in range(dim):
 
-            systematic = valid_systematics[i]
+            systematic = valid_systematics[:, i]
 
-            sum1[i] += np.sum(systematic ** 1)
+            sum1[i] += np.sum(systematic)
             sum2[i] += np.sum(systematic ** 2)
 
             minimum = np.min(systematic)
@@ -175,17 +175,17 @@ def _accumulate_temporary_histograms(systematics: np.ndarray, dim: int, tmp_n_bi
 
     ####################################################################################################################
 
-    valid_mask = np.all(np.isfinite(systematics), axis = 0)
+    valid_mask = np.all(np.isfinite(systematics), axis = 1)
 
     ####################################################################################################################
 
     if np.any(valid_mask):
 
-        valid_systematics = systematics[:, valid_mask]
+        valid_systematics = systematics[valid_mask]
 
         for i in range(dim):
 
-            systematic = valid_systematics[i]
+            systematic = valid_systematics[:, i]
 
             if maxima[i] > minima[i]:
 
@@ -198,17 +198,17 @@ def _accumulate_bin_centers(systematics: np.ndarray, dim: int, n_bins: int, mini
 
     ####################################################################################################################
 
-    valid_mask = np.all(np.isfinite(systematics), axis = 0)
+    valid_mask = np.all(np.isfinite(systematics), axis = 1)
 
     ####################################################################################################################
 
     if np.any(valid_mask):
 
-        valid_systematics = systematics[:, valid_mask].astype(np.float64, copy = False)
+        valid_systematics = systematics[valid_mask].astype(np.float64, copy = False)
 
         for i in range(dim):
 
-            systematic = valid_systematics[i]
+            systematic = valid_systematics[:, i]
 
             if maxima[i] > minima[i]:
 
@@ -228,7 +228,7 @@ def _compute_exact_equal_area_edges_and_centers(systematics: np.ndarray, n_bins:
 
     ####################################################################################################################
 
-    dim = systematics.shape[0]
+    dim = systematics.shape[1]
 
     ####################################################################################################################
 
@@ -241,7 +241,7 @@ def _compute_exact_equal_area_edges_and_centers(systematics: np.ndarray, n_bins:
 
         ################################################################################################################
 
-        systematic = np.sort(systematics[i].astype(np.float64, copy = False))
+        systematic = np.sort(systematics[:, i].astype(np.float64, copy = False))
 
         chunks = np.array_split(systematic, n_bins)
 
@@ -298,7 +298,7 @@ def compute_equal_area_binning_and_statistics(systematics: typing.Union[np.ndarr
     Parameters
     ----------
     systematics : typing.Union[np.ndarray, typing.Callable]
-        Input array of shape :math:`(\\mathrm{dim},N_\\mathrm{vectors})` or generator builder.
+        Input array of shape :math:`(N_\\mathrm{vectors},\\mathrm{dim})` or generator builder.
     n_bins : int
         Number of bins to build for each systematic.
     n_temp_bins : typing.Optional[int], default: **None** ≡ :math:`\\max\\left(32\\,n_\\mathrm{bins},\\min\\left(256\\,n_\\mathrm{bins},\\,2\\sqrt{n_\\mathrm{vectors}}\\right)\\right)`
@@ -379,7 +379,7 @@ def compute_equal_area_binning_and_statistics(systematics: typing.Union[np.ndarr
 
         if exact and np.any(valid_mask):
 
-            exact_chunks.append(systematics_chunk[:, valid_mask].astype(np.float64, copy = False))
+            exact_chunks.append(systematics_chunk[valid_mask].astype(np.float64, copy = False))
 
         ################################################################################################################
 
@@ -441,7 +441,7 @@ def compute_equal_area_binning_and_statistics(systematics: typing.Union[np.ndarr
         ################################################################################################################
 
         result_edges, result_centers = _compute_exact_equal_area_edges_and_centers(
-            np.concatenate(exact_chunks, axis = 1),
+            np.concatenate(exact_chunks, axis = 0),
             n_bins
         )
 

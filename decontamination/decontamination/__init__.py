@@ -567,7 +567,7 @@ def _accumulate_equal_area_correlation_chunk(systematics: np.ndarray, galaxy_num
 
     if systematics.ndim != 2:
 
-        raise ValueError('`systematics` chunks must have shape (dim, n_vectors)')
+        raise ValueError('`systematics` chunks must have shape (n_vectors, dim)')
 
     ####################################################################################################################
 
@@ -577,7 +577,7 @@ def _accumulate_equal_area_correlation_chunk(systematics: np.ndarray, galaxy_num
 
     ####################################################################################################################
 
-    if systematics.shape[1] != galaxy_number_density.shape[0]:
+    if systematics.shape[0] != galaxy_number_density.shape[0]:
 
         raise ValueError('`systematics` and `galaxy_number_density` chunks must be aligned')
 
@@ -585,7 +585,7 @@ def _accumulate_equal_area_correlation_chunk(systematics: np.ndarray, galaxy_num
 
     if dim is None:
 
-        dim = systematics.shape[0]
+        dim = systematics.shape[1]
 
         result_sum_density = np.zeros((dim, n_bins), dtype = np.float64)
         result_num_pixels = np.zeros((dim, n_bins), dtype = np.int64)
@@ -593,7 +593,7 @@ def _accumulate_equal_area_correlation_chunk(systematics: np.ndarray, galaxy_num
         result_total_density = np.zeros(dim, dtype = np.float64)
         result_total_pixels = np.zeros(dim, dtype = np.int64)
 
-    elif systematics.shape[0] != dim:
+    elif systematics.shape[1] != dim:
 
         raise ValueError('Inconsistent number of systematics across chunks')
 
@@ -604,20 +604,20 @@ def _accumulate_equal_area_correlation_chunk(systematics: np.ndarray, galaxy_num
 
     ####################################################################################################################
 
-    valid_mask = np.all(np.isfinite(systematics), axis = 0) & np.isfinite(galaxy_number_density)
+    valid_mask = np.all(np.isfinite(systematics), axis = 1) & np.isfinite(galaxy_number_density)
 
     ####################################################################################################################
 
     if np.any(valid_mask):
 
-        valid_systematics = systematics[:, valid_mask]
+        valid_systematics = systematics[valid_mask]
         valid_galaxy_number_density = galaxy_number_density[valid_mask]
 
         for i in range(dim):
 
             ############################################################################################################
 
-            systematic = valid_systematics[i]
+            systematic = valid_systematics[:, i]
 
             indices = np.clip(np.searchsorted(edges[i], systematic, side = 'right') - 1, 0, n_bins - 1)
 
@@ -657,7 +657,7 @@ def compute_equal_area_correlation(systematics: typing.Union[np.ndarray, typing.
     Parameters
     ----------
     systematics : typing.Union[np.ndarray, typing.Callable]
-        Systematics of shape :math:`(\\mathrm{dim},N_\\mathrm{vectors})` or generator builder.
+        Systematics of shape :math:`(N_\\mathrm{vectors},\\mathrm{dim})` or generator builder.
     galaxy_number_density : typing.Union[np.ndarray, typing.Callable]
         Galaxy number density of shape :math:`(N_\\mathrm{vectors},)` or generator builder.
     edges : np.ndarray

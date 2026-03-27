@@ -173,7 +173,7 @@ class Covariance(object):
 
             for vectors_chunk, weights_chunk in tqdm.tqdm(zip(dataset_generator(), weight_generator()), disable = not show_progress_bar):
 
-                if vectors_chunk.shape[1] != weights_chunk.shape[0]:
+                if vectors_chunk.shape[0] != weights_chunk.shape[0]:
 
                     raise ValueError('`dataset` and `dataset_weights` chunks must be aligned')
 

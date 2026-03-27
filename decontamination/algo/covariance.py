@@ -265,7 +265,6 @@ class Covariance(object):
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit()
     def project_pca(dataset: np.ndarray, eigenvectors: np.ndarray) -> np.ndarray:
 
         """

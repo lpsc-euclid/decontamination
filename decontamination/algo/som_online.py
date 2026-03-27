@@ -250,7 +250,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
                     for vectors_chunk, weight_chunk in zip(dataset_generator(), density_generator()):
 
-                        if vectors_chunk.shape[1] != weight_chunk.shape[0]:
+                        if vectors_chunk.shape[0] != weight_chunk.shape[0]:
 
                             raise ValueError('`dataset` and `dataset_weights` chunks must be aligned')
 
@@ -334,7 +334,7 @@ class SOM_Online(som_abstract.SOM_Abstract):
 
                 for vectors_chunk, weight_chunk in zip(dataset_generator(), density_generator()):
 
-                    if vectors_chunk.shape[1] != weight_chunk.shape[0]:
+                    if vectors_chunk.shape[0] != weight_chunk.shape[0]:
 
                         raise ValueError('`dataset` and `dataset_weights` chunks must be aligned')
 

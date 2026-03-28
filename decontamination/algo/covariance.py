@@ -215,7 +215,7 @@ class Covariance(object):
 
     @staticmethod
     @nb.njit()
-    def diagonalize(cov_matrix: np.ndarray, sort: bool = True) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def diagonalize(cov_matrix: np.ndarray, sort: bool = True) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         """
         Diagonalizes the given covariance matrix.
@@ -229,12 +229,10 @@ class Covariance(object):
 
         Returns
         -------
-        np.ndarray
+        np.ndarraynp.arange(cov_matrix.shape[0] - 1, -1, -1, dtype = np.int64)
             The eigenvalues. If **sort** is **True**, eigenvalues are sorted.
         np.ndarray
             The eigenvectors. If **sort** is **True**, eigenvectors are sorted.
-        np.ndarray
-            If **sort** is **True**, order of importance of the components, else :math:`[0,1,\\dots,\\mathrm{dim}-1]`.
         """
 
         if cov_matrix.shape[0] != cov_matrix.shape[1]:
@@ -249,18 +247,12 @@ class Covariance(object):
 
         if sort:
 
-            orders = np.argsort(eigenvalues)[:: -1]
-
-            eigenvalues = np.take(eigenvalues, orders, axis = 0)
-            eigenvectors = np.take(eigenvectors, orders, axis = 1)
-
-        else:
-
-            orders = np.arange(cov_matrix.shape[0], dtype = np.int64)
+            eigenvalues = np.flip(eigenvalues, axis=0)
+            eigenvectors = np.flip(eigenvectors, axis=1)
 
         ################################################################################################################
 
-        return eigenvalues, eigenvectors, orders
+        return eigenvalues, eigenvectors
 
     ####################################################################################################################
 
@@ -283,6 +275,6 @@ class Covariance(object):
             The dataset projected onto the PCA basis :math:`\\equiv\\mathrm{dataset}\\cdot\\left(\\mathrm{eigenvectors}^{-1}\\right)^T`.
         """
 
-        return np.dot(dataset, np.linalg.inv(eigenvectors).T)
+        return np.dot(dataset, eigenvectors)
 
 ########################################################################################################################

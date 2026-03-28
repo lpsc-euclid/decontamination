@@ -113,7 +113,6 @@ class SOM_PCA(som_abstract.SOM_Abstract):
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit()
     def _diag_cov_matrix(cov_matrix: np.ndarray, min_weight: float, max_weight: float, m: int, n: int, dim: int, scale_by_variance: bool, apply_cdf: bool, cdf_gain: float) -> typing.Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
 
         ################################################################################################################
@@ -259,12 +258,8 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        self._cov_matrix[:] = cov_matrix.astype(self._dtype, copy = False)
-
-        ################################################################################################################
-
         eigenvalues64, eigenvectors64, weights64 = SOM_PCA._diag_cov_matrix(
-            self._cov_matrix,
+            cov_matrix.astype(np.float64, copy = False),
             min_weight,
             max_weight,
             self._m,
@@ -277,6 +272,7 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
+        self._cov_matrix[:] = cov_matrix.astype(self._dtype, copy = False)
         self._eigenvalues[:] = eigenvalues64.astype(self._dtype, copy = False)
         self._eigenvectors[:] = eigenvectors64.astype(self._dtype, copy = False)
 

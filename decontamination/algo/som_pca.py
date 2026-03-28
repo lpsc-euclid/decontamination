@@ -277,8 +277,8 @@ class SOM_PCA(som_abstract.SOM_Abstract):
 
         ################################################################################################################
 
-        self._eigenvalues[:] = eigenvalues64
-        self._eigenvectors[:] = eigenvectors64
+        self._eigenvalues[:] = eigenvalues64.astype(self._dtype, copy = False)
+        self._eigenvectors[:] = eigenvectors64.astype(self._dtype, copy = False)
 
         ################################################################################################################
 

@@ -214,7 +214,6 @@ class Covariance(object):
     ####################################################################################################################
 
     @staticmethod
-    @nb.njit()
     def diagonalize(cov_matrix: np.ndarray, sort: bool = True) -> typing.Tuple[np.ndarray, np.ndarray]:
 
         """
@@ -247,8 +246,8 @@ class Covariance(object):
 
         if sort:
 
-            eigenvalues = np.flip(eigenvalues, axis=0)
-            eigenvectors = np.flip(eigenvectors, axis=1)
+            eigenvalues = np.flip(eigenvalues, axis = 0)
+            eigenvectors = np.flip(eigenvectors, axis = 1)
 
         ################################################################################################################
 

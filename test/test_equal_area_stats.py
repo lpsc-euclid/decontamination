@@ -78,11 +78,11 @@ def test_exact_vs_approx(n_bins):
     systematic2 = 2.0 + 0.30 * quadrupole + noise2
     systematic3 = 0.5 + 0.25 * np.sin(phi) + noise3
 
-    data = np.vstack([
+    data = np.stack([
         systematic1,
         systematic2,
         systematic3,
-    ])
+    ], axis = 1)
 
     ####################################################################################################################
 
@@ -123,11 +123,11 @@ def test_nan_rejection():
 
     n_vectors = 1000
 
-    data = np.random.randn(dim, n_vectors)
+    data = np.random.randn(n_vectors, dim)
 
     ####################################################################################################################
 
-    data[0, 100: 200] = np.nan
+    data[100: 200, 0] = np.nan
 
     ####################################################################################################################
 
@@ -145,7 +145,7 @@ def test_generator_vs_array():
 
     n_vectors = 3000
 
-    data = np.random.randn(dim, n_vectors)
+    data = np.random.randn(n_vectors, dim)
 
     ####################################################################################################################
 
@@ -163,7 +163,7 @@ def test_generator_vs_array():
 
     ####################################################################################################################
 
-    for i in range(2, 7):
+    for i in range(dim):
 
         assert np.allclose(res_array[i], res_gen[i], atol = 1e-2)
 

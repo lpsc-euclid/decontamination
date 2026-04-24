@@ -65,7 +65,7 @@ def get_bounding_box(nside: int, footprint: np.ndarray, nest: bool = True) -> ty
 
     lon_center = np.rad2deg(np.arctan2(y_mean, x_mean)) % 360
 
-    d_lon = (lon % 306 - lon_center + 180) % 360 - 180
+    d_lon = (lon % 360 - lon_center + 180) % 360 - 180
 
     ####################################################################################################################
 

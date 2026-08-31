@@ -37,7 +37,7 @@ def ud_grade(nside_in: int, nside_out: int, footprint_in: np.ndarray, footprint_
     weights : np.ndarray
         The input map.
     mode : str, default: **None** ≡ **"arith"**
-        Reprojection mode: **"sum"** (galaxy / star number density, ...), **"cov"** (coverage, ...), **"logquad"** (limiting depth, ...), **"log"**, **"quad"** (RMS, PSF, ...), or **"arith"** (galactic extinction, ...) to determine how the input map is rescaled.
+        Reprojection mode: **"sum_corr"** (galaxy / star number density, ... with edge artifact corrections), **"sum"** (galaxy / star number density, ...), **"cov"** (coverage, ...), **"logquad"** (limiting depth, ...), **"log"**, **"quad"** (RMS, PSF, ...), or **"arith"** (galactic extinction, ...) to determine how the input map is rescaled.
     ignore_zeros : bool, default: **False**
         If True, zero values in the input map are ignored during reprojection.
     log_factor : float, default: **-2.5**
@@ -78,7 +78,29 @@ def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_
 
     ####################################################################################################################
 
-    if mode == 'sum':
+    if mode == 'sum_corr':
+
+        ################################################################################################################
+        # MODE SUM                                                                                                     #
+        ################################################################################################################
+
+        for i in range(len(weights)):
+
+            pix_out = int(np.floor(footprint_in[i] / factor ** 2))
+
+            weight = weights[i]
+
+            if not math.isnan(weight) and weight != UNSEEN:
+
+                sums[pix_out] += weight
+
+                counts[pix_out] += 1.0000
+
+        map_out = sums * (factor ** 2 / counts)
+
+    ####################################################################################################################
+
+    elif mode == 'sum':
 
         ################################################################################################################
         # MODE SUM                                                                                                     #
@@ -113,9 +135,8 @@ def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_
             if not math.isnan(weight) and weight != UNSEEN:
 
                 sums[pix_out] += weight
-                counts[pix_out] += 1.0000
 
-        map_out = sums / (counts * factor ** 2)
+        map_out = sums / factor ** 2
 
         ################################################################################################################
 

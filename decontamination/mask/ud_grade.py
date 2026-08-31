@@ -95,7 +95,7 @@ def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_
                 sums[pix_out] += weight
                 counts[pix_out] += 1.0000
 
-        map_out = sums * (factor ** 2 / counts)
+        map_out = sums / counts
 
         ################################################################################################################
 
@@ -116,7 +116,7 @@ def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_
                 sums[pix_out] += weight
                 counts[pix_out] += 1.0000
 
-        map_out = sums / counts
+        map_out = sums / (counts * factor ** 2)
 
         ################################################################################################################
 

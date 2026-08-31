@@ -37,7 +37,7 @@ def ud_grade(nside_in: int, nside_out: int, footprint_in: np.ndarray, footprint_
     weights : np.ndarray
         The input map.
     mode : str, default: **None** ≡ **"arith"**
-        Reprojection mode: **"sum_corr"** (galaxy / star number density, ... with edge artifact corrections), **"sum"** (galaxy / star number density, ...), **"cov"** (coverage, ...), **"logquad"** (limiting depth, ...), **"log"**, **"quad"** (RMS, PSF, ...), or **"arith"** (galactic extinction, ...) to determine how the input map is rescaled.
+        Reprojection mode: **"sum_artifacts"** (galaxy / star number density, ... with edge artifact corrections), **"sum"** (galaxy / star number density, ...), **"cov"** (coverage, ...), **"logquad"** (limiting depth, ...), **"log"**, **"quad"** (RMS, PSF, ...), or **"arith"** (galactic extinction, ...) to determine how the input map is rescaled.
     ignore_zeros : bool, default: **False**
         If True, zero values in the input map are ignored during reprojection.
     log_factor : float, default: **-2.5**
@@ -78,10 +78,10 @@ def _downgrade(nside_in: int, nside_out: int, footprint_in: np.array, footprint_
 
     ####################################################################################################################
 
-    if mode == 'sum_corr':
+    if mode == 'sum_artifacts':
 
         ################################################################################################################
-        # MODE SUM                                                                                                     #
+        # MODE SUM ARTIFACTS                                                                                           #
         ################################################################################################################
 
         for i in range(len(weights)):

@@ -51,7 +51,7 @@ def _get_norm_cmap_label(values: np.ndarray, v_min: typing.Optional[float], v_ma
 
         ################################################################################################################
 
-        return colors.LogNorm(vmin = v_min, vmax = v_max), cmap, colorbar_label, v_min, v_max
+        return colors.LogNorm(vmin = v_min, vmax = v_max, clip = True), cmap, colorbar_label, v_min, v_max
 
         ################################################################################################################
 

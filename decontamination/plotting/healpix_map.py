@@ -140,7 +140,7 @@ def _get_norm_cmap_label(values: np.ndarray, v_min: typing.Optional[float], v_ma
 ########################################################################################################################
 
 # noinspection PyUnresolvedReferences
-def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool, cmap: str, v_min: float, v_max: float, n_sigma: float, n_hist_bins: int, colorbar_label: str, log_scale: bool, show_colorbar: bool, show_graticule: bool, show_histogram: bool, assume_positive: bool) -> typing.Tuple[plt.Figure, plt.Axes, float, float]:
+def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool, cmap: str, v_min: float, v_max: float, n_sigma: float, n_hist_bins: int, colorbar_label: str, log_scale: bool, show_colorbar: bool, show_graticule: bool, show_histogram: bool, assume_positive: bool, show_colorbar_margin: int) -> typing.Tuple[plt.Figure, plt.Axes, float, float]:
 
     ####################################################################################################################
 
@@ -288,7 +288,8 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
         bar.ax.set_position([
             ax_position.x0,
-            bar_position.y0,
+            bar_position.y0
+                - show_colorbar_margin,
             ax_position.width,
             bar_position.height
         ])
@@ -299,7 +300,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
 ########################################################################################################################
 
-def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'value', log_scale: bool = False, show_colorbar: bool = True, show_graticule: bool = False, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = False) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
+def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'value', log_scale: bool = False, show_colorbar: bool = True, show_graticule: bool = False, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = False, show_colorbar_margin: int = 0) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
 
     """
     Displays a HEALPix map.
@@ -338,6 +339,8 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
         Specifies whether to return the minimum and maximum values.
     assume_positive : bool, default: **False**
         If True, the input arrays are both assumed to be positive or null values.
+    show_colorbar_margin: int, default **0**
+        ???
     """
 
     ####################################################################################################################
@@ -369,7 +372,8 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
         show_colorbar,
         show_graticule,
         show_histogram,
-        assume_positive
+        assume_positive,
+        show_colorbar_margin
     )
 
     ####################################################################################################################
@@ -385,7 +389,7 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
 
 ########################################################################################################################
 
-def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_graticule: bool = False, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = True) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
+def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_graticule: bool = False, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = True, show_colorbar_margin: int = 0) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
 
     """
     Displays a catalog.
@@ -426,6 +430,8 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
         Specifies whether to return the minimum and maximum values.
     assume_positive : bool, default: **True**
         If True, the input arrays are both assumed to be positive or null values.
+    show_colorbar_margin: int, default **0**
+        ???
     """
 
     ####################################################################################################################
@@ -457,7 +463,8 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
         show_colorbar,
         show_graticule,
         show_histogram,
-        assume_positive
+        assume_positive,
+        show_colorbar_margin
     )
 
     ####################################################################################################################

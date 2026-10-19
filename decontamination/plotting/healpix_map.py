@@ -140,7 +140,7 @@ def _get_norm_cmap_label(values: np.ndarray, v_min: typing.Optional[float], v_ma
 ########################################################################################################################
 
 # noinspection PyUnresolvedReferences
-def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool, cmap: str, v_min: float, v_max: float, n_sigma: float, n_hist_bins: int, colorbar_label: str, log_scale: bool, show_colorbar: bool, show_graticule: bool, show_histogram: bool, assume_positive: bool, show_colorbar_margin: int) -> typing.Tuple[plt.Figure, plt.Axes, float, float]:
+def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool, cmap: str, v_min: float, v_max: float, n_sigma: float, n_hist_bins: int, colorbar_label: str, log_scale: bool, show_colorbar: bool, show_graticule: bool, show_histogram: bool, assume_positive: bool, show_colorbar_margin: float, auto_aspect: bool) -> typing.Tuple[plt.Figure, plt.Axes, float, float]:
 
     ####################################################################################################################
 
@@ -250,10 +250,16 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
     ax.set_ylabel('Latitude (deg)')
 
     ####################################################################################################################
-    # CORRECT SPHERICAL ASPECT RATIO                                                                                   #
+    # SET MAP ASPECT RATIO                                                                                             #
     ####################################################################################################################
 
-    ax.set_aspect(1.0 / cos_lat, adjustable = 'box')
+    if auto_aspect:
+
+        ax.set_aspect('auto')
+
+    else:
+
+        ax.set_aspect(1.0 / cos_lat, adjustable = 'box')
 
     ####################################################################################################################
 
@@ -288,8 +294,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
         bar.ax.set_position([
             ax_position.x0,
-            bar_position.y0
-                - show_colorbar_margin,
+            bar_position.y0 - show_colorbar_margin,
             ax_position.width,
             bar_position.height
         ])
@@ -300,7 +305,7 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
 ########################################################################################################################
 
-def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'value', log_scale: bool = False, show_colorbar: bool = True, show_graticule: bool = False, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = False, show_colorbar_margin: int = 0) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
+def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'value', log_scale: bool = False, show_colorbar: bool = True, show_graticule: bool = False, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = False, show_colorbar_margin: float = 0.0, auto_aspect: bool = False) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
 
     """
     Displays a HEALPix map.
@@ -325,7 +330,7 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
         Multiplier for standard deviation.
     n_hist_bins : int, default: **100**
         Number of histogram bins in the colorbar.
-    colorbar_label : str, default **'value'**
+    colorbar_label : str, default: **'value'**
         Colorbar label.
     log_scale : bool, default: **False**
         Specifies whether to enable the logarithm scaling.
@@ -338,9 +343,12 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
     return_minmax : bool, default: **False**
         Specifies whether to return the minimum and maximum values.
     assume_positive : bool, default: **False**
-        If True, the input arrays are both assumed to be positive or null values.
-    show_colorbar_margin: int, default **0**
-        ???
+        If **True**, the input arrays are assumed to contain positive or null values.
+    show_colorbar_margin : float, default: **0.0**
+        Vertical offset of the colorbar in normalized figure coordinates.
+        Positive values move the colorbar down (e.g. 0.02 is 2% of the figure height).
+    auto_aspect : bool, default: **False**
+        If **True**, stretches the map to fill the axes; otherwise, preserves the spherical aspect ratio.
     """
 
     ####################################################################################################################
@@ -373,7 +381,8 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
         show_graticule,
         show_histogram,
         assume_positive,
-        show_colorbar_margin
+        show_colorbar_margin,
+        auto_aspect
     )
 
     ####################################################################################################################
@@ -389,7 +398,7 @@ def display_healpix(nside: int, footprint: np.ndarray, weights: np.ndarray, nest
 
 ########################################################################################################################
 
-def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_graticule: bool = False, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = True, show_colorbar_margin: int = 0) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
+def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.ndarray, nest: bool = True, cmap: str = 'jet', v_min: float = None, v_max: float = None, n_sigma: typing.Optional[float] = 2.5, n_hist_bins: int = 100, colorbar_label: str = 'number', log_scale: bool = False, show_colorbar: bool = True, show_graticule: bool = False, show_histogram: bool = True, return_minmax: bool = False, assume_positive: bool = True, show_colorbar_margin: float = 0.0, auto_aspect: bool = False) -> typing.Union[typing.Tuple[plt.Figure, plt.Axes, float, float], typing.Tuple[plt.Figure, plt.Axes]]:
 
     """
     Displays a catalog.
@@ -429,9 +438,12 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
     return_minmax : bool, default: **False**
         Specifies whether to return the minimum and maximum values.
     assume_positive : bool, default: **True**
-        If True, the input arrays are both assumed to be positive or null values.
-    show_colorbar_margin: int, default **0**
-        ???
+        If **True**, the input arrays are assumed to contain positive or null values.
+    show_colorbar_margin : float, default: **0.0**
+        Vertical offset of the colorbar in normalized figure coordinates.
+        Positive values move the colorbar down (e.g. 0.02 is 2% of the figure height).
+    auto_aspect : bool, default: **False**
+        If **True**, stretches the map to fill the axes; otherwise, preserves the spherical aspect ratio.
     """
 
     ####################################################################################################################
@@ -464,7 +476,8 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
         show_graticule,
         show_histogram,
         assume_positive,
-        show_colorbar_margin
+        show_colorbar_margin,
+        auto_aspect
     )
 
     ####################################################################################################################

@@ -140,7 +140,7 @@ def _get_norm_cmap_label(values: np.ndarray, v_min: typing.Optional[float], v_ma
 ########################################################################################################################
 
 # noinspection PyUnresolvedReferences
-def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool, cmap: str, v_min: float, v_max: float, n_sigma: float, n_hist_bins: int, colorbar_label: str, log_scale: bool, show_colorbar: bool, show_graticule: bool, show_histogram: bool, assume_positive: bool) -> typing.Tuple[plt.Figure, plt.Axes, float, float]:
+def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool, cmap: str, v_min: float, v_max: float, n_sigma: float, n_hist_bins: int, colorbar_label: str, log_scale: bool, show_colorbar: bool, show_graticule: bool, show_histogram: bool, assume_positive: bool, show_colorbar_shift: int) -> typing.Tuple[plt.Figure, plt.Axes, float, float]:
 
     ####################################################################################################################
 
@@ -288,7 +288,8 @@ def _display(nside: int, footprint: np.ndarray, full_sky: np.ndarray, nest: bool
 
         bar.ax.set_position([
             ax_position.x0,
-            bar_position.y0,
+            bar_position.y0
+                - show_colorbar_shift,
             ax_position.width,
             bar_position.height
         ])
@@ -457,7 +458,8 @@ def display_catalog(nside: int, footprint: np.ndarray, lon: np.ndarray, lat: np.
         show_colorbar,
         show_graticule,
         show_histogram,
-        assume_positive
+        assume_positive,
+        show_colorbar_shift = 0
     )
 
     ####################################################################################################################
